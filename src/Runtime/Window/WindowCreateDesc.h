@@ -1,6 +1,6 @@
 #pragma once
-#include <Portakal/Core/Core.h>
-#include <string>
+#include <Runtime/Core/Core.h>
+#include <Runtime/Containers/String.h>
 
 namespace Portakal
 {
@@ -9,7 +9,7 @@ namespace Portakal
 	/// </summary>
 	struct PORTAKAL_API WindowCreateDesc
 	{
-		std::string Name;
+		String Name;
 		unsigned int Width;
 		unsigned int Height;
 		unsigned int PositionX;

@@ -3,9 +3,15 @@
 #
 cmake_minimum_required (VERSION 3.8)
 
-project ("Portakal")
-project ("Tests")
+project ("Runtime")
+project ("Editor")
+project ("EditorPlayer")
+project ("EditorLauncher")
+project ("Player")
 
 # Include sub-projects.
-add_subdirectory ("src/Portakal")
-add_subdirectory ("src/Tests")
+add_subdirectory ("src/Runtime")
+add_subdirectory("src/Editor")
+add_subdirectory("src/EditorPlayer")
+add_subdirectory ("src/EditorLauncher")
+add_subdirectory ("src/Player")

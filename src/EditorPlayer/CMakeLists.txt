@@ -3,13 +3,11 @@
 #
 
 # Add source to this project's executable.
-add_library (Portakal "main.cpp" "Core/Core.h" "Window/WindowCreateDesc.h" "Window/Window.h" "Window/Window.cpp")
+add_executable (EditorPlayer "main.cpp")
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
-  set_property(TARGET Portakal PROPERTY CXX_STANDARD 20)
+  set_property(TARGET EditorPlayer PROPERTY CXX_STANDARD 20)
 endif()
-
-# TODO: Add tests and install targets if needed.
 
 #compiler flags
 if(WIN32)
@@ -31,12 +29,9 @@ add_compile_definitions(QUAX_DEBUG)
 endif()
 
 add_compile_definitions(PORTAKAL_SAFE)
-
+#includes
 include_directories(${CMAKE_SOURCE_DIR}/src)
 
-if(WIN32)
-target_link_libraries(Portakal d3d12.lib)
-target_link_libraries(Portakal dxgi.lib)
-target_link_libraries(Portakal d3dcompiler.lib)
-target_link_libraries(Portakal Shlwapi.lib)
-endif()
+#linker
+target_link_libraries(EditorPlayer Editor)
+target_link_libraries(EditorPlayer Runtime)
