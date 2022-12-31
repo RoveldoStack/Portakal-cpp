@@ -24,6 +24,7 @@ namespace Portakal
 	MessageAPI::~MessageAPI()
 	{
 		_api = nullptr;
+
 		for (int i = 0; i < _listeners.GetCursor(); i++)
 		{
 			delete _listeners[i];

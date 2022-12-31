@@ -24,6 +24,8 @@ namespace Portakal
 		FORCEINLINE unsigned int GetPositionX() const noexcept { return _positionX; }
 		FORCEINLINE unsigned int GetPositionY() const noexcept { return _positionY; }
 		FORCEINLINE Array<WindowEvent*> GetPolledEvents() const noexcept { return _polledEvents; }
+		FORCEINLINE bool IsActive() const noexcept { return _active; }
+		FORCEINLINE bool IsVisible() const noexcept { return _visible; }
 
 		void Show();
 		void Hide();
@@ -31,8 +33,9 @@ namespace Portakal
 		void SetSize(const unsigned int width, const unsigned int height);
 		void SetPosition(const unsigned int x, const unsigned int y);
 		void PollEvents();
+
 	protected:
-		Window(const WindowCreateDesc& desc) : _title(desc.Name),_width(desc.Width),_height(desc.Height),_positionX(desc.PositionX),_positionY(desc.PositionY),_childDevice(nullptr) {}
+		Window(const WindowCreateDesc& desc) : _title(desc.Name),_width(desc.Width),_height(desc.Height),_positionX(desc.PositionX),_positionY(desc.PositionY),_childDevice(nullptr),_active(true),_visible(false) {}
 
 		void DispatchWindowEvent(WindowEvent* pEvent);
 		virtual void ShowCore() = 0;
@@ -42,6 +45,10 @@ namespace Portakal
 		virtual void SetPositionCore(const unsigned int x, const unsigned int y) = 0;
 		virtual void PollEventsCore() = 0;
 	private:
+		void OnWindowMoved(const unsigned int x,const unsigned int y);
+		void OnWindowResized(unsigned int width, const unsigned int height);
+		void OnWindowClosed();
+	private:
 		Array<WindowEvent*> _polledEvents;
 		GraphicsDevice* _childDevice;
 		String _title;
@@ -49,5 +56,7 @@ namespace Portakal
 		unsigned int _height;
 		unsigned int _positionX;
 		unsigned int _positionY;
+		bool _active;
+		bool _visible;
 	};
 }

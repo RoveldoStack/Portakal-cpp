@@ -1,5 +1,6 @@
 #include "Window.h"
 #include <Runtime/Window/WindowEvent.h>
+#include <Runtime/Window/WindowEvents.h>
 
 #ifdef PORTAKAL_OS_WINDOWS
 #include <Runtime/Win32/Win32Window.h>
@@ -20,10 +21,14 @@ namespace Portakal
 	void Window::Show()
 	{
 		ShowCore();
+
+		_visible = true;
 	}
 	void Window::Hide()
 	{
 		HideCore();
+
+		_visible = false;
 	}
 	void Window::SetTitle(const String& title)
 	{
@@ -65,6 +70,58 @@ namespace Portakal
 	}
 	void Window::DispatchWindowEvent(WindowEvent* pEvent)
 	{
+		WindowEventType eventType = pEvent->GetEventType();
+
+		switch (eventType)
+		{
+			case Portakal::WindowEventType::WindowClosed:
+			{
+				OnWindowClosed();
+				break;
+			}
+			case Portakal::WindowEventType::WindowMoved:
+			{
+				const WindowMovedEvent* pEventData = (const WindowMovedEvent*)pEvent;
+				OnWindowMoved(pEventData->GetX(), pEventData->GetY());
+				break;
+			}
+			case Portakal::WindowEventType::WindowResized:
+			{
+				const WindowResizedEvent* pEventData = (const WindowResizedEvent*)pEvent;
+				OnWindowResized(pEventData->GetWidth(), pEventData->GetHeight());
+				break;
+			}
+			case Portakal::WindowEventType::KeyboardDown:
+				break;
+			case Portakal::WindowEventType::KeyboardUp:
+				break;
+			case Portakal::WindowEventType::Char:
+				break;
+			case Portakal::WindowEventType::MouseButtonDown:
+				break;
+			case Portakal::WindowEventType::MouseButtonUp:
+				break;
+			case Portakal::WindowEventType::MouseMoved:
+				break;
+			case Portakal::WindowEventType::MouseScrolled:
+				break;
+			default:
+				break;
+		}
 		_polledEvents.Add(pEvent);
+	}
+	void Window::OnWindowMoved(const unsigned int x, const unsigned int y)
+	{
+		_positionX = x;
+		_positionY = y;
+	}
+	void Window::OnWindowResized(unsigned int width, const unsigned int height)
+	{
+		_width = width;
+		_height = height;
+	}
+	void Window::OnWindowClosed()
+	{
+		_active = false;
 	}
 }

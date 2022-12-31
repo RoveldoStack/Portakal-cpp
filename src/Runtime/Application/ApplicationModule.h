@@ -1,13 +1,15 @@
 #pragma once
 #include <Runtime/Containers/String.h>
+#include <Runtime/Reflection/Reflection.h>
 
 namespace Portakal
 {
 	class Application;
 	class WindowEvent;
 
-	class PORTAKAL_API ApplicationModule
+	class PORTAKAL_API ApplicationModule : public Class
 	{
+		GENERATE_CLASS(ApplicationModule);
 		friend class Application;
 	public:
 		FORCEINLINE virtual bool IsTickEnabled() const noexcept = 0;
@@ -22,12 +24,20 @@ namespace Portakal
 		virtual void PreValidate() = 0;
 		virtual void PostValidate() = 0;
 		virtual void OnEvent(WindowEvent* pEvent) = 0;
-	private:
+
+	protected:
 		ApplicationModule() = default;
 		~ApplicationModule() = default;
+	private:	
 
 		void _SetOwnerApplication(Application* pApplication) { _ownerApplication = pApplication; }
 	private:
 		Application* _ownerApplication;
 	};
+	GENERATE_VIRTUAL_TYPE(ApplicationModule);
+
+#define GENERATE_APPLICATION_MODULE(tickEnabled,eventsEnabled,validationEnabled) public: \
+																	FORCEINLINE virtual bool IsTickEnabled() const noexcept override { return tickEnabled;} \
+																	FORCEINLINE virtual bool IsEventsEnabled() const noexcept override { return eventsEnabled;}\
+																	FORCEINLINE virtual bool IsValidationLayersEnabled() const noexcept override { return validationEnabled; }
 }

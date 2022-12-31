@@ -3,7 +3,7 @@
 #
 
 # Add source to this project's executable.
-add_executable (EditorPlayer "main.cpp")
+add_executable (EditorPlayer "main.cpp" "EditorPlayerApplication.h" "EditorPlayerApplication.cpp")
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET EditorPlayer PROPERTY CXX_STANDARD 20)
