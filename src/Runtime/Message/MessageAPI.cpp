@@ -7,14 +7,23 @@ namespace Portakal
 
 	void MessageAPI::BroadcastMessage(const String& message, const MessageType type)
 	{
+		if (_api == nullptr)
+			return;
+
 		_api->BroadcastMessageInternal(message, type);
 	}
 	void MessageAPI::RegisterListener(IMessageListener* pListener)
 	{
+		if (_api == nullptr)
+			return;
+
 		_api->RegisterListenerInternal(pListener);
 	}
 	void MessageAPI::RemoveListener(IMessageListener* pListener)
 	{
+		if (_api == nullptr)
+			return;
+
 		_api->RemoveListenerInternal(pListener);
 	}
 	MessageAPI::MessageAPI()

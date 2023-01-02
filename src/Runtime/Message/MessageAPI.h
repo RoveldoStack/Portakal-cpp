@@ -25,4 +25,6 @@ namespace Portakal
 	private:
 		Array<IMessageListener*> _listeners;
 	};
+
+#define BROADCAST_MESSAGE(message) MessageAPI::BroadcastMessage(message);
 }

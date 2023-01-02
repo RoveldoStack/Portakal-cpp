@@ -2,6 +2,8 @@
 #include <Runtime/Window/WindowAPI.h>
 #include <exception>
 #include <Runtime/Window/WindowEvent.h>
+#include <Runtime/Message/MessageModule.h>
+#include <Runtime/Log/Log.h>
 namespace Portakal
 {
     void EditorPlayerApplication::RunCore()

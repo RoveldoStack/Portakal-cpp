@@ -43,4 +43,12 @@ namespace Portakal
     {
         _attributes.Add(pAttribute);
     }
+    void Type::_RegisterBaseType(Type* pType)
+    {
+        _baseTypes.Add(pType);
+    }
+    BaseTypeDispatcher::BaseTypeDispatcher(Type* pTargetType, Type* pBaseType)
+    {
+        pTargetType->_RegisterBaseType(pBaseType);
+    }
 }

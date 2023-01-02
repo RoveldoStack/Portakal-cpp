@@ -1,5 +1,6 @@
 #include "Application.h"
 #include <Runtime/Log/Log.h>
+#include <Runtime/Message/MessageAPI.h>
 
 namespace Portakal
 {
@@ -46,6 +47,8 @@ namespace Portakal
 			pModule->_SetOwnerApplication(this);
 
 			pModule->OnInitialize();
+
+			BROADCAST_MESSAGE("Module initialized");
 		}
 
 		/*
@@ -66,6 +69,9 @@ namespace Portakal
 		for (int i = _modules.GetCursor() - 1; i >= 0; i--)
 		{
 			ApplicationModule* pModule = _modules[i];
+
+
+			BROADCAST_MESSAGE("Module finalizing...");
 
 			pModule->OnFinalize();
 			pModule->_SetOwnerApplication(nullptr);

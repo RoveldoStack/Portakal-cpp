@@ -1,12 +1,13 @@
 #pragma once
 #include <Runtime/Application/ApplicationModule.h>
-
+#include <Runtime/Yaml/YamlSerializerAttribute.h>
 namespace Portakal
 {
 	class MessageAPI;
 
 	class PORTAKAL_API MessageModule : public ApplicationModule
 	{
+		GENERATE_CLASS(MessageModule);
 	public:
 		MessageModule() = default;
 		~MessageModule() = default;
@@ -24,4 +25,15 @@ namespace Portakal
 	private:
 		MessageAPI* _api;
 	};
+
+	START_GENERATE_TYPE(MessageModule);
+
+		START_TYPE_PROPERTIES(MessageModule)
+		END_TYPE_PROPERTIES;
+
+	CONCRETE_TYPE(MessageModule);
+	END_GENERATE_TYPE(MessageModule);
+	 
+	
+
 }

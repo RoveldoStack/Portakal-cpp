@@ -34,7 +34,14 @@ namespace Portakal
 	private:
 		Application* _ownerApplication;
 	};
-	GENERATE_VIRTUAL_TYPE(ApplicationModule);
+	START_GENERATE_TYPE(ApplicationModule);
+
+	START_TYPE_PROPERTIES(ApplicationModule)
+	END_TYPE_PROPERTIES;
+
+	VIRTUAL_TYPE;
+	END_GENERATE_TYPE(ApplicationModule);
+
 
 #define GENERATE_APPLICATION_MODULE(tickEnabled,eventsEnabled,validationEnabled) public: \
 																	FORCEINLINE virtual bool IsTickEnabled() const noexcept override { return tickEnabled;} \

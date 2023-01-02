@@ -3,7 +3,9 @@
 #include "EditorPlayerApplication.h"
 #include <Runtime/Message/MessageModule.h>
 #include <Runtime/Window/WindowModule.h>
-
+#include <Runtime/World/Entity.h>
+#include <Runtime/World/Scene.h>
+#include <Runtime/Yaml/Yaml.h>
 int main(unsigned int argumentCount, const char** ppArguments)
 {
 	/*
