@@ -11,7 +11,8 @@ namespace Portakal
 	{
 		Window* pOwnerWindow;
 		GraphicsBackend Backend;
-		TextureFormat Format;
+		TextureFormat ColorFormat;
+		TextureFormat DepthStencilFormat;
 		unsigned char BufferCount;
 	};
 }

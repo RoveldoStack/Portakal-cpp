@@ -3,13 +3,12 @@
 #include <Runtime/Graphics/WindowedGraphicsDeviceCreateDesc.h>
 #include <Runtime/Containers/Array.h>
 
-
 namespace Portakal
 {
 	class GraphicsDevice;
 	class PORTAKAL_API GraphicsDeviceAPI
 	{
-		friend class GraphicsDeviceModule;
+		friend class GraphicsModule;
 	private:
 		static GraphicsDeviceAPI* _api;
 	public:
