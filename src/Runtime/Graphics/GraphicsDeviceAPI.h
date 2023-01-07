@@ -2,6 +2,7 @@
 #include <Runtime/Graphics/StandaloneGraphicsDeviceCreateDesc.h>
 #include <Runtime/Graphics/WindowedGraphicsDeviceCreateDesc.h>
 #include <Runtime/Containers/Array.h>
+#include <Runtime/Graphics/GraphicsDevice.h>
 
 namespace Portakal
 {

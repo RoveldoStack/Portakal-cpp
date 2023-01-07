@@ -8,15 +8,13 @@ namespace Portakal
 	{
 	public:
 		FORCEINLINE Array<GraphicsDeviceObject*> GetResources() const noexcept { return _resources; }
-		FORCEINLINE GraphicsResourceTableTarget GetTarget() const noexcept { return _target; }
 
 		FORCEINLINE virtual GraphicsDeviceObjectType GetDeviceObjectType() const noexcept override final { return GraphicsDeviceObjectType::ResourceTable; }
 	protected:
-		GraphicsResourceTable(const GraphicsResourceTableCreateDesc& desc) : _resources(desc.Resources),_target(desc.Target) {}
+		GraphicsResourceTable(const GraphicsResourceTableCreateDesc& desc) : _resources(desc.Resources) {}
 		virtual ~GraphicsResourceTable() {}
 
 	private:
 		const Array<GraphicsDeviceObject*> _resources;
-		const GraphicsResourceTableTarget _target;
 	};
 }

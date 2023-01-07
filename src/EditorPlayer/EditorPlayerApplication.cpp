@@ -4,10 +4,15 @@
 #include <Runtime/Window/WindowEvent.h>
 #include <Runtime/Message/MessageModule.h>
 #include <Runtime/Log/Log.h>
+#include <Runtime/Graphics/GraphicsDeviceAPI.h>
+#include <Runtime/Graphics/CommandBuffer.h>
+
 namespace Portakal
 {
     void EditorPlayerApplication::RunCore()
     {
+        CommandBuffer* pCmdBuffer = GraphicsDeviceAPI::GetDefaultDevice()->CreateCommandBuffer({});
+
         /*
         * Validate requirements
         */
@@ -126,6 +131,24 @@ namespace Portakal
             /*
             * Swapbuffers and device operations
             */
+            pCmdBuffer->Lock();
+            pCmdBuffer->BindFramebuffer(GraphicsDeviceAPI::GetDefaultDevice()->GetSwapchainFramebuffer());
+
+            ViewportDesc viewport = {};
+            viewport.Width = 1024;
+            viewport.Height = 1024;
+            viewport.X = 0;
+            viewport.Y = 0;
+            viewport.MinDepth = 0.0f;
+            viewport.MaxDepth = 1.0f;
+            pCmdBuffer->SetViewports({ {viewport} });
+
+            pCmdBuffer->ClearColor(1, 0, 0, 1);
+            pCmdBuffer->Unlock();
+
+            GraphicsDeviceAPI::GetDefaultDevice()->SubmitCommands({ pCmdBuffer });
+            GraphicsDeviceAPI::GetDefaultDevice()->Swapbuffers();
+            GraphicsDeviceAPI::GetDefaultDevice()->WaitForFinish();
 
             /*
             * Set delta time

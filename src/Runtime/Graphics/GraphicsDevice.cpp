@@ -4,7 +4,10 @@
 #include <Runtime/Graphics/GraphicsDeviceObjects.h>
 #include <Runtime/Graphics/GraphicsResourceTableCreateDesc.h>
 #include <Runtime/Assert/Assert.h>
-
+#include <Runtime/Window/WindowChildDeviceAdapter.h>
+#include <Runtime/Graphics/SwapchainFramebufferCreateDesc.h>
+#include <Runtime/Window/Window.h>
+#include <Runtime/DX12/DX12Device.h>
 namespace Portakal
 {
 	GraphicsDevice* GraphicsDevice::CreateStandalone(const StandaloneGraphicsDeviceCreateDesc& desc)
@@ -23,7 +26,10 @@ namespace Portakal
 			case Portakal::GraphicsBackend::Directx11:
 				break;
 			case Portakal::GraphicsBackend::Directx12:
+			{
+				pDevice = new DX12Device(desc);
 				break;
+			}
 			case Portakal::GraphicsBackend::Vulkan:
 				break;
 			default:
@@ -34,6 +40,23 @@ namespace Portakal
 		* Validate device
 		*/
 		ASSERT(pDevice != nullptr, "GraphicsDevice", "Couldnt create the graphics device with the requested backend");
+
+		/*
+		* Bind device
+		*/
+		WindowChildDeviceAdapter::_BindDeviceAndWindow(desc.pOwnerWindow, pDevice);
+
+		/*
+		* Create swapchain
+		*/
+		SwapchainFramebufferCreateDesc swapchainDesc = {};
+		swapchainDesc.BufferCount = desc.BufferCount;
+		swapchainDesc.ColorFormat = desc.ColorFormat;
+		swapchainDesc.DepthStencilFormat = desc.DepthStencilFormat;
+		swapchainDesc.Width = desc.pOwnerWindow->GetWidth();
+		swapchainDesc.Height = desc.pOwnerWindow->GetHeight();
+
+		pDevice->CreateSwapchainFramebuffer(swapchainDesc);
 
 		return pDevice;
 	}
@@ -114,9 +137,17 @@ namespace Portakal
 
 		return pFramebuffer;
 	}
-	Pipeline* GraphicsDevice::CreatePipeline(const PipelineCreateDesc& desc)
+	Pipeline* GraphicsDevice::CreateGraphicsPipeline(const GraphicsPipelineCreateDesc& desc)
 	{
-		Pipeline* pPipeline = CreatePipelineCore(desc);
+		Pipeline* pPipeline = CreateGraphicsPipelineCore(desc);
+
+		RegisterChildObject(pPipeline);
+
+		return pPipeline;
+	}
+	Pipeline* GraphicsDevice::CreateComputePipeline(const ComputePipelineCreateDesc& desc)
+	{
+		Pipeline* pPipeline = CreateComputePipelineCore(desc);
 
 		RegisterChildObject(pPipeline);
 
@@ -153,6 +184,9 @@ namespace Portakal
 	}
 	void GraphicsDevice::SubmitCommands(CommandBuffer* pCmdBuffer)
 	{
+		if (pCmdBuffer == nullptr)
+			return;
+
 		SubmitCommandsCore({pCmdBuffer});
 	}
 	void GraphicsDevice::SubmitCommands(const Array<CommandBuffer*>& cmdBuffers)
@@ -173,8 +207,6 @@ namespace Portakal
 	void GraphicsDevice::RegisterChildObject(GraphicsDeviceObject* pObject)
 	{
 		pObject->_SetOwnerDevice(this);
-
-		pObject->Initialize();
 
 		_childObjects.Add(pObject);
 	}

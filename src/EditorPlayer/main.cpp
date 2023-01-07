@@ -6,6 +6,9 @@
 #include <Runtime/World/Entity.h>
 #include <Runtime/World/Scene.h>
 #include <Runtime/Yaml/Yaml.h>
+#include <Runtime/Graphics/GraphicsModule.h>
+#include <Runtime/Window/WindowAPI.h>
+
 int main(unsigned int argumentCount, const char** ppArguments)
 {
 	/*
@@ -31,6 +34,16 @@ int main(unsigned int argumentCount, const char** ppArguments)
 	
 	pApplication->CreateModule<Portakal::WindowModule>(windowModuleParams);
 
+	Portakal::GraphicsModuleParams graphicsModuleParams = {};
+	Portakal::WindowedGraphicsDeviceCreateDesc gdDesc = {};
+	gdDesc.Backend = Portakal::GraphicsBackend::Directx12;
+	gdDesc.BufferCount = 3;
+	gdDesc.ColorFormat = Portakal::TextureFormat::R8_G8_B8_A8_UNorm;
+	gdDesc.DepthStencilFormat = Portakal::TextureFormat::None;
+	gdDesc.pOwnerWindow = nullptr;
+	graphicsModuleParams.WindowedDescs.Add(gdDesc);
+
+	pApplication->CreateModule<Portakal::GraphicsModule>(graphicsModuleParams);
 	/*
 	* Run
 	*/

@@ -5,7 +5,7 @@ namespace Portakal
 {
 	enum class PORTAKAL_API GraphicsResourceType
 	{
-        UniformBuffer,
+        ConstantBuffer,
         StructuredBufferReadOnly,
         StructuredBufferReadWrite,
         TextureReadOnly,

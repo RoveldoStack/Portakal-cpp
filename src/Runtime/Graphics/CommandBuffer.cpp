@@ -44,7 +44,6 @@ namespace Portakal
 		Array<ViewportDesc> viewports = { viewport };
 
 		SetViewports(viewports);
-
 	}
 	void CommandBuffer::SetScissors(const Array<ScissorDesc>& scissors)
 	{

@@ -25,7 +25,8 @@ namespace Portakal
 	struct SwapchainFramebufferCreateDesc;
 
 	class Pipeline;
-	struct PipelineCreateDesc;
+	struct GraphicsPipelineCreateDesc;
+	struct ComputePipelineCreateDesc;
 
 	class Shader;
 	struct ShaderCreateDesc;
@@ -54,8 +55,10 @@ namespace Portakal
 		Texture* CreateTexture(const TextureCreateDesc& desc);
 		Sampler* CreateSampler(const SamplerCreateDesc& desc);
 		Framebuffer* CreateFramebuffer(const FramebufferCreateDesc& desc);
-		Pipeline* CreatePipeline(const PipelineCreateDesc& desc);
+		Pipeline* CreateGraphicsPipeline(const GraphicsPipelineCreateDesc& desc);
+		Pipeline* CreateComputePipeline(const ComputePipelineCreateDesc& desc);
 		GraphicsResourceTable* CreateResourceTable(const GraphicsResourceTableCreateDesc& desc);
+
 
 		void UpdateBuffer(GraphicsBuffer* pBuffer, const GraphicsBufferUpdateDesc& desc);
 
@@ -66,12 +69,14 @@ namespace Portakal
 
 		FORCEINLINE Window* GetOwnerWindow() const noexcept { return _ownerWindow; }
 		FORCEINLINE bool IsStandalone() const noexcept { return _standalone; }
-		FORCEINLINE Framebuffer* GetSwapcahinFramebuffer() const noexcept { return _swapchainFramebuffer; }
+		FORCEINLINE Framebuffer* GetSwapchainFramebuffer() const noexcept { return _swapchainFramebuffer; }
 
 		FORCEINLINE virtual GraphicsBackend GetBackend() const noexcept = 0;
 	protected:
 		GraphicsDevice(Window* pOwnerWindow);
 		GraphicsDevice();
+
+		void RegisterChildObject(GraphicsDeviceObject* pObject);
 
 		virtual void SwapbuffersCore() = 0;
 
@@ -82,7 +87,8 @@ namespace Portakal
 		virtual Sampler* CreateSamplerCore(const SamplerCreateDesc& desc) = 0;
 		virtual Framebuffer* CreateFramebufferCore(const FramebufferCreateDesc& desc) = 0;
 		virtual Framebuffer* CreateSwapchainFramebufferCore(const SwapchainFramebufferCreateDesc& desc) = 0;
-		virtual Pipeline* CreatePipelineCore(const PipelineCreateDesc& desc) = 0;
+		virtual Pipeline* CreateGraphicsPipelineCore(const GraphicsPipelineCreateDesc& desc) = 0;
+		virtual Pipeline* CreateComputePipelineCore(const ComputePipelineCreateDesc& desc) = 0;
 		virtual GraphicsResourceTable* CreateResourceTableCore(const GraphicsResourceTableCreateDesc& desc) = 0;
 
 		virtual void UpdateBufferCore(GraphicsBuffer* pBuffer, const GraphicsBufferUpdateDesc& desc) = 0;
@@ -90,7 +96,6 @@ namespace Portakal
 		virtual void WaitForFinishCore() = 0;
 		virtual void SubmitCommandsCore(const Array<CommandBuffer*>& cmdBuffers) = 0;
 	private:
-		void RegisterChildObject(GraphicsDeviceObject* pObject);
 		void CreateSwapchainFramebuffer(const SwapchainFramebufferCreateDesc& desc);
 	private:
 		Array<GraphicsDeviceObject*> _childObjects;

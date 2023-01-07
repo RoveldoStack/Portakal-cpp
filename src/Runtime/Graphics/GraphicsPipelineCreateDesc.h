@@ -18,8 +18,9 @@ namespace Portakal
 		RasterizerStateDesc RasterizerState;
 		MeshTopology MeshTopology;
 		Array<Shader*> Shaders;
-		Array<InputLayoutDesc> InputLayouts;
+		InputLayoutDesc InputLayout;
 		ResourceStateDesc ResourceState;
+		OutputDesc OutputDesc;
 
 	};
 }

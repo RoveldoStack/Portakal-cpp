@@ -8,10 +8,6 @@ namespace Portakal
 	{
 	public:
 
-	protected:
-		Sampler(const SamplerCreateDesc& desc) : _addressU(desc.AddressU),_addressV(desc.AddressV),_addressW(desc.AddressW),_filtering(desc.Filtering),_comparision(desc.Comparision),_maxAnisotropy(desc.MaxAnisotropy),_minLod(desc.MinLod),_maxLod(desc.MaxLod),_lodBias(desc.LodBias), _borderColor(desc.BorderColor) {}
-		virtual ~Sampler(){}
-
 		FORCEINLINE SamplerAddress GetAddressU() const noexcept { return _addressU; }
 		FORCEINLINE SamplerAddress GetAddressV() const noexcept { return _addressV; }
 		FORCEINLINE SamplerAddress GetAddressW() const noexcept { return _addressW; }
@@ -22,9 +18,15 @@ namespace Portakal
 		FORCEINLINE unsigned char GetMaxLod() const noexcept { return _maxLod; }
 		FORCEINLINE char GetLodBias() const noexcept { return _lodBias; }
 		FORCEINLINE SamplerBorderColor GetBorderColor() const noexcept { return _borderColor; }
-
-
 		FORCEINLINE virtual GraphicsDeviceObjectType GetDeviceObjectType() const noexcept override final { return GraphicsDeviceObjectType::Sampler; }
+
+	protected:
+		Sampler(const SamplerCreateDesc& desc) : _addressU(desc.AddressU),_addressV(desc.AddressV),_addressW(desc.AddressW),_filtering(desc.Filtering),_comparision(desc.Comparision),_maxAnisotropy(desc.MaxAnisotropy),_minLod(desc.MinLod),_maxLod(desc.MaxLod),_lodBias(desc.LodBias), _borderColor(desc.BorderColor) {}
+		virtual ~Sampler(){}
+
+
+
+		
 	private:
 		const SamplerAddress _addressU;
 		const SamplerAddress _addressV;

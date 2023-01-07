@@ -19,9 +19,7 @@ namespace Portakal
 		void DeleteDeviceObject();
 	protected:
 		GraphicsDeviceObject() = default;
-		virtual ~GraphicsDeviceObject();
-
-		virtual void Initialize() = 0;
+		virtual ~GraphicsDeviceObject() {}
 	private:
 		void _SetOwnerDevice(GraphicsDevice* pDevice) { _ownerDevice = pDevice; }
 	private:

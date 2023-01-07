@@ -7,3 +7,4 @@
 #include <Runtime/Graphics/Pipeline.h>
 #include <Runtime/Graphics/CommandBuffer.h>
 #include <Runtime/Graphics/GraphicsResourceTable.h>
+#include <Runtime/Graphics/SwapchainFramebuffer.h>

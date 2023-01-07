@@ -12,6 +12,7 @@ namespace Portakal
 	/// </summary>
 	class PORTAKAL_API Window
 	{
+		friend class WindowChildDeviceAdapter;
 	public:
 		static Window* Create(const WindowCreateDesc& desc);
 
@@ -48,6 +49,7 @@ namespace Portakal
 		void OnWindowMoved(const unsigned int x,const unsigned int y);
 		void OnWindowResized(unsigned int width, const unsigned int height);
 		void OnWindowClosed();
+		void _SetChildDevice(GraphicsDevice* pDevice) { _childDevice = pDevice; }
 	private:
 		Array<WindowEvent*> _polledEvents;
 		GraphicsDevice* _childDevice;
