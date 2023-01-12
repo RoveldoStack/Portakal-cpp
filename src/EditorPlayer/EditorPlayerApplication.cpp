@@ -6,12 +6,22 @@
 #include <Runtime/Log/Log.h>
 #include <Runtime/Graphics/GraphicsDeviceAPI.h>
 #include <Runtime/Graphics/CommandBuffer.h>
+#include <Runtime/Platform/PlatformTime.h>
+#include <Runtime/Time/Stopwatch.h>
+#include <Runtime/Memory/SharedHeap.h>
+#include <Runtime/Memory/OwnedHeap.h>
 
 namespace Portakal
 {
-    void EditorPlayerApplication::RunCore()
+    void EditorPlayerApplication::Initialize()
     {
-        CommandBuffer* pCmdBuffer = GraphicsDeviceAPI::GetDefaultDevice()->CreateCommandBuffer({});
+        _tickableModules = GetTickableModules();
+        _eventableModules = GetEventableModules();
+        _validationModules = GetValidationModules();
+
+        _cmdBuffer = GraphicsDeviceAPI::GetDefaultDevice()->CreateCommandBuffer({});
+        _defaultWindow = WindowAPI::GetDefaultWindow();
+        _defaultDevice = GraphicsDeviceAPI::GetDefaultDevice();
 
         /*
         * Validate requirements
@@ -23,136 +33,110 @@ namespace Portakal
         }
 
         /*
-        * Get modules
+        * Show the window
         */
-        const Array<ApplicationModule*> tickableModules = GetTickableModules();
-        const Array<ApplicationModule*> eventableModules = GetEventableModules();
-        const Array<ApplicationModule*> validationModules = GetValidationModules();
-        Window* pDefaultWindow = WindowAPI::GetDefaultWindow();
-
+        _defaultWindow->Show();
+    }
+    bool EditorPlayerApplication::Tick()
+    {
         /*
-        * Initialize
-        */
-        pDefaultWindow->Show();
-
-        while (!HasQuitRequest())
+           * Check if has validation request
+           */
+        if (HasValidationRequest())
         {
             /*
-            * Check if has validation request
+            * Clear all reflection fields
             */
-            if (HasValidationRequest())
-            {
-                /*
-                * Clear all reflection fields
-                */
 
-                /*
-                * Pre validate modules
-                */
-                for (int i = validationModules.GetCursor() - 1; i >= 0; i--)
+            /*
+            * Pre validate modules
+            */
+            for (int i = _validationModules.GetCursor() - 1; i >= 0; i--)
+            {
+                try
                 {
-                    try
-                    {
-                        validationModules[i]->PreValidate();
-                    }
-                    catch(std::exception ex)
-                    {
-                        
-                    }
+                    _validationModules[i]->PreValidate();
                 }
-
-                /*
-                * Post validate modules
-                */
-                for (unsigned int i = 0; i < validationModules.GetCursor(); i++)
+                catch (std::exception ex)
                 {
-                    try
-                    {
-                        validationModules[i]->PostValidate();
-                    }
-                    catch (std::exception ex)
-                    {
 
-                    }
-                }
-
-                MarkValidated();
-            }
-
-            /*
-            * Poll window events
-            */
-            pDefaultWindow->PollEvents();
-
-            /*
-            * Validate window state
-            */
-            if(!pDefaultWindow->IsActive())
-            {
-                PostQuitMessage("Window is not active");
-                continue;
-            }
-
-            /*
-            * Broadcast events
-            */
-            const Array<WindowEvent*> events = pDefaultWindow->GetPolledEvents();
-            for (unsigned int eventIndex = 0; eventIndex < events.GetCursor(); eventIndex++)
-            {
-                WindowEvent* pEvent = events[eventIndex];
-
-                for (int i = eventableModules.GetCursor() - 1; i >= 0; i--)
-                {
-                    ApplicationModule* pModule = eventableModules[i];
-
-                    pModule->OnEvent(pEvent);
-
-                    if (pEvent->IsHandled())
-                        break;
                 }
             }
 
             /*
-            * Tick modules
+            * Post validate modules
             */
-            for (unsigned int i = 0; i < tickableModules.GetCursor(); i++)
+            for (unsigned int i = 0; i < _validationModules.GetCursor(); i++)
             {
-                tickableModules[i]->OnPreTick();
+                try
+                {
+                    _validationModules[i]->PostValidate();
+                }
+                catch (std::exception ex)
+                {
+
+                }
             }
-            for (unsigned int i = 0; i < tickableModules.GetCursor(); i++)
-            {
-                tickableModules[i]->OnTick();
-            }
-            for (unsigned int i = 0; i < tickableModules.GetCursor(); i++)
-            {
-                tickableModules[i]->OnPostTick();
-            }
 
-            /*
-            * Swapbuffers and device operations
-            */
-            pCmdBuffer->Lock();
-            pCmdBuffer->BindFramebuffer(GraphicsDeviceAPI::GetDefaultDevice()->GetSwapchainFramebuffer());
-
-            ViewportDesc viewport = {};
-            viewport.Width = 1024;
-            viewport.Height = 1024;
-            viewport.X = 0;
-            viewport.Y = 0;
-            viewport.MinDepth = 0.0f;
-            viewport.MaxDepth = 1.0f;
-            pCmdBuffer->SetViewports({ {viewport} });
-
-            pCmdBuffer->ClearColor(1, 0, 0, 1);
-            pCmdBuffer->Unlock();
-
-            GraphicsDeviceAPI::GetDefaultDevice()->SubmitCommands({ pCmdBuffer });
-            GraphicsDeviceAPI::GetDefaultDevice()->Swapbuffers();
-            GraphicsDeviceAPI::GetDefaultDevice()->WaitForFinish();
-
-            /*
-            * Set delta time
-            */
+            MarkValidated();
         }
+
+        /*
+        * Poll window events
+        */
+        _defaultWindow->PollEvents();
+
+        /*
+        * Validate window state
+        */
+        if (!_defaultWindow->IsActive())
+        {
+            PostQuitMessage("Window is not active");
+            return false;
+        }
+
+        /*
+        * Broadcast events
+        */
+        const Array<WindowEvent*> events = _defaultWindow->GetPolledEvents();
+        for (unsigned int eventIndex = 0; eventIndex < events.GetCursor(); eventIndex++)
+        {
+            WindowEvent* pEvent = events[eventIndex];
+
+            for (int i = _eventableModules.GetCursor() - 1; i >= 0; i--)
+            {
+                ApplicationModule* pModule = _eventableModules[i];
+
+                pModule->OnEvent(pEvent);
+
+                if (pEvent->IsHandled())
+                    break;
+            }
+        }
+
+        /*
+        * Tick modules
+        */
+        for (unsigned int i = 0; i < _tickableModules.GetCursor(); i++)
+        {
+            _tickableModules[i]->OnPreTick();
+        }
+        for (unsigned int i = 0; i < _tickableModules.GetCursor(); i++)
+        {
+            _tickableModules[i]->OnTick();
+        }
+        for (unsigned int i = 0; i < _tickableModules.GetCursor(); i++)
+        {
+            _tickableModules[i]->OnPostTick();
+        }
+
+        /*
+        * Swapbuffers and device operations
+        */
+        _defaultDevice->Swapbuffers();
+        _defaultDevice->WaitForFinish();
+
+        return true;
     }
+   
 }

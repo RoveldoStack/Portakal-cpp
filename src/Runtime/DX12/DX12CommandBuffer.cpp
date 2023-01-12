@@ -236,13 +236,14 @@ namespace Portakal
         const Framebuffer* pFramebuffer = GetBoundFramebuffer();
 
         D3D12_CPU_DESCRIPTOR_HANDLE cpuHandle = {};
+
         if (pFramebuffer->IsSwapchain())
         {
-            
+            cpuHandle = ((const DX12SwapchainFramebuffer*)pFramebuffer)->GetDXDepthStencilHeapDescriptor()->GetCPUDescriptorHandleForHeapStart();
         }
         else
         {
-
+            cpuHandle = ((const DX12Framebuffer*)pFramebuffer)->GetDXDepthStencilHeapDescriptor()->GetCPUDescriptorHandleForHeapStart();;
         }
 
         _cmdList->ClearDepthStencilView(cpuHandle, D3D12_CLEAR_FLAG_DEPTH, depth, 0, 0, nullptr);
@@ -252,13 +253,14 @@ namespace Portakal
         const Framebuffer* pFramebuffer = GetBoundFramebuffer();
 
         D3D12_CPU_DESCRIPTOR_HANDLE cpuHandle = {};
+
         if (pFramebuffer->IsSwapchain())
         {
-
+            cpuHandle = ((const DX12SwapchainFramebuffer*)pFramebuffer)->GetDXDepthStencilHeapDescriptor()->GetCPUDescriptorHandleForHeapStart();
         }
         else
         {
-
+            cpuHandle = ((const DX12Framebuffer*)pFramebuffer)->GetDXDepthStencilHeapDescriptor()->GetCPUDescriptorHandleForHeapStart();;
         }
 
         _cmdList->ClearDepthStencilView(cpuHandle, D3D12_CLEAR_FLAG_STENCIL, 0,stencil, 0, nullptr);

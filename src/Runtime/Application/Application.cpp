@@ -1,6 +1,8 @@
 #include "Application.h"
 #include <Runtime/Log/Log.h>
 #include <Runtime/Message/MessageAPI.h>
+#include <Runtime/Time/Stopwatch.h>
+#include <Runtime/Time/Time.h>
 
 namespace Portakal
 {
@@ -19,6 +21,7 @@ namespace Portakal
 	{
 		_validationRequest = true;
 	}
+
 
 	void Application::Run()
 	{
@@ -52,10 +55,35 @@ namespace Portakal
 		}
 
 		/*
+		* Initialize
+		*/
+		Initialize();
+
+		/*
 		* Run core
 		*/
 		_running = true;
-		RunCore();
+		Stopwatch deltaTimer = {};
+		while (!HasQuitRequest())
+		{
+			/*
+			* Run application run implementation
+			*/
+			deltaTimer.Mark();
+			Tick();
+			deltaTimer.Mark();
+
+			/*
+			* Set last frame's delta time
+			*/
+			const float deltaTime = deltaTimer.GetAsMilliseconds();
+
+			Time::_SetDeltaTime(deltaTime);
+
+			/*
+			* Check if has a quit message
+			*/
+		}
 		_running = false;
 
 		/*

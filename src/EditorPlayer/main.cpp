@@ -8,6 +8,9 @@
 #include <Runtime/Yaml/Yaml.h>
 #include <Runtime/Graphics/GraphicsModule.h>
 #include <Runtime/Window/WindowAPI.h>
+#include <Editor/Renderer/ImGuiExecutorModule.h>
+#include <Editor/Renderer/ImGuiRendererModule.h>
+#include <Editor/GUI/GUIWindowModule.h>
 
 int main(unsigned int argumentCount, const char** ppArguments)
 {
@@ -44,6 +47,13 @@ int main(unsigned int argumentCount, const char** ppArguments)
 	graphicsModuleParams.WindowedDescs.Add(gdDesc);
 
 	pApplication->CreateModule<Portakal::GraphicsModule>(graphicsModuleParams);
+
+	pApplication->CreateModule<Portakal::ImGuiExecutorModule>();
+
+	pApplication->CreateModule<Portakal::GUIWindowModule>();
+
+	pApplication->CreateModule<Portakal::ImGuiRendererModule>();
+
 	/*
 	* Run
 	*/

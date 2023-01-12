@@ -10,6 +10,14 @@ namespace Portakal
 	public:
 		virtual ~Application();
 
+		FORCEINLINE bool IsRunning() const noexcept { return _running; }
+		FORCEINLINE bool HasQuitRequest() const noexcept { return _quitRequest; }
+		FORCEINLINE bool HasValidationRequest() const noexcept { return _validationRequest; }
+		FORCEINLINE Array<ApplicationModule*> GetModules() const noexcept { return _modules; }
+		FORCEINLINE Array<ApplicationModule*> GetTickableModules() const noexcept { return _tickableModules; }
+		FORCEINLINE Array<ApplicationModule*> GetEventableModules() const noexcept { return _eventableModules; }
+		FORCEINLINE Array<ApplicationModule*> GetValidationModules() const noexcept { return _validationModules; }
+
 		void PostQuitMessage(const String& message);
 		void PostValidateRequest();
 		void Run();
@@ -38,18 +46,12 @@ namespace Portakal
 			return nullptr;
 		}
 
-		FORCEINLINE bool IsRunning() const noexcept { return _running; }
-		FORCEINLINE bool HasQuitRequest() const noexcept { return _quitRequest; }
-		FORCEINLINE bool HasValidationRequest() const noexcept { return _validationRequest; }
-		FORCEINLINE Array<ApplicationModule*> GetModules() const noexcept { return _modules; }
-		FORCEINLINE Array<ApplicationModule*> GetTickableModules() const noexcept { return _tickableModules; }
-		FORCEINLINE Array<ApplicationModule*> GetEventableModules() const noexcept { return _eventableModules; }
-		FORCEINLINE Array<ApplicationModule*> GetValidationModules() const noexcept { return _validationModules; }
 	protected:
 		Application();
 
 		FORCEINLINE void MarkValidated() { _validationRequest = false; }
-		virtual void RunCore() = 0;
+		virtual void Initialize() = 0;
+		virtual bool Tick() = 0;
 	private:
 		Array<ApplicationModule*> _modules;
 		Array<ApplicationModule*> _tickableModules;

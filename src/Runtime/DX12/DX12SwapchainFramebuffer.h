@@ -17,6 +17,7 @@ namespace Portakal
 		virtual ~DX12SwapchainFramebuffer() override;
 
 		virtual Array<Texture*> GetColorTargets() const noexcept override;
+		FORCEINLINE ID3D12DescriptorHeap* GetDXDepthStencilHeapDescriptor() const noexcept { return _depthStencilTargetHeap.Get(); }
 		FORCEINLINE IDXGISwapChain3* GetDXSwapchain() const noexcept { return _swapchain.Get(); }
 		FORCEINLINE D3D12_CPU_DESCRIPTOR_HANDLE GetDXCurrentRenderTargetDescriptor() const noexcept;
 	protected:
@@ -26,6 +27,7 @@ namespace Portakal
 		Array<Texture*> _colorTextures;
 		DXPTR<IDXGISwapChain3> _swapchain;
 		DXPTR<ID3D12DescriptorHeap> _renderTargetHeap;
+		DXPTR<ID3D12DescriptorHeap> _depthStencilTargetHeap;
 
 	};
 }
