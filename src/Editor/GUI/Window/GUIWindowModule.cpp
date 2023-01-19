@@ -2,16 +2,23 @@
 #include <Libs/ImGui/imgui.h>
 #include <Libs/ImGui/imgui_internal.h>
 #include <Runtime/Log/Log.h>
+#include <Editor/GUI/Window/EditorWindow.h>
+#include <Editor/GUI/Window/EditorWindowDockState.h>
+#include <Editor/GUI/Window/EditorWindowAPI.h>
 
 namespace Portakal
 {
 	void GUIWindowModule::OnInitialize()
 	{
-
+		/*
+		* Initialize api
+		*/
+		_api = new EditorWindowAPI();
 	}
 	void GUIWindowModule::OnFinalize()
 	{
-
+		delete _api;
+		_api = nullptr;
 	}
 	void GUIWindowModule::OnPreTick()
 	{
@@ -67,14 +74,37 @@ namespace Portakal
 			/*
 			* Split the view
 			*/
-			unsigned int dockIDleft = ImGui::DockBuilderSplitNode(dockspaceID, ImGuiDir_Left,0.35f,nullptr,&dockspaceID);
+			unsigned int dockIDLeft = ImGui::DockBuilderSplitNode(dockspaceID, ImGuiDir_Left,0.35f,nullptr,&dockspaceID);
 			unsigned int dockIDRight = ImGui::DockBuilderSplitNode(dockspaceID, ImGuiDir_Right, 0.35f, nullptr, &dockspaceID);
 			unsigned int dockIDUp = ImGui::DockBuilderSplitNode(dockspaceID, ImGuiDir_Up, 0.25f, nullptr, &dockspaceID);
 			unsigned int dockIDDown = ImGui::DockBuilderSplitNode(dockspaceID, ImGuiDir_Down, 0.4f, nullptr, &dockspaceID);
 
+			Array<unsigned int> nodes = { 0,dockspaceID,dockIDLeft ,dockIDRight ,dockIDUp ,dockIDDown };
+
+			/*
+			* Dock the windows
+			*/
+			Array<EditorWindow*> windows;
+			for (unsigned int i = 0; i < windows.GetCursor(); i++)
+			{
+				EditorWindow* pWindow = windows[i];
+				const String name = pWindow->GetType()->GetTypeName();
+
+				if (pWindow->GetDockState() == EditorWindowDockState::None)
+					continue;
+
+				const unsigned int dockID = nodes[(int)pWindow->GetDockState()];
+
+				ImGui::DockBuilderDockWindow(*name, dockID);
+			}
 			ImGui::DockBuilderFinish(dockspaceID);
 			_layoutInitialized = true;
 		}
+
+		/*
+		* Update api
+		*/
+		_api->Paint();
 
 		/*
 		* Update windows

@@ -10,6 +10,7 @@
 #include <Runtime/Time/Stopwatch.h>
 #include <Runtime/Memory/SharedHeap.h>
 #include <Runtime/Memory/OwnedHeap.h>
+#include <Editor/Project/ProjectGenerator.h>
 
 namespace Portakal
 {
@@ -36,6 +37,8 @@ namespace Portakal
         * Show the window
         */
         _defaultWindow->Show();
+
+        ProjectGenerator::GenerateSync("TestProject", "C:/Users/Roveldo/Documents/Portakal");
     }
     bool EditorPlayerApplication::Tick()
     {

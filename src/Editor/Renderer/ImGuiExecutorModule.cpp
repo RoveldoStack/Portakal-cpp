@@ -39,8 +39,6 @@ namespace Portakal
     void ImGuiExecutorModule::OnTick()
     {
         _renderer->StartRendering(Time::GetDeltaTime());
-
-        ImGui::ShowDemoWindow();
     }
     void ImGuiExecutorModule::OnPostTick()
     {

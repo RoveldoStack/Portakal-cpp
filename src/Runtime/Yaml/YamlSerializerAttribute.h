@@ -15,4 +15,11 @@ namespace Portakal
 	private:
 		Type* _targetSerializerType;
 	};
+
+
+	START_GENERATE_TYPE(YamlSerializerAttribute);
+	START_TYPE_PROPERTIES(YamlSerializerAttribute);
+	END_TYPE_PROPERTIES;
+	CONCRETE_TYPE(YamlSerializerAttribute);
+	END_GENERATE_TYPE(YamlSerializerAttribute);
 }

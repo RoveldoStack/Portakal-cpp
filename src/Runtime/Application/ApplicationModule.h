@@ -27,7 +27,7 @@ namespace Portakal
 
 	protected:
 		ApplicationModule() = default;
-		~ApplicationModule() = default;
+		virtual ~ApplicationModule() = default;
 	private:	
 
 		void _SetOwnerApplication(Application* pApplication) { _ownerApplication = pApplication; }

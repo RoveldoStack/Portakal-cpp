@@ -1,5 +1,7 @@
 #include "Assembly.h"
 #include <Runtime/Reflection/Type.h>
+#include <Runtime/Log/Log.h>
+#include <Runtime/Log/Log.h>
 
 namespace Portakal
 {
@@ -13,6 +15,7 @@ namespace Portakal
     Assembly::Assembly()
     {
         sProcessAssembly = this;
+        LOG("Assembly", "Created new assembly");
     }
     Assembly::~Assembly()
     {
@@ -32,6 +35,7 @@ namespace Portakal
     }
     void Assembly::RegisterType(Type* pType)
     {
+        LOG("Assembly", "Registered type: %s", *pType->GetTypeName());
         _types.Add(pType);
     }
 }

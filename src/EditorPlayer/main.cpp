@@ -10,7 +10,9 @@
 #include <Runtime/Window/WindowAPI.h>
 #include <Editor/Renderer/ImGuiExecutorModule.h>
 #include <Editor/Renderer/ImGuiRendererModule.h>
-#include <Editor/GUI/GUIWindowModule.h>
+#include <Editor/GUI/Window/GUIWindowModule.h>
+#include <Editor/GUI/MenuItem/MenuItemTemplates.h>
+#include <Editor/GUI/MenuItem/GUIMainMenuItemModule.h>
 
 int main(unsigned int argumentCount, const char** ppArguments)
 {
@@ -51,6 +53,7 @@ int main(unsigned int argumentCount, const char** ppArguments)
 	pApplication->CreateModule<Portakal::ImGuiExecutorModule>();
 
 	pApplication->CreateModule<Portakal::GUIWindowModule>();
+	pApplication->CreateModule<Portakal::GUIMainMenuItemModule>();
 
 	pApplication->CreateModule<Portakal::ImGuiRendererModule>();
 

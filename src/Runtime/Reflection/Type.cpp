@@ -1,5 +1,6 @@
 #include "Type.h"
 #include <Runtime/Reflection/Field.h>
+#include <Runtime/Log/Log.h>
 
 namespace Portakal
 {
@@ -45,6 +46,7 @@ namespace Portakal
     }
     void Type::_RegisterBaseType(Type* pType)
     {
+        LOG("Type", "Registered a base type: [%s] to the type: [%s]", *pType->GetTypeName(), *GetTypeName());
         _baseTypes.Add(pType);
     }
     BaseTypeDispatcher::BaseTypeDispatcher(Type* pTargetType, Type* pBaseType)
