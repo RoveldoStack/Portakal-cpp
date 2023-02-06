@@ -1,4 +1,4 @@
-#include "DX12Pipeline.h"
+#include "DX12GraphicsPipeline.h"
 #include <Runtime/DX12/DX12PipelineUtils.h>
 #include <Runtime/DX12/DX12Device.h>
 #include <Runtime/DXGI/DXGIUtils.h>
@@ -8,7 +8,7 @@
 
 namespace Portakal
 {
-	DX12Pipeline::DX12Pipeline(const GraphicsPipelineCreateDesc& desc, DX12Device* pDevice) : Pipeline(desc)
+	DX12GraphicsPipeline::DX12GraphicsPipeline(const GraphicsPipelineCreateDesc& desc, DX12Device* pDevice) : Pipeline(desc)
 	{
 		ID3D12Device* pDXDevice = pDevice->GetDXDevice();
 
@@ -154,12 +154,12 @@ namespace Portakal
 		ASSERT(SUCCEEDED(D3D12SerializeRootSignature(
 			&rootSignatureDesc,
 			D3D_ROOT_SIGNATURE_VERSION_1,
-			&_rootSignatureBlob, &_rootSignatureErrorBlob)), "DX12Pipeline failed to serialize the signature blob with logs: %s", (const char*)_rootSignatureBlob->GetBufferPointer());
+			&mRootSignatureBlob, &mRootSignatureErrorBlob)), "DX12Pipeline failed to serialize the signature blob with logs: %s", (const char*)mRootSignatureBlob->GetBufferPointer());
 
 		/*
 		* Create root signature
 		*/
-		ASSERT(SUCCEEDED(pDXDevice->CreateRootSignature(0, _rootSignatureBlob->GetBufferPointer(), _rootSignatureBlob->GetBufferSize(), IID_PPV_ARGS(_rootSignature.GetAddressOf()))), "DX12Pipeline", "Failed to create a root signature");
+		ASSERT(SUCCEEDED(pDXDevice->CreateRootSignature(0, mRootSignatureBlob->GetBufferPointer(), mRootSignatureBlob->GetBufferSize(), IID_PPV_ARGS(mRootSignature.GetAddressOf()))), "DX12Pipeline", "Failed to create a root signature");
 
 		/*
 		* Clean up descriptor table ranges
@@ -265,7 +265,7 @@ namespace Portakal
 		/*
 		* Set root signature
 		*/
-		psoDesc.pRootSignature = _rootSignature.Get();
+		psoDesc.pRootSignature = mRootSignature.Get();
 
 		/*
 		* Set output desc
@@ -335,7 +335,7 @@ namespace Portakal
 		* Set topology
 		*/
 		psoDesc.PrimitiveTopologyType = DX12PipelineUtils::GetTopologyType(desc.MeshTopology);
-		_topology = DX12PipelineUtils::GetTopology(desc.MeshTopology);
+		mTopology = DX12PipelineUtils::GetTopology(desc.MeshTopology);
 
 		/*
 		* Misc
@@ -345,11 +345,22 @@ namespace Portakal
 		psoDesc.SampleDesc.Quality = 0;
 
 
-		ASSERT(SUCCEEDED(pDXDevice->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&_pipelineState))), "DX12Pipeline", "Failed to create the pipeline state object (PSO)");
+		ASSERT(SUCCEEDED(pDXDevice->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&mPso))), "DX12Pipeline", "Failed to create the pipeline state object (PSO)");
 
 	}
-	DX12Pipeline::~DX12Pipeline()
+	DX12GraphicsPipeline::~DX12GraphicsPipeline()
 	{
-		_pipelineState.Reset();
+		mPso.Reset();
+		mRootSignature.Reset();
+		mRootSignatureBlob.Reset();
+		mRootSignatureErrorBlob.Reset();
+	}
+	void DX12GraphicsPipeline::OnDestroy()
+	{
+		mPso.Reset();
+		mRootSignature.Reset();
+		mRootSignature.Reset();
+		mRootSignatureErrorBlob.Reset();
+
 	}
 }

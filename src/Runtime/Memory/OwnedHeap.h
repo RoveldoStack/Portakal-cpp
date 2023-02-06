@@ -15,7 +15,7 @@ namespace Portakal
 		OwnedHeap(const OwnedHeap<TType>&& target) = delete;
 		OwnedHeap()
 		{
-			_heap = nullptr;
+			mHeap = nullptr;
 		}
 		~OwnedHeap()
 		{
@@ -24,11 +24,11 @@ namespace Portakal
 
 		void Free()
 		{
-			if (_heap == nullptr)
+			if (mHeap == nullptr)
 				return;
 
-			delete _heap;
-			_heap = nullptr;
+			delete mHeap;
+			mHeap = nullptr;
 		}
 
 		void operator ==(TType* pHeap)
@@ -43,14 +43,14 @@ namespace Portakal
 
 		TType* operator ->() noexcept
 		{
-			return _heap;
+			return mHeap;
 		}
 	private:
 		void CreateNew(TType* pHeap)
 		{
-			_heap = pHeap;
+			mHeap = pHeap;
 		}
 	private:
-		TType* _heap;
+		TType* mHeap;
 	};
 }

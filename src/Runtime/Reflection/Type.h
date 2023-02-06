@@ -18,8 +18,8 @@ namespace Portakal
 		~Type() = default;
 
 		FORCEINLINE Field* GetField(const String& name);
-		FORCEINLINE Array<Field*> GetFields() const noexcept { return _fields; }
-		FORCEINLINE Array<Type*> GetBaseTypes() const noexcept { return _baseTypes; }
+		FORCEINLINE Array<Field*> GetFields() const noexcept { return mFields; }
+		FORCEINLINE Array<Type*> GetBaseTypes() const noexcept { return mBaseTypes; }
 		FORCEINLINE bool IsSubClassOf(const Type* pType) const noexcept;
 
 		template<typename TAttribute>
@@ -27,9 +27,9 @@ namespace Portakal
 		{
 			Type* pAttributeType = TypeAccessor<TAttribute>::GetAccessorType();
 
-			for (unsigned int i = 0; i < _attributes.GetCursor(); i++)
+			for (unsigned int i = 0; i < mAttributes.GetCursor(); i++)
 			{
-				Attribute* pAttribute = _attributes[i];
+				Attribute* pAttribute = mAttributes[i];
 
 				if (pAttributeType == pAttribute->GetType())
 					return (TAttribute*)pAttribute;
@@ -45,9 +45,9 @@ namespace Portakal
 		FORCEINLINE void _RegisterField(Field* pField);
 		FORCEINLINE void _RegisterAttribute(Attribute* pAttribute);
 	private:
-		Array<Field*> _fields;
-		Array<Attribute*> _attributes;
-		Array<Type*> _baseTypes;
+		Array<Field*> mFields;
+		Array<Attribute*> mAttributes;
+		Array<Type*> mBaseTypes;
 	};
 
 	template<typename TType>

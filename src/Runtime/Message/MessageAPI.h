@@ -23,7 +23,7 @@ namespace Portakal
 		void BroadcastMessageInternal(const String& message, const MessageType type = MessageType::Information);
 
 	private:
-		Array<IMessageListener*> _listeners;
+		Array<IMessageListener*> mListeners;
 	};
 
 #define BROADCAST_MESSAGE(message) MessageAPI::BroadcastMessage(message);

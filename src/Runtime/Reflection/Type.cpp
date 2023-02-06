@@ -6,9 +6,9 @@ namespace Portakal
 {
     Field* Type::GetField(const String& name)
     {
-        for (unsigned int i = 0; i < _fields.GetCursor(); i++)
+        for (unsigned int i = 0; i < mFields.GetCursor(); i++)
         {
-            Field* pField = _fields[i];
+            Field* pField = mFields[i];
 
             if (pField->GetFieldName() == name)
                 return pField;
@@ -18,17 +18,17 @@ namespace Portakal
     }
     bool Type::IsSubClassOf(const Type* pSubType) const noexcept
     {
-        for (unsigned int i = 0; i < _baseTypes.GetCursor(); i++)
+        for (unsigned int i = 0; i < mBaseTypes.GetCursor(); i++)
         {
-            Type* pBaseType = _baseTypes[i];
+            Type* pBaseType = mBaseTypes[i];
 
             if (pBaseType == pSubType)
                 return true;
         }
 
-        for (unsigned int i = 0; i < _baseTypes.GetCursor(); i++)
+        for (unsigned int i = 0; i < mBaseTypes.GetCursor(); i++)
         {
-            Type* pBaseType = _baseTypes[i];
+            Type* pBaseType = mBaseTypes[i];
 
             if (pBaseType->IsSubClassOf(pSubType))
                 return true;
@@ -38,16 +38,16 @@ namespace Portakal
     }
     void Type::_RegisterField(Field* pField)
     {
-        _fields.Add(pField);
+        mFields.Add(pField);
     }
     void Type::_RegisterAttribute(Attribute* pAttribute)
     {
-        _attributes.Add(pAttribute);
+        mAttributes.Add(pAttribute);
     }
     void Type::_RegisterBaseType(Type* pType)
     {
         LOG("Type", "Registered a base type: [%s] to the type: [%s]", *pType->GetTypeName(), *GetTypeName());
-        _baseTypes.Add(pType);
+        mBaseTypes.Add(pType);
     }
     BaseTypeDispatcher::BaseTypeDispatcher(Type* pTargetType, Type* pBaseType)
     {

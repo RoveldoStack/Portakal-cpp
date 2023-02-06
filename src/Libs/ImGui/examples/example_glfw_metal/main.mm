@@ -108,12 +108,12 @@ int main(int, char**)
             layer.drawableSize = CGSizeMake(width, height);
             id<CAMetalDrawable> drawable = [layer nextDrawable];
 
-            id<MTLCommandBuffer> commandBuffer = [commandQueue commandBuffer];
+            id<MTLCommandList> CommandList = [commandQueue CommandList];
             renderPassDescriptor.colorAttachments[0].clearColor = MTLClearColorMake(clear_color[0] * clear_color[3], clear_color[1] * clear_color[3], clear_color[2] * clear_color[3], clear_color[3]);
             renderPassDescriptor.colorAttachments[0].texture = drawable.texture;
             renderPassDescriptor.colorAttachments[0].loadAction = MTLLoadActionClear;
             renderPassDescriptor.colorAttachments[0].storeAction = MTLStoreActionStore;
-            id <MTLRenderCommandEncoder> renderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:renderPassDescriptor];
+            id <MTLRenderCommandEncoder> renderEncoder = [CommandList renderCommandEncoderWithDescriptor:renderPassDescriptor];
             [renderEncoder pushDebugGroup:@"ImGui demo"];
 
             // Start the Dear ImGui frame
@@ -160,7 +160,7 @@ int main(int, char**)
 
             // Rendering
             ImGui::Render();
-            ImGui_ImplMetal_RenderDrawData(ImGui::GetDrawData(), commandBuffer, renderEncoder);
+            ImGui_ImplMetal_RenderDrawData(ImGui::GetDrawData(), CommandList, renderEncoder);
 
             // Update and Render additional Platform Windows
             if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
@@ -172,8 +172,8 @@ int main(int, char**)
             [renderEncoder popDebugGroup];
             [renderEncoder endEncoding];
 
-            [commandBuffer presentDrawable:drawable];
-            [commandBuffer commit];
+            [CommandList presentDrawable:drawable];
+            [CommandList commit];
         }
     }
 

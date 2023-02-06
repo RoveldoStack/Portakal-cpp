@@ -8,22 +8,22 @@ namespace Portakal
 	{
 		GENERATE_CLASS(TaggedObject);
 	public:
-		FORCEINLINE String GetTagName() const noexcept { return _name; }
-		FORCEINLINE void SetTagName(const String& name) { _name = name; }
-		FORCEINLINE Guid GetID() const noexcept { return _id; }
+		FORCEINLINE String GetTagName() const noexcept { return mName; }
+		FORCEINLINE void SetTagName(const String& name) { mName = name; }
+		FORCEINLINE Guid GetID() const noexcept { return mID; }
 
-		void OverrideID(const Guid& id) { _id = id; }
+		void OverrideID(const Guid& id) { mID = id; }
 	protected:
-		TaggedObject(const String& name,const Guid& id) : _name(name),_id(id) {}
-		TaggedObject(const String& name) : _name(name),_id(Guid::Create()) {}
-		TaggedObject(const Guid& id) : _id(id) {}
+		TaggedObject(const String& name,const Guid& id) : mName(name), mID(id) {}
+		TaggedObject(const String& name) : mName(name), mID(Guid::Create()) {}
+		TaggedObject(const Guid& id) : mID(id) {}
 		TaggedObject() = default;
 
 		~TaggedObject() = default;
 
 	private:
-		String _name;
-		Guid _id;
+		String mName;
+		Guid mID;
 	};
 	START_GENERATE_TYPE(TaggedObject);
 		START_TYPE_PROPERTIES(TaggedObject);

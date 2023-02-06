@@ -4,8 +4,8 @@
 namespace Portakal
 {
 	#define PI 3.14159265359
-	#define DEG_TO_RAD 0.01745329252f
-	#define RAD_TO_DEG 357.295779513f
+	#define DEG_TO_RAD (2*PI) / 360
+	#define RAD_TO_DEG 360 / (2*PI)
 
 	/// <summary>
 	/// General purpose math library

@@ -1,10 +1,10 @@
 #pragma once
-#include <Runtime/DX12/DX12SwapchainFramebuffer.h>
+#include <Runtime/DX12/DX12Swapchain.h>
 #include <Runtime/DX12/DX12Texture.h>
 #include <Runtime/DX12/DX12Sampler.h>
 #include <Runtime/DX12/DX12Shader.h>
 #include <Runtime/DX12/DX12Buffer.h>
 #include <Runtime/DX12/DX12Framebuffer.h>
-#include <Runtime/DX12/DX12CommandBuffer.h>
-#include <Runtime/DX12/DX12Pipeline.h>
+#include <Runtime/DX12/DX12GraphicsCommandList.h>
+#include <Runtime/DX12/DX12GraphicsPipeline.h>
 #include <Runtime/DX12/DX12ResourceTable.h>

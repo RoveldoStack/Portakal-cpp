@@ -6,8 +6,8 @@ namespace Portakal
 {
 	struct PORTAKAL_API BlendingStateDesc
 	{
-		float BlendFactor;
-		Array<BlendingAttachmentDesc> Attachments;
 		bool bAlphaToCoverageEnabled;
+		Array<BlendingAttachmentDesc> Attachments;
+
 	};
 }

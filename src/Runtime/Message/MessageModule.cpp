@@ -6,7 +6,7 @@ namespace Portakal
 {
 	void MessageModule::OnInitialize()
 	{
-		_api = new MessageAPI();
+		mAPI = new MessageAPI();
 
 		/*
 		* Register default message
@@ -16,7 +16,7 @@ namespace Portakal
 	}
 	void MessageModule::OnFinalize()
 	{
-		delete _api;
-		_api = nullptr;
+		delete mAPI;
+		mAPI = nullptr;
 	}
 }

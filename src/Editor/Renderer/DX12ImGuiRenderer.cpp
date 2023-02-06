@@ -1,8 +1,8 @@
 #include "DX12ImGuiRenderer.h"
-#include <Runtime/DX12/DX12SwapchainFramebuffer.h>
+#include <Runtime/DX12/DX12Swapchain.h>
 #include <Libs/ImGui/backends/imgui_impl_dx12.h>
 #include <Runtime/DXGI/DXGIUtils.h>
-#include <Runtime/DX12/DX12CommandBuffer.h>
+#include <Runtime/DX12/DX12GraphicsCommandList.h>
 #include <Libs/ImGui/backends/imgui_impl_win32.h>
 #include <Runtime/Win32/Win32Window.h>
 #include <Runtime/DX12/DX12Device.h>
@@ -13,7 +13,7 @@ namespace Portakal
 {
     DX12ImGuiRenderer::DX12ImGuiRenderer(GraphicsDevice* pDevice) : ImGuiRenderer(pDevice)
     {
-		const DX12SwapchainFramebuffer* pFramebuffer = (const DX12SwapchainFramebuffer*)pDevice->GetSwapchainFramebuffer();
+		const DX12Swapchain* pSwapchain = (const DX12Swapchain*)pDevice->GetSwapchain();
 
 		ID3D12Device* pDXDevice = ((DX12Device*)pDevice)->GetDXDevice();
 
@@ -36,8 +36,8 @@ namespace Portakal
 		* Init imgui d3d12
 		*/
 		ImGui_ImplDX12_Init(pDXDevice,
-			pFramebuffer->GetBufferCount(),
-			DXGIUtils::GetTextureFormat(pFramebuffer->GetSwapchainColorFormat()),
+			pSwapchain->GetColorBufferCount(),
+			DXGIUtils::GetTextureFormat(pSwapchain->GetColorFormat()),
 			_fontHeap.Get(),
 			_fontHeap->GetCPUDescriptorHandleForHeapStart(),
 			_fontHeap->GetGPUDescriptorHandleForHeapStart());
@@ -53,15 +53,15 @@ namespace Portakal
     {
 		ImGui_ImplDX12_NewFrame();
     }
-    void DX12ImGuiRenderer::FinalizeRenderingCore(CommandBuffer* pCmdBuffer)
+    void DX12ImGuiRenderer::FinalizeRenderingCore(CommandList* pCmdBuffer)
     {
-		ID3D12GraphicsCommandList* pList = (ID3D12GraphicsCommandList*)((DX12CommandBuffer*)pCmdBuffer)->GetDXCmdList();
-		DX12SwapchainFramebuffer* pFramebuffer = (DX12SwapchainFramebuffer*)pCmdBuffer->GetOwnerDevice()->GetSwapchainFramebuffer();
+		ID3D12GraphicsCommandList* pList = (ID3D12GraphicsCommandList*)((DX12GraphicsCommandList*)pCmdBuffer)->GetDXCmdList();
+		DX12Swapchain* pSwapchain = (DX12Swapchain*)pCmdBuffer->GetOwnerDevice()->GetSwapchain();
 
 
-		pCmdBuffer->BindFramebuffer(pFramebuffer);
+		pCmdBuffer->BindFramebuffer(pSwapchain->GetFramebuffer());
 
-		pCmdBuffer->ClearColor(0, 0.5f, 0.3f, 1.0f);
+		pCmdBuffer->ClearColor(0,0, 0.5f, 0.3f, 1.0f);
 
 		ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), (ID3D12GraphicsCommandList*)pList);
     }

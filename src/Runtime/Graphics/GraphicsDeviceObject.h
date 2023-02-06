@@ -10,20 +10,28 @@ namespace Portakal
 	{
 		friend class GraphicsDevice;
 	public:
-		FORCEINLINE void SetDeviceObjectName(const String& name) { _name = name; }
+		FORCEINLINE void SetDeviceObjectName(const String& name) { mName = name; }
 
-		FORCEINLINE GraphicsDevice* GetOwnerDevice() const noexcept { return _ownerDevice; }
-		FORCEINLINE String GetDeviceObjectName() const noexcept { return _name; }
+		FORCEINLINE GraphicsDevice* GetOwnerDevice() const noexcept { return mOwnerDevice; }
+		FORCEINLINE String GetDeviceObjectName() const noexcept { return mName; }
 		FORCEINLINE virtual GraphicsDeviceObjectType GetDeviceObjectType() const noexcept = 0;
 
 		void DeleteDeviceObject();
 	protected:
-		GraphicsDeviceObject() = default;
-		virtual ~GraphicsDeviceObject() {}
+		GraphicsDeviceObject()
+		{
+			mOwnerDevice = nullptr;
+		}
+		~GraphicsDeviceObject()
+		{
+			mOwnerDevice = nullptr;
+		}
+
+		virtual void OnDestroy() = 0;
 	private:
-		void _SetOwnerDevice(GraphicsDevice* pDevice) { _ownerDevice = pDevice; }
+		void _SetOwnerDevice(GraphicsDevice* pDevice) { mOwnerDevice = pDevice; }
 	private:
-		GraphicsDevice* _ownerDevice;
-		String _name;
+		GraphicsDevice* mOwnerDevice;
+		String mName;
 	};
 }

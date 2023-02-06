@@ -22,7 +22,7 @@ namespace Portakal
 	{
 		D3D12_RESOURCE_FLAGS flags = D3D12_RESOURCE_FLAG_NONE;
 
-		if (!(usage & TextureUsage::Sampled) && !(usage & TextureUsage::RenderTarget) && !(usage & TextureUsage::DepthStencil))
+		if (!(usage & TextureUsage::ReadOnly) && !(usage & TextureUsage::RenderTarget) && !(usage & TextureUsage::DepthStencil))
 			flags |= D3D12_RESOURCE_FLAG_DENY_SHADER_RESOURCE;
 		if (usage & TextureUsage::RenderTarget)
 			flags |= D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET;

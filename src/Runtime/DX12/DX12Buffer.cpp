@@ -7,9 +7,9 @@ namespace Portakal
 {
 	DX12Buffer::DX12Buffer(const GraphicsBufferCreateDesc& desc, DX12Device* pDevice) : GraphicsBuffer(desc)
 	{
-		_vertexBufferView = {};
-		_indexBufferView = {};
-		_constantBufferView = {};
+		mVertexBufferView = {};
+		mIndexBufferView = {};
+		mConstantBufferView = {};
 
 		ID3D12Device* pDXDevice = pDevice->GetDXDevice();
 
@@ -41,28 +41,28 @@ namespace Portakal
 			&resourceDesc,
 			D3D12_RESOURCE_STATE_GENERIC_READ,
 			nullptr,
-			IID_PPV_ARGS(&_resource))), "DX12Buffer", "Failed to create committed resource");
+			IID_PPV_ARGS(&mResource))), "DX12Buffer", "Failed to create committed resource");
 
 		switch (desc.Type)
 		{
 			case Portakal::GraphicsBufferType::VertexBuffer:
 			{
 				D3D12_VERTEX_BUFFER_VIEW bufferView = {};
-				bufferView.BufferLocation = _resource->GetGPUVirtualAddress();
+				bufferView.BufferLocation = mResource->GetGPUVirtualAddress();
 				bufferView.StrideInBytes = desc.SubItemSize;
 				bufferView.SizeInBytes = desc.SubItemCount * desc.SubItemCount;
 
-				_vertexBufferView = bufferView;
+				mVertexBufferView = bufferView;
 				break;
 			}
 			case Portakal::GraphicsBufferType::IndexBuffer:
 			{
 				D3D12_INDEX_BUFFER_VIEW bufferView = {};
-				bufferView.BufferLocation = _resource->GetGPUVirtualAddress();
+				bufferView.BufferLocation = mResource->GetGPUVirtualAddress();
 				bufferView.SizeInBytes = desc.SubItemCount * desc.SubItemSize;
 				bufferView.Format = DX12BufferUtils::GetIndexFormat(desc.SubItemSize);
 
-				_indexBufferView = bufferView;
+				mIndexBufferView = bufferView;
 				break;
 			}
 			case Portakal::GraphicsBufferType::ConstantBuffer:
@@ -74,5 +74,8 @@ namespace Portakal
 	DX12Buffer::~DX12Buffer()
 	{
 
+	}
+	void DX12Buffer::OnDestroy()
+	{
 	}
 }

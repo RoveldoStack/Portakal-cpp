@@ -9,7 +9,7 @@ namespace Portakal
 	{
 		friend class Entity;
 	public:
-		FORCEINLINE Entity* GetOwnerEntity() const noexcept { return _ownerEntity; }
+		FORCEINLINE Entity* GetOwnerEntity() const noexcept { return mOwnerEntity; }
 
 		void DestroyComponent();
 		virtual void OnInitialize() = 0;
@@ -20,8 +20,8 @@ namespace Portakal
 	private:
 		~Component() = default;
 
-		void _SetOwnerEntity(Entity* pEntity) { _ownerEntity = pEntity; }
+		void _SetOwnerEntity(Entity* pEntity) { mOwnerEntity = pEntity; }
 	private:
-		Entity* _ownerEntity;
+		Entity* mOwnerEntity;
 	};
 }

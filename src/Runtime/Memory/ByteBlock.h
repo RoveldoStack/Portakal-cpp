@@ -33,10 +33,10 @@ namespace Portakal
 		template<typename TObject>
 		FORCEINLINE TObject To(const unsigned long long offset) const
 		{
-			return *(TObject*)(_block + offset);
+			return *(TObject*)(mBlock + offset);
 		}
 	private:
-		unsigned char* _block;
-		unsigned long long _size;
+		unsigned char* mBlock;
+		unsigned long long mSize;
 	};
 }

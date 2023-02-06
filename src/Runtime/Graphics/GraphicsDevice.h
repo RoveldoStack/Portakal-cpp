@@ -8,8 +8,8 @@ namespace Portakal
 	class GraphicsDeviceObject;
 	class Window;
 
-	class CommandBuffer;
-	struct CommandBufferCreateDesc;
+	class CommandList;
+	struct CommandListCreateDesc;
 
 	class GraphicsBuffer;
 	struct GraphicsBufferCreateDesc;
@@ -20,9 +20,10 @@ namespace Portakal
 	struct TextureUpdateDesc;
 
 	class Framebuffer;
-	class SwapchainFramebuffer;
 	struct FramebufferCreateDesc;
-	struct SwapchainFramebufferCreateDesc;
+
+	struct SwapchainCreateDesc;
+	class Swapchain;
 
 	class Pipeline;
 	struct GraphicsPipelineCreateDesc;
@@ -49,7 +50,7 @@ namespace Portakal
 		virtual ~GraphicsDevice();
 		void Swapbuffers();
 
-		CommandBuffer* CreateCommandBuffer(const CommandBufferCreateDesc& desc);
+		CommandList* CreateGraphicsCommandList(const CommandListCreateDesc& desc);
 		GraphicsBuffer* CreateBuffer(const GraphicsBufferCreateDesc& desc);
 		Shader* CreateShader(const ShaderCreateDesc& desc);
 		Texture* CreateTexture(const TextureCreateDesc& desc);
@@ -63,13 +64,13 @@ namespace Portakal
 		void UpdateBuffer(GraphicsBuffer* pBuffer, const GraphicsBufferUpdateDesc& desc);
 
 		void WaitForFinish();
-		void SubmitCommands(CommandBuffer* pCmdBuffer);
-		void SubmitCommands(const Array<CommandBuffer*>& cmdBuffers);
+		void SubmitCommands(CommandList* pCmdBuffer);
+		void SubmitCommands(const Array<CommandList*>& cmdBuffers);
 		void DeleteChildObject(GraphicsDeviceObject* pObject);
 
 		FORCEINLINE Window* GetOwnerWindow() const noexcept { return _ownerWindow; }
 		FORCEINLINE bool IsStandalone() const noexcept { return _standalone; }
-		FORCEINLINE Framebuffer* GetSwapchainFramebuffer() const noexcept { return _swapchainFramebuffer; }
+		FORCEINLINE Swapchain* GetSwapchain() const noexcept { return mSwapchain; }
 
 		FORCEINLINE virtual GraphicsBackend GetBackend() const noexcept = 0;
 	protected:
@@ -80,13 +81,13 @@ namespace Portakal
 
 		virtual void SwapbuffersCore() = 0;
 
-		virtual CommandBuffer* CreateCommandBufferCore(const CommandBufferCreateDesc& desc) = 0;
+		virtual CommandList* CreateGraphicsCommandListCore(const CommandListCreateDesc& desc) = 0;
 		virtual GraphicsBuffer* CreateBufferCore(const GraphicsBufferCreateDesc& desc) = 0;
 		virtual Shader* CreateShaderCore(const ShaderCreateDesc& desc) = 0;
 		virtual Texture* CreateTextureCore(const TextureCreateDesc& desc) = 0;
 		virtual Sampler* CreateSamplerCore(const SamplerCreateDesc& desc) = 0;
 		virtual Framebuffer* CreateFramebufferCore(const FramebufferCreateDesc& desc) = 0;
-		virtual Framebuffer* CreateSwapchainFramebufferCore(const SwapchainFramebufferCreateDesc& desc) = 0;
+		virtual Swapchain* CreateSwapchainCore(const SwapchainCreateDesc& desc) = 0;
 		virtual Pipeline* CreateGraphicsPipelineCore(const GraphicsPipelineCreateDesc& desc) = 0;
 		virtual Pipeline* CreateComputePipelineCore(const ComputePipelineCreateDesc& desc) = 0;
 		virtual GraphicsResourceTable* CreateResourceTableCore(const GraphicsResourceTableCreateDesc& desc) = 0;
@@ -94,13 +95,13 @@ namespace Portakal
 		virtual void UpdateBufferCore(GraphicsBuffer* pBuffer, const GraphicsBufferUpdateDesc& desc) = 0;
 
 		virtual void WaitForFinishCore() = 0;
-		virtual void SubmitCommandsCore(const Array<CommandBuffer*>& cmdBuffers) = 0;
+		virtual void SubmitCommandsCore(const Array<CommandList*>& cmdBuffers) = 0;
 	private:
-		void CreateSwapchainFramebuffer(const SwapchainFramebufferCreateDesc& desc);
+		void CreateSwapchain(const SwapchainCreateDesc& desc);
 	private:
 		Array<GraphicsDeviceObject*> _childObjects;
 		Window* _ownerWindow;
-		Framebuffer* _swapchainFramebuffer;
+		Swapchain* mSwapchain;
 		bool _standalone;
 	};
 }

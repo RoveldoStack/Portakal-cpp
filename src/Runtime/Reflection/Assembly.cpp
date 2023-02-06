@@ -23,9 +23,9 @@ namespace Portakal
     }
     Type* Assembly::GetType(const String& name) const noexcept
     {
-        for (unsigned int i = 0; i < _types.GetCursor(); i++)
+        for (unsigned int i = 0; i < mTypes.GetCursor(); i++)
         {
-            Type* pType = _types[i];
+            Type* pType = mTypes[i];
 
             if (pType->GetTypeName() == name)
                 return pType;
@@ -36,6 +36,6 @@ namespace Portakal
     void Assembly::RegisterType(Type* pType)
     {
         LOG("Assembly", "Registered type: %s", *pType->GetTypeName());
-        _types.Add(pType);
+        mTypes.Add(pType);
     }
 }

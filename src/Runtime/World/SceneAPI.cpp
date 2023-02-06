@@ -10,14 +10,14 @@ namespace Portakal
 		if (_api == nullptr)
 			return nullptr;
 
-		return _api->_primalScene;
+		return _api->mPrimalScene;
 	}
 	Array<Scene*> SceneAPI::GetScenes()
 	{
 		if (_api == nullptr)
 			return Array<Scene*>();
 
-		return _api->_scenes;
+		return _api->mScenes;
 	}
 	Scene* SceneAPI::CreateScene(const bool bMarkPrimal)
 	{
@@ -71,13 +71,13 @@ namespace Portakal
 	}
 	void SceneAPI::MarkScenePrimalInternal(Scene* pScene)
 	{
-		if (_primalScene != nullptr)
+		if (mPrimalScene != nullptr)
 		{
-			_primalScene->_SetPrimalState(false);
-			_primalScene->_SetActiveState(false);
+			mPrimalScene->_SetPrimalState(false);
+			mPrimalScene->_SetActiveState(false);
 		}
 
-		_primalScene = pScene;
+		mPrimalScene = pScene;
 
 		pScene->_SetPrimalState(true);
 		pScene->_SetActiveState(false);
@@ -87,12 +87,12 @@ namespace Portakal
 		if (_api == nullptr || pScene == nullptr)
 			return;
 
-		if (_primalScene == pScene)
-			_primalScene = nullptr;
+		if (mPrimalScene == pScene)
+			mPrimalScene = nullptr;
 
 		//TODO: delete scene
 
-		_scenes.Remove(pScene);
+		mScenes.Remove(pScene);
 	}
 
 	SceneAPI::SceneAPI()
@@ -112,6 +112,6 @@ namespace Portakal
 			MarkScenePrimalInternal(pScene);
 		}
 
-		_scenes.Add(pScene);
+		mScenes.Add(pScene);
 	}
 }

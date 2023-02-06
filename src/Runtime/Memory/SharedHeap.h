@@ -13,14 +13,14 @@ namespace Portakal
 		}
 		SharedHeap(const SharedHeap<TType>& target)
 		{
-			_heap = target._heap;
-			_count = target._count;
-			*_count++;
+			mHeap = target.mHeap;
+			mCount = target.mCount;
+			*mCount++;
 		}
 		SharedHeap()
 		{
-			_heap = nullptr;
-			_count = nullptr;
+			mHeap = nullptr;
+			mCount = nullptr;
 		}
 		~SharedHeap()
 		{
@@ -29,28 +29,28 @@ namespace Portakal
 
 		FORCEINLINE TType* GetHeap()
 		{
-			return _heap;
+			return mHeap;
 		}
 		void Reset()
 		{
-			if (_count == nullptr)
+			if (mCount == nullptr)
 				return;
 
-			*_count--;
+			*mCount--;
 
-			if (_count == 0)
+			if (mCount == 0)
 			{
-				delete _count;
-				delete _heap;
-				_heap = nullptr;
-				_count = nullptr;
+				delete mCount;
+				delete mHeap;
+				mHeap = nullptr;
+				mCount = nullptr;
 			}
 
 		}
 
 		void operator==(TType* pHeap)
 		{
-			if (pHeap != _heap)
+			if (pHeap != mHeap)
 				Reset();
 
 			CreateNew(pHeap);
@@ -58,18 +58,18 @@ namespace Portakal
 
 		TType* operator->() noexcept
 		{
-			return _heap;
+			return mHeap;
 		}
 
 		
 	private:
 		void CreateNew(TType* pHeap)
 		{
-			_heap = pHeap;
-			_count = new unsigned int(1);
+			mHeap = pHeap;
+			mCount = new unsigned int(1);
 		}
 	private:
-		TType* _heap;
-		unsigned int* _count;
+		TType* mHeap;
+		unsigned int* mCount;
 	};
 }

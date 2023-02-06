@@ -14,7 +14,7 @@ namespace Portakal
 		FORCEINLINE ID3D12DescriptorHeap* GetFontDescriptorHeap() const noexcept { return _fontHeap.Get(); }
 	protected:
 		virtual void StartRenderingCore() override;
-		virtual void FinalizeRenderingCore(CommandBuffer* pCmdBuffer) override;
+		virtual void FinalizeRenderingCore(CommandList* pCmdBuffer) override;
 	private:
 		DXPTR<ID3D12DescriptorHeap> _fontHeap;
 	};

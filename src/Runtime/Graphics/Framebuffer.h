@@ -10,13 +10,13 @@ namespace Portakal
 	class PORTAKAL_API Framebuffer : public GraphicsDeviceObject
 	{
 	public:
-		FORCEINLINE Texture* GetDepthStencilTarget() const noexcept { return _depthStencilTarget; }
-		FORCEINLINE unsigned int GetWidth() const noexcept { return _width; }
-		FORCEINLINE unsigned int GetHeight() const noexcept { return _height; }
+		FORCEINLINE FramebufferAttachmentDesc GetDepthStencilTarget() const noexcept { return mDepthStencilTarget; }
+		FORCEINLINE unsigned int GetWidth() const noexcept { return mWidth; }
+		FORCEINLINE unsigned int GetHeight() const noexcept { return mHeight; }
 
-		FORCEINLINE virtual Array<Texture*> GetColorTargets() const noexcept { return _colorTargets; };
-		FORCEINLINE virtual OutputDesc GetOutputDesc() const noexcept { return _outputDesc; }
-		FORCEINLINE virtual bool IsSwapchain() const noexcept { return false; }
+		FORCEINLINE virtual Array<FramebufferAttachmentDesc> GetColorTargets() const noexcept { return mColorTargets; };
+		FORCEINLINE virtual OutputDesc GetOutputDesc() const noexcept { return mOutputDesc; }
+		FORCEINLINE virtual bool IsSwapchain() const noexcept { return mSwapchain; }
 
 		FORCEINLINE virtual GraphicsDeviceObjectType GetDeviceObjectType() const noexcept override final { return GraphicsDeviceObjectType::Framebuffer; }
 	protected:
@@ -24,21 +24,17 @@ namespace Portakal
 		/// Constructor for ext framebuffers
 		/// </summary>
 		/// <param name="desc"></param>
-		Framebuffer(const FramebufferCreateDesc& desc);
-
-		/// <summary>
-		/// Constructor for swapchain framebuffer
-		/// </summary>
-		Framebuffer(const unsigned int width,const unsigned int height);
+		Framebuffer(const FramebufferCreateDesc& desc,const bool bSwapchain);
 		virtual ~Framebuffer() {}
 
-		FORCEINLINE void SetWidth(const unsigned int width) { _width = width; }
-		FORCEINLINE void SetHeight(const unsigned int height) { _height = height; }
+		FORCEINLINE void SetWidth(const unsigned int width) { mWidth = width; }
+		FORCEINLINE void SetHeight(const unsigned int height) { mHeight = height; }
 	private:
-		Array<Texture*> _colorTargets;
-		Texture* _depthStencilTarget;
-		OutputDesc _outputDesc;
-		unsigned int _width;
-		unsigned int _height;
+		Array<FramebufferAttachmentDesc> mColorTargets;
+		FramebufferAttachmentDesc mDepthStencilTarget;
+		OutputDesc mOutputDesc;
+		unsigned int mWidth;
+		unsigned int mHeight;
+		const bool mSwapchain;
 	};
 }

@@ -34,26 +34,26 @@ namespace Portakal
 	{
 		_api = nullptr;
 
-		for (int i = 0; i < _listeners.GetCursor(); i++)
+		for (int i = 0; i < mListeners.GetCursor(); i++)
 		{
-			delete _listeners[i];
+			delete mListeners[i];
 		}
-		_listeners.Clear();
+		mListeners.Clear();
 	}
 
 	void MessageAPI::BroadcastMessageInternal(const String& message, const MessageType type)
 	{
-		for (int i = 0; i < _listeners.GetCursor(); i++)
+		for (int i = 0; i < mListeners.GetCursor(); i++)
 		{
-			_listeners[i]->OnMessageReceived(message, type);
+			mListeners[i]->OnMessageReceived(message, type);
 		}
 	}
 	void MessageAPI::RegisterListenerInternal(IMessageListener* pListener)
 	{
-		_listeners.Add(pListener);
+		mListeners.Add(pListener);
 	}
 	void MessageAPI::RemoveListenerInternal(IMessageListener* pListener)
 	{
-		_listeners.Remove(pListener);
+		mListeners.Remove(pListener);
 	}
 }

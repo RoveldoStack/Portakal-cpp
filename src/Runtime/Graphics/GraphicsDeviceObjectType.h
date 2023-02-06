@@ -11,7 +11,8 @@ namespace Portakal
 		Sampler,
 		Shader,
 		ResourceTable,
-		CommandBuffer,
-		Pipeline
+		CommandList,
+		Pipeline,
+		Swapchain
 	};
 }

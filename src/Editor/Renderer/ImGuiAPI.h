@@ -5,7 +5,7 @@
 namespace Portakal
 {
 	class GraphicsDevice;
-	class CommandBuffer;
+	class CommandList;
 	class ImGuiRenderer;
 
 	class PORTAKAL_API ImGuiAPI

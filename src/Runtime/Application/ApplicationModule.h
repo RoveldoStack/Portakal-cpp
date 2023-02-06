@@ -28,11 +28,13 @@ namespace Portakal
 	protected:
 		ApplicationModule() = default;
 		virtual ~ApplicationModule() = default;
+
+		FORCEINLINE Application* GetOwnerApplication() const noexcept { return mOwnerApplication; }
 	private:	
 
-		void _SetOwnerApplication(Application* pApplication) { _ownerApplication = pApplication; }
+		void _SetOwnerApplication(Application* pApplication) { mOwnerApplication = pApplication; }
 	private:
-		Application* _ownerApplication;
+		Application* mOwnerApplication;
 	};
 	START_GENERATE_TYPE(ApplicationModule);
 

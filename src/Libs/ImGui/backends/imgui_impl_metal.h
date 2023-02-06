@@ -20,13 +20,13 @@
 #ifdef __OBJC__
 
 @class MTLRenderPassDescriptor;
-@protocol MTLDevice, MTLCommandBuffer, MTLRenderCommandEncoder;
+@protocol MTLDevice, MTLCommandList, MTLRenderCommandEncoder;
 
 IMGUI_IMPL_API bool ImGui_ImplMetal_Init(id<MTLDevice> device);
 IMGUI_IMPL_API void ImGui_ImplMetal_Shutdown();
 IMGUI_IMPL_API void ImGui_ImplMetal_NewFrame(MTLRenderPassDescriptor* renderPassDescriptor);
 IMGUI_IMPL_API void ImGui_ImplMetal_RenderDrawData(ImDrawData* drawData,
-                                                   id<MTLCommandBuffer> commandBuffer,
+                                                   id<MTLCommandList> CommandList,
                                                    id<MTLRenderCommandEncoder> commandEncoder);
 
 // Called by Init/NewFrame/Shutdown
@@ -52,7 +52,7 @@ IMGUI_IMPL_API bool ImGui_ImplMetal_Init(MTL::Device* device);
 IMGUI_IMPL_API void ImGui_ImplMetal_Shutdown();
 IMGUI_IMPL_API void ImGui_ImplMetal_NewFrame(MTL::RenderPassDescriptor* renderPassDescriptor);
 IMGUI_IMPL_API void ImGui_ImplMetal_RenderDrawData(ImDrawData* draw_data,
-                                                   MTL::CommandBuffer* commandBuffer,
+                                                   MTL::CommandList* CommandList,
                                                    MTL::RenderCommandEncoder* commandEncoder);
 
 // Called by Init/NewFrame/Shutdown

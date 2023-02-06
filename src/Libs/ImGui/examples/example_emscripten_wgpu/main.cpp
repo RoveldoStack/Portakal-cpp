@@ -219,8 +219,8 @@ static void main_loop(void* window)
     ImGui_ImplWGPU_RenderDrawData(ImGui::GetDrawData(), pass);
     wgpuRenderPassEncoderEnd(pass);
 
-    WGPUCommandBufferDescriptor cmd_buffer_desc = {};
-    WGPUCommandBuffer cmd_buffer = wgpuCommandEncoderFinish(encoder, &cmd_buffer_desc);
+    WGPUCommandListDescriptor cmd_buffer_desc = {};
+    WGPUCommandList cmd_buffer = wgpuCommandEncoderFinish(encoder, &cmd_buffer_desc);
     WGPUQueue queue = wgpuDeviceGetQueue(wgpu_device);
     wgpuQueueSubmit(queue, 1, &cmd_buffer);
 }

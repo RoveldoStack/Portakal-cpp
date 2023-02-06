@@ -128,12 +128,12 @@
 #endif
     io.DisplayFramebufferScale = ImVec2(framebufferScale, framebufferScale);
 
-    id<MTLCommandBuffer> commandBuffer = [self.commandQueue commandBuffer];
+    id<MTLCommandList> CommandList = [self.commandQueue CommandList];
 
     MTLRenderPassDescriptor* renderPassDescriptor = view.currentRenderPassDescriptor;
     if (renderPassDescriptor == nil)
     {
-        [commandBuffer commit];
+        [CommandList commit];
 		return;
     }
 
@@ -191,15 +191,15 @@
     ImDrawData* draw_data = ImGui::GetDrawData();
 
     renderPassDescriptor.colorAttachments[0].clearColor = MTLClearColorMake(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
-    id <MTLRenderCommandEncoder> renderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:renderPassDescriptor];
+    id <MTLRenderCommandEncoder> renderEncoder = [CommandList renderCommandEncoderWithDescriptor:renderPassDescriptor];
     [renderEncoder pushDebugGroup:@"Dear ImGui rendering"];
-    ImGui_ImplMetal_RenderDrawData(draw_data, commandBuffer, renderEncoder);
+    ImGui_ImplMetal_RenderDrawData(draw_data, CommandList, renderEncoder);
     [renderEncoder popDebugGroup];
     [renderEncoder endEncoding];
 
 	// Present
-    [commandBuffer presentDrawable:view.currentDrawable];
-    [commandBuffer commit];
+    [CommandList presentDrawable:view.currentDrawable];
+    [CommandList commit];
 
     // Update and Render additional Platform Windows
     if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)

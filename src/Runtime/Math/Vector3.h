@@ -52,50 +52,52 @@ namespace Portakal
 			Z /= length;
 		}
 
+		FORCEINLINE Vector3 operator+(const Vector3 other)
+		{
+			return { X + other.X,Y + other.Y ,other.X + other.Z};
+		}
+		FORCEINLINE Vector3 operator-(const Vector3 other)
+		{
+			return { X - other.X,Y - other.Y ,other.X - other.Z };
+		}
+		FORCEINLINE Vector3 operator*(const Vector3 other)
+		{
+			return { X * other.X,Y * other.Y ,other.X * other.Z };
+		}
+		FORCEINLINE Vector3 operator/(const Vector3 other)
+		{
+			return { X / other.X,Y / other.Y ,other.X / other.Z };
+		}
+		FORCEINLINE Vector2 operator+(const TValue value)
+		{
+			return { X + value, Y + value,Z + value };
+		}
+		FORCEINLINE Vector2 operator-(const TValue value)
+		{
+			return { X - value, Y - value,Z - value };
+		}
+		FORCEINLINE Vector2 operator*(const TValue value)
+		{
+			return { X * value, Y * value,Z * value };
+		}
+		FORCEINLINE Vector2 operator/(const TValue value)
+		{
+			return { X / value, Y / value,Z / value };
+		}
+		FORCEINLINE bool operator==(const Vector3 other)
+		{
+			return X == other.X && Y == other.Y && Z == other.Z;
+		}
+		FORCEINLINE bool operator!=(const Vector3 other)
+		{
+			return Y != other.X || Y != other.Y || Z != other.Z;
+		}
+
 		TValue X;
 		TValue Y;
 		TValue Z;
 	};
 
-	template<typename TValue>
-	static Vector3<TValue> operator +(const Vector3<TValue>& a, const Vector3<TValue>& b)
-	{
-		return { a.X + b.X ,a.Y + b.Y,a.Z + b.Z };
-	}
-	template<typename TValue>
-	static Vector3<TValue> operator -(const Vector3<TValue>& a, const Vector3<TValue>& b)
-	{
-		return { a.X - b.X ,a.Y - b.Y ,a.Z - b.Z};
-	}
-	template<typename TValue>
-	static Vector3<TValue> operator *(const Vector3<TValue>& a, const Vector3<TValue>& b)
-	{
-		return { a.X * b.X ,a.Y * b.Y,a.Z*b.Z };
-	}
-	template<typename TValue>
-	static Vector3<TValue> operator /(const Vector3<TValue>& a, const Vector3<TValue>& b)
-	{
-		return { a.X / b.X ,a.Y / b.Y,a.Z/b.Z};
-	}
-	template<typename TValue>
-	static Vector3<TValue> operator *(const Vector3<TValue>& a, const TValue scalar)
-	{
-		return { a.x * scalar,a.Y * scalar,a.Z*scalar};
-	}
-	template<typename TValue>
-	static Vector3<TValue> operator /(const Vector3<TValue>& a, const TValue scalar)
-	{
-		return { a.x / scalar,a.Y / scalar,a.Z*scalar};
-	}
-	template<typename TValue>
-	static bool operator ==(const Vector3<TValue>& a, const Vector3<TValue>& b)
-	{
-		return a.X == b.X && a.Y == b.Y && a.Z == b.Z;
-	}
-	template<typename TValue>
-	static bool operator !=(const Vector3<TValue>& a, const Vector3<TValue>& b)
-	{
-		return a.X != b.X || a.Y != b.Y || a.Z != b.Z;
-	}
+	
 
 }

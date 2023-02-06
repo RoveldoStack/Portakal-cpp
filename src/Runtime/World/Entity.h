@@ -9,8 +9,8 @@ namespace Portakal
 	class PORTAKAL_API Entity : public TaggedObject
 	{
 	public:
-		FORCEINLINE Scene* GetOwnerScene() const noexcept { return _ownerScene; }
-		FORCEINLINE Array<Component*> GetComponents() const noexcept { return _components; }
+		FORCEINLINE Scene* GetOwnerScene() const noexcept { return mOwnerScene; }
+		FORCEINLINE Array<Component*> GetComponents() const noexcept { return mComponents; }
 
 		Component* CreateComponent(Type* pType)
 		{
@@ -22,7 +22,7 @@ namespace Portakal
 
 			pComponent->OnInitialize();
 
-			_components.Add(pComponent);
+			mComponents.Add(pComponent);
 			return nullptr;
 		}
 
@@ -35,7 +35,7 @@ namespace Portakal
 
 			pComponent->OnInitialize();
 
-			_components->Add(pComponent);
+			mComponents->Add(pComponent);
 
 			return pComponent;
 		}
@@ -45,9 +45,9 @@ namespace Portakal
 		{
 			Type* pType = TypeAccessor<TComponent>::GetAccessorType();
 
-			for (unsigned int i = 0; i < _components.GetCursor(); i++)
+			for (unsigned int i = 0; i < mComponents.GetCursor(); i++)
 			{
-				Component* pComponent = _components[i];
+				Component* pComponent = mComponents[i];
 				if (pComponent->GetType() == pType)
 					return (TComponent*)pComponent;
 			}
@@ -61,9 +61,9 @@ namespace Portakal
 		{
 			Type* pType = TypeAccessor<TComponent>::GetAccessorType();
 
-			for (unsigned int i = 0; i < _components.GetCursor(); i++)
+			for (unsigned int i = 0; i < mComponents.GetCursor(); i++)
 			{
-				Component* pComponent = _components[i];
+				Component* pComponent = mComponents[i];
 				if (pComponent->GetType() == pType)
 					return true;
 			}
@@ -73,9 +73,9 @@ namespace Portakal
 
 		bool HasComponent(const Type* pType)
 		{
-			for (unsigned int i = 0; i < _components.GetCursor(); i++)
+			for (unsigned int i = 0; i < mComponents.GetCursor(); i++)
 			{
-				Component* pComponent = _components[i];
+				Component* pComponent = mComponents[i];
 				if (pComponent->GetType() == pType)
 					return true;
 			}
@@ -86,9 +86,9 @@ namespace Portakal
 		bool DeleteComponent()
 		{
 			const Type* pType = TypeAccessor<TComponent>::GetAccessorType();
-			for (unsigned int i = 0; i < _components.GetCursor(); i++)
+			for (unsigned int i = 0; i < mComponents.GetCursor(); i++)
 			{
-				Component* pComponent = _components[i];
+				Component* pComponent = mComponents[i];
 
 				if (pComponent->GetType() == pType)
 				{
@@ -104,7 +104,7 @@ namespace Portakal
 
 		void DestroyEntity();
 	private:
-		Array<Component*> _components;
-		Scene* _ownerScene;
+		Array<Component*> mComponents;
+		Scene* mOwnerScene;
 	};
 }

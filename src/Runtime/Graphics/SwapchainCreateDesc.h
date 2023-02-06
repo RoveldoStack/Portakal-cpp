@@ -3,12 +3,12 @@
 
 namespace Portakal
 {
-	struct PORTAKAL_API SwapchainFramebufferCreateDesc
+	struct PORTAKAL_API SwapchainCreateDesc
 	{
 		TextureFormat ColorFormat;
 		TextureFormat DepthStencilFormat;
 		unsigned int Width;
 		unsigned int Height;
-		unsigned int BufferCount;
+		unsigned int ColorBufferCount;
 	};
 }

@@ -11,9 +11,12 @@ namespace Portakal
 		DX12ResourceTable(const GraphicsResourceTableCreateDesc& desc, DX12Device* pDevice);
 		virtual ~DX12ResourceTable() override;
 
-		FORCEINLINE ID3D12DescriptorHeap* GetDXDescriptorHeap() const noexcept { return _descriptorHeap.Get(); }
+		FORCEINLINE ID3D12DescriptorHeap* GetDXDescriptorHeap() const noexcept { return mDescriptorHeap.Get(); }
 
 	private:
-		DXPTR<ID3D12DescriptorHeap> _descriptorHeap;
+		DXPTR<ID3D12DescriptorHeap> mDescriptorHeap;
+
+		// Inherited via GraphicsResourceTable
+		virtual void OnDestroy() override;
 	};
 }

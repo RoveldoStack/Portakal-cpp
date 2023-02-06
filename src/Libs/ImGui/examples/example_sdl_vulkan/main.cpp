@@ -275,10 +275,10 @@ static void FrameRender(ImGui_ImplVulkanH_Window* wd, ImDrawData* draw_data)
     {
         err = vkResetCommandPool(g_Device, fd->CommandPool, 0);
         check_vk_result(err);
-        VkCommandBufferBeginInfo info = {};
+        VkCommandListBeginInfo info = {};
         info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
         info.flags |= VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
-        err = vkBeginCommandBuffer(fd->CommandBuffer, &info);
+        err = vkBeginCommandList(fd->CommandList, &info);
         check_vk_result(err);
     }
     {
@@ -290,14 +290,14 @@ static void FrameRender(ImGui_ImplVulkanH_Window* wd, ImDrawData* draw_data)
         info.renderArea.extent.height = wd->Height;
         info.clearValueCount = 1;
         info.pClearValues = &wd->ClearValue;
-        vkCmdBeginRenderPass(fd->CommandBuffer, &info, VK_SUBPASS_CONTENTS_INLINE);
+        vkCmdBeginRenderPass(fd->CommandList, &info, VK_SUBPASS_CONTENTS_INLINE);
     }
 
     // Record dear imgui primitives into command buffer
-    ImGui_ImplVulkan_RenderDrawData(draw_data, fd->CommandBuffer);
+    ImGui_ImplVulkan_RenderDrawData(draw_data, fd->CommandList);
 
     // Submit command buffer
-    vkCmdEndRenderPass(fd->CommandBuffer);
+    vkCmdEndRenderPass(fd->CommandList);
     {
         VkPipelineStageFlags wait_stage = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
         VkSubmitInfo info = {};
@@ -305,12 +305,12 @@ static void FrameRender(ImGui_ImplVulkanH_Window* wd, ImDrawData* draw_data)
         info.waitSemaphoreCount = 1;
         info.pWaitSemaphores = &image_acquired_semaphore;
         info.pWaitDstStageMask = &wait_stage;
-        info.commandBufferCount = 1;
-        info.pCommandBuffers = &fd->CommandBuffer;
+        info.CommandListCount = 1;
+        info.pCommandLists = &fd->CommandList;
         info.signalSemaphoreCount = 1;
         info.pSignalSemaphores = &render_complete_semaphore;
 
-        err = vkEndCommandBuffer(fd->CommandBuffer);
+        err = vkEndCommandList(fd->CommandList);
         check_vk_result(err);
         err = vkQueueSubmit(g_Queue, 1, &info, fd->Fence);
         check_vk_result(err);
@@ -435,23 +435,23 @@ int main(int, char**)
     {
         // Use any command queue
         VkCommandPool command_pool = wd->Frames[wd->FrameIndex].CommandPool;
-        VkCommandBuffer command_buffer = wd->Frames[wd->FrameIndex].CommandBuffer;
+        VkCommandList command_buffer = wd->Frames[wd->FrameIndex].CommandList;
 
         err = vkResetCommandPool(g_Device, command_pool, 0);
         check_vk_result(err);
-        VkCommandBufferBeginInfo begin_info = {};
+        VkCommandListBeginInfo begin_info = {};
         begin_info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
         begin_info.flags |= VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
-        err = vkBeginCommandBuffer(command_buffer, &begin_info);
+        err = vkBeginCommandList(command_buffer, &begin_info);
         check_vk_result(err);
 
         ImGui_ImplVulkan_CreateFontsTexture(command_buffer);
 
         VkSubmitInfo end_info = {};
         end_info.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-        end_info.commandBufferCount = 1;
-        end_info.pCommandBuffers = &command_buffer;
-        err = vkEndCommandBuffer(command_buffer);
+        end_info.CommandListCount = 1;
+        end_info.pCommandLists = &command_buffer;
+        err = vkEndCommandList(command_buffer);
         check_vk_result(err);
         err = vkQueueSubmit(g_Queue, 1, &end_info, VK_NULL_HANDLE);
         check_vk_result(err);

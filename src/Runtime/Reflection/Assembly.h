@@ -19,11 +19,11 @@ namespace Portakal
 		~Assembly();
 
 		FORCEINLINE Type* GetType(const String& name) const noexcept;
-		FORCEINLINE Array<Type*> GetTypes() const noexcept { return _types; }
+		FORCEINLINE Array<Type*> GetTypes() const noexcept { return mTypes; }
 
 		void RegisterType(Type* pType);
 	private:
-		Array<Type*> _types;
+		Array<Type*> mTypes;
 	};
 }
 

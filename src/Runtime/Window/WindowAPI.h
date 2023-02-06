@@ -10,12 +10,12 @@ namespace Portakal
 	private:
 		static WindowAPI* _api;
 	public:
-		WindowAPI(const Array<WindowCreateDesc>& descs);
+		WindowAPI(const Array<Window*>& windows);
 		~WindowAPI();
 
 		static Window* GetDefaultWindow();
 		static Array<Window*> GetWindows();
 	private:
-		Array<Window*> _windows;
+		Array<Window*> mWindows;
 	};
 }

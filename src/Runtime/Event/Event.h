@@ -14,19 +14,19 @@ namespace Portakal
 		void Invoke(TParameters... parameters)
 		{
 			for (unsigned int i = 0; i < mDelegates.GetCursor(); i++)
-				_delegates[i].Invoke(parameters...);
+				mDelegates[i].Invoke(parameters...);
 		}
 
 		void operator +=(Delegate<TReturn, TParameters...>& target)
 		{
-			_delegates.Add(target);
+			mDelegates.Add(target);
 		}
 
 		void operator -=(Delegate<TReturn, TParameters...>& target)
 		{
-			_delegates.Remove(target);
+			mDelegates.Remove(target);
 		}
 	private:
-		Array<Delegate<TReturn, TParameters...>> _delegates;
+		Array<Delegate<TReturn, TParameters...>> mDelegates;
 	};
 }

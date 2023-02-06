@@ -3,21 +3,8 @@
 
 namespace Portakal
 {
-    Framebuffer::Framebuffer(const FramebufferCreateDesc& desc)
+    Framebuffer::Framebuffer(const FramebufferCreateDesc& desc,const bool bSwapchain) : mSwapchain(bSwapchain)
     {
-        /*
-        * Setup color targets,width and height
-        */
-        for (unsigned int i = 0; i < desc.ColorTargets.GetCursor(); i++)
-        {
-            _colorTargets.Add(desc.ColorTargets[i].pTexture);
-        }
-      
-        _depthStencilTarget = desc.DepthStencilTarget.pTexture;
-
-        _width = desc.ColorTargets[0].pTexture->GetWidth();
-        _height = desc.ColorTargets[0].pTexture->GetHeight();
-
         /*
         * Create output desc
         */
@@ -29,14 +16,14 @@ namespace Portakal
 
             outputDesc.ColorAttachments.Add(attachmentDesc);
         }
+
         outputDesc.DepthStencilAttachment = { desc.DepthStencilTarget.pTexture == nullptr ? TextureFormat::None : desc.DepthStencilTarget.pTexture->GetTextureFormat() };
 
-        _outputDesc = outputDesc;
+        mOutputDesc = outputDesc;
+
+        mColorTargets = desc.ColorTargets;
+        mDepthStencilTarget = desc.DepthStencilTarget;
+
     }
-    Framebuffer::Framebuffer(const unsigned int width, const unsigned int height)
-    {
-        _depthStencilTarget = nullptr;
-        _width = width;
-        _height = height;
-    }
+
 }

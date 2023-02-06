@@ -166,7 +166,7 @@ namespace Portakal
 		StartRenderingCore();
 		ImGui::NewFrame();
 	}
-	void ImGuiRenderer::FinalizeRendering(CommandBuffer* pCmdBuffer)
+	void ImGuiRenderer::FinalizeRendering(CommandList* pCmdBuffer)
 	{
 		ImGui::Render();
 		FinalizeRenderingCore(pCmdBuffer);

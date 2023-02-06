@@ -2,5 +2,5 @@
 
 namespace Portakal
 {
-	float Time::_deltaTime = 0;
+	float Time::mDeltaTime = 0;
 }

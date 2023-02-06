@@ -50,14 +50,15 @@ namespace Portakal
 			&resourceDesc,
 			D3D12_RESOURCE_STATE_COPY_DEST,
 			desc.Usage & TextureUsage::RenderTarget || desc.Usage & TextureUsage::DepthStencil ? &clearValue : nullptr,
-			IID_PPV_ARGS(&_resource))), "DX12Texture", "Failed to create the texture");
+			IID_PPV_ARGS(&mResource))), "DX12Texture", "Failed to create the texture");
 	}
 	DX12Texture::DX12Texture(const DXPTR<ID3D12Resource>& swapchainRTVResource, const TextureCreateDesc& desc) : Texture(desc)
 	{
-		_resource = swapchainRTVResource;
+		mResource = swapchainRTVResource;
 	}
-	DX12Texture::~DX12Texture()
+	void DX12Texture::OnDestroy()
 	{
-		_resource.Reset();
+		mResource.Reset();
 	}
+
 }

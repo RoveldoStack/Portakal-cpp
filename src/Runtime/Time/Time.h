@@ -7,11 +7,11 @@ namespace Portakal
 	{
 		friend class Application;
 	public:
-		FORCEINLINE static float GetDeltaTime() { return _deltaTime; }
+		FORCEINLINE static float GetDeltaTime() { return mDeltaTime; }
 	private:
-		FORCEINLINE static void _SetDeltaTime(const float delta) { _deltaTime = delta; }
+		FORCEINLINE static void _SetDeltaTime(const float delta) { mDeltaTime = delta; }
 	private:
-		static float _deltaTime;
+		static float mDeltaTime;
 	public:
 		Time() = delete;
 		~Time() = delete;

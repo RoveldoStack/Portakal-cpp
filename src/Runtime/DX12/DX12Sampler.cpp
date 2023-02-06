@@ -11,4 +11,7 @@ namespace Portakal
     {
 
     }
+    void DX12Sampler::OnDestroy()
+    {
+    }
 }

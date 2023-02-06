@@ -19,15 +19,20 @@ namespace Portakal
 			*targetString,
 			D3DCOMPILE_ENABLE_STRICTNESS,
 			0,
-			&_shaderBlob,
-			&_errorBlob
+			&mShaderBlob,
+			&mErrorBlob
 		);
 
-		ASSERT(_errorBlob == nullptr, "DX12Shader", "Shader compilation failed with logs: %s", _errorBlob->GetBufferPointer());
+		ASSERT(mErrorBlob == nullptr, "DX12Shader", "Shader compilation failed with logs: %s", mErrorBlob->GetBufferPointer());
 	}
 	DX12Shader::~DX12Shader()
 	{
-		_shaderBlob.Reset();
-		_errorBlob.Reset();
+		mShaderBlob.Reset();
+		mErrorBlob.Reset();
+	}
+	void DX12Shader::OnDestroy()
+	{
+		mShaderBlob.Reset();
+		mErrorBlob.Reset();
 	}
 }

@@ -103,11 +103,11 @@ void ImGui_ImplMetal_NewFrame(MTL::RenderPassDescriptor* renderPassDescriptor)
 }
 
 void ImGui_ImplMetal_RenderDrawData(ImDrawData* draw_data,
-                                    MTL::CommandBuffer* commandBuffer,
+                                    MTL::CommandList* CommandList,
                                     MTL::RenderCommandEncoder* commandEncoder)
 {
     ImGui_ImplMetal_RenderDrawData(draw_data,
-                                   (__bridge id<MTLCommandBuffer>)(commandBuffer),
+                                   (__bridge id<MTLCommandList>)(CommandList),
                                    (__bridge id<MTLRenderCommandEncoder>)(commandEncoder));
 
 }
@@ -161,11 +161,11 @@ void ImGui_ImplMetal_NewFrame(MTLRenderPassDescriptor* renderPassDescriptor)
         ImGui_ImplMetal_CreateDeviceObjects(bd->SharedMetalContext.device);
 }
 
-static void ImGui_ImplMetal_SetupRenderState(ImDrawData* drawData, id<MTLCommandBuffer> commandBuffer,
+static void ImGui_ImplMetal_SetupRenderState(ImDrawData* drawData, id<MTLCommandList> CommandList,
     id<MTLRenderCommandEncoder> commandEncoder, id<MTLRenderPipelineState> renderPipelineState,
     MetalBuffer* vertexBuffer, size_t vertexBufferOffset)
 {
-    IM_UNUSED(commandBuffer);
+    IM_UNUSED(CommandList);
     ImGui_ImplMetal_Data* bd = ImGui_ImplMetal_GetBackendData();
     [commandEncoder setCullMode:MTLCullModeNone];
     [commandEncoder setDepthStencilState:bd->SharedMetalContext.depthStencilState];
@@ -206,7 +206,7 @@ static void ImGui_ImplMetal_SetupRenderState(ImDrawData* drawData, id<MTLCommand
 }
 
 // Metal Render function.
-void ImGui_ImplMetal_RenderDrawData(ImDrawData* drawData, id<MTLCommandBuffer> commandBuffer, id<MTLRenderCommandEncoder> commandEncoder)
+void ImGui_ImplMetal_RenderDrawData(ImDrawData* drawData, id<MTLCommandList> CommandList, id<MTLRenderCommandEncoder> commandEncoder)
 {
     ImGui_ImplMetal_Data* bd = ImGui_ImplMetal_GetBackendData();
     MetalContext* ctx = bd->SharedMetalContext;
@@ -223,7 +223,7 @@ void ImGui_ImplMetal_RenderDrawData(ImDrawData* drawData, id<MTLCommandBuffer> c
     if (renderPipelineState == nil)
     {
         // No luck; make a new render pipeline state
-        renderPipelineState = [ctx renderPipelineStateForFramebufferDescriptor:ctx.framebufferDescriptor device:commandBuffer.device];
+        renderPipelineState = [ctx renderPipelineStateForFramebufferDescriptor:ctx.framebufferDescriptor device:CommandList.device];
 
         // Cache render pipeline state for later reuse
         ctx.renderPipelineStateCache[ctx.framebufferDescriptor] = renderPipelineState;
@@ -231,10 +231,10 @@ void ImGui_ImplMetal_RenderDrawData(ImDrawData* drawData, id<MTLCommandBuffer> c
 
     size_t vertexBufferLength = (size_t)drawData->TotalVtxCount * sizeof(ImDrawVert);
     size_t indexBufferLength = (size_t)drawData->TotalIdxCount * sizeof(ImDrawIdx);
-    MetalBuffer* vertexBuffer = [ctx dequeueReusableBufferOfLength:vertexBufferLength device:commandBuffer.device];
-    MetalBuffer* indexBuffer = [ctx dequeueReusableBufferOfLength:indexBufferLength device:commandBuffer.device];
+    MetalBuffer* vertexBuffer = [ctx dequeueReusableBufferOfLength:vertexBufferLength device:CommandList.device];
+    MetalBuffer* indexBuffer = [ctx dequeueReusableBufferOfLength:indexBufferLength device:CommandList.device];
 
-    ImGui_ImplMetal_SetupRenderState(drawData, commandBuffer, commandEncoder, renderPipelineState, vertexBuffer, 0);
+    ImGui_ImplMetal_SetupRenderState(drawData, CommandList, commandEncoder, renderPipelineState, vertexBuffer, 0);
 
     // Will project scissor/clipping rectangles into framebuffer space
     ImVec2 clip_off = drawData->DisplayPos;         // (0,0) unless using multi-viewports
@@ -258,7 +258,7 @@ void ImGui_ImplMetal_RenderDrawData(ImDrawData* drawData, id<MTLCommandBuffer> c
                 // User callback, registered via ImDrawList::AddCallback()
                 // (ImDrawCallback_ResetRenderState is a special callback value used by the user to request the renderer to reset render state.)
                 if (pcmd->UserCallback == ImDrawCallback_ResetRenderState)
-                    ImGui_ImplMetal_SetupRenderState(drawData, commandBuffer, commandEncoder, renderPipelineState, vertexBuffer, vertexBufferOffset);
+                    ImGui_ImplMetal_SetupRenderState(drawData, CommandList, commandEncoder, renderPipelineState, vertexBuffer, vertexBufferOffset);
                 else
                     pcmd->UserCallback(cmd_list, pcmd);
             }
@@ -305,7 +305,7 @@ void ImGui_ImplMetal_RenderDrawData(ImDrawData* drawData, id<MTLCommandBuffer> c
         indexBufferOffset += (size_t)cmd_list->IdxBuffer.Size * sizeof(ImDrawIdx);
     }
 
-    [commandBuffer addCompletedHandler:^(id<MTLCommandBuffer>)
+    [CommandList addCompletedHandler:^(id<MTLCommandList>)
     {
         dispatch_async(dispatch_get_main_queue(), ^{
             ImGui_ImplMetal_Data* bd = ImGui_ImplMetal_GetBackendData();
@@ -486,13 +486,13 @@ static void ImGui_ImplMetal_RenderWindow(ImGuiViewport* viewport, void*)
     if ((viewport->Flags & ImGuiViewportFlags_NoRendererClear) == 0)
         renderPassDescriptor.colorAttachments[0].loadAction = MTLLoadActionClear;
 
-    id <MTLCommandBuffer> commandBuffer = [data->CommandQueue commandBuffer];
-    id <MTLRenderCommandEncoder> renderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:renderPassDescriptor];
-    ImGui_ImplMetal_RenderDrawData(viewport->DrawData, commandBuffer, renderEncoder);
+    id <MTLCommandList> CommandList = [data->CommandQueue CommandList];
+    id <MTLRenderCommandEncoder> renderEncoder = [CommandList renderCommandEncoderWithDescriptor:renderPassDescriptor];
+    ImGui_ImplMetal_RenderDrawData(viewport->DrawData, CommandList, renderEncoder);
     [renderEncoder endEncoding];
 
-    [commandBuffer presentDrawable:drawable];
-    [commandBuffer commit];
+    [CommandList presentDrawable:drawable];
+    [CommandList commit];
 }
 
 static void ImGui_ImplMetal_InitPlatformInterface()

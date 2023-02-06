@@ -10,7 +10,7 @@ namespace Portakal
 	{
 
 	}
-	Field::Field(Type* pType, const String& name, const unsigned int offset) : _type(pType), _name(name), _offset(offset)
+	Field::Field(Type* pType, const String& name, const unsigned int offset) : mType(pType), mName(name), mOffset(offset)
 	{
 
 	}

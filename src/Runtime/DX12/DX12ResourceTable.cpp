@@ -49,7 +49,7 @@ namespace Portakal
 			descriptorHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 			descriptorHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 
-			pDevice->GetDXDevice()->CreateDescriptorHeap(&descriptorHeapDesc, IID_PPV_ARGS(&_descriptorHeap));
+			pDevice->GetDXDevice()->CreateDescriptorHeap(&descriptorHeapDesc, IID_PPV_ARGS(&mDescriptorHeap));
 		}
 		if (samplers.GetCursor() > 0)
 		{
@@ -58,14 +58,14 @@ namespace Portakal
 			descriptorHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 			descriptorHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER;
 
-			pDevice->GetDXDevice()->CreateDescriptorHeap(&descriptorHeapDesc, IID_PPV_ARGS(&_descriptorHeap));
+			pDevice->GetDXDevice()->CreateDescriptorHeap(&descriptorHeapDesc, IID_PPV_ARGS(&mDescriptorHeap));
 		}
 
 		/*
 		* Create resource views for cbv_srv
 		*/
 		{
-			D3D12_CPU_DESCRIPTOR_HANDLE cpuHandle = _descriptorHeap->GetCPUDescriptorHandleForHeapStart();
+			D3D12_CPU_DESCRIPTOR_HANDLE cpuHandle = mDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
 			const unsigned int cpuHandleIncrementSize = pDevice->GetDXDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 
 			for (unsigned int i = 0; i < cbvsrvs.GetCursor(); i++)
@@ -111,7 +111,7 @@ namespace Portakal
 		* Create samplers
 		*/
 		{
-			D3D12_CPU_DESCRIPTOR_HANDLE cpuHandle = _descriptorHeap->GetCPUDescriptorHandleForHeapStart();
+			D3D12_CPU_DESCRIPTOR_HANDLE cpuHandle = mDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
 			const unsigned int cpuHandleIncrementSize = pDevice->GetDXDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER);
 			for (unsigned int i = 0; i < samplers.GetCursor(); i++)
 			{
@@ -141,6 +141,9 @@ namespace Portakal
 	}
 	DX12ResourceTable::~DX12ResourceTable()
 	{
-		_descriptorHeap.Reset();
+		mDescriptorHeap.Reset();
+	}
+	void DX12ResourceTable::OnDestroy()
+	{
 	}
 }

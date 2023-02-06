@@ -2,7 +2,7 @@
 
 namespace Portakal
 {
-	class CommandBuffer;
+	class CommandList;
 	class GraphicsDevice;
 
 	class PORTAKAL_API ImGuiRendererModule : public ApplicationModule
@@ -23,7 +23,7 @@ namespace Portakal
 		virtual void PostValidate() override;
 		virtual void OnEvent(WindowEvent* pEvent) override;
 	private:
-		CommandBuffer* _cmdBuffer;
+		CommandList* _cmdBuffer;
 		GraphicsDevice* _device;
 
 	};

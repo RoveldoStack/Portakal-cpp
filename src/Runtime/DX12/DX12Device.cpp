@@ -25,18 +25,25 @@ namespace Portakal
 
 		return pTexture;
 	}
+	Framebuffer* DX12Device::CreateSwapchainFramebuffer(const FramebufferCreateDesc& desc, const DXPTR<ID3D12DescriptorHeap> colorHeap, const DXPTR<ID3D12DescriptorHeap> depthStencilHeap)
+	{
+		DX12Framebuffer* pFramebuffer = new DX12Framebuffer(desc, colorHeap, depthStencilHeap);
+
+		RegisterChildObject(pFramebuffer);
+
+		return pFramebuffer;
+	}
 	GraphicsBackend DX12Device::GetBackend() const noexcept
 	{
 		return GraphicsBackend::Directx12;
 	}
 	void DX12Device::SwapbuffersCore()
 	{
-		const DX12SwapchainFramebuffer* pFramebuffer = (const DX12SwapchainFramebuffer*)GetSwapchainFramebuffer();
-		ASSERT(SUCCEEDED(pFramebuffer->GetDXSwapchain()->Present(1, 0)), "DX12Device", "Failed to swap the swapchain buffers");
+		GetSwapchain()->Swapbuffers();
 	}
-	CommandBuffer* DX12Device::CreateCommandBufferCore(const CommandBufferCreateDesc& desc)
+	CommandList* DX12Device::CreateGraphicsCommandListCore(const CommandListCreateDesc& desc)
 	{
-		return new DX12CommandBuffer(desc,this);
+		return new DX12GraphicsCommandList(desc,this);
 	}
 	GraphicsBuffer* DX12Device::CreateBufferCore(const GraphicsBufferCreateDesc& desc)
 	{
@@ -58,13 +65,13 @@ namespace Portakal
 	{
 		return new DX12Framebuffer(desc,this);
 	}
-	Framebuffer* DX12Device::CreateSwapchainFramebufferCore(const SwapchainFramebufferCreateDesc& desc)
+	Swapchain* DX12Device::CreateSwapchainCore(const SwapchainCreateDesc& desc)
 	{
-		return new DX12SwapchainFramebuffer(desc, this);
+		return new DX12Swapchain(desc, this);
 	}
 	Pipeline* DX12Device::CreateGraphicsPipelineCore(const GraphicsPipelineCreateDesc& desc)
 	{
-		return new DX12Pipeline(desc,this);
+		return new DX12GraphicsPipeline(desc,this);
 	}
 	Pipeline* DX12Device::CreateComputePipelineCore(const ComputePipelineCreateDesc& desc)
 	{
@@ -79,33 +86,67 @@ namespace Portakal
 	}
 	void DX12Device::WaitForFinishCore()
 	{
-		_cmdQueue->Signal(_idleFence.Get(), _idleFenceValue + 1);
+		/*
+		* Wait for compute command queue
+		*/
+		mComputeCmdQueue->Signal(mIdleFence.Get(), mIdleFenceValue + 1);
 
-		_idleFence->SetEventOnCompletion(_idleFenceValue + 1, _idleFenceEvent);
+		mIdleFence->SetEventOnCompletion(mIdleFenceValue + 1, mIdleFenceEvent);
 
-		WaitForSingleObject(_idleFenceEvent, INFINITE);
+		WaitForSingleObject(mIdleFenceEvent, INFINITE);
 
-		_idleFenceValue++;
+		mIdleFenceValue++;
 
-		_cmdAllocator->Reset();
+		/*
+		* Wait for graphics command queue
+		*/
+		mGraphicsCmdQueue->Signal(mIdleFence.Get(), mIdleFenceValue + 1);
+
+		mIdleFence->SetEventOnCompletion(mIdleFenceValue + 1, mIdleFenceEvent);
+
+		WaitForSingleObject(mIdleFenceEvent, INFINITE);
+
+		mIdleFenceValue++;
+
+		/*
+		* Reset allocator
+		*/
+		mGraphicsCmdAllocator->Reset();
+		mComputeCmdAllocator->Reset();
+		
 	}
-	void DX12Device::SubmitCommandsCore(const Array<CommandBuffer*>& cmdBuffers)
+	void DX12Device::SubmitCommandsCore(const Array<CommandList*>& cmdBuffers)
 	{
-		Array<ID3D12CommandList*> cmdLists;
+		Array<ID3D12CommandList*> graphicsList;
+		Array<ID3D12CommandList*> computeList;
 		for (unsigned int i = 0; i < cmdBuffers.GetCursor(); i++)
 		{
-			const DX12CommandBuffer* pCmdBuffer = (const DX12CommandBuffer*)cmdBuffers[i];
-
-			if (pCmdBuffer == nullptr)
-				return;
-
-			cmdLists.Add(pCmdBuffer->GetDXCmdList());
+			const CommandList* pCmdList = cmdBuffers[i];
+			
+			switch (pCmdList->GetCommandQueueType())
+			{
+				case Portakal::CommandQueueType::Graphics:
+					graphicsList.Add(((DX12GraphicsCommandList*)pCmdList)->GetDXCmdList());
+					break;
+				case Portakal::CommandQueueType::Compute:
+					break;
+				case Portakal::CommandQueueType::Present:
+					break;
+				case Portakal::CommandQueueType::Copy:
+					break;
+				default:
+					break;
+			}
 		}
 
-		if (cmdLists.GetCursor() == 0)
-			return;
-
-		_cmdQueue->ExecuteCommandLists(cmdLists.GetCursor(), cmdLists.GetData());
+		if (graphicsList.GetCursor() > 0)
+		{
+			mGraphicsCmdQueue->ExecuteCommandLists(graphicsList.GetCursor(), graphicsList.GetData());
+		}
+		if (computeList.GetCursor() > 0)
+		{
+			mComputeCmdQueue->ExecuteCommandLists(computeList.GetCursor(), computeList.GetData());
+		}
 	}
 	void DX12Device::CreateDevice()
 	{
@@ -114,15 +155,15 @@ namespace Portakal
 		*/
 		unsigned int factoryFlags = 0;
 #ifdef PORTAKAL_DEBUG
-		if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&_debugLayer))))
+		if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&mDebugLayer))))
 		{
-			_debugLayer->EnableDebugLayer();
+			mDebugLayer->EnableDebugLayer();
 
 			factoryFlags |= DXGI_CREATE_FACTORY_DEBUG;
 		}
 #endif
 
-		ASSERT(SUCCEEDED(CreateDXGIFactory2(factoryFlags, IID_PPV_ARGS(_factory.GetAddressOf()))), "DX12Device", "Failed to create a dxgi factory");
+		ASSERT(SUCCEEDED(CreateDXGIFactory2(factoryFlags, IID_PPV_ARGS(mFactory.GetAddressOf()))), "DX12Device", "Failed to create a dxgi factory");
 
 
 		/*
@@ -132,7 +173,7 @@ namespace Portakal
 		unsigned int adapterIndex = 0;
 		bool bValidAdapterFound = false;
 
-		while (_factory->EnumAdapters1(adapterIndex, &pAdapter) != DXGI_ERROR_NOT_FOUND)
+		while (mFactory->EnumAdapters1(adapterIndex, &pAdapter) != DXGI_ERROR_NOT_FOUND)
 		{
 			DXGI_ADAPTER_DESC1 adapterDesc = {};
 			pAdapter->GetDesc1(&adapterDesc);
@@ -143,7 +184,7 @@ namespace Portakal
 				continue;
 			}
 
-			if (SUCCEEDED(D3D12CreateDevice(pAdapter, D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(_device.GetAddressOf()))))
+			if (SUCCEEDED(D3D12CreateDevice(pAdapter, D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(mDevice.GetAddressOf()))))
 			{
 				bValidAdapterFound = true;
 				break;
@@ -158,29 +199,45 @@ namespace Portakal
 		ASSERT(bValidAdapterFound, "DX12Device", "A valid gpu couldnt be found");
 
 		/*
-		* Create command allocator
+		* Create graphics command allocator
 		*/
-		ASSERT(SUCCEEDED(_device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(_cmdAllocator.GetAddressOf()))), "DX12Device", "Failed to create a command allocator");
+		ASSERT(SUCCEEDED(mDevice->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(mGraphicsCmdAllocator.GetAddressOf()))), "DX12Device", "Failed to create a graphics command allocator");
 
 		/*
-		* Create command queue
+		* Create graphics command queue
 		*/
-		D3D12_COMMAND_QUEUE_DESC cmdQueueDesc = {};
-		cmdQueueDesc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
-		cmdQueueDesc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
-		cmdQueueDesc.Priority = D3D12_COMMAND_QUEUE_PRIORITY_NORMAL;
-		cmdQueueDesc.NodeMask = 0;
+		D3D12_COMMAND_QUEUE_DESC graphicsCmdQueuDesc = {};
+		graphicsCmdQueuDesc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
+		graphicsCmdQueuDesc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
+		graphicsCmdQueuDesc.Priority = D3D12_COMMAND_QUEUE_PRIORITY_NORMAL;
+		graphicsCmdQueuDesc.NodeMask = 0;
 
-		ASSERT(SUCCEEDED(_device->CreateCommandQueue(&cmdQueueDesc, IID_PPV_ARGS(_cmdQueue.GetAddressOf()))), "DX12Device", "Failed to create a command queue");
+		ASSERT(SUCCEEDED(mDevice->CreateCommandQueue(&graphicsCmdQueuDesc, IID_PPV_ARGS(mGraphicsCmdQueue.GetAddressOf()))), "DX12Device", "Failed to create a graphics command queue");
+
+		/*
+		* Create compute command allocator
+		*/
+		ASSERT(SUCCEEDED(mDevice->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_COMPUTE, IID_PPV_ARGS(mComputeCmdAllocator.GetAddressOf()))), "DX12Device", "Failed to create a command allocator");
+
+		/*
+		* Create compute command queue
+		*/
+		D3D12_COMMAND_QUEUE_DESC computeCmdQueueDesc = {};
+		computeCmdQueueDesc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
+		computeCmdQueueDesc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
+		computeCmdQueueDesc.Priority = D3D12_COMMAND_QUEUE_PRIORITY_NORMAL;
+		computeCmdQueueDesc.NodeMask = 0;
+
+		ASSERT(SUCCEEDED(mDevice->CreateCommandQueue(&computeCmdQueueDesc, IID_PPV_ARGS(mComputeCmdQueue.GetAddressOf()))), "DX12Device", "Failed to create a command queue");
 
 		/*
 		* Create fence
 		*/
-		ASSERT(SUCCEEDED(_device->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(_idleFence.GetAddressOf()))), "DX12Device", "Failed to create the idle fence!");
+		ASSERT(SUCCEEDED(mDevice->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(mIdleFence.GetAddressOf()))), "DX12Device", "Failed to create the idle fence!");
 
-		_idleFenceValue = 0;
+		mIdleFenceValue = 0;
 
-		_idleFenceEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
-		ASSERT(_idleFenceEvent != nullptr, "DX12Device", "Failed to create the fence event");
+		mIdleFenceEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
+		ASSERT(mIdleFenceEvent != nullptr, "DX12Device", "Failed to create the fence event");
 	}
 }

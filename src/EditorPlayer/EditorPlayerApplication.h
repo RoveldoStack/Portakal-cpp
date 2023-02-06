@@ -4,12 +4,16 @@ namespace Portakal
 {
 	class Window;
 	class GraphicsDevice;
-	class CommandBuffer;
+	class CommandList;
 
 	class PORTAKAL_API EditorPlayerApplication : public Application
 	{
 	public:
-		virtual bool Tick() override;
+		
+	private:
+		virtual void Tick() override;
+		virtual void PreTick() override;
+		virtual void PostTick() override;
 		virtual void Initialize() override;
 	private:
 		Array<ApplicationModule*> _tickableModules;
@@ -17,6 +21,6 @@ namespace Portakal
 		Array<ApplicationModule*> _validationModules;
 		GraphicsDevice* _defaultDevice;
 		Window* _defaultWindow;
-		CommandBuffer* _cmdBuffer;
+		CommandList* _cmdBuffer;
 	};
 }

@@ -12,13 +12,13 @@ namespace Portakal
 		FORCEINLINE virtual WindowEventType GetEventType() const noexcept = 0;
 		FORCEINLINE virtual String GetEventMessage() const noexcept = 0;
 
-		FORCEINLINE bool IsHandled() const noexcept { return _handled; }
+		FORCEINLINE bool IsHandled() const noexcept { return mHandled; }
 
-		void MarkHandled() { _handled = true; }
+		void MarkHandled() { mHandled = true; }
 
 	protected:
-		WindowEvent() : _handled(false) {}
+		WindowEvent() : mHandled(false) {}
 	private:
-		bool _handled;
+		bool mHandled;
 	};
 }

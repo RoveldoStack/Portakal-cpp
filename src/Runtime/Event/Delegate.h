@@ -13,7 +13,7 @@ namespace Portakal
 	class Delegate final
 	{
 	public:
-		Delegate(const std::function<TReturn(TParameters...)>& function) : _functionPtr(function), _empty(false) {}
+		Delegate(const std::function<TReturn(TParameters...)>& function) : mFunctionPtr(function), mEmpty(false) {}
 		Delegate() : mEmpty(true) {}
 		~Delegate() = default;
 
@@ -30,7 +30,7 @@ namespace Portakal
 		/// <returns></returns>
 		TReturn Invoke(TParameters... parameters)
 		{
-			return _functionPtr(parameters...);
+			return mFunctionPtr(parameters...);
 		}
 	private:
 		/// <summary>
@@ -39,7 +39,7 @@ namespace Portakal
 		/// <returns></returns>
 		std::function<TReturn(TParameters...)> GetFunctionPtr() const
 		{
-			return _functionPtr;
+			return mFunctionPtr;
 		}
 
 		/// <summary>
@@ -54,8 +54,8 @@ namespace Portakal
 			return (size_t)*fnPointer;
 		}
 	private:
-		std::function<TReturn(TParameters...)> _functionPtr;
-		bool _empty;
+		std::function<TReturn(TParameters...)> mFunctionPtr;
+		bool mEmpty;
 	};
 
 	template<typename TReturn, typename...TParameters>

@@ -10,15 +10,15 @@ namespace Portakal
 
 		friend class Scene;
 	public:
-		FORCEINLINE Scene* GetOwnerScene() const noexcept { return _ownerScene; }
+		FORCEINLINE Scene* GetOwnerScene() const noexcept { return mOwnerScene; }
 
 		virtual void OnInitialize() = 0;
 		virtual void OnExecute() = 0;
 		virtual void OnFinalize() = 0;
 	private:
-		void _SetOnwerScene(Scene* pScene) { _ownerScene = pScene; }
+		void _SetOnwerScene(Scene* pScene) { mOwnerScene = pScene; }
 	private:
-		Scene* _ownerScene;
+		Scene* mOwnerScene;
 	};
 
 	START_GENERATE_TYPE(SceneAspect);

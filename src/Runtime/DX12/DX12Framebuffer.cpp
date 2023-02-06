@@ -7,7 +7,7 @@
 
 namespace Portakal
 {
-    DX12Framebuffer::DX12Framebuffer(const FramebufferCreateDesc& desc, DX12Device* pDevice) : Framebuffer(desc)
+    DX12Framebuffer::DX12Framebuffer(const FramebufferCreateDesc& desc, DX12Device* pDevice) : Framebuffer(desc,false)
     {
         ID3D12Device* pDXDevice = (ID3D12Device*)pDevice->GetDXDevice();
 
@@ -20,12 +20,12 @@ namespace Portakal
         colorDescriptorDesc.NodeMask = 0;
         colorDescriptorDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
 
-        ASSERT(SUCCEEDED(pDXDevice->CreateDescriptorHeap(&colorDescriptorDesc, IID_PPV_ARGS(_colorDescriptorHeap.GetAddressOf()))), "DX12Framebuffer", "Failed to create color attachments descriptor heap");
+        ASSERT(SUCCEEDED(pDXDevice->CreateDescriptorHeap(&colorDescriptorDesc, IID_PPV_ARGS(mColorHeap.GetAddressOf()))), "DX12Framebuffer", "Failed to create color attachments descriptor heap");
 
         /*
         * Create color render target
         */
-        D3D12_CPU_DESCRIPTOR_HANDLE colorCpuHandle = _colorDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
+        D3D12_CPU_DESCRIPTOR_HANDLE colorCpuHandle = mColorHeap->GetCPUDescriptorHandleForHeapStart();
         const unsigned int rtvIncrementSize = pDXDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
 
         for (unsigned int i = 0; i < desc.ColorTargets.GetCursor(); i++)
@@ -57,7 +57,7 @@ namespace Portakal
             depthStencilDescriptorHeapDesc.NodeMask = 0;
             depthStencilDescriptorHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
 
-            ASSERT(SUCCEEDED(pDXDevice->CreateDescriptorHeap(&depthStencilDescriptorHeapDesc, IID_PPV_ARGS(&_depthStencilDescriptorHeap))), "DX12Framebuffer", "Failed to create depth stencil descriptor heap");
+            ASSERT(SUCCEEDED(pDXDevice->CreateDescriptorHeap(&depthStencilDescriptorHeapDesc, IID_PPV_ARGS(&mDepthStencilHeap))), "DX12Framebuffer", "Failed to create depth stencil descriptor heap");
 
             D3D12_DEPTH_STENCIL_VIEW_DESC depthStencilViewDesc = {};
             depthStencilViewDesc.Format = DXGIUtils::GetTextureFormat(pTexture->GetTextureFormat());
@@ -65,10 +65,21 @@ namespace Portakal
             depthStencilViewDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
             depthStencilViewDesc.Texture2D.MipSlice = 1;
 
-            pDXDevice->CreateDepthStencilView(pTexture->GetDXTexture(), nullptr, _depthStencilDescriptorHeap->GetCPUDescriptorHandleForHeapStart());
+            pDXDevice->CreateDepthStencilView(pTexture->GetDXTexture(), nullptr, mDepthStencilHeap->GetCPUDescriptorHandleForHeapStart());
         }
+    }
+    DX12Framebuffer::DX12Framebuffer(const FramebufferCreateDesc& desc, const DXPTR<ID3D12DescriptorHeap> colorHeap, const DXPTR<ID3D12DescriptorHeap> depthStencilHeap) : Framebuffer(desc,true)
+    {
+        mColorHeap = colorHeap;
+        mDepthStencilHeap = depthStencilHeap;
     }
     DX12Framebuffer::~DX12Framebuffer()
     {
+
+    }
+    void DX12Framebuffer::OnDestroy()
+    {
+        mColorHeap.Reset();
+        mDepthStencilHeap.Reset();
     }
 }

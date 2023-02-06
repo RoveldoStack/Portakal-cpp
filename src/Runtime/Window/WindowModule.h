@@ -10,12 +10,13 @@ namespace Portakal
 	};
 
 	class WindowAPI;
+	class Window;
 	class PORTAKAL_API WindowModule : public ApplicationModule
 	{
 		GENERATE_CLASS(WindowModule);
 		GENERATE_APPLICATION_MODULE(false, false, false);
 	public:
-		WindowModule(const WindowModuleParams params) : _params(params) {}
+		WindowModule(const WindowModuleParams params) : mParams(params) {}
 		WindowModule() = default;
 		~WindowModule() = default;
 
@@ -30,8 +31,9 @@ namespace Portakal
 		virtual void OnEvent(WindowEvent* pEvent) override;
 
 	private:
-		const WindowModuleParams _params;
-		WindowAPI* _api;
+		const WindowModuleParams mParams;
+		Array<Window*> mWindows;
+		WindowAPI* mAPI;
 
 		
 	};

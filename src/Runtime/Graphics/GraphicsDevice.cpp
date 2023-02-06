@@ -5,7 +5,7 @@
 #include <Runtime/Graphics/GraphicsResourceTableCreateDesc.h>
 #include <Runtime/Assert/Assert.h>
 #include <Runtime/Window/WindowChildDeviceAdapter.h>
-#include <Runtime/Graphics/SwapchainFramebufferCreateDesc.h>
+#include <Runtime/Graphics/Swapchain.h>
 #include <Runtime/Window/Window.h>
 #include <Runtime/DX12/DX12Device.h>
 namespace Portakal
@@ -49,14 +49,14 @@ namespace Portakal
 		/*
 		* Create swapchain
 		*/
-		SwapchainFramebufferCreateDesc swapchainDesc = {};
-		swapchainDesc.BufferCount = desc.BufferCount;
+		SwapchainCreateDesc swapchainDesc = {};
+		swapchainDesc.ColorBufferCount = desc.BufferCount;
 		swapchainDesc.ColorFormat = desc.ColorFormat;
 		swapchainDesc.DepthStencilFormat = desc.DepthStencilFormat;
 		swapchainDesc.Width = desc.pOwnerWindow->GetWidth();
 		swapchainDesc.Height = desc.pOwnerWindow->GetHeight();
 
-		pDevice->CreateSwapchainFramebuffer(swapchainDesc);
+		pDevice->CreateSwapchain(swapchainDesc);
 
 		return pDevice;
 	}
@@ -64,13 +64,13 @@ namespace Portakal
 	{
 		_ownerWindow = pOwnerWindow;
 		_standalone = false;
-		_swapchainFramebuffer = nullptr;
+		mSwapchain = nullptr;
 	}
 	GraphicsDevice::GraphicsDevice()
 	{
 		_ownerWindow = nullptr;
 		_standalone = true;
-		_swapchainFramebuffer = nullptr;
+		mSwapchain = nullptr;
 	}
 	
 	GraphicsDevice::~GraphicsDevice()
@@ -89,9 +89,9 @@ namespace Portakal
 
 		SwapbuffersCore();
 	}
-	CommandBuffer* GraphicsDevice::CreateCommandBuffer(const CommandBufferCreateDesc& desc)
+	CommandList* GraphicsDevice::CreateGraphicsCommandList(const CommandListCreateDesc& desc)
 	{
-		CommandBuffer* pBuffer = CreateCommandBufferCore(desc);
+		CommandList* pBuffer = CreateGraphicsCommandListCore(desc);
 
 		RegisterChildObject(pBuffer);
 
@@ -182,14 +182,14 @@ namespace Portakal
 	{
 		WaitForFinishCore();
 	}
-	void GraphicsDevice::SubmitCommands(CommandBuffer* pCmdBuffer)
+	void GraphicsDevice::SubmitCommands(CommandList* pCmdBuffer)
 	{
 		if (pCmdBuffer == nullptr)
 			return;
 
 		SubmitCommandsCore({pCmdBuffer});
 	}
-	void GraphicsDevice::SubmitCommands(const Array<CommandBuffer*>& cmdBuffers)
+	void GraphicsDevice::SubmitCommands(const Array<CommandList*>& cmdBuffers)
 	{
 		SubmitCommandsCore(cmdBuffers);
 	}
@@ -210,12 +210,12 @@ namespace Portakal
 
 		_childObjects.Add(pObject);
 	}
-	void GraphicsDevice::CreateSwapchainFramebuffer(const SwapchainFramebufferCreateDesc& desc)
+	void GraphicsDevice::CreateSwapchain(const SwapchainCreateDesc& desc)
 	{
-		Framebuffer* pFramebuffer = CreateSwapchainFramebufferCore(desc);
+		Swapchain* pSwapchain = CreateSwapchainCore(desc);
 
-		RegisterChildObject(pFramebuffer);
+		RegisterChildObject(pSwapchain);
 
-		_swapchainFramebuffer = pFramebuffer;
+		mSwapchain = pSwapchain;
 	}
 }

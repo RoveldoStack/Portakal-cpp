@@ -6,7 +6,7 @@
 namespace Portakal
 {
 	class GraphicsDevice;
-	class CommandBuffer;
+	class CommandList;
 	class WindowEvent;
 
 	class WindowResizedEvent;
@@ -27,7 +27,7 @@ namespace Portakal
 		virtual ~ImGuiRenderer();
 
 		void StartRendering(const float deltaTime);
-		void FinalizeRendering(CommandBuffer* pCmdBuffer);
+		void FinalizeRendering(CommandList* pCmdBuffer);
 		void OnEvent(const WindowEvent* pEvent);
 
 		FORCEINLINE GraphicsBackend GetTargetBackend() const noexcept;
@@ -35,7 +35,7 @@ namespace Portakal
 
 	protected:
 		virtual void StartRenderingCore() = 0;
-		virtual void FinalizeRenderingCore(CommandBuffer* pCmdBuffer) = 0;
+		virtual void FinalizeRenderingCore(CommandList* pCmdBuffer) = 0;
 	private:
 		void OnWindowResized(const WindowResizedEvent* pEvent);
 		void OnMouseMoved(const MouseMovedEvent* pEvent);

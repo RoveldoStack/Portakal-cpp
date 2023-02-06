@@ -30,8 +30,8 @@ namespace Portakal
 
 		void RegisterTargetScene(Scene* pScene, const bool bMarkPrimal);
 	private:
-		Array<Scene*> _scenes;
-		Scene* _primalScene;
+		Array<Scene*> mScenes;
+		Scene* mPrimalScene;
 
 	};
 }

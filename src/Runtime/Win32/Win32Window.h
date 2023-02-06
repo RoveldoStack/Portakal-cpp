@@ -12,8 +12,8 @@ namespace Portakal
 		Win32Window(const WindowCreateDesc& desc);
 		virtual ~Win32Window() override;
 
-		FORCEINLINE HWND GetWin32WindowHandle() const noexcept { return _windowHandle; }
-		FORCEINLINE HDC GetWin32WindowDeviceContext() const noexcept { return _windowDeviceContext;; }
+		FORCEINLINE HWND GetWin32WindowHandle() const noexcept { return mWindowHandle; }
+		FORCEINLINE HDC GetWin32WindowDeviceContext() const noexcept { return mDeviceContext;; }
 	private:
 		virtual void ShowCore() override;
 		virtual void HideCore() override;
@@ -22,8 +22,8 @@ namespace Portakal
 		virtual void SetPositionCore(const unsigned int x, const unsigned int y) override;
 		virtual void PollEventsCore() override;
 	private:
-		HWND _windowHandle;
-		HDC _windowDeviceContext;
+		HWND mWindowHandle;
+		HDC mDeviceContext;
 
 	};
 }

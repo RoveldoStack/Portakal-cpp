@@ -11,14 +11,17 @@ namespace Portakal
 		DX12Buffer(const GraphicsBufferCreateDesc& desc, DX12Device* pDevice);
 		virtual ~DX12Buffer() override final;
 
-		FORCEINLINE ID3D12Resource* GetDXResource() const noexcept { return _resource.Get(); }
-		FORCEINLINE D3D12_VERTEX_BUFFER_VIEW GetDXVertexBufferView() const noexcept { return _vertexBufferView; }
-		FORCEINLINE D3D12_INDEX_BUFFER_VIEW GetDXIndexBufferView() const noexcept { return _indexBufferView; }
-		FORCEINLINE D3D12_CONSTANT_BUFFER_VIEW_DESC GetDXConstantBufferView() const noexcept { return _constantBufferView; }
+		FORCEINLINE ID3D12Resource* GetDXResource() const noexcept { return mResource.Get(); }
+		FORCEINLINE D3D12_VERTEX_BUFFER_VIEW GetDXVertexBufferView() const noexcept { return mVertexBufferView; }
+		FORCEINLINE D3D12_INDEX_BUFFER_VIEW GetDXIndexBufferView() const noexcept { return mIndexBufferView; }
+		FORCEINLINE D3D12_CONSTANT_BUFFER_VIEW_DESC GetDXConstantBufferView() const noexcept { return mConstantBufferView; }
 	private:
-		DXPTR<ID3D12Resource> _resource;
-		D3D12_VERTEX_BUFFER_VIEW _vertexBufferView;
-		D3D12_INDEX_BUFFER_VIEW _indexBufferView;
-		D3D12_CONSTANT_BUFFER_VIEW_DESC _constantBufferView;
+		DXPTR<ID3D12Resource> mResource;
+		D3D12_VERTEX_BUFFER_VIEW mVertexBufferView;
+		D3D12_INDEX_BUFFER_VIEW mIndexBufferView;
+		D3D12_CONSTANT_BUFFER_VIEW_DESC mConstantBufferView;
+
+		// Inherited via GraphicsBuffer
+		virtual void OnDestroy() override;
 	};
 }

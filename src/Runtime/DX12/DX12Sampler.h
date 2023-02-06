@@ -15,5 +15,8 @@ namespace Portakal
 		virtual ~DX12Sampler() override;
 
 	private:
+
+		// Inherited via Sampler
+		virtual void OnDestroy() override;
 	};
 }

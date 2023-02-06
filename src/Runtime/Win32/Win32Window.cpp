@@ -152,42 +152,42 @@ namespace Portakal
 
         ASSERT(windowHandle != NULL, "Win32Window", "Failed to create a window");
 
-        _windowHandle = windowHandle;
-        _windowDeviceContext = GetDC(windowHandle);
+        mWindowHandle = windowHandle;
+        mDeviceContext = GetDC(windowHandle);
     }
     Win32Window::~Win32Window()
     {
-        ReleaseDC(_windowHandle, _windowDeviceContext);
-        DestroyWindow(_windowHandle);
+        ReleaseDC(mWindowHandle, mDeviceContext);
+        DestroyWindow(mWindowHandle);
 
-        _windowHandle = NULL;
-        _windowDeviceContext = NULL;
+        mWindowHandle = NULL;
+        mDeviceContext = NULL;
     }
 
     void Win32Window::ShowCore()
     {
-        ShowWindow(_windowHandle, SW_SHOW);
+        ShowWindow(mWindowHandle, SW_SHOW);
     }
     void Win32Window::HideCore()
     {
-        ShowWindow(_windowHandle, SW_HIDE);
+        ShowWindow(mWindowHandle, SW_HIDE);
     }
     void Win32Window::SetTitleCore(const String& title)
     {
-        SetWindowText(_windowHandle,*title);
+        SetWindowText(mWindowHandle,*title);
     }
     void Win32Window::SetSizeCore(const unsigned int width, const unsigned int height)
     {
-        SetWindowPos(_windowHandle, NULL, GetPositionX(), GetPositionY(), width, height,0);
+        SetWindowPos(mWindowHandle, NULL, GetPositionX(), GetPositionY(), width, height,0);
     }
     void Win32Window::SetPositionCore(const unsigned int x, const unsigned int y)
     {
-        SetWindowPos(_windowHandle, NULL, x, y, GetWidth(), GetHeight(),0);
+        SetWindowPos(mWindowHandle, NULL, x, y, GetWidth(), GetHeight(),0);
     }
     void Win32Window::PollEventsCore()
     {
         MSG msg = { 0 };
-        while (PeekMessage(&msg, _windowHandle, 0, 0, PM_REMOVE) > 0)
+        while (PeekMessage(&msg, mWindowHandle, 0, 0, PM_REMOVE) > 0)
         {
             TranslateMessage(&msg);
             DispatchMessage(&msg);

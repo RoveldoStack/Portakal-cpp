@@ -5,32 +5,32 @@ namespace Portakal
 {
 	ByteBlock::ByteBlock(const void* pData, const unsigned long long sizeInBytes)
 	{
-		_block = new unsigned char[sizeInBytes];
-		Memory::Copy(pData, _block, sizeInBytes);
+		mBlock = new unsigned char[sizeInBytes];
+		Memory::Copy(pData, mBlock, sizeInBytes);
 
-		_size = sizeInBytes;
+		mSize = sizeInBytes;
 	}
 	ByteBlock::ByteBlock(const unsigned long long sizeInBytes)
 	{
-		_block = new unsigned char[sizeInBytes];
-		_size = sizeInBytes;
+		mBlock = new unsigned char[sizeInBytes];
+		mSize = sizeInBytes;
 	}
 	ByteBlock::ByteBlock()
 	{
-		_block = nullptr;
-		_size = 0;
+		mBlock = nullptr;
+		mSize = 0;
 	}
 	ByteBlock::~ByteBlock()
 	{
-		if (_block != nullptr)
-			delete[] _block;
+		if (mBlock != nullptr)
+			delete[] mBlock;
 	}
 	const unsigned char* ByteBlock::GetBlockDataPtr(const unsigned long long offset) const
 	{
-		return (_block + offset);
+		return (mBlock + offset);
 	}
 	unsigned long long ByteBlock::GetBlockSizeInBytes() const
 	{
-		return _size;
+		return mSize;
 	}
 }

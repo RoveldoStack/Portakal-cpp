@@ -5,28 +5,28 @@ namespace Portakal
 {
 	unsigned long long Stopwatch::GetAsNanoseconds() const noexcept
 	{
-		return _lastDifference;
+		return mLastDifference;
 	}
 	float Stopwatch::GetAsMilliseconds() const noexcept
 	{
-		return _lastDifference / 10000.0f;;
+		return mLastDifference / 10000.0f;;
 	}
 	void Stopwatch::Mark()
 	{
-		if (_markedTime != 0)
+		if (mMarkedTime != 0)
 		{
 			const unsigned long long time = PlatformTime::GetCurrentTimeAsNanoseconds();
-			_lastDifference = time - _markedTime;
-			_markedTime = 0;
+			mLastDifference = time - mMarkedTime;
+			mMarkedTime = 0;
 		}
 		else
 		{
-			_markedTime = PlatformTime::GetCurrentTimeAsNanoseconds();
+			mMarkedTime = PlatformTime::GetCurrentTimeAsNanoseconds();
 		}
 	}
 	void Stopwatch::Reset()
 	{
-		_markedTime = 0;
-		_lastDifference = 0;
+		mMarkedTime = 0;
+		mLastDifference = 0;
 	}
 }

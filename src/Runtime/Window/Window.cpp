@@ -2,7 +2,6 @@
 #include <Runtime/Window/WindowEvent.h>
 #include <Runtime/Window/WindowEvents.h>
 #include <Runtime/Graphics/GraphicsDevice.h>
-#include <Runtime/Graphics/SwapchainFramebuffer.h>
 
 #ifdef PORTAKAL_OS_WINDOWS
 #include <Runtime/Win32/Win32Window.h>
@@ -24,49 +23,49 @@ namespace Portakal
 	{
 		ShowCore();
 
-		_visible = true;
+		mVisible = true;
 	}
 	void Window::Hide()
 	{
 		HideCore();
 
-		_visible = false;
+		mVisible = false;
 	}
 	void Window::SetTitle(const String& title)
 	{
 		SetTitle(title);
 
-		_title = title;
+		mTitle = title;
 	}
 	void Window::SetSize(const unsigned int width, const unsigned int height)
 	{
 		SetSizeCore(width, height);
 
-		_width = width;
-		_height = height;
+		mWidth = width;
+		mHeight = height;
 	}
 
 	void Window::SetPosition(const unsigned int x, const unsigned int y)
 	{
 		SetPositionCore(x, y);
 
-		_positionX = x;
-		_positionY = y;
+		mPosX = x;
+		mPosY = y;
 	}
 	void Window::PollEvents()
 	{
 		/*
 		* Delete events
 		*/
-		for (int i = 0; i < _polledEvents.GetCursor(); i++)
+		for (int i = 0; i < mPolledEvents.GetCursor(); i++)
 		{
-			delete _polledEvents[i];
+			delete mPolledEvents[i];
 		}
 
 		/*
 		* Clear the list
 		*/
-		_polledEvents.Clear();
+		mPolledEvents.Clear();
 
 		PollEventsCore();
 	}
@@ -110,23 +109,25 @@ namespace Portakal
 			default:
 				break;
 		}
-		_polledEvents.Add(pEvent);
+		mPolledEvents.Add(pEvent);
 	}
 	void Window::OnWindowMoved(const unsigned int x, const unsigned int y)
 	{
-		_positionX = x;
-		_positionY = y;
+		mPosX = x;
+		mPosY = y;
 	}
 	void Window::OnWindowResized(unsigned int width, const unsigned int height)
 	{
-		_width = width;
-		_height = height;
+		mWidth = width;
+		mHeight = height;
 
-		if (_childDevice != nullptr)
-			((SwapchainFramebuffer*)_childDevice->GetSwapchainFramebuffer())->_Resize(width, height);
+		if (mChildDevice != nullptr)
+		{
+
+		}
 	}
 	void Window::OnWindowClosed()
 	{
-		_active = false;
+		mActive = false;
 	}
 }
