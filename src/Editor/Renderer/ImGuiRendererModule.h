@@ -23,8 +23,8 @@ namespace Portakal
 		virtual void PostValidate() override;
 		virtual void OnEvent(WindowEvent* pEvent) override;
 	private:
-		CommandList* _cmdBuffer;
-		GraphicsDevice* _device;
+		CommandList* mCmdList;
+		GraphicsDevice* mDevice;
 
 	};
 

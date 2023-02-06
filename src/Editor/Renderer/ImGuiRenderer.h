@@ -31,7 +31,7 @@ namespace Portakal
 		void OnEvent(const WindowEvent* pEvent);
 
 		FORCEINLINE GraphicsBackend GetTargetBackend() const noexcept;
-		FORCEINLINE GraphicsDevice* GetTargetDevice() const noexcept { return _device; }
+		FORCEINLINE GraphicsDevice* GetTargetDevice() const noexcept { return mDevice; }
 
 	protected:
 		virtual void StartRenderingCore() = 0;
@@ -46,7 +46,7 @@ namespace Portakal
 		void OnKeyboardUp(const KeyboardKeyUpEvent* pEvent);
 		void OnKeyboardChar(const KeyboardCharEvent* pEvent);
 	private:
-		ImGuiContext* _context;
-		GraphicsDevice* _device;
+		ImGuiContext* mContext;
+		GraphicsDevice* mDevice;
 	};
 }

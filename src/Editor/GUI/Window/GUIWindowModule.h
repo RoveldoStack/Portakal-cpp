@@ -10,7 +10,7 @@ namespace Portakal
 		GENERATE_CLASS(GUIWindowModule);
 		GENERATE_APPLICATION_MODULE(true, false, true);
 	public:
-		GUIWindowModule() : _layoutInitialized(false),_dockState(true) {}
+		GUIWindowModule() : mLayoutInitialized(false),mDockState(true) {}
 		~GUIWindowModule() = default;
 
 		// Inherited via ApplicationModule
@@ -23,9 +23,9 @@ namespace Portakal
 		virtual void PostValidate() override;
 		virtual void OnEvent(WindowEvent* pEvent) override;
 	private:
-		EditorWindowAPI* _api;
-		bool _layoutInitialized;
-		bool _dockState;
+		EditorWindowAPI* mAPI;
+		bool mLayoutInitialized;
+		bool mDockState;
 	};
 
 	START_GENERATE_TYPE(GUIWindowModule);

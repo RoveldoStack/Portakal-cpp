@@ -24,8 +24,8 @@ namespace Portakal
 		virtual void OnEvent(WindowEvent* pEvent) override;
 
 	private:
-		ImGuiRenderer* _renderer;
-		ImGuiAPI* _api;
+		ImGuiRenderer* mRenderer;
+		ImGuiAPI* mAPI;
 	};
 
 	START_GENERATE_TYPE(ImGuiExecutorModule);

@@ -25,7 +25,7 @@ namespace Portakal
 		desc.NumDescriptors = 4;
 		desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 
-		ASSERT(SUCCEEDED(pDXDevice->CreateDescriptorHeap(&desc, IID_PPV_ARGS(&_fontHeap))), "ImGuiAPI-D3D12", "Failed to create the font descriptor heap"); //global imgui dx12 font heap
+		ASSERT(SUCCEEDED(pDXDevice->CreateDescriptorHeap(&desc, IID_PPV_ARGS(&mFontHeap))), "ImGuiAPI-D3D12", "Failed to create the font descriptor heap"); //global imgui dx12 font heap
 
 		/*
 		* Init win32
@@ -38,11 +38,11 @@ namespace Portakal
 		ImGui_ImplDX12_Init(pDXDevice,
 			pSwapchain->GetColorBufferCount(),
 			DXGIUtils::GetTextureFormat(pSwapchain->GetColorFormat()),
-			_fontHeap.Get(),
-			_fontHeap->GetCPUDescriptorHandleForHeapStart(),
-			_fontHeap->GetGPUDescriptorHandleForHeapStart());
+			mFontHeap.Get(),
+			mFontHeap->GetCPUDescriptorHandleForHeapStart(),
+			mFontHeap->GetGPUDescriptorHandleForHeapStart());
 
-		_fontHeap->SetName(L"ImGui Font Heap");
+		mFontHeap->SetName(L"ImGui Font Heap");
     }
     DX12ImGuiRenderer::~DX12ImGuiRenderer()
     {

@@ -11,7 +11,7 @@ namespace Portakal
 	class PORTAKAL_API EditorWindowAPI
 	{
 	private:
-		static EditorWindowAPI* _api;
+		static EditorWindowAPI* mAPI;
 	public:
 		static EditorWindow* CreateWindow(Type* pType);
 		static EditorWindow* CreateFromSettings(const EditorWindowSettings& settings);
@@ -19,13 +19,13 @@ namespace Portakal
 		template<typename TWindow>
 		static TWindow* CreateWindow()
 		{
-			if (_api == nullptr)
+			if (mAPI == nullptr)
 			{
 				LOG("EditorWindowAPI", "Invalid  api");
 				return nullptr;
 			}
 
-			return _api->CreateWindowInternal<TWindow>();
+			return mAPI->CreateWindowInternal<TWindow>();
 		}
 	public:
 		EditorWindowAPI();

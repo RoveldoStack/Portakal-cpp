@@ -42,8 +42,8 @@ namespace Portakal
 		/*
 		* Create context
 		*/
-		_context = ImGui::CreateContext();
-		ImGui::SetCurrentContext(_context);
+		mContext = ImGui::CreateContext();
+		ImGui::SetCurrentContext(mContext);
 
 		/*
 		* Setup configs
@@ -150,19 +150,17 @@ namespace Portakal
 		style->Colors[ImGuiCol_PlotHistogramHovered] = ImVec4(0.25f, 1.00f, 0.00f, 1.00f);
 		style->Colors[ImGuiCol_TextSelectedBg] = ImVec4(0.25f, 1.00f, 0.00f, 0.43f);
 
-
-		_device = pDevice;
+		mDevice = pDevice;
 
 	}
 	ImGuiRenderer::~ImGuiRenderer()
 	{
-		ImGui::DestroyContext(_context);
+		ImGui::DestroyContext(mContext);
 	}
 	void ImGuiRenderer::StartRendering(const float deltaTime)
 	{
 		ImGuiIO& io = ImGui::GetIO();
 		io.DeltaTime = deltaTime;
-
 		StartRenderingCore();
 		ImGui::NewFrame();
 	}
@@ -213,7 +211,7 @@ namespace Portakal
 	}
 	GraphicsBackend ImGuiRenderer::GetTargetBackend() const noexcept
 	{
-		return _device->GetBackend();
+		return mDevice->GetBackend();
 	}
 	void ImGuiRenderer::OnWindowResized(const WindowResizedEvent* pEvent)
 	{

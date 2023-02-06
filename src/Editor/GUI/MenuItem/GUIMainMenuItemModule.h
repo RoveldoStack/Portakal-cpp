@@ -24,7 +24,7 @@ namespace Portakal
 	private:
 		void LoadMainMenuItems();
 	private:
-		MenuItemTree* _tree;
+		MenuItemTree* mTree;
 	};
 
 	START_GENERATE_TYPE(GUIMainMenuItemModule);

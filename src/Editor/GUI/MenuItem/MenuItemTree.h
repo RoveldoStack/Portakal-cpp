@@ -11,11 +11,11 @@ namespace Portakal
 		MenuItemTree();
 		~MenuItemTree();
 
-		FORCEINLINE String GetName() const noexcept { return _name; }
-		FORCEINLINE Array<MenuItemTree*> GetSubTrees() const noexcept { return _subTrees; }
-		FORCEINLINE bool HasSubTrees() const noexcept { return _subTrees.GetCursor() > 0; }
+		FORCEINLINE String GetName() const noexcept { return mName; }
+		FORCEINLINE Array<MenuItemTree*> GetSubTrees() const noexcept { return mSubTrees; }
+		FORCEINLINE bool HasSubTrees() const noexcept { return mSubTrees.GetCursor() > 0; }
 
-		void SetName(const String& name) { _name = name; }
+		void SetName(const String& name) { mName = name; }
 		void InsertSourceText(const String& sourceText, const Type* pType);
 		void Invoke();
 	private:
@@ -23,8 +23,8 @@ namespace Portakal
 		void InsertTreeNodes(Array<String> nodes, const Type* pType);
 		void SetBehaviour(const Type* pType);
 	private:
-		Array<MenuItemTree*> _subTrees;
-		MenuItemBehaviour* _behaviour;
-		String _name;
+		Array<MenuItemTree*> mSubTrees;
+		MenuItemBehaviour* mBehaviour;
+		String mName;
 	};
 }

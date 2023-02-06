@@ -8,7 +8,7 @@
 
 namespace Portakal
 {
-    ImGuiRendererModule::ImGuiRendererModule() : _cmdBuffer(nullptr),_device(nullptr)
+    ImGuiRendererModule::ImGuiRendererModule() : mCmdList(nullptr),mDevice(nullptr)
     {
 
     }
@@ -29,9 +29,9 @@ namespace Portakal
         /*
         * Create command buffer
         */
-        _cmdBuffer = pDevice->CreateGraphicsCommandList({});
+        mCmdList = pDevice->CreateGraphicsCommandList({});
 
-        _device = pDevice;
+        mDevice = pDevice;
     }
     void ImGuiRendererModule::OnFinalize()
     {
@@ -45,12 +45,12 @@ namespace Portakal
     {
         ImGuiRenderer* pRenderer = ImGuiAPI::GetDefaultRenderer();
 
-        _cmdBuffer->Lock();
-        pRenderer->FinalizeRendering(_cmdBuffer);
-        _cmdBuffer->Unlock();
+        mCmdList->Lock();
+        pRenderer->FinalizeRendering(mCmdList);
+        mCmdList->Unlock();
 
-        _device->SubmitCommands({ _cmdBuffer });
-        _device->WaitForFinish();
+        mDevice->SubmitCommands({ mCmdList });
+        mDevice->WaitForFinish();
     }
     void ImGuiRendererModule::OnPostTick()
     {

@@ -79,6 +79,8 @@ namespace Portakal
     }
     void DX12Framebuffer::OnDestroy()
     {
+        Framebuffer::OnDestroy();
+
         mColorHeap.Reset();
         mDepthStencilHeap.Reset();
     }

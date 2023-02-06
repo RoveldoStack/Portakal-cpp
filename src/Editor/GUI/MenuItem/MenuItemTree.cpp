@@ -5,14 +5,14 @@ namespace Portakal
 {
 	MenuItemTree::MenuItemTree()
 	{
-		_name = "Root";
+		mName = "Root";
 	}
 	MenuItemTree::~MenuItemTree()
 	{
-		for (unsigned int i = 0; i < _subTrees.GetCursor(); i++)
-			delete _subTrees[i];
+		for (unsigned int i = 0; i < mSubTrees.GetCursor(); i++)
+			delete mSubTrees[i];
 
-		_subTrees.Clear();
+		mSubTrees.Clear();
 	}
 	void MenuItemTree::InsertSourceText(const String& sourceText, const Type* pType)
 	{
@@ -21,9 +21,9 @@ namespace Portakal
 		if (nodes.GetCursor() <= 0)
 			return;
 
-		for (unsigned int i = 0; i < _subTrees.GetCursor(); i++)
+		for (unsigned int i = 0; i < mSubTrees.GetCursor(); i++)
 		{
-			MenuItemTree* pSubTree = _subTrees[i];
+			MenuItemTree* pSubTree = mSubTrees[i];
 
 			if (pSubTree->GetName() == nodes[0])
 			{
@@ -38,7 +38,7 @@ namespace Portakal
 		}
 
 		MenuItemTree* pNewTree = new MenuItemTree();
-		_subTrees.Add(pNewTree);
+		mSubTrees.Add(pNewTree);
 
 		pNewTree->SetName(nodes[0]);
 
@@ -54,7 +54,7 @@ namespace Portakal
 	}
 	void MenuItemTree::Invoke()
 	{
-		_behaviour->OnClick();
+		mBehaviour->OnClick();
 	}
 	Array<String> MenuItemTree::GetTreeNodes(const String& sourceText) const noexcept
 	{
@@ -78,9 +78,9 @@ namespace Portakal
 	}
 	void MenuItemTree::InsertTreeNodes(Array<String> nodes, const Type* pType)
 	{
-		for (unsigned int i = 0; i < _subTrees.GetCursor(); i++)
+		for (unsigned int i = 0; i < mSubTrees.GetCursor(); i++)
 		{
-			MenuItemTree* pTree = _subTrees[i];
+			MenuItemTree* pTree = mSubTrees[i];
 
 			if (pTree->GetName() == nodes[0])
 			{
@@ -95,7 +95,7 @@ namespace Portakal
 		}
 
 		MenuItemTree* pNewTree = new MenuItemTree();
-		_subTrees.Add(pNewTree);
+		mSubTrees.Add(pNewTree);
 
 		pNewTree->SetName(nodes[0]);
 
@@ -111,6 +111,6 @@ namespace Portakal
 	}
 	void MenuItemTree::SetBehaviour(const Type* pType)
 	{
-		_behaviour = (MenuItemBehaviour*)pType->CreateDefaultHeapObject();
+		mBehaviour = (MenuItemBehaviour*)pType->CreateDefaultHeapObject();
 	}
 }

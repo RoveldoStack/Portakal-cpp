@@ -35,7 +35,7 @@ namespace Portakal
 	private:
 		Array<DXPTR<ID3D12Resource>> _intermediateUploadBuffers;
 		DXPTR<ID3D12GraphicsCommandList> mCmdList;
-		ID3D12CommandAllocator* mAllocator;;
+		ID3D12CommandAllocator* mAllocator;
 
 
 		// Inherited via CommandList

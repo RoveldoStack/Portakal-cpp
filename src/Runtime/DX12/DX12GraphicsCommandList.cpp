@@ -256,11 +256,24 @@ namespace Portakal
     void DX12GraphicsCommandList::CommitResourceTableCore(const unsigned int slotIndex, const GraphicsResourceTable* pTable)
     {
         const DX12ResourceTable* pDXTable = (const DX12ResourceTable*)pTable;
-        ID3D12DescriptorHeap* pDescriptorHeap = pDXTable->GetDXDescriptorHeap();
+        ID3D12DescriptorHeap* pCbvSrvUavHeap = pDXTable->GetDXCbvSrvUavHeap();
+        ID3D12DescriptorHeap* pSamplerHeap = pDXTable->GetDXSamplerHeap();
 
-        mCmdList->SetDescriptorHeaps(1, &pDescriptorHeap);
-        mCmdList->SetGraphicsRootDescriptorTable(slotIndex, pDescriptorHeap->GetGPUDescriptorHandleForHeapStart());
+        Array<ID3D12DescriptorHeap*> heaps;
+        if (pCbvSrvUavHeap != nullptr)
+            heaps.Add(pCbvSrvUavHeap);
+        if (pSamplerHeap != nullptr)
+            heaps.Add(pSamplerHeap);
 
+        if (heaps.GetCursor() == 0)
+            return;
+
+        mCmdList->SetDescriptorHeaps(heaps.GetCursor(), heaps.GetData());
+
+        for (unsigned int i = 0; i < heaps.GetCursor(); i++)
+        {
+            mCmdList->SetGraphicsRootDescriptorTable(i, heaps[i]->GetGPUDescriptorHandleForHeapStart());
+        }
     }
     void DX12GraphicsCommandList::DrawIndexedCore(const unsigned int indexCount)
     {
@@ -275,6 +288,7 @@ namespace Portakal
     }
     void DX12GraphicsCommandList::ClearCachedStateCore()
     {
+
     }
     void DX12GraphicsCommandList::FreeFormerFramebufferBarriers()
     {

@@ -56,7 +56,7 @@ namespace Portakal
         */
         if (ImGui::BeginMainMenuBar())
         {
-            PaintMenuItemTree(_tree);
+            PaintMenuItemTree(mTree);
             ImGui::EndMainMenuBar();
         }
     }
@@ -69,7 +69,7 @@ namespace Portakal
         /*
         * Delete the existing tree
         */
-        delete _tree;
+        delete mTree;
     }
     void GUIMainMenuItemModule::PostValidate()
     {
@@ -81,7 +81,7 @@ namespace Portakal
     }
     void GUIMainMenuItemModule::LoadMainMenuItems()
     {
-        _tree = new MenuItemTree();
+        mTree = new MenuItemTree();
 
         Array<Type*> behaviours;
         const Array<Type*> types = Assembly::GetProcessAssembly()->GetTypes();
@@ -93,7 +93,7 @@ namespace Portakal
 
             if (pAttribute != nullptr)
             {
-                _tree->InsertSourceText(pAttribute->GetLocation(), pType);
+                mTree->InsertSourceText(pAttribute->GetLocation(), pType);
             }
         }
     }

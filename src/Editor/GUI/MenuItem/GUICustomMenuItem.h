@@ -7,13 +7,13 @@ namespace Portakal
 	{
 		GENERATE_CLASS(GUICustomMenuItem);
 	public:
-		GUICustomMenuItem(const String& location) : _location(location) {}
+		GUICustomMenuItem(const String& location) : mLocation(location) {}
 		GUICustomMenuItem() = default;
 		~GUICustomMenuItem() = default;
 
-		FORCEINLINE String GetLocation() const noexcept { return _location; }
+		FORCEINLINE String GetLocation() const noexcept { return mLocation; }
 	private:
-		const String _location;
+		const String mLocation;
 	};
 
 	START_GENERATE_TYPE(GUICustomMenuItem);

@@ -2,6 +2,7 @@
 #include <Runtime/Window/WindowEvent.h>
 #include <Runtime/Window/WindowEvents.h>
 #include <Runtime/Graphics/GraphicsDevice.h>
+#include <Runtime/Graphics/Swapchain.h>
 
 #ifdef PORTAKAL_OS_WINDOWS
 #include <Runtime/Win32/Win32Window.h>
@@ -123,7 +124,7 @@ namespace Portakal
 
 		if (mChildDevice != nullptr)
 		{
-
+			mChildDevice->GetSwapchain()->Resize(width, height);
 		}
 	}
 	void Window::OnWindowClosed()

@@ -11,11 +11,11 @@ namespace Portakal
 		DX12ImGuiRenderer(GraphicsDevice* pDevice);
 		virtual ~DX12ImGuiRenderer() override;
 
-		FORCEINLINE ID3D12DescriptorHeap* GetFontDescriptorHeap() const noexcept { return _fontHeap.Get(); }
+		FORCEINLINE ID3D12DescriptorHeap* GetFontDescriptorHeap() const noexcept { return mFontHeap.Get(); }
 	protected:
 		virtual void StartRenderingCore() override;
 		virtual void FinalizeRenderingCore(CommandList* pCmdBuffer) override;
 	private:
-		DXPTR<ID3D12DescriptorHeap> _fontHeap;
+		DXPTR<ID3D12DescriptorHeap> mFontHeap;
 	};
 }

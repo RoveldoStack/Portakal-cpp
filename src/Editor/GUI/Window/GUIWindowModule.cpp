@@ -13,12 +13,12 @@ namespace Portakal
 		/*
 		* Initialize api
 		*/
-		_api = new EditorWindowAPI();
+		mAPI = new EditorWindowAPI();
 	}
 	void GUIWindowModule::OnFinalize()
 	{
-		delete _api;
-		_api = nullptr;
+		delete mAPI;
+		mAPI = nullptr;
 	}
 	void GUIWindowModule::OnPreTick()
 	{
@@ -40,7 +40,7 @@ namespace Portakal
 		ImGui::PushStyleColor(ImGuiCol_WindowBg, { 0,0,0,1.0f });
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0);
 
-		ImGui::Begin("Dockspace", &_dockState,
+		ImGui::Begin("Dockspace", &mDockState,
 			ImGuiWindowFlags_NoCollapse |
 			ImGuiWindowFlags_NoMove |
 			ImGuiWindowFlags_NoScrollbar |
@@ -58,7 +58,7 @@ namespace Portakal
 
 		ImGui::DockSpace(dockspaceID, { 0,0 });
 
-		if (!_layoutInitialized)
+		if (!mLayoutInitialized)
 		{
 			/*
 			* Clear nodes
@@ -98,13 +98,13 @@ namespace Portakal
 				ImGui::DockBuilderDockWindow(*name, dockID);
 			}
 			ImGui::DockBuilderFinish(dockspaceID);
-			_layoutInitialized = true;
+			mLayoutInitialized = true;
 		}
 
 		/*
 		* Update api
 		*/
-		_api->Paint();
+		mAPI->Paint();
 
 		/*
 		* Update windows

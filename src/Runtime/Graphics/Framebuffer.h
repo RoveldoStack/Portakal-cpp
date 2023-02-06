@@ -29,6 +29,9 @@ namespace Portakal
 
 		FORCEINLINE void SetWidth(const unsigned int width) { mWidth = width; }
 		FORCEINLINE void SetHeight(const unsigned int height) { mHeight = height; }
+
+	protected:
+		virtual void OnDestroy() override;
 	private:
 		Array<FramebufferAttachmentDesc> mColorTargets;
 		FramebufferAttachmentDesc mDepthStencilTarget;

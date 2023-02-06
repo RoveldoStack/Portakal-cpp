@@ -20,7 +20,7 @@ namespace Portakal
 
 		FORCEINLINE virtual GraphicsDeviceObjectType GetDeviceObjectType() const noexcept override { return GraphicsDeviceObjectType::Swapchain; }
 	protected:
-		Swapchain(const SwapchainCreateDesc& desc) : mFramebuffer(nullptr),mColorFormat(desc.ColorFormat),mColorBufferCount(desc.ColorBufferCount),mDepthStencilFormat(desc.DepthStencilFormat),mWidth(desc.Width),mHeight(mHeight) {}
+		Swapchain(const SwapchainCreateDesc& desc) : mFramebuffer(nullptr),mColorFormat(desc.ColorFormat),mColorBufferCount(desc.ColorBufferCount),mDepthStencilFormat(desc.DepthStencilFormat),mWidth(desc.Width),mHeight(desc.Height) {}
 		~Swapchain() = default;
 
 		void SetFramebuffer(Framebuffer* pFramebuffer) { mFramebuffer = pFramebuffer; }

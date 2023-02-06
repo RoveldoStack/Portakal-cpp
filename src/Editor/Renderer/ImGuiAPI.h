@@ -12,14 +12,14 @@ namespace Portakal
 	{
 		friend class ImGuiExecutorModule;
 	private:
-		static ImGuiAPI* _api;
+		static ImGuiAPI* mAPI;
 	public:
-		static ImGuiRenderer* GetDefaultRenderer() { return _api->_renderer; }
+		static ImGuiRenderer* GetDefaultRenderer() { return mAPI->mRenderer; }
 	private:
-		ImGuiAPI(ImGuiRenderer* pRenderer) : _renderer(pRenderer) { _api = this; }
-		~ImGuiAPI() { _renderer = nullptr; _api = nullptr; }
+		ImGuiAPI(ImGuiRenderer* pRenderer) : mRenderer(pRenderer) { mAPI = this; }
+		~ImGuiAPI() { mRenderer = nullptr; mAPI = nullptr; }
 
 	private:
-		ImGuiRenderer* _renderer;
+		ImGuiRenderer* mRenderer;
 	};
 }

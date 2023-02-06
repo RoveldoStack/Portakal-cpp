@@ -11,14 +11,14 @@ namespace Portakal
 		friend class EditorWindowAPI;
 		GENERATE_CLASS(EditorWindow);
 	public:
-		EditorWindow() : _visible(false),_hasCloseRequest(false),_parentWindow(nullptr) {}
+		EditorWindow() : mVisible(false),mCloseRequest(false),mParentWindow(nullptr) {}
 		virtual ~EditorWindow() = default;
 
-		FORCEINLINE bool HasCloseRequest() const noexcept { return _hasCloseRequest; }
-		FORCEINLINE bool IsVisible() const noexcept { return _visible; }
-		FORCEINLINE Vector2<unsigned int> GetPosition() const noexcept { return _position; }
-		FORCEINLINE Vector2<unsigned int> GetSize() const noexcept { return _size; }
-		FORCEINLINE EditorWindowDockState GetDockState() const noexcept { return _dockState; }
+		FORCEINLINE bool HasCloseRequest() const noexcept { return mCloseRequest; }
+		FORCEINLINE bool IsVisible() const noexcept { return mVisible; }
+		FORCEINLINE Vector2<unsigned int> GetPosition() const noexcept { return mPos; }
+		FORCEINLINE Vector2<unsigned int> GetSize() const noexcept { return mSize; }
+		FORCEINLINE EditorWindowDockState GetDockState() const noexcept { return mDockState; }
 
 		virtual void OnShow() = 0;
 		virtual void OnHide() = 0;
@@ -26,18 +26,18 @@ namespace Portakal
 		virtual void OnFinalize() = 0;
 		virtual void OnPaint() = 0;
 	private:
-		FORCEINLINE void _SetPosition(const Vector2<unsigned int>& position) { _position = position; }
-		FORCEINLINE void _SetSize(const Vector2<unsigned int>& size) { _size = size; }
-		FORCEINLINE void _SetDockState(const EditorWindowDockState state) { _dockState = state; }
-		FORCEINLINE void _SetVisibility(const bool state) { _visible = state; }
+		FORCEINLINE void _SetPosition(const Vector2<unsigned int>& position) { mPos = position; }
+		FORCEINLINE void _SetSize(const Vector2<unsigned int>& size) { mSize = size; }
+		FORCEINLINE void _SetDockState(const EditorWindowDockState state) { mDockState = state; }
+		FORCEINLINE void _SetVisibility(const bool state) { mVisible = state; }
 		FORCEINLINE void _SetParentWindow(EditorWindow* pWindow);
 	private:
-		EditorWindow* _parentWindow;
-		Vector2<unsigned int> _position;
-		Vector2<unsigned int> _size;
-		EditorWindowDockState _dockState;
-		bool _visible;
-		bool _hasCloseRequest;
+		EditorWindow* mParentWindow;
+		Vector2<unsigned int> mPos;
+		Vector2<unsigned int> mSize;
+		EditorWindowDockState mDockState;
+		bool mVisible;
+		bool mCloseRequest;
 	};
 
 	START_GENERATE_TYPE(EditorWindow);

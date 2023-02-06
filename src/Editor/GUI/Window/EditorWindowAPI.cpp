@@ -3,14 +3,14 @@
 
 namespace Portakal
 {
-	EditorWindowAPI* EditorWindowAPI::_api = nullptr;
+	EditorWindowAPI* EditorWindowAPI::mAPI = nullptr;
 
 	EditorWindow* EditorWindowAPI::CreateWindow(Type* pType)
 	{
-		if (_api == nullptr)
+		if (mAPI == nullptr)
 			return nullptr;
 
-		return _api->CreateWindowInternal(pType);
+		return mAPI->CreateWindowInternal(pType);
 	}
 	EditorWindow* EditorWindowAPI::CreateFromSettings(const EditorWindowSettings& settings)
 	{
@@ -18,11 +18,11 @@ namespace Portakal
 	}
 	EditorWindowAPI::EditorWindowAPI()
 	{
-		_api = this;
+		mAPI = this;
 	}
 	EditorWindowAPI::~EditorWindowAPI()
 	{
-		_api = nullptr;
+		mAPI = nullptr;
 	}
 	EditorWindow* EditorWindowAPI::CreateWindowInternal(Type* pTargetType)
 	{

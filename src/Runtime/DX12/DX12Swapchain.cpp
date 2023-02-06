@@ -133,19 +133,20 @@ namespace Portakal
     }
     void DX12Swapchain::ResizeCore(const unsigned int width, const unsigned int height)
     {
+		LOG("Resized","Reszied");
 		/*
 		* Delete framebuffer
 		*/
 		Framebuffer* pFramebuffer = GetFramebuffer();
 		if (pFramebuffer != nullptr)
 		{
-
+			pFramebuffer->DeleteDeviceObject();
 		}
 
 		/*
 		* Resize
 		*/
-		mSwapchain->ResizeBuffers(GetColorBufferCount(),GetWidth(),GetHeight(), DXGIUtils::GetTextureFormat(GetColorFormat()), 0);
+		mSwapchain->ResizeBuffers(GetColorBufferCount(),width,height, DXGIUtils::GetTextureFormat(GetColorFormat()), 0);
 
 		/*
 		* Create rtvs
