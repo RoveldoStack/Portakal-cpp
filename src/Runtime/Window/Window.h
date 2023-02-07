@@ -1,6 +1,7 @@
 #pragma once
 #include <Runtime/Window/WindowCreateDesc.h>
 #include <Runtime/Containers/Array.h>
+#include <Runtime/Event/Event.h>
 
 namespace Portakal
 {
@@ -34,6 +35,8 @@ namespace Portakal
 		void SetSize(const unsigned int width, const unsigned int height);
 		void SetPosition(const unsigned int x, const unsigned int y);
 		void PollEvents();
+		void RegisterEventListener(Delegate<void,const WindowEvent*> listenerPtr);
+		void RemoveEventListener(Delegate<void,const WindowEvent*> listenerPtr);
 
 	protected:
 		Window(const WindowCreateDesc& desc) : mTitle(desc.Name), mWidth(desc.Width), mHeight(desc.Height), mPosX(desc.PositionX), mPosY(desc.PositionY),mChildDevice(nullptr), mActive(true), mVisible(false) {}
@@ -51,6 +54,7 @@ namespace Portakal
 		void OnWindowClosed();
 		void _SetChildDevice(GraphicsDevice* pDevice) { mChildDevice = pDevice; }
 	private:
+		Event<void,const WindowEvent*> mEventFeed;
 		Array<WindowEvent*> mPolledEvents;
 		GraphicsDevice* mChildDevice;
 		String mTitle;

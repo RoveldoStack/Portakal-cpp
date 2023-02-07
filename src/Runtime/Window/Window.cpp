@@ -70,6 +70,14 @@ namespace Portakal
 
 		PollEventsCore();
 	}
+	void Window::RegisterEventListener(Delegate<void,const WindowEvent*> listenerPtr)
+	{
+		mEventFeed += listenerPtr;
+	}
+	void Window::RemoveEventListener(Delegate<void,const WindowEvent*> listenerPtr)
+	{
+		mEventFeed -= listenerPtr;
+	}
 	void Window::DispatchWindowEvent(WindowEvent* pEvent)
 	{
 		WindowEventType eventType = pEvent->GetEventType();
@@ -110,7 +118,10 @@ namespace Portakal
 			default:
 				break;
 		}
+
 		mPolledEvents.Add(pEvent);
+
+		mEventFeed.Invoke(pEvent);
 	}
 	void Window::OnWindowMoved(const unsigned int x, const unsigned int y)
 	{

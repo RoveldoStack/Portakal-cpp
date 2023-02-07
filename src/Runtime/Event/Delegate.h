@@ -1,7 +1,7 @@
 #include <functional>
 #define GENERATE_DELEGATE(function) std::bind(&function,std::placeholders::_1)
 #define GENERATE_DELEGATE_PARAMETERLESS(function) std::bind(&function)
-#define GENERATE_MEMBER_DELEGATE(object,function) std::bind(&function,object,std::placeholders::_1)
+#define GENERATE_MEMBER_DELEGATE(object,function,rType,...) Delegate<rType,__VA_ARGS__>(std::bind(&function,object,std::placeholders::_1))
 #define GENERATE_MEMBER_DELEGATE_PARAMETERLESS(object,function) std::bind(&function,object)
 
 namespace Portakal
@@ -21,7 +21,7 @@ namespace Portakal
 		/// Returns whether the delegate is set
 		/// </summary>
 		/// <returns></returns>
-		bool IsEmty() const { return _empty; }
+		bool IsEmpty() const { return mEmpty; }
 
 		/// <summary>
 		/// Invokes the delegate function ptr
@@ -31,15 +31,6 @@ namespace Portakal
 		TReturn Invoke(TParameters... parameters)
 		{
 			return mFunctionPtr(parameters...);
-		}
-	private:
-		/// <summary>
-		/// Returns the delegate function ptr
-		/// </summary>
-		/// <returns></returns>
-		std::function<TReturn(TParameters...)> GetFunctionPtr() const
-		{
-			return mFunctionPtr;
 		}
 
 		/// <summary>
@@ -52,6 +43,15 @@ namespace Portakal
 			fnType** fnPointer = GetFunctionPtr().template target<fnType*>();
 
 			return (size_t)*fnPointer;
+		}
+
+		/// <summary>
+		/// Returns the delegate function ptr
+		/// </summary>
+		/// <returns></returns>
+		std::function<TReturn(TParameters...)> GetFunctionPtr() const
+		{
+			return mFunctionPtr;
 		}
 	private:
 		std::function<TReturn(TParameters...)> mFunctionPtr;

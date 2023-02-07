@@ -4,6 +4,7 @@
 namespace Portakal
 {
 	class DomainFolder;
+	class WindowEvent;
 	class PORTAKAL_API DomainObserverWindow : public EditorWindow
 	{
 		GENERATE_CLASS(DomainObserverWindow);
@@ -11,7 +12,7 @@ namespace Portakal
 		DomainObserverWindow() = default;
 		~DomainObserverWindow() = default;
 	private:
-
+		void OnEvent(const WindowEvent* pEvent);
 		// Inherited via EditorWindow
 		virtual void OnShow() override;
 		virtual void OnHide() override;
