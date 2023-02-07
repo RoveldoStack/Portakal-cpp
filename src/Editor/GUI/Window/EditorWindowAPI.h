@@ -14,7 +14,7 @@ namespace Portakal
 		static EditorWindowAPI* mAPI;
 	public:
 		static EditorWindow* CreateWindow(Type* pType);
-		static EditorWindow* CreateFromSettings(const EditorWindowSettings& settings);
+		static EditorWindow* CreateFromSetting(const EditorWindowSetting& setting);
 
 		template<typename TWindow>
 		static TWindow* CreateWindow()
@@ -33,6 +33,7 @@ namespace Portakal
 
 		Array<EditorWindow*> GetWindows() const noexcept { return _windows; }
 		EditorWindow* CreateWindowInternal(Type* pTargetType);
+		EditorWindow* CreateWindowFromSettingsInternal(Type* pType, const EditorWindowSetting& setting);
 		void DeleteWindow(EditorWindow* pWindow);
 
 		void PreValidate();

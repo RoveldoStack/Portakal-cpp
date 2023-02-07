@@ -12,9 +12,30 @@ namespace Portakal
 
 		return mAPI->CreateWindowInternal(pType);
 	}
-	EditorWindow* EditorWindowAPI::CreateFromSettings(const EditorWindowSettings& settings)
+	EditorWindow* EditorWindowAPI::CreateFromSetting(const EditorWindowSetting& settings)
 	{
-		return nullptr;
+		if (mAPI == nullptr)
+			return nullptr;
+		/*
+		* Try get type
+		*/
+		Array<Type*> types = Assembly::GetProcessAssembly()->GetTypes();
+		Type* pFoundType = nullptr;
+		for (unsigned int i = 0; i < types.GetCursor(); i++)
+		{
+			Type* pType = types[i];
+			if (pType->GetTypeName() == settings.Name)
+			{
+				pFoundType = pType;
+				break;
+			}
+		}
+
+		if (pFoundType == nullptr)
+			return nullptr;
+
+		
+		return mAPI->CreateWindowFromSettingsInternal(pFoundType,settings);
 	}
 	EditorWindowAPI::EditorWindowAPI()
 	{
@@ -43,6 +64,26 @@ namespace Portakal
 
 		return pWindow;
 	}
+	EditorWindow* EditorWindowAPI::CreateWindowFromSettingsInternal(Type* pType, const EditorWindowSetting& setting)
+	{
+		/*
+		* Create
+		*/
+		EditorWindow* pWindow = (EditorWindow*)pType->CreateDefaultHeapObject();
+		if (pWindow == nullptr)
+			return nullptr;
+
+		pWindow->_SetVisibility(true);
+		pWindow->mID = setting.ID;
+		pWindow->mDockState = setting.DockState;
+
+		pWindow->OnInitialize();
+		pWindow->OnShow();
+
+		mAPI->_windows.Add(pWindow);
+
+		return pWindow;
+	}
 	void EditorWindowAPI::DeleteWindow(EditorWindow* pWindow)
 	{
 		if (pWindow == nullptr)
@@ -57,7 +98,11 @@ namespace Portakal
 	}
 	void EditorWindowAPI::PreValidate()
 	{
-
+		for (int i = 0; i < _windows.GetCursor(); i++)
+		{
+			DeleteWindow(_windows[i]);
+			i--;
+		}
 	}
 	void EditorWindowAPI::PostValidate()
 	{

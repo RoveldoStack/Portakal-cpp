@@ -1,42 +1,29 @@
 #pragma once
-#include <Runtime/Resource/ResourceSubObject.h>
+#include <Runtime/Core/Core.h>
+#include <Runtime/Containers/Array.h>
 #include <Runtime/Containers/Guid.h>
 
 namespace Portakal
 {
+	class ResourceSubObject;
 	class PORTAKAL_API Resource
 	{
 	public:
-		Resource(const ResourceLoadDesc& desc, const Guid& id)
-		{
+		Resource();
+		~Resource();
 
-		}
-
-		FORCEINLINE bool IsLoaded() const noexcept;
-		FORCEINLINE ResourceSubObject* GetSubObject() const noexcept;
-
-		void LoadSync()
-		{
-
-		}
-		void UnloadSync()
-		{
-
-		}
-		void DestroyResourceSnyc()
-		{
-
-		}
+		void LoadSync();
+		void UnloadSync();
 	private:
-		void LoadInternalSync()
-		{
+		ResourceSubObject* mSubObject;
+		Guid mID;
+		String mName;
+		String mAbsolutePath;
+		String mType;
+		unsigned long long mByteOffset;
+		unsigned long long mSize;
 
-		}
-	private:
-		String _type;
-		String _name;
-		Guid _id;
-		ResourceLoadDesc _loadDesc;
-		ResourceSubObject* _subObject;
+		bool mLoaded;
+
 	};
 }

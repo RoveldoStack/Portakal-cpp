@@ -13,6 +13,12 @@
 #include <Editor/GUI/Window/GUIWindowModule.h>
 #include <Editor/GUI/MenuItem/MenuItemTemplates.h>
 #include <Editor/GUI/MenuItem/GUIMainMenuItemModule.h>
+#include <Editor/Project/ProjectModule.h>
+#include <Editor/GUI/Window/DomainObserverWindow.h>
+#include <Editor/GUI/Window/WorldObserverWindow.h>
+#include <Editor/GUI/Window/ObjectObserverWindow.h>
+#include <Editor/GUI/Window/GameObserverWindow.h>
+#include <Editor/Domain/DomainModule.h>
 
 int main(unsigned int argumentCount, const char** ppArguments)
 {
@@ -50,6 +56,19 @@ int main(unsigned int argumentCount, const char** ppArguments)
 	graphicsModuleParams.WindowedDescs.Add(gdDesc);
 
 	pApplication->CreateModule<Portakal::GraphicsModule>(graphicsModuleParams);
+
+	/*
+	* Create project module
+	*/
+	const Portakal::String projectFolderPath = "C:\\Users\\Roveldo\\Documents\\Portakal\\TestProject";
+	const Portakal::String projectName = "TestProject";
+	pApplication->CreateModule<Portakal::ProjectModule>(projectFolderPath, projectName);
+
+	/*
+	* Create domain module
+	*/
+	pApplication->CreateModule<Portakal::DomainModule>();
+
 
 	pApplication->CreateModule<Portakal::ImGuiExecutorModule>();
 

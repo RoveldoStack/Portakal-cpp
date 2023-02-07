@@ -1,32 +1,17 @@
 #pragma once
-#include <Runtime/Core/Core.h>
+#include <Runtime/Object/TaggedObject.h>
 
 namespace Portakal
 {
 	class Resource;
-
-	class PORTAKAL_API ResourceSubObject
+	class PORTAKAL_API ResourceSubObject : public TaggedObject
 	{
-		friend class Resource;
+		GENERATE_CLASS(ResourceSubObject);
 	public:
-		ResourceSubObject() : _ownerResource(nullptr),_destroyed(false) {}
 
-		FORCEINLINE bool IsVirtualSubObject() const noexcept { return _ownerResource == nullptr; }
-		FORCEINLINE bool IsDestroyed() const noexcept { return _destroyed; }
-
-		void DestroySubObject()
-		{
-			DestroySubObjectCore();
-
-			_destroyed = true;
-		}
-
-	protected:
-		virtual void DestroySubObjectCore() = 0;
+		FORCEINLINE Resource* GetOwnerResource() const noexcept { return mOwnerResource; }
+		FORCEINLINE bool IsVirtual const noexcept{ return mOwnerResource == nullptr; }
 	private:
-		void _SetOwnerResource(Resource* pResource) { _ownerResource = pResource; }
-	private:
-		Resource* _ownerResource;
-		bool _destroyed;
+		Resource* mOwnerResource;
 	};
 }

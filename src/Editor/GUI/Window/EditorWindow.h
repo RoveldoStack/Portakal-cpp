@@ -19,6 +19,7 @@ namespace Portakal
 		FORCEINLINE Vector2<unsigned int> GetPosition() const noexcept { return mPos; }
 		FORCEINLINE Vector2<unsigned int> GetSize() const noexcept { return mSize; }
 		FORCEINLINE EditorWindowDockState GetDockState() const noexcept { return mDockState; }
+		FORCEINLINE Guid GetID() const noexcept { return mID; }
 
 		virtual void OnShow() = 0;
 		virtual void OnHide() = 0;
@@ -36,6 +37,7 @@ namespace Portakal
 		Vector2<unsigned int> mPos;
 		Vector2<unsigned int> mSize;
 		EditorWindowDockState mDockState;
+		Guid mID;
 		bool mVisible;
 		bool mCloseRequest;
 	};

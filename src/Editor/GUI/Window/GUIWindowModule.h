@@ -22,6 +22,11 @@ namespace Portakal
 		virtual void PreValidate() override;
 		virtual void PostValidate() override;
 		virtual void OnEvent(WindowEvent* pEvent) override;
+
+	private:
+		void CreateDefaultSettings();
+		void SaveSettingsToFile();
+		void LoadWindowsFromFile();
 	private:
 		EditorWindowAPI* mAPI;
 		bool mLayoutInitialized;

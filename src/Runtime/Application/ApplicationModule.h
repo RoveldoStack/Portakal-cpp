@@ -30,6 +30,9 @@ namespace Portakal
 		virtual ~ApplicationModule() = default;
 
 		FORCEINLINE Application* GetOwnerApplication() const noexcept { return mOwnerApplication; }
+
+		void PostValidationRequest();
+		void PostQuitMessage(const String& message);
 	private:	
 
 		void _SetOwnerApplication(Application* pApplication) { mOwnerApplication = pApplication; }

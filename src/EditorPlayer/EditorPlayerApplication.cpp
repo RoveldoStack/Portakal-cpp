@@ -38,7 +38,7 @@ namespace Portakal
         */
         _defaultWindow->Show();
 
-        ProjectGenerator::GenerateSync("TestProject", "C:/Users/Roveldo/Documents/Portakal");
+        //ProjectGenerator::GenerateSync("TestProject", "C:/Users/Roveldo/Documents/Portakal");
     }
     void EditorPlayerApplication::PreTick()
     {

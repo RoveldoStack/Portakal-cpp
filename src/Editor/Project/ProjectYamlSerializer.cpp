@@ -37,9 +37,9 @@ namespace Portakal
 
 		pTarget->Name = node["Name"].as<std::string>().c_str();
 
-		pTarget->VersionMajor = node["Major version"].as<unsigned int>();
-		pTarget->VersionMinor = node["Minor version"].as<unsigned int>();
-		pTarget->VersionPatch = node["Patch version"].as<unsigned int>();
+		pTarget->VersionMajor = node["Major Version"].as<unsigned int>();
+		pTarget->VersionMinor = node["Minor Version"].as<unsigned int>();
+		pTarget->VersionPatch = node["Patch Version"].as<unsigned int>();
 
 		pTarget->ID = Guid::FromString(node["ID"].as<std::string>().c_str());
 	}

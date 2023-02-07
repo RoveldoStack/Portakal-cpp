@@ -3,7 +3,7 @@
 
 namespace Portakal
 {
-	enum class PORTAKAL_API EditorWindowDockState : unsigned char
+	enum class PORTAKAL_API EditorWindowDockState : unsigned int
 	{
 		None = 0,
 		Center = 1,
