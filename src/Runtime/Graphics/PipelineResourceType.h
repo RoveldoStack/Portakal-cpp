@@ -3,7 +3,7 @@
 
 namespace Portakal
 {
-	enum class PORTAKAL_API GraphicsResourceType
+	enum class PORTAKAL_API PipelineResourceType
 	{
         ConstantBuffer,
         StructuredBufferReadOnly,

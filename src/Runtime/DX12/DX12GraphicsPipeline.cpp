@@ -27,7 +27,7 @@ namespace Portakal
 		*/
 		for (unsigned int tableIndex = 0; tableIndex < desc.ResourceState.Slots.GetCursor(); tableIndex++)
 		{
-			const GraphicsResourceTableLayoutDesc& table = desc.ResourceState.Slots[tableIndex];
+			const PipelineResourceTableDesc& table = desc.ResourceState.Slots[tableIndex];
 			unsigned int currentStageConstantBufferCount = 0;
 			unsigned int currentStageTextureCount = 0;
 			unsigned int currentStageSamplerCount = 0;
@@ -37,23 +37,23 @@ namespace Portakal
 			*/
 			for (unsigned int resourceIndex = 0; resourceIndex < table.Slots.GetCursor(); resourceIndex++)
 			{
-				const GraphicsResourceTableEntry& resourceSlot = table.Slots[resourceIndex];
+				const PipelineResourceEntry& resourceSlot = table.Slots[resourceIndex];
 
 
 				switch (resourceSlot.Type)
 				{
-					case Portakal::GraphicsResourceType::ConstantBuffer:
+					case Portakal::PipelineResourceType::ConstantBuffer:
 					{
 						currentStageConstantBufferCount++;
 						break;
 					}
-					case Portakal::GraphicsResourceType::TextureReadOnly:;
-					case Portakal::GraphicsResourceType::TextureReadWrite:
+					case Portakal::PipelineResourceType::TextureReadOnly:;
+					case Portakal::PipelineResourceType::TextureReadWrite:
 					{
 						currentStageTextureCount++;
 						break;
 					}
-					case Portakal::GraphicsResourceType::Sampler:
+					case Portakal::PipelineResourceType::Sampler:
 					{
 						currentStageSamplerCount++;
 						break;

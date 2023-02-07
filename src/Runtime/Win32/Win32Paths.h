@@ -3,12 +3,12 @@
 
 namespace Portakal
 {
-	class PORTAKAL_API PlatformPaths
+	class PORTAKAL_API Win32Paths
 	{
 	public:
-		PlatformPaths() = delete;
-		~PlatformPaths() = delete;
-
+		Win32Paths() = delete;
+		~Win32Paths() = delete;
+		
 		FORCEINLINE static String GetEditorInstallPath();
 	};
 }

@@ -33,7 +33,7 @@ namespace Portakal
 		FORCEINLINE static D3D12_RENDER_TARGET_BLEND_DESC GetBlendingAttachmentDesc(const BlendingAttachmentDesc& desc);
 
 		FORCEINLINE static D3D12_SHADER_VISIBILITY GetShaderStageVisibility(const ShaderStage stage);
-		FORCEINLINE static D3D12_ROOT_PARAMETER_TYPE GetRootParameterType(const GraphicsResourceType type);
-		FORCEINLINE static D3D12_DESCRIPTOR_RANGE_TYPE GetDescriptorRangeType(const GraphicsResourceType type);
+		FORCEINLINE static D3D12_ROOT_PARAMETER_TYPE GetRootParameterType(const PipelineResourceType type);
+		FORCEINLINE static D3D12_DESCRIPTOR_RANGE_TYPE GetDescriptorRangeType(const PipelineResourceType type);
 	};
 }

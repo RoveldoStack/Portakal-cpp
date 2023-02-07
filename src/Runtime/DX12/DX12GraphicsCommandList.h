@@ -33,7 +33,7 @@ namespace Portakal
 	private:
 		void FreeFormerFramebufferBarriers();
 	private:
-		Array<DXPTR<ID3D12Resource>> _intermediateUploadBuffers;
+		Array<DXPTR<ID3D12Resource>> mIntermediateUploadBuffers;
 		DXPTR<ID3D12GraphicsCommandList> mCmdList;
 		ID3D12CommandAllocator* mAllocator;
 

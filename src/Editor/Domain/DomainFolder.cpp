@@ -2,7 +2,9 @@
 #include <Runtime/Platform/PlatformDirectory.h>
 #include <Runtime/Log/Log.h>
 #include <Runtime/Platform/PlatformMessage.h>
-
+#include <Editor/Domain/DomainFileDescriptorYamlSerialize.h>
+#include <Runtime/Yaml/Yaml.h>
+#include <Runtime/Platform/PlatformFile.h>
 namespace Portakal
 {
 	DomainFolder::DomainFolder(DomainFolder* pParentFolder, const String& path) : mParentFolder(nullptr)
@@ -31,6 +33,11 @@ namespace Portakal
 		for (unsigned int i = 0; i < files.GetCursor(); i++)
 		{
 			const String filePath = files[i];
+			String fileDescriptorContent;
+			PlatformFile::Read(filePath, fileDescriptorContent);
+
+			DomainFileDescriptor fileDescriptor = {};
+			Yaml::ToObject(fileDescriptorContent, &fileDescriptor);
 		}
 
 		/*
@@ -47,6 +54,22 @@ namespace Portakal
 	}
 	DomainFolder::~DomainFolder()
 	{
+		/*
+		* Delete file entries
+		*/
+		for (unsigned int i = 0; i < mFiles.GetCursor(); i++)
+		{
+			delete mFiles[i];
+		}
+		mFiles.Clear();
 
+		/*
+		* Delete folder entries
+		*/
+		for (unsigned int i = 0; i < mSubFolders.GetCursor(); i++)
+		{
+			delete mSubFolders[i];
+		}
+		mSubFolders.Clear();
 	}
 }

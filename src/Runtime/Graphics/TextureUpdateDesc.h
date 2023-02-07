@@ -9,6 +9,8 @@ namespace Portakal
 		unsigned int OffsetWidth;
 		unsigned int OffsetHeight;
 		unsigned int OffsetDepth;
+		unsigned int MipLevel;
+		unsigned int ArrayLevel;
 		const unsigned char* pData;
 	};
 }

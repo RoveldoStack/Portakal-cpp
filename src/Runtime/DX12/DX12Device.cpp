@@ -77,7 +77,7 @@ namespace Portakal
 	{
 		return nullptr;
 	}
-	GraphicsResourceTable* DX12Device::CreateResourceTableCore(const GraphicsResourceTableCreateDesc& desc)
+	ResourceTable* DX12Device::CreateResourceTableCore(const ResourceTableCreateDesc& desc)
 	{
 		return new DX12ResourceTable(desc,this);
 	}

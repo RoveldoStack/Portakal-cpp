@@ -35,8 +35,8 @@ namespace Portakal
 	class Sampler;
 	struct SamplerCreateDesc;
 
-	class GraphicsResourceTable;
-	struct GraphicsResourceTableCreateDesc;
+	class ResourceTable;
+	struct ResourceTableCreateDesc;
 
 	struct StandaloneGraphicsDeviceCreateDesc;
 	struct WindowedGraphicsDeviceCreateDesc;
@@ -58,7 +58,7 @@ namespace Portakal
 		Framebuffer* CreateFramebuffer(const FramebufferCreateDesc& desc);
 		Pipeline* CreateGraphicsPipeline(const GraphicsPipelineCreateDesc& desc);
 		Pipeline* CreateComputePipeline(const ComputePipelineCreateDesc& desc);
-		GraphicsResourceTable* CreateResourceTable(const GraphicsResourceTableCreateDesc& desc);
+		ResourceTable* CreateResourceTable(const ResourceTableCreateDesc& desc);
 
 
 		void UpdateBuffer(GraphicsBuffer* pBuffer, const GraphicsBufferUpdateDesc& desc);
@@ -90,7 +90,7 @@ namespace Portakal
 		virtual Swapchain* CreateSwapchainCore(const SwapchainCreateDesc& desc) = 0;
 		virtual Pipeline* CreateGraphicsPipelineCore(const GraphicsPipelineCreateDesc& desc) = 0;
 		virtual Pipeline* CreateComputePipelineCore(const ComputePipelineCreateDesc& desc) = 0;
-		virtual GraphicsResourceTable* CreateResourceTableCore(const GraphicsResourceTableCreateDesc& desc) = 0;
+		virtual ResourceTable* CreateResourceTableCore(const ResourceTableCreateDesc& desc) = 0;
 
 		virtual void UpdateBufferCore(GraphicsBuffer* pBuffer, const GraphicsBufferUpdateDesc& desc) = 0;
 

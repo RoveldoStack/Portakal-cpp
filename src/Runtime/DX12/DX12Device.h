@@ -39,7 +39,7 @@ namespace Portakal
 		virtual Swapchain* CreateSwapchainCore(const SwapchainCreateDesc& desc) override;
 		virtual Pipeline* CreateGraphicsPipelineCore(const GraphicsPipelineCreateDesc& desc) override;
 		virtual Pipeline* CreateComputePipelineCore(const ComputePipelineCreateDesc& desc) override;
-		virtual GraphicsResourceTable* CreateResourceTableCore(const GraphicsResourceTableCreateDesc& desc) override;
+		virtual ResourceTable* CreateResourceTableCore(const ResourceTableCreateDesc& desc) override;
 		virtual void UpdateBufferCore(GraphicsBuffer* pBuffer, const GraphicsBufferUpdateDesc& desc) override;
 		virtual void WaitForFinishCore() override;
 		virtual void SubmitCommandsCore(const Array<CommandList*>& cmdBuffers) override;

@@ -3,6 +3,7 @@
 
 namespace Portakal
 {
+	class DomainFolder;
 	class PORTAKAL_API DomainObserverWindow : public EditorWindow
 	{
 		GENERATE_CLASS(DomainObserverWindow);
@@ -17,6 +18,9 @@ namespace Portakal
 		virtual void OnInitialize() override;
 		virtual void OnFinalize() override;
 		virtual void OnPaint() override;
+	private:
+		DomainFolder* mCurrentFolder;
+
 	};
 
 	START_GENERATE_TYPE(DomainObserverWindow);

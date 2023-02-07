@@ -19,6 +19,8 @@
 #include <Editor/GUI/Window/ObjectObserverWindow.h>
 #include <Editor/GUI/Window/GameObserverWindow.h>
 #include <Editor/Domain/DomainModule.h>
+#include <Editor/Resource/EditorResourceModule.h>
+
 
 int main(unsigned int argumentCount, const char** ppArguments)
 {
@@ -64,6 +66,20 @@ int main(unsigned int argumentCount, const char** ppArguments)
 	const Portakal::String projectName = "TestProject";
 	pApplication->CreateModule<Portakal::ProjectModule>(projectFolderPath, projectName);
 
+	/*
+	* Create editor resource module
+	*/
+	Portakal::Array<Portakal::EditorResourceRequest> resourceRequests;
+	resourceRequests.Add({"FolderIcon.png",Portakal::EditorResourceType::Image});
+	resourceRequests.Add({"ComponentIcon.png",Portakal::EditorResourceType::Image });
+	resourceRequests.Add({"DefaultIcon.png",Portakal::EditorResourceType::Image });
+	resourceRequests.Add({"InvalidIcon.png",Portakal::EditorResourceType::Image });
+	resourceRequests.Add({"SceneAspectIcon.png",Portakal::EditorResourceType::Image });
+	resourceRequests.Add({"SceneEntityIcon.png",Portakal::EditorResourceType::Image });
+	resourceRequests.Add({"SceneIcon.png",Portakal::EditorResourceType::Image });
+	resourceRequests.Add({"ShaderIcon.png",Portakal::EditorResourceType::Image });
+
+	pApplication->CreateModule<Portakal::EditorResourceModule>(resourceRequests);
 	/*
 	* Create domain module
 	*/

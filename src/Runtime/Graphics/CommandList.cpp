@@ -1,6 +1,6 @@
 #include "CommandList.h"
 #include <Runtime/Assert/Assert.h>
-#include <Runtime/Graphics/GraphicsResourceTableLayoutDesc.h>
+#include <Runtime/Graphics/PipelineResourceTableDesc.h>
 #include <Runtime/Graphics/ResourceStateDesc.h>
 #include <Runtime/Graphics/GraphicsDeviceObjects.h>
 

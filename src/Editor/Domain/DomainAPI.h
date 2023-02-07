@@ -11,7 +11,7 @@ namespace Portakal
 	private:
 		static DomainAPI* sAPI;
 	public:
-
+		FORCEINLINE static DomainFolder* GetRootFolder();
 	private:
 		DomainAPI(const String& domainFolderPath);
 		~DomainAPI();

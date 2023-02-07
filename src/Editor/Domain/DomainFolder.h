@@ -6,7 +6,6 @@
 namespace Portakal
 {
 	class DomainFile;
-
 	class PORTAKAL_API DomainFolder
 	{
 	public:

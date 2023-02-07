@@ -4,7 +4,7 @@
 
 namespace Portakal
 {
-	struct PORTAKAL_API GraphicsResourceTableCreateDesc
+	struct PORTAKAL_API ResourceTableCreateDesc
 	{
 		Array<GraphicsDeviceObject*> Resources;
 	};

@@ -2,7 +2,7 @@
 #include <Runtime/Graphics/WindowedGraphicsDeviceCreateDesc.h>
 #include <Runtime/Graphics/StandaloneGraphicsDeviceCreateDesc.h>
 #include <Runtime/Graphics/GraphicsDeviceObjects.h>
-#include <Runtime/Graphics/GraphicsResourceTableCreateDesc.h>
+#include <Runtime/Graphics/ResourceTableCreateDesc.h>
 #include <Runtime/Assert/Assert.h>
 #include <Runtime/Window/WindowChildDeviceAdapter.h>
 #include <Runtime/Graphics/Swapchain.h>
@@ -153,7 +153,7 @@ namespace Portakal
 
 		return pPipeline;
 	}
-	GraphicsResourceTable* GraphicsDevice::CreateResourceTable(const GraphicsResourceTableCreateDesc& desc)
+	ResourceTable* GraphicsDevice::CreateResourceTable(const ResourceTableCreateDesc& desc)
 	{
 		/*
 		* Validate resources
@@ -166,7 +166,7 @@ namespace Portakal
 			ASSERT(type == GraphicsDeviceObjectType::Buffer || type == GraphicsDeviceObjectType::Texture || type == GraphicsDeviceObjectType::Sampler, "GraphicsDevice", "Invalid graphics device object as resource!");
 		}
 
-		GraphicsResourceTable* pTable = CreateResourceTableCore(desc);
+		ResourceTable* pTable = CreateResourceTableCore(desc);
 
 		RegisterChildObject(pTable);
 

@@ -10,7 +10,7 @@
 
 namespace Portakal
 {
-	DX12ResourceTable::DX12ResourceTable(const GraphicsResourceTableCreateDesc& desc, DX12Device* pDevice) : GraphicsResourceTable(desc)
+	DX12ResourceTable::DX12ResourceTable(const ResourceTableCreateDesc& desc, DX12Device* pDevice) : ResourceTable(desc)
 	{
 		Array<DX12Sampler*> samplers;
 		Array<const GraphicsDeviceObject*> cbvsrvs;
@@ -65,15 +65,17 @@ namespace Portakal
 		* Create resource views for cbv_srv
 		*/
 		{
-			D3D12_CPU_DESCRIPTOR_HANDLE cpuHandle = mCbvSrvUavHeap->GetCPUDescriptorHandleForHeapStart();
-			const unsigned int cpuHandleIncrementSize = pDevice->GetDXDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-
-			for (unsigned int i = 0; i < cbvsrvs.GetCursor(); i++)
+			if (cbvsrvs.GetCursor() > 0)
 			{
-				const GraphicsDeviceObject* pObject = cbvsrvs[i];
+				D3D12_CPU_DESCRIPTOR_HANDLE cpuHandle = mCbvSrvUavHeap->GetCPUDescriptorHandleForHeapStart();
+				const unsigned int cpuHandleIncrementSize = pDevice->GetDXDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 
-				switch (pObject->GetDeviceObjectType())
+				for (unsigned int i = 0; i < cbvsrvs.GetCursor(); i++)
 				{
+					const GraphicsDeviceObject* pObject = cbvsrvs[i];
+
+					switch (pObject->GetDeviceObjectType())
+					{
 					case Portakal::GraphicsDeviceObjectType::Buffer:
 					{
 						const DX12Buffer* pBuffer = (const DX12Buffer*)pObject;
@@ -101,9 +103,10 @@ namespace Portakal
 						pDevice->GetDXDevice()->CreateShaderResourceView(pTexture->GetDXTexture(), &srvDesc, cpuHandle);
 						break;
 					}
-				}
+					}
 
-				cpuHandle.ptr += cpuHandleIncrementSize;
+					cpuHandle.ptr += cpuHandleIncrementSize;
+				}
 			}
 		}
 
@@ -111,30 +114,33 @@ namespace Portakal
 		* Create samplers
 		*/
 		{
-			D3D12_CPU_DESCRIPTOR_HANDLE cpuHandle = mSamplerHeap->GetCPUDescriptorHandleForHeapStart();
-			const unsigned int cpuHandleIncrementSize = pDevice->GetDXDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER);
-			for (unsigned int i = 0; i < samplers.GetCursor(); i++)
+			if (samplers.GetCursor() > 0)
 			{
-				const DX12Sampler* pSampler = (const DX12Sampler*)samplers[i];
+				D3D12_CPU_DESCRIPTOR_HANDLE cpuHandle = mSamplerHeap->GetCPUDescriptorHandleForHeapStart();
+				const unsigned int cpuHandleIncrementSize = pDevice->GetDXDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER);
+				for (unsigned int i = 0; i < samplers.GetCursor(); i++)
+				{
+					const DX12Sampler* pSampler = (const DX12Sampler*)samplers[i];
 
-				D3D12_SAMPLER_DESC samplerDesc = {};
-				samplerDesc.AddressU = DX12SamplerUtils::GetWrapMode(pSampler->GetAddressU());
-				samplerDesc.AddressV = DX12SamplerUtils::GetWrapMode(pSampler->GetAddressV());
-				samplerDesc.AddressW = DX12SamplerUtils::GetWrapMode(pSampler->GetAddressW());
-				samplerDesc.BorderColor[0] = 0;
-				samplerDesc.BorderColor[1] = 0;
-				samplerDesc.BorderColor[2] = 0;
-				samplerDesc.BorderColor[3] = 0;
-				samplerDesc.ComparisonFunc = DX12PipelineUtils::GetComparisionMethod(pSampler->GetComparisionMethod());
-				samplerDesc.Filter = DX12SamplerUtils::GetFilter(pSampler->GetFiltering());
-				samplerDesc.MaxAnisotropy = pSampler->GetMaxAnisotropy();
-				samplerDesc.MaxLOD = pSampler->GetMaxLod();
-				samplerDesc.MinLOD = pSampler->GetMinLod();
-				samplerDesc.MipLODBias = pSampler->GetLodBias();
+					D3D12_SAMPLER_DESC samplerDesc = {};
+					samplerDesc.AddressU = DX12SamplerUtils::GetWrapMode(pSampler->GetAddressU());
+					samplerDesc.AddressV = DX12SamplerUtils::GetWrapMode(pSampler->GetAddressV());
+					samplerDesc.AddressW = DX12SamplerUtils::GetWrapMode(pSampler->GetAddressW());
+					samplerDesc.BorderColor[0] = 0;
+					samplerDesc.BorderColor[1] = 0;
+					samplerDesc.BorderColor[2] = 0;
+					samplerDesc.BorderColor[3] = 0;
+					samplerDesc.ComparisonFunc = DX12PipelineUtils::GetComparisionMethod(pSampler->GetComparisionMethod());
+					samplerDesc.Filter = DX12SamplerUtils::GetFilter(pSampler->GetFiltering());
+					samplerDesc.MaxAnisotropy = pSampler->GetMaxAnisotropy();
+					samplerDesc.MaxLOD = pSampler->GetMaxLod();
+					samplerDesc.MinLOD = pSampler->GetMinLod();
+					samplerDesc.MipLODBias = pSampler->GetLodBias();
 
-				pDevice->GetDXDevice()->CreateSampler(&samplerDesc, cpuHandle);
+					pDevice->GetDXDevice()->CreateSampler(&samplerDesc, cpuHandle);
 
-				cpuHandle.ptr += cpuHandleIncrementSize;
+					cpuHandle.ptr += cpuHandleIncrementSize;
+				}
 			}
 		}
 
@@ -146,5 +152,9 @@ namespace Portakal
 	}
 	void DX12ResourceTable::OnDestroy()
 	{
+	}
+	void* DX12ResourceTable::GetHandle() const noexcept
+	{
+		return mCbvSrvUavHeap.Get();
 	}
 }

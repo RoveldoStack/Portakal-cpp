@@ -1,5 +1,5 @@
 #pragma once
-#include <Runtime/Graphics/GraphicsResourceType.h>
+#include <Runtime/Graphics/PipelineResourceType.h>
 #include <Runtime/Graphics/TextureCreateDesc.h>
 #include <d3d12.h>
 

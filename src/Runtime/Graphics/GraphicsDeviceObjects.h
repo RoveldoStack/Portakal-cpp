@@ -6,5 +6,5 @@
 #include <Runtime/Graphics/Shader.h>
 #include <Runtime/Graphics/Pipeline.h>
 #include <Runtime/Graphics/CommandList.h>
-#include <Runtime/Graphics/GraphicsResourceTable.h>
+#include <Runtime/Graphics/ResourceTable.h>
 #include <Runtime/Graphics/Swapchain.h>

@@ -1,11 +1,11 @@
 #pragma once
 #include <Runtime/Containers/Array.h>
-#include <Runtime/Graphics/GraphicsResourceTableLayoutDesc.h>
+#include <Runtime/Graphics/PipelineResourceTableDesc.h>
 
 namespace Portakal
 {
 	struct PORTAKAL_API ResourceStateDesc
 	{
-		Array<GraphicsResourceTableLayoutDesc> Slots;
+		Array<PipelineResourceTableDesc> Slots;
 	};
 }

@@ -3,6 +3,8 @@
 #include <Runtime/DXGI/DXGIUtils.h>
 #include <Runtime/DX12/DX12Device.h>
 #include <Runtime/Assert/Assert.h>
+#include <Runtime/Memory/Memory.h>
+#include <Runtime/Graphics/TextureUtils.h>
 
 namespace Portakal
 {
@@ -281,14 +283,102 @@ namespace Portakal
     }
     void DX12GraphicsCommandList::UpdateBufferCore(const GraphicsBufferUpdateDesc& desc, GraphicsBuffer* pBuffer)
     {
+
     }
     void DX12GraphicsCommandList::UpdateTextureCore(const TextureUpdateDesc& desc, Texture* pTexture)
     {
+        DX12Texture* pDXTexture = (DX12Texture*)pTexture;
+        const D3D12_RESOURCE_DESC textureDesc = pDXTexture->GetDXTexture()->GetDesc();
+        const DX12Device* pDevice = (const DX12Device*)GetOwnerDevice();
 
+        unsigned long long textureUploadBufferSize = 0;
+        D3D12_PLACED_SUBRESOURCE_FOOTPRINT textureSubResourceFootprint = {};
+
+        pDevice->GetDXDevice()->GetCopyableFootprints(&textureDesc, 0, 1, 0, &textureSubResourceFootprint, nullptr, nullptr, &textureUploadBufferSize);
+
+        /*
+        * Create upload buffer
+        */
+        D3D12_HEAP_PROPERTIES uploadBufferHeapProperties = {};
+        uploadBufferHeapProperties.Type = D3D12_HEAP_TYPE_UPLOAD;
+        uploadBufferHeapProperties.CPUPageProperty = D3D12_CPU_PAGE_PROPERTY_UNKNOWN;
+        uploadBufferHeapProperties.MemoryPoolPreference = D3D12_MEMORY_POOL_UNKNOWN;
+        uploadBufferHeapProperties.CreationNodeMask = 0;
+        uploadBufferHeapProperties.VisibleNodeMask = 0;
+
+        D3D12_RESOURCE_DESC uploadBufferResourceDesc = {};
+        uploadBufferResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+        uploadBufferResourceDesc.Format = DXGI_FORMAT_UNKNOWN;
+        uploadBufferResourceDesc.Width = textureUploadBufferSize;
+        uploadBufferResourceDesc.Height = 1;
+        uploadBufferResourceDesc.DepthOrArraySize = 1;
+        uploadBufferResourceDesc.MipLevels = 1;
+        uploadBufferResourceDesc.Alignment = 0;
+        uploadBufferResourceDesc.Flags = D3D12_RESOURCE_FLAG_NONE;
+        uploadBufferResourceDesc.SampleDesc = { 1,0 };
+        uploadBufferResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+
+        DXPTR<ID3D12Resource> uploadBuffer;
+        ASSERT(SUCCEEDED(pDevice->GetDXDevice()->CreateCommittedResource(&uploadBufferHeapProperties, D3D12_HEAP_FLAG_NONE,
+            &uploadBufferResourceDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(&uploadBuffer))), "DX12GraphicsCommandList", "Failed to create upload buffer for texture updating!");
+
+        /*
+        * Upload buffer content
+        */
+        unsigned char* pUploadBufferData = nullptr;
+        const unsigned char* pSourceData = desc.pData;
+        const unsigned int textureRowPitch = TextureUtils::GetFormatSize(pTexture->GetTextureFormat()) * pTexture->GetWidth();
+        const unsigned int textureSlicePitch = textureRowPitch * pTexture->GetHeight();
+
+        uploadBuffer->Map(0, nullptr, (void**)&pUploadBufferData);
+        for (unsigned int sliceIndex = 0; sliceIndex < textureSubResourceFootprint.Footprint.Depth; sliceIndex++)
+        {
+            unsigned char* pDestinationSlice = pUploadBufferData + textureSlicePitch * sliceIndex;
+            const unsigned char* pSourceSlice = desc.pData + textureSlicePitch * sliceIndex;
+            for (unsigned int rowIndex = 0; rowIndex < textureSubResourceFootprint.Footprint.Height; rowIndex++)
+            {
+                Memory::Copy(pSourceSlice + textureRowPitch * rowIndex, pDestinationSlice + textureSubResourceFootprint.Footprint.RowPitch * rowIndex, textureRowPitch);
+            }
+        }
+        uploadBuffer->Unmap(0, nullptr);
+
+        /*
+        * Copy upload buffer content to texture
+        */
+        D3D12_TEXTURE_COPY_LOCATION destinationCopyLocation = {};
+        destinationCopyLocation.pResource = pDXTexture->GetDXTexture();
+        destinationCopyLocation.Type = D3D12_TEXTURE_COPY_TYPE_SUBRESOURCE_INDEX;
+        destinationCopyLocation.PlacedFootprint = {};
+        destinationCopyLocation.SubresourceIndex = 0;
+
+        D3D12_TEXTURE_COPY_LOCATION sourceCopyLocation = {};
+        sourceCopyLocation.pResource = uploadBuffer.Get();
+        sourceCopyLocation.PlacedFootprint = textureSubResourceFootprint;
+        sourceCopyLocation.Type = D3D12_TEXTURE_COPY_TYPE_PLACED_FOOTPRINT;
+        sourceCopyLocation.SubresourceIndex = 0;
+
+        mCmdList->CopyTextureRegion(&destinationCopyLocation, 0, 0, 0, &sourceCopyLocation, nullptr);
+
+        /*
+        * Set resource barrier
+        */
+        D3D12_RESOURCE_BARRIER barrier = {};
+        barrier.Transition.pResource = pDXTexture->GetDXTexture();
+        barrier.Transition.StateBefore = pDXTexture->GetDXResourceState();
+        barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_GENERIC_READ;
+        barrier.Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
+        barrier.Flags = D3D12_RESOURCE_BARRIER_FLAG_NONE;
+        barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+
+        pDXTexture->MutateDXResourceState(D3D12_RESOURCE_STATE_GENERIC_READ);
+
+        mCmdList->ResourceBarrier(1, &barrier);
+
+        mIntermediateUploadBuffers.Add(uploadBuffer);
     }
     void DX12GraphicsCommandList::ClearCachedStateCore()
     {
-
+        mIntermediateUploadBuffers.Clear();
     }
     void DX12GraphicsCommandList::FreeFormerFramebufferBarriers()
     {

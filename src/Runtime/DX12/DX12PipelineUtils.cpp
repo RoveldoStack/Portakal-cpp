@@ -323,14 +323,14 @@ namespace Portakal
 		}
 	}
 
-	D3D12_ROOT_PARAMETER_TYPE DX12PipelineUtils::GetRootParameterType(const GraphicsResourceType type)
+	D3D12_ROOT_PARAMETER_TYPE DX12PipelineUtils::GetRootParameterType(const PipelineResourceType type)
 	{
 		switch (type)
 		{
-			case Portakal::GraphicsResourceType::ConstantBuffer:
+			case Portakal::PipelineResourceType::ConstantBuffer:
 				return D3D12_ROOT_PARAMETER_TYPE_CBV;
-			case Portakal::GraphicsResourceType::TextureReadOnly:
-			case Portakal::GraphicsResourceType::TextureReadWrite:
+			case Portakal::PipelineResourceType::TextureReadOnly:
+			case Portakal::PipelineResourceType::TextureReadWrite:
 				return D3D12_ROOT_PARAMETER_TYPE_SRV;
 			default:
 				ASSERT(false, "DX12PipelineUtils", "Invalid GraphicsResourceType!");
@@ -338,16 +338,16 @@ namespace Portakal
 		}
 	}
 
-	D3D12_DESCRIPTOR_RANGE_TYPE DX12PipelineUtils::GetDescriptorRangeType(GraphicsResourceType type)
+	D3D12_DESCRIPTOR_RANGE_TYPE DX12PipelineUtils::GetDescriptorRangeType(PipelineResourceType type)
 	{
 		switch (type)
 		{
-			case Portakal::GraphicsResourceType::ConstantBuffer:
+			case Portakal::PipelineResourceType::ConstantBuffer:
 				return D3D12_DESCRIPTOR_RANGE_TYPE_CBV;
-			case Portakal::GraphicsResourceType::TextureReadOnly:
-			case Portakal::GraphicsResourceType::TextureReadWrite:
+			case Portakal::PipelineResourceType::TextureReadOnly:
+			case Portakal::PipelineResourceType::TextureReadWrite:
 				return D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
-			case Portakal::GraphicsResourceType::Sampler:
+			case Portakal::PipelineResourceType::Sampler:
 				return D3D12_DESCRIPTOR_RANGE_TYPE_SAMPLER;
 			default:
 				ASSERT(false, "DX12PipelineUtils", "Invalid GraphicsResourceType");
