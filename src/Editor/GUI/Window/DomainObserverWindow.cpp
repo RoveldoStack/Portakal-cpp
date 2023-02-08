@@ -134,13 +134,26 @@ namespace Portakal
 		{
 			DomainFolder* pFolder = folders[i];
 
+			/*
+			* Draw image
+			*/
 			ImGui::SetCursorPos(currentCursorPosition);
 			ImGui::Image(mFolderIcon->GetTexture()->GetIsolatedResourceTable()->GetHandle(), { mItemSize.X,mItemSize.Y });
+
+			/*
+			* Draw text
+			*/
+			const ImVec2 textSize = ImGui::CalcTextSize(*pFolder->GetFolderName());
+			const float widthCoef = (mItemSize.X / 2)-(textSize.x / 2);
+			const ImVec2 textPosition = { currentCursorPosition.x + widthCoef,currentCursorPosition.y + mItemSize.Y + 10 };
+
+			ImGui::SetCursorPos(textPosition);
+			ImGui::Text(*pFolder->GetFolderName());
 
 			if (currentCursorPosition.x + mItemSize.X + mItemGap.X > availableSpace.x)
 			{
 				currentCursorPosition.x = startPosition.x;
-				currentCursorPosition.y += mItemSize.Y + mItemGap.Y;
+				currentCursorPosition.y += mItemSize.Y + mItemGap.Y + 24;
 			}
 			else
 			{
@@ -156,6 +169,9 @@ namespace Portakal
 		{
 			DomainFile* pFile = files[i];
 
+			/*
+			* Draw image
+			*/
 			TextureResource* pTexture = pFile->GetVisualizer()->OnPaint(pFile);
 			if (pTexture == nullptr)
 			{
@@ -166,16 +182,30 @@ namespace Portakal
 			ImGui::SetCursorPos(currentCursorPosition);
 			ImGui::Image(pTexture->GetIsolatedResourceTable()->GetHandle(), { mItemSize.X,mItemSize.Y });
 
+			/*
+			* Draw text
+			*/
+			const ImVec2 textSize = ImGui::CalcTextSize(*pFile->GetName());
+			const float widthCoef = (mItemSize.X / 2) - (textSize.x / 2);
+			const ImVec2 textPosition = { currentCursorPosition.x + widthCoef,currentCursorPosition.y + mItemSize.Y + 10 };
+
+			ImGui::SetCursorPos(textPosition);
+			ImGui::Text(*pFile->GetName());
+
 			if (currentCursorPosition.x + mItemSize.X + mItemGap.X > availableSpace.x)
 			{
 				currentCursorPosition.x = startPosition.x;
-				currentCursorPosition.y += mItemSize.Y + mItemGap.Y;
+				currentCursorPosition.y += mItemSize.Y + mItemGap.Y + 24;
 			}
 			else
 			{
 				currentCursorPosition.x += mItemSize.X + mItemGap.X;
 			}
 		}
+
+		/*
+		* Handle popups
+		*/
 	}
 	void DomainObserverWindow::OnFileDrop(const String& path)
 	{

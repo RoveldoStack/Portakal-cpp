@@ -160,7 +160,8 @@ namespace Portakal
 	void ImGuiRenderer::StartRendering(const float deltaTime)
 	{
 		ImGuiIO& io = ImGui::GetIO();
-		io.DeltaTime = deltaTime;
+		io.DeltaTime = deltaTime / 1000.0f;
+
 		StartRenderingCore();
 		ImGui::NewFrame();
 	}
