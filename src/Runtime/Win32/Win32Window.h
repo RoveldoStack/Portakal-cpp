@@ -14,6 +14,8 @@ namespace Portakal
 
 		FORCEINLINE HWND GetWin32WindowHandle() const noexcept { return mWindowHandle; }
 		FORCEINLINE HDC GetWin32WindowDeviceContext() const noexcept { return mDeviceContext;; }
+
+		void DispatchWin32Event(WindowEvent* pEvent);
 	private:
 		virtual void ShowCore() override;
 		virtual void HideCore() override;

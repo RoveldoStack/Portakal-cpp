@@ -5,6 +5,7 @@ namespace Portakal
 {
 	class DomainFolder;
 	class WindowEvent;
+	class DragDropEvent;
 	class PORTAKAL_API DomainObserverWindow : public EditorWindow
 	{
 		GENERATE_CLASS(DomainObserverWindow);
@@ -19,6 +20,10 @@ namespace Portakal
 		virtual void OnInitialize() override;
 		virtual void OnFinalize() override;
 		virtual void OnPaint() override;
+
+	private:
+		void OnFileDrop(const String& path);
+		void OnFolderDrop(const String& path);
 	private:
 		DomainFolder* mCurrentFolder;
 

@@ -9,6 +9,8 @@ namespace Portakal
 	class PORTAKAL_API Attribute : public Class
 	{
 	public:
+		Attribute() = default;
+		~Attribute() = default;
 	};
 
 	class PORTAKAL_API AttributeDispatcher

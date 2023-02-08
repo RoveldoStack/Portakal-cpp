@@ -18,6 +18,10 @@ namespace Portakal
 		FORCEINLINE Array<DomainFolder*> GetSubFolders() const noexcept { return mSubFolders; }
 		FORCEINLINE String GetFolderPath() const noexcept { return mPath; }
 		FORCEINLINE String GetFolderName() const noexcept { return mName; }
+
+		void CreateFileFromSource(const String& sourceFilePath);
+		void CreateFileDescriptor(const String& name, const String& sourceFilePath, const String& resourceType);
+
 	private:
 		DomainFolder* mParentFolder;
 		Array<DomainFile*> mFiles;

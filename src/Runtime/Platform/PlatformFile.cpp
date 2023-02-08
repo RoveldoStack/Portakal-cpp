@@ -35,41 +35,50 @@ namespace Portakal
     {
         return PlatformAbstraction::Read(path, block, startIndex, endIndex);
     }
-    bool PlatformFile::GetSize(const String& path, unsigned long long& sizeOut)
+    bool PlatformFile::Copy(const String& targetPath, const String& sourcePath)
     {
-        return PlatformAbstraction::GetSize(path, sizeOut);
+        return PlatformAbstraction::Copy(targetPath,sourcePath);
     }
-    bool PlatformFile::GetExtension(const String& path, String& extensionOut)
+    unsigned long long PlatformFile::GetSize(const String& path)
     {
-        return PlatformAbstraction::GetExtension(path, extensionOut);
+        unsigned long long output = 0;
+        if (PlatformAbstraction::GetSize(path, output))
+            return output;
+        return 0;
+    }
+    String PlatformFile::GetExtension(const String& path)
+    {
+        String output;
+        if (PlatformAbstraction::GetExtension(path, output))
+            return output;
+        return "";
     }
     bool PlatformFile::RemoveExtension(String& path)
     {
         return PlatformAbstraction::RemoveExtension(path);;
     }
-    bool PlatformFile::GetName(const String& path, String& nameOut)
+    String PlatformFile::GetName(const String& path)
     {
-        return PlatformAbstraction::GetName(path, nameOut);
+        String output;
+        if (PlatformAbstraction::GetName(path, output))
+            return output;
+        return "";
     }
-    bool PlatformFile::GetNameWithoutExtension(const String& path, String& nameOut)
+    String PlatformFile::GetNameWithoutExtension(const String& path)
     {
-        String name;
-        PlatformFile::GetName(path, name);
+        String name = PlatformFile::GetName(path);
+        
         RemoveExtension(name);
 
-        nameOut = name;
-
-        return true;
+        return name;
     }
-    bool PlatformFile::GetFileDirectory(const String& path, String& folderOut)
+    String PlatformFile::GetFileDirectory(const String& path)
     {
-        folderOut = path;
+        String name = PlatformFile::GetName(path);
 
-        String name;
-        PlatformFile::GetName(path, name);
+        String output = path;
+        output -= "\\" + name;
 
-        folderOut -= "/" + name;
-
-        return true;
+        return output;
     }
 }

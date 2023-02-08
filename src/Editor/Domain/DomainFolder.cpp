@@ -5,6 +5,13 @@
 #include <Editor/Domain/DomainFileDescriptorYamlSerialize.h>
 #include <Runtime/Yaml/Yaml.h>
 #include <Runtime/Platform/PlatformFile.h>
+#include <Editor/Asset/IAssetSerializer.h>
+#include <Editor/Asset/CustomAssetSerializerAttribute.h>
+#include <Editor/Domain/DomainFile.h>
+#include <Editor/Asset/CustomAssetImporterAttribute.h>
+#include <Editor/Asset/IAssetImporter.h>
+#include <Editor/Asset/SimpleTextAssetImporter.h>
+#include <Editor/Domain/DomainFileDescriptorYamlSerialize.h>
 namespace Portakal
 {
 	DomainFolder::DomainFolder(DomainFolder* pParentFolder, const String& path) : mParentFolder(nullptr)
@@ -29,15 +36,21 @@ namespace Portakal
 		* Collect files
 		*/
 		Array<String> files;
-		PlatformDirectory::GetFileNamesViaExtension(path, ".pid", files);
+		PlatformDirectory::GetFileNamesViaExtension(path + "\\", ".fd", files);
 		for (unsigned int i = 0; i < files.GetCursor(); i++)
 		{
+			/*
+			* Read domain file descriptor
+			*/
 			const String filePath = files[i];
-			String fileDescriptorContent;
-			PlatformFile::Read(filePath, fileDescriptorContent);
 
-			DomainFileDescriptor fileDescriptor = {};
-			Yaml::ToObject(fileDescriptorContent, &fileDescriptor);
+			/*
+			* Create domain file
+			*/
+			const String sourceFilePath = path + "\\";
+			DomainFile* pFile = new DomainFile(filePath, this);
+
+			mFiles.Add(pFile);
 		}
 
 		/*
@@ -71,5 +84,121 @@ namespace Portakal
 			delete mSubFolders[i];
 		}
 		mSubFolders.Clear();
+	}
+	void DomainFolder::CreateFileFromSource(const String& sourceFilePath)
+	{
+		/*
+		* First validate if the file exists
+		*/
+		if (!PlatformFile::IsExist(sourceFilePath))
+		{
+			LOG("DomainFile", "Invalid file path: {%s}", *sourceFilePath);
+			return;
+		}
+
+		/*
+		* Get extension
+		*/
+		const String extension = PlatformFile::GetExtension(sourceFilePath);
+
+		/*
+		* Check for asset serializer
+		*/
+		const Array<Type*> types = Assembly::GetProcessAssembly()->GetTypes();
+		CustomAssetImporterAttribute* pFoundAttribute = nullptr;
+		Type* pFoundType = nullptr;
+		for (unsigned int i = 0; i < types.GetCursor(); i++)
+		{
+			/*
+			* Get and validate sub class
+			*/
+			Type* pType = types[i];
+
+			if (!pType->IsSubClassOf(typeof(IAssetImporter)))
+				continue;
+
+			/*
+			* Validate attribute
+			*/
+			CustomAssetImporterAttribute* pAttribute = pType->GetAttribute<CustomAssetImporterAttribute>();
+			if (pAttribute == nullptr)
+				continue;
+
+			/*
+			* Validate extensions
+			*/
+			const Array<String> extensions = pAttribute->GetExtensions();
+			const int index = extensions.FindIndex(extension);
+			if (index == -1)
+				continue;
+
+			pFoundAttribute = pAttribute;
+			pFoundType = pType;
+		}
+
+		/*
+		* Check if there is a valid match for the requested file
+		*/
+		if (pFoundType == nullptr) // return if there is no importers
+			return;
+
+		/*
+		* Read the file
+		*/
+		ByteBlock fileContent;
+		if (!PlatformFile::Read(sourceFilePath, fileContent))
+		{
+			LOG("DomainFolder", "Failed to load the file");
+			return;
+		}
+
+		/*
+		* Write file descriptor file
+		*/
+		const String name = PlatformFile::GetNameWithoutExtension(sourceFilePath);
+		const String targetPath = mPath + "\\" + PlatformFile::GetName(sourceFilePath);
+		CreateFileDescriptor(name,PlatformFile::GetFileDirectory(targetPath), pFoundAttribute->GetResourceType());
+
+		/*
+		* Copy source file
+		*/
+		if (!PlatformFile::Copy(targetPath, sourceFilePath))
+		{
+			LOG("DomainFolder", "Failed to copy the source file");
+			return;
+		}
+
+		/*
+		* Create file's asset importer
+		*/
+		IAssetImporter* pImporter = (IAssetImporter*)pFoundType->CreateDefaultHeapObject();
+
+		pImporter->OnImport(this, targetPath, fileContent);
+
+		delete pImporter;
+	}
+	void DomainFolder::CreateFileDescriptor(const String& name,const String& sourceFilePath, const String& resourceType)
+	{
+		const String path = mPath + "\\" + name + ".fd";
+
+		if (!PlatformFile::Create(path))
+		{
+			LOG("DomainFolder", "Failed to create file descriptor");
+			return;
+		}
+
+		DomainFileDescriptor fileDescriptor = {};
+		fileDescriptor.ID = Guid::Create();
+		fileDescriptor.SourceFile = sourceFilePath;
+		fileDescriptor.ResourceType = resourceType;
+
+		const String fileDescriptorYAML = Yaml::ToYaml(&fileDescriptor);
+
+		if (!PlatformFile::Write(path, fileDescriptorYAML))
+		{
+			LOG("DomainFOlder", "Failed to write file descriptor");
+			return;
+		}
+
 	}
 }

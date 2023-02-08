@@ -111,8 +111,8 @@ namespace Portakal
 			if (!PlatformFile::IsExist(file))
 				continue;
 
-			String fileExtension;
-			PlatformFile::GetExtension(file, fileExtension);
+			const String fileExtension = PlatformFile::GetExtension(file);
+			
 
 			if (fileExtension == extension)
 				namesOut.Add(file);

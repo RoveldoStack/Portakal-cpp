@@ -15,6 +15,12 @@ namespace Portakal
 		mBlock = new unsigned char[sizeInBytes];
 		mSize = sizeInBytes;
 	}
+	ByteBlock::ByteBlock(const ByteBlock& other)
+	{
+		mBlock = new unsigned char[other.GetBlockSizeInBytes()];
+		mSize = other.mSize;
+		Memory::Copy(other.mBlock, mBlock, mSize);
+	}
 	ByteBlock::ByteBlock()
 	{
 		mBlock = nullptr;

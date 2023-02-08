@@ -12,6 +12,8 @@ namespace Portakal
 		WindowMoved,
 		WindowResized,
 
+		DragDrop,
+
 		KeyboardDown,
 		KeyboardUp,
 		Char,

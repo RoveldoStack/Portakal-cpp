@@ -159,6 +159,8 @@ namespace Portakal
 		*/
 		unsigned long long fileSize = 0;
 		GetSize(path, fileSize);
+		if (fileSize == 0)
+			return true;
 
 		const unsigned long expectedReadInterval = endIndex == 0 ? fileSize : endIndex - startIndex;
 		if (fileSize <= 0 || expectedReadInterval > fileSize)
@@ -195,6 +197,10 @@ namespace Portakal
 
 		return true;
 	}
+	bool Win32File::Copy(const String& targetPath, const String& sourcePath)
+	{
+		return CopyFile(*sourcePath, *targetPath, TRUE);
+	}
 	bool Win32File::GetSize(const String& path, unsigned long long& sizeOut)
 	{
 		const HANDLE fileHandle = CreateFileA(*path,
@@ -222,7 +228,7 @@ namespace Portakal
 
 		extensionOut = PathFindExtensionA(*path);
 
-		return false;
+		return true;
 	}
 	bool Win32File::GetName(const String& path, String& nameOut)
 	{

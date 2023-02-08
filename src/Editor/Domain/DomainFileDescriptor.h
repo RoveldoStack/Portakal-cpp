@@ -10,7 +10,8 @@ namespace Portakal
 	{
 		GENERATE_CLASS(DomainFileDescriptor);
 
-		String TypeName;
+		String ResourceType;
+		String SourceFile;
 		Guid ID;
 	};
 

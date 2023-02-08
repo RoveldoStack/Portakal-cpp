@@ -12,12 +12,34 @@
 #include <Runtime/Window/WindowAPI.h>
 #include <Runtime/Message/MessageAPI.h>
 #include <Runtime/Log/Log.h>
+#include <Runtime/Window/DragDropEvent.h>
+#include <Runtime/Platform/PlatformDirectory.h>
+#include <Runtime/Platform/PlatformFile.h>
+#include <Editor/Asset/TextAssetSerializer.h>
+#include <Editor/Domain/DomainFile.h>
 
 namespace Portakal
 {
 	void DomainObserverWindow::OnEvent(const WindowEvent* pEvent)
 	{
+		if (pEvent->GetEventType() == WindowEventType::DragDrop)
+		{
+			const DragDropEvent* pDrop = (const DragDropEvent*)pEvent;
+			const String path = pDrop->GetPath();
 
+			if (PlatformDirectory::IsDirectoryExist(path))
+			{
+				OnFolderDrop(path);
+			}
+			else if (PlatformFile::IsExist(path))
+			{
+				OnFileDrop(path);
+			}
+			else // invalid
+			{
+
+			}
+		}
 	}
 
 	void DomainObserverWindow::OnShow()
@@ -62,13 +84,45 @@ namespace Portakal
 
 	void DomainObserverWindow::OnPaint()
 	{
+		/*
+		* Validate current folder
+		*/
 		if (mCurrentFolder == nullptr)
 			return;
 
+		/*
+		* Draw header
+		*/
 		ImGui::Text(*mCurrentFolder->GetFolderPath());
 		ImGui::Separator();
 		ImGui::Spacing();
 
+		/*
+		* Draw folders
+		*/
+
+		/*
+		* Draw files
+		*/
+		const Array<DomainFile*> files = mCurrentFolder->GetFiles();
+		for (unsigned int i = 0; i < files.GetCursor(); i++)
+		{
+			DomainFile* pFile = files[i];
+
+			ImGui::Text(*pFile->GetName());
+		}
 		//ImGui::Image(pTex->GetTexture()->GetIsolatedResourceTable()->GetHandle(), {128,128});
 	}
+	void DomainObserverWindow::OnFileDrop(const String& path)
+	{
+		if (mCurrentFolder == nullptr)
+			return;
+
+		mCurrentFolder->CreateFileFromSource(path);
+	}
+	void DomainObserverWindow::OnFolderDrop(const String& path)
+	{
+
+	}
+
 }

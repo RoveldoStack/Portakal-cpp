@@ -8,6 +8,7 @@ namespace Portakal
 	public:
 		ByteBlock(const void* pData, const unsigned long long sizeInBytes);
 		ByteBlock(const unsigned long long sizeInBytes);
+		ByteBlock(const ByteBlock& other);
 		ByteBlock();
 		~ByteBlock();
 

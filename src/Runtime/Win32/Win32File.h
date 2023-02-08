@@ -20,6 +20,7 @@ namespace Portakal
 		FORCEINLINE static bool Write(const String& path, const ByteBlock& block, const unsigned long long offset);
 		FORCEINLINE static bool Read(const String& path, String& contentOut, const unsigned long long startIndex = 0, const unsigned long long endIndex = 0);
 		FORCEINLINE static bool Read(const String& path, ByteBlock& block, const unsigned long long startIndex = 0, const unsigned long long endIndex = 0);
+		FORCEINLINE static bool Copy(const String& targetPath, const String& sourcePath);
 		FORCEINLINE static bool GetSize(const String& path, unsigned long long& sizeOut);
 		FORCEINLINE static bool GetExtension(const String& path, String& extensionOut);
 		FORCEINLINE static bool GetName(const String& path, String& nameOut);

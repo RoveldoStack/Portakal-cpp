@@ -3,6 +3,8 @@
 #include <Runtime/Window/WindowMovedEvent.h>
 #include <Runtime/Window/WindowResizedEvent.h>
 
+#include <Runtime/Window/DragDropEvent.h>
+
 #include <Runtime/Window/MouseButtonDownEvent.h>
 #include <Runtime/Window/MouseButtonUpEvent.h>
 #include <Runtime/Window/MouseMovedEvent.h>
