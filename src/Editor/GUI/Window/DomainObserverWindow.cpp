@@ -82,11 +82,13 @@ namespace Portakal
 		* Load icons
 		*/
 		mInvalidIcon = (EditorImageResource*)EditorResourceAPI::GetResource("InvalidIcon.png");
+		mFolderIcon = (EditorImageResource*)EditorResourceAPI::GetResource("FolderIcon.png");
 
 		/*
 		* Validate ICONS
 		*/
 		ASSERT(mInvalidIcon != nullptr, "DomainObserverWindow", "Unable to find invalid icon!");
+		ASSERT(mFolderIcon != nullptr, "DomainobserverWindow", "Unable to find folder icon");
 
 		/*
 		* Set defaults
@@ -124,6 +126,27 @@ namespace Portakal
 		/*
 		* Draw folders
 		*/
+		const Array<DomainFolder*> folders = mCurrentFolder->GetSubFolders();
+		const ImVec2 availableSpace = ImGui::GetContentRegionAvail();
+		ImVec2 startPosition = ImGui::GetCursorPos();
+		ImVec2 currentCursorPosition = startPosition;
+		for (unsigned int i = 0; i < folders.GetCursor(); i++)
+		{
+			DomainFolder* pFolder = folders[i];
+
+			ImGui::SetCursorPos(currentCursorPosition);
+			ImGui::Image(mFolderIcon->GetTexture()->GetIsolatedResourceTable()->GetHandle(), { mItemSize.X,mItemSize.Y });
+
+			if (currentCursorPosition.x + mItemSize.X + mItemGap.X > availableSpace.x)
+			{
+				currentCursorPosition.x = startPosition.x;
+				currentCursorPosition.y += mItemSize.Y + mItemGap.Y;
+			}
+			else
+			{
+				currentCursorPosition.x += mItemSize.X + mItemGap.X;
+			}
+		}
 
 		/*
 		* Draw files
@@ -140,7 +163,18 @@ namespace Portakal
 				continue;
 			}
 
+			ImGui::SetCursorPos(currentCursorPosition);
 			ImGui::Image(pTexture->GetIsolatedResourceTable()->GetHandle(), { mItemSize.X,mItemSize.Y });
+
+			if (currentCursorPosition.x + mItemSize.X + mItemGap.X > availableSpace.x)
+			{
+				currentCursorPosition.x = startPosition.x;
+				currentCursorPosition.y += mItemSize.Y + mItemGap.Y;
+			}
+			else
+			{
+				currentCursorPosition.x += mItemSize.X + mItemGap.X;
+			}
 		}
 	}
 	void DomainObserverWindow::OnFileDrop(const String& path)

@@ -29,6 +29,7 @@ namespace Portakal
 	private:
 		DomainFolder* mCurrentFolder;
 		EditorImageResource* mInvalidIcon;
+		EditorImageResource* mFolderIcon;
 		Vector2F mItemSize;
 		Vector2F mItemGap;
 	};

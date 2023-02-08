@@ -20,6 +20,7 @@
 #include <Editor/GUI/Window/GameObserverWindow.h>
 #include <Editor/Domain/DomainModule.h>
 #include <Editor/Resource/EditorResourceModule.h>
+#include <Runtime/Platform/PlatformMonitor.h>
 
 
 int main(unsigned int argumentCount, const char** ppArguments)

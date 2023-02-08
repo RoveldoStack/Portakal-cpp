@@ -2,6 +2,8 @@
 #include <Runtime/Window/WindowAPI.h>
 #include <Runtime/Window/Window.h>
 #include <Runtime/Application/Application.h>
+#include <Runtime/Platform/PlatformMonitor.h>
+#include <Runtime/Log/Log.h>
 
 namespace Portakal
 {
@@ -16,6 +18,9 @@ namespace Portakal
             GetOwnerApplication()->RegisterWindow(pWindow);
 
             mWindows.Add(pWindow);
+
+            PlatformMonitor* pMonitor = PlatformMonitor::GetFromWindow(pWindow);
+            LOG("WindowModule", "Width: %d, Height: %d", pMonitor->GetWidth(), pMonitor->GetHeight());
         }
 
         mAPI = new WindowAPI(mWindows);
