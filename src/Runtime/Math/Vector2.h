@@ -96,6 +96,9 @@ namespace Portakal
 		TValue Y;
 	};
 
-	
+	typedef Vector2<float> Vector2F;
+	typedef Vector2<int> Vector2I;
+	typedef Vector2<unsigned int> Vector2UI;
+	typedef Vector2<double> Vector2D;
 
 }

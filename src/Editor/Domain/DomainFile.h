@@ -8,6 +8,7 @@ namespace Portakal
 	class IAssetSerializer;
 	class ResourceSubObject;
 	class DomainFolder;
+	class IAssetVisualizer;
 	class PORTAKAL_API DomainFile
 	{
 		friend class DomainFolder;
@@ -16,6 +17,7 @@ namespace Portakal
 
 		FORCEINLINE DomainFolder* GetOwnerFolder() const noexcept { return mOwnerFolder; }
 		FORCEINLINE IAssetSerializer* GetSerializer() const noexcept { return mSerializer; }
+		FORCEINLINE IAssetVisualizer* GetVisualizer() const noexcept { return mVisualizer; }
 		FORCEINLINE ResourceSubObject* GetLoadedSubObject() const noexcept { return mSubObject; }
 		FORCEINLINE String GetFileDescriptorPath() const noexcept { return mFileDescriptorPath; }
 		FORCEINLINE String GetSOurceFilePath() const noexcept { return mSourceFilePath; }
@@ -30,6 +32,7 @@ namespace Portakal
 	private:
 		DomainFolder* mOwnerFolder;
 		IAssetSerializer* mSerializer;
+		IAssetVisualizer* mVisualizer;
 		ResourceSubObject* mSubObject;
 		String mFileDescriptorPath;
 		String mSourceFilePath;

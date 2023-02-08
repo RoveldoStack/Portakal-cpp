@@ -17,6 +17,8 @@
 #include <Runtime/Platform/PlatformFile.h>
 #include <Editor/Asset/TextAssetSerializer.h>
 #include <Editor/Domain/DomainFile.h>
+#include <Editor/Asset/IAssetVisualizer.h>
+#include <Runtime/Assert/Assert.h>
 
 namespace Portakal
 {
@@ -54,6 +56,9 @@ namespace Portakal
 
 	void DomainObserverWindow::OnInitialize()
 	{
+		/*
+		* Validate current folder
+		*/
 		mCurrentFolder = DomainAPI::GetRootFolder();
 		if (mCurrentFolder == nullptr)
 		{
@@ -61,6 +66,9 @@ namespace Portakal
 			return;
 		}
 
+		/*
+		* Register this window to window event feed
+		*/
 		Window* pTargetWindow = WindowAPI::GetDefaultWindow();
 		if (pTargetWindow == nullptr)
 		{
@@ -69,6 +77,22 @@ namespace Portakal
 		}
 
 		pTargetWindow->RegisterEventListener(GENERATE_MEMBER_DELEGATE(this, DomainObserverWindow::OnEvent, void, const WindowEvent*));
+
+		/*
+		* Load icons
+		*/
+		mInvalidIcon = (EditorImageResource*)EditorResourceAPI::GetResource("InvalidIcon.png");
+
+		/*
+		* Validate ICONS
+		*/
+		ASSERT(mInvalidIcon != nullptr, "DomainObserverWindow", "Unable to find invalid icon!");
+
+		/*
+		* Set defaults
+		*/
+		mItemSize = { 64,64 };
+		mItemGap = { 12,12 };
 	}
 
 	void DomainObserverWindow::OnFinalize()
@@ -109,9 +133,15 @@ namespace Portakal
 		{
 			DomainFile* pFile = files[i];
 
-			ImGui::Text(*pFile->GetName());
+			TextureResource* pTexture = pFile->GetVisualizer()->OnPaint(pFile);
+			if (pTexture == nullptr)
+			{
+				ImGui::Image(mInvalidIcon->GetTexture()->GetIsolatedResourceTable()->GetHandle(), {mItemSize.X,mItemSize.Y});
+				continue;
+			}
+
+			ImGui::Image(pTexture->GetIsolatedResourceTable()->GetHandle(), { mItemSize.X,mItemSize.Y });
 		}
-		//ImGui::Image(pTex->GetTexture()->GetIsolatedResourceTable()->GetHandle(), {128,128});
 	}
 	void DomainObserverWindow::OnFileDrop(const String& path)
 	{
