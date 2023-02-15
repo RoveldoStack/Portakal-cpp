@@ -19,6 +19,8 @@
 #include <Editor/Domain/DomainFile.h>
 #include <Editor/Asset/IAssetVisualizer.h>
 #include <Runtime/Assert/Assert.h>
+#include <Runtime/Platform/PlatformExplorer.h>
+#include <Runtime/Memory/Memory.h>
 
 namespace Portakal
 {
@@ -95,6 +97,7 @@ namespace Portakal
 		*/
 		mItemSize = { 64,64 };
 		mItemGap = { 12,12 };
+		mSelectedFolder = nullptr;
 	}
 
 	void DomainObserverWindow::OnFinalize()
@@ -135,9 +138,26 @@ namespace Portakal
 			DomainFolder* pFolder = folders[i];
 
 			/*
-			* Draw image
+			* Draw selectable
 			*/
 			ImGui::SetCursorPos(currentCursorPosition);
+			const String tag = "##" + pFolder->GetFolderName();
+			if (ImGui::Selectable(*tag, mSelectedFolder == pFolder, ImGuiSelectableFlags_AllowDoubleClick, { mItemSize.X,mItemSize.Y}))
+			{
+				if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+				{
+					OpenFolder(pFolder);
+				}
+				else
+				{
+					SelectFolder(pFolder);
+				}
+			}
+			ImGui::SetCursorPos(currentCursorPosition);
+
+			/*
+			* Draw image
+			*/
 			ImGui::Image(mFolderIcon->GetTexture()->GetIsolatedResourceTable()->GetHandle(), { mItemSize.X,mItemSize.Y });
 
 			/*
@@ -204,8 +224,83 @@ namespace Portakal
 		}
 
 		/*
+		* Handle events
+		*/ 
+		if (ImGui::IsWindowFocused() && !ImGui::IsAnyItemHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Right))// right click to empty space
+		{
+			ImGui::OpenPopup("ContextPopup");
+		}
+		if (ImGui::IsKeyPressed(ImGuiKey_Backspace)) // moving backwards in the folder hierarchy
+		{
+			ReturnToParentFolder();
+		}
+		if (!ImGui::IsAnyItemHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Left)) // clearing selected items
+		{
+			ClearSelectedItems();
+		}
+
+		/*
 		* Handle popups
 		*/
+		if (ImGui::BeginPopup("ContextPopup")) // context menu popup
+		{
+			ImGui::Text("Create");
+			ImGui::Separator();
+			ImGui::Spacing();
+
+			if (ImGui::Selectable("Open in explorer"))
+			{
+				PlatformExplorer::OpenExplorer(mCurrentFolder->GetFolderPath());
+			}
+			else if (ImGui::Selectable("Folder"))
+			{
+				ImGui::CloseCurrentPopup();
+				ImGui::EndPopup();
+				ImGui::OpenPopup("FolderCreatePopup");
+			}
+			else if (ImGui::Selectable("Scene"))
+			{
+
+			}
+			else if (ImGui::Selectable("Material"))
+			{
+
+			}
+			else if (ImGui::Selectable("Shader"))
+			{
+
+			}
+			else if (ImGui::Selectable("Sampler"))
+			{
+
+			}
+			else
+			{
+				ImGui::EndPopup();
+			}
+		}
+		if (ImGui::BeginPopup("FolderCreatePopup")) // folder create popup
+		{
+			ImGui::Text("Create Folder");
+			ImGui::Separator();
+			ImGui::Spacing();
+
+			ImGui::Text("Name: ");
+			ImGui::SameLine();
+			ImGui::InputText("##folderNameInput",mFolderNameCache, PLATFORM_FOLDER_NAME_SIZE);
+
+			if (ImGui::Button("Create"))
+			{
+				CreateFolder(mFolderNameCache);
+				ImGui::CloseCurrentPopup();
+				ImGui::EndPopup();
+			}
+			else
+			{
+				ImGui::EndPopup();
+			}
+		}
+
 	}
 	void DomainObserverWindow::OnFileDrop(const String& path)
 	{
@@ -217,6 +312,39 @@ namespace Portakal
 	void DomainObserverWindow::OnFolderDrop(const String& path)
 	{
 
+	}
+
+	void DomainObserverWindow::ClearSelectedItems()
+	{
+		mSelectedFolder = nullptr;
+	}
+
+	void DomainObserverWindow::SelectFolder(DomainFolder* pFolder)
+	{
+		mSelectedFolder = pFolder;
+	}
+
+	void DomainObserverWindow::OpenFolder(DomainFolder* pFolder)
+	{
+		if (pFolder == nullptr)
+			return;
+
+		mCurrentFolder = pFolder;
+	}
+
+	void DomainObserverWindow::ReturnToParentFolder()
+	{
+		if (mCurrentFolder == nullptr || mCurrentFolder->GetParentFolder() == nullptr)
+			return;
+
+		mCurrentFolder = mCurrentFolder->GetParentFolder();
+	}
+
+	void DomainObserverWindow::CreateFolder(const String& folderName)
+	{
+		mCurrentFolder->CreateFolder(folderName);
+
+		Memory::Set(mFolderNameCache, 0, PLATFORM_FOLDER_NAME_SIZE);
 	}
 
 }

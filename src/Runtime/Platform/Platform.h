@@ -1,7 +1,7 @@
 #pragma once
 
 #ifdef PORTAKAL_OS_WINDOWS
-#define PORTAKAL_API_IMPL __declspec(dllexport)
+#include <Runtime/Win32/Win32API.h>
+#include <Runtime/Win32/Win32FileSystem.h>
 #else
-#define PORTAKAL_API_IMPL
 #endif

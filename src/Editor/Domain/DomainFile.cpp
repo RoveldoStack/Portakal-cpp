@@ -36,7 +36,7 @@ namespace Portakal
         ASSERT(PlatformFile::IsExist(sourceFilePath), "DomainFile", "Source file couldnt be found!");
 
         /*
-        * Find serialier
+        * Find serializer
         */
         IAssetSerializer* pSerializer = nullptr;
         const Array<Type*> types = Assembly::GetProcessAssembly()->GetTypes();

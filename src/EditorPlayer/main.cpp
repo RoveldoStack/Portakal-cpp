@@ -1,11 +1,11 @@
 #include <Runtime/Platform/PlatformMessage.h>
+#include <Runtime/Yaml/Yaml.h>
 #include <Runtime/Window/Window.h>
 #include "EditorPlayerApplication.h"
 #include <Runtime/Message/MessageModule.h>
 #include <Runtime/Window/WindowModule.h>
 #include <Runtime/World/Entity.h>
 #include <Runtime/World/Scene.h>
-#include <Runtime/Yaml/Yaml.h>
 #include <Runtime/Graphics/GraphicsModule.h>
 #include <Runtime/Window/WindowAPI.h>
 #include <Editor/Renderer/ImGuiExecutorModule.h>
@@ -25,7 +25,6 @@
 
 int main(unsigned int argumentCount, const char** ppArguments)
 {
-
 	/*
 	* Initialize application
 	*/
@@ -72,6 +71,7 @@ int main(unsigned int argumentCount, const char** ppArguments)
 	*/
 	Portakal::Array<Portakal::EditorResourceRequest> resourceRequests;
 	resourceRequests.Add({"FolderIcon.png",Portakal::EditorResourceType::Image});
+	resourceRequests.Add({ "testIcon.png",Portakal::EditorResourceType::Image });
 	resourceRequests.Add({"ComponentIcon.png",Portakal::EditorResourceType::Image });
 	resourceRequests.Add({"DefaultIcon.png",Portakal::EditorResourceType::Image });
 	resourceRequests.Add({"InvalidIcon.png",Portakal::EditorResourceType::Image });

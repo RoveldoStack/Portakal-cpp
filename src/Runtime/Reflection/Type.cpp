@@ -16,6 +16,18 @@ namespace Portakal
 
         return nullptr;
     }
+    Array<Field*> Type::GetFields(const AccessSpecifier specifier)
+    {
+        Array<Field*> fields;
+        for (unsigned int i = 0; i < mFields.GetCursor(); i++)
+        {
+            Field* pField = mFields[i];
+            if (pField->GetAccessSpecifier() & specifier)
+                fields.Add(pField);
+        }
+
+        return fields;
+    }
     bool Type::IsSubClassOf(const Type* pSubType) const noexcept
     {
         for (unsigned int i = 0; i < mBaseTypes.GetCursor(); i++)

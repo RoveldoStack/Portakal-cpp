@@ -3,7 +3,7 @@
 #include <Runtime/Containers/String.h>
 #include <Runtime/Reflection/Assembly.h>
 #include <Runtime/Reflection/Attribute.h>
-
+#include <Runtime/Reflection/AccessSpecifier.h>
 namespace Portakal
 {
 	class Field;
@@ -19,6 +19,7 @@ namespace Portakal
 
 		FORCEINLINE Field* GetField(const String& name);
 		FORCEINLINE Array<Field*> GetFields() const noexcept { return mFields; }
+		FORCEINLINE Array<Field*> GetFields(const AccessSpecifier specifier);
 		FORCEINLINE Array<Type*> GetBaseTypes() const noexcept { return mBaseTypes; }
 		FORCEINLINE bool IsSubClassOf(const Type* pType) const noexcept;
 

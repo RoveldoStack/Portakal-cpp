@@ -2,6 +2,8 @@
 #include <Runtime/Assert/Assert.h>
 #include <Runtime/Window/WindowEvents.h>
 #include <ShlObj_core.h>
+#include <Runtime/Input/Keys.h>
+#include "Win32Keys.h"
 
 namespace Portakal
 {
@@ -95,14 +97,24 @@ namespace Portakal
 		    {
 			    Win32Window* win32Window = GetUserWindowData(hwnd);
 
-			    win32Window->DispatchWin32Event(new KeyboardKeyDownEvent(wParam));
+                /*
+                * Map win32 vk keys to portakal keys
+                */
+                const unsigned int key = Win32Keys::GetKey(wParam);
+
+			    win32Window->DispatchWin32Event(new KeyboardKeyDownEvent(key));
 			    break;
 		    }
 		    case WM_KEYUP:
 		    {
 			    Win32Window* win32Window = GetUserWindowData(hwnd);
 
-			    win32Window->DispatchWin32Event(new KeyboardKeyUpEvent(wParam));
+                /*
+                * Map win32 vk keys to portakal keys
+                */
+                const unsigned int key = Win32Keys::GetKey(wParam);
+               
+			    win32Window->DispatchWin32Event(new KeyboardKeyUpEvent(key));
 
 			    break;
 		    }

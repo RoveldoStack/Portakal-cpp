@@ -157,7 +157,8 @@ namespace Portakal
 		*/
 		const String name = PlatformFile::GetNameWithoutExtension(sourceFilePath);
 		const String targetPath = mPath + "\\" + PlatformFile::GetName(sourceFilePath);
-		CreateFileDescriptor(name,PlatformFile::GetFileDirectory(targetPath), pFoundAttribute->GetResourceType());
+		const String descriptorPath = mPath + "\\" + name + ".fd";
+		CreateFileDescriptor(name,PlatformFile::GetName(targetPath), pFoundAttribute->GetResourceType());
 
 		/*
 		* Copy source file
@@ -175,7 +176,11 @@ namespace Portakal
 
 		pImporter->OnImport(this, targetPath, fileContent);
 
-		delete pImporter;
+		/*
+		* Create file
+		*/
+		DomainFile* pFile = new DomainFile(descriptorPath, this);
+		mFiles.Add(pFile);
 	}
 	void DomainFolder::CreateFileDescriptor(const String& name,const String& sourceFilePath, const String& resourceType)
 	{
@@ -200,5 +205,34 @@ namespace Portakal
 			return;
 		}
 
+	}
+	void DomainFolder::CreateFolder(const String& name)
+	{
+		/*
+		* Validate folder name and path
+		*/
+		if (name == "")
+			return;
+		const String folderPath = mPath + "\\" + name;
+		if (PlatformDirectory::IsDirectoryExist(folderPath))
+		{
+			LOG("DomainFolder", "Unable to create folder due to there is a folder with the same name");
+			return;
+		}
+
+		/*
+		* Create physical folder
+		*/
+		if (!PlatformDirectory::Create(folderPath))
+		{
+			LOG("DomainFolder", "Failed to create the folder");
+			return;
+		}
+
+		/*
+		* Create domain folder
+		*/
+		DomainFolder* pFolder = new DomainFolder(this,folderPath);
+		mSubFolders.Add(pFolder);
 	}
 }

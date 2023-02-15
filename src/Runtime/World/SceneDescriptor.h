@@ -1,7 +1,7 @@
 #include <Runtime/Containers/String.h>
 #include <Runtime/Containers/Guid.h>
 #include <Runtime/Containers/Array.h>
-
+#include <Runtime/Reflection/Reflection.h>
 namespace Portakal
 {
 	enum class PORTAKAL_API SceneComponentFieldType
@@ -46,8 +46,21 @@ namespace Portakal
 
 	
 
-	struct PORTAKAL_API SceneDescriptor
+	struct PORTAKAL_API SceneDescriptor : public Class
 	{
+		GENERATE_CLASS(SceneDescriptor);
 
+		SceneDescriptor() = default;
+		~SceneDescriptor() = default;
+
+		Array<SceneAspectEntry> Aspects;
+		Array<SceneEntityEntry> Entities;
+		Array<SceneComponentEntry> Components;
 	};
+
+	START_GENERATE_TYPE(SceneDescriptor);
+	START_TYPE_PROPERTIES(SceneDescriptor);
+	END_TYPE_PROPERTIES;
+	CONCRETE_TYPE(SceneDescriptor);
+	END_GENERATE_TYPE(SceneDescriptor);
 }

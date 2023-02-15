@@ -191,7 +191,9 @@ namespace Portakal
 		if (!readSuccess)
 			return false;
 
-		block = ByteBlock(readBuffer, expectedReadInterval);
+		block.Copy(readBuffer, expectedReadInterval);
+
+		delete[] readBuffer;
 
 		CloseHandle(fileHandle);
 

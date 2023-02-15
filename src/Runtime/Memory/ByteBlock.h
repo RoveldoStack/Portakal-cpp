@@ -25,6 +25,7 @@ namespace Portakal
 		/// <returns></returns>
 		FORCEINLINE unsigned long long GetBlockSizeInBytes() const;
 
+		void Copy(void* pData,const unsigned long long size);
 		/// <summary>
 		/// Returns the any data interval inside the block
 		/// </summary>

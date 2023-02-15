@@ -20,6 +20,7 @@ namespace Portakal
 	START_GENERATE_TYPE(DomainFileDescriptorYamlSerializer);
 	START_TYPE_PROPERTIES(DomainFileDescriptorYamlSerializer);
 	REGISTER_TYPE_ATTRIBUTE(YamlSerializerAttribute, typeof(DomainFileDescriptor));
+	REGISTER_BASE_TYPE(YamlSerializer);
 	END_TYPE_PROPERTIES;
 	CONCRETE_TYPE(DomainFileDescriptorYamlSerializer);
 	END_GENERATE_TYPE(DomainFileDescriptorYamlSerializer);

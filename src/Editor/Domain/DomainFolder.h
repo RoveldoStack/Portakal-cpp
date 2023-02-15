@@ -21,6 +21,7 @@ namespace Portakal
 
 		void CreateFileFromSource(const String& sourceFilePath);
 		void CreateFileDescriptor(const String& name, const String& sourceFilePath, const String& resourceType);
+		void CreateFolder(const String& name);
 
 	private:
 		DomainFolder* mParentFolder;

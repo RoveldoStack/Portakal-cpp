@@ -26,12 +26,21 @@ namespace Portakal
 	private:
 		void OnFileDrop(const String& path);
 		void OnFolderDrop(const String& path);
+
+		void ClearSelectedItems();
+		void SelectFolder(DomainFolder* pFolder);
+		void OpenFolder(DomainFolder* pFolder);
+		void ReturnToParentFolder();
+		void CreateFolder(const String& folderName);
 	private:
 		DomainFolder* mCurrentFolder;
+		DomainFolder* mSelectedFolder;
 		EditorImageResource* mInvalidIcon;
 		EditorImageResource* mFolderIcon;
 		Vector2F mItemSize;
 		Vector2F mItemGap;
+
+		char mFolderNameCache[PLATFORM_FOLDER_NAME_SIZE];
 	};
 
 	START_GENERATE_TYPE(DomainObserverWindow);

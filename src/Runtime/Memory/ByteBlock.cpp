@@ -39,4 +39,13 @@ namespace Portakal
 	{
 		return mSize;
 	}
+	void ByteBlock::Copy(void* pData, const unsigned long long size)
+	{
+		if (mBlock != nullptr)
+			delete[] pData;
+
+		mBlock = new unsigned char[size];
+		Memory::Copy(pData, mBlock, size);
+		mSize = size;
+	}
 }
