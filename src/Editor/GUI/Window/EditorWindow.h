@@ -11,7 +11,7 @@ namespace Portakal
 		friend class EditorWindowAPI;
 		GENERATE_CLASS(EditorWindow);
 	public:
-		EditorWindow() : mVisible(false),mCloseRequest(false),mParentWindow(nullptr) {}
+		EditorWindow() : mVisible(false),mCloseRequest(false),mParentWindow(nullptr),mID(Guid::Create()) {}
 		virtual ~EditorWindow() = default;
 
 		FORCEINLINE bool HasCloseRequest() const noexcept { return mCloseRequest; }

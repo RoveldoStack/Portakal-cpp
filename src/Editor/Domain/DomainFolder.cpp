@@ -10,8 +10,8 @@
 #include <Editor/Domain/DomainFile.h>
 #include <Editor/Asset/CustomAssetImporterAttribute.h>
 #include <Editor/Asset/IAssetImporter.h>
-#include <Editor/Asset/SimpleTextAssetImporter.h>
-#include <Editor/Asset/SimpleTextAssetImporter2.h>
+#include <Editor/Asset/Importers/SimpleTextAssetImporter.h>
+#include <Editor/Asset/Importers/SimpleTextAssetImporter2.h>
 #include <Editor/Domain/DomainFileDescriptorYamlSerialize.h>
 namespace Portakal
 {
@@ -31,7 +31,7 @@ namespace Portakal
 		*/
 		mParentFolder = pParentFolder;
 		mPath = path;
-		PlatformDirectory::GetName(path, mName);
+		mName = PlatformDirectory::GetName(path);
 
 		/*
 		* Collect files
@@ -195,18 +195,19 @@ namespace Portakal
 		}
 
 	}
-	void DomainFolder::CreateFolder(const String& name)
+	DomainFolder* DomainFolder::CreateFolder(const String& name)
 	{
 		/*
 		* Validate folder name and path
 		*/
 		if (name == "")
-			return;
+			return nullptr;
+
 		const String folderPath = mPath + "\\" + name;
 		if (PlatformDirectory::IsDirectoryExist(folderPath))
 		{
 			LOG("DomainFolder", "Unable to create folder due to there is a folder with the same name");
-			return;
+			return nullptr;
 		}
 
 		/*
@@ -215,7 +216,7 @@ namespace Portakal
 		if (!PlatformDirectory::Create(folderPath))
 		{
 			LOG("DomainFolder", "Failed to create the folder");
-			return;
+			return nullptr;
 		}
 
 		/*
@@ -223,6 +224,8 @@ namespace Portakal
 		*/
 		DomainFolder* pFolder = new DomainFolder(this,folderPath);
 		mSubFolders.Add(pFolder);
+
+		return pFolder;
 	}
 	DomainFile* DomainFolder::RegisterFileViaDescriptor(const String& descriptorFilePath)
 	{

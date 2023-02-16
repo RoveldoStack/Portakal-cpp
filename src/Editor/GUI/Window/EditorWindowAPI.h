@@ -13,11 +13,11 @@ namespace Portakal
 	private:
 		static EditorWindowAPI* mAPI;
 	public:
-		static EditorWindow* CreateWindow(Type* pType);
+		static EditorWindow* CreateWindowViaType(Type* pType);
 		static EditorWindow* CreateFromSetting(const EditorWindowSetting& setting);
 
 		template<typename TWindow>
-		static TWindow* CreateWindow()
+		static TWindow* CreateWindowViaType()
 		{
 			if (mAPI == nullptr)
 			{

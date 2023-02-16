@@ -3,7 +3,7 @@
 #include <Editor/GUI/MenuItem/GUICustomMenuItem.h>
 #include <Runtime/Log/Log.h>
 #include <Editor/GUI/Window/EditorWindowAPI.h>
-#include <Editor/GUI/Window/TestWindow.h>
+#include <Editor/GUI/Window/Templates/TestWindow.h>
 
 namespace Portakal
 {
@@ -31,7 +31,7 @@ namespace Portakal
 	public:
 		virtual void OnClick() override
 		{
-			EditorWindowAPI::CreateWindow<TestWindow>();
+			EditorWindowAPI::CreateWindowViaType<TestWindow>();
 		}
 	};
 

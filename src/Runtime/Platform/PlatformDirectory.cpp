@@ -15,9 +15,9 @@ namespace Portakal
     {
         return PlatformAbstraction::Delete(path);
     }
-    bool PlatformDirectory::GetName(const String& path, String& nameOut)
+    String PlatformDirectory::GetName(const String& path)
     {
-        return PlatformAbstraction::GetName(path, nameOut);
+        return PlatformAbstraction::GetName(path);
     }
     bool PlatformDirectory::GetFileNames(const String& path, Array<String>& namesOut)
     {

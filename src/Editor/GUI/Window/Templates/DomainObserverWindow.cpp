@@ -15,15 +15,19 @@
 #include <Runtime/Window/DragDropEvent.h>
 #include <Runtime/Platform/PlatformDirectory.h>
 #include <Runtime/Platform/PlatformFile.h>
-#include <Editor/Asset/TextAssetSerializer.h>
-#include <Editor/Asset/TextureAssetImporter.h>
+#include <Editor/Asset/Serializers/TextAssetSerializer.h>
+#include <Editor/Asset/Importers/TextureAssetImporter.h>
 #include <Editor/Domain/DomainFile.h>
 #include <Editor/Asset/IAssetVisualizer.h>
 #include <Runtime/Assert/Assert.h>
 #include <Runtime/Platform/PlatformExplorer.h>
 #include <Runtime/Memory/Memory.h>
-#include <Editor/Asset/TextureAssetVisualizer.h>
-#include <Editor/Asset/TextureAssetSerializer.h>
+#include <Editor/Asset/IAssetSerializer.h>
+#include <Editor/Asset/Visualizers/TextureAssetVisualizer.h>
+#include <Editor/Asset/Serializers/TextureAssetSerializer.h>
+#include <Editor/GUI/Window/Templates/AuthorizationToolWindow.h>
+#include <Editor/GUI/Window/EditorWindowAPI.h>
+#include <Editor/Asset/AuthorizationTools/TextureAuthorizationTool.h>
 
 namespace Portakal
 {
@@ -36,7 +40,7 @@ namespace Portakal
 
 			if (PlatformDirectory::IsDirectoryExist(path))
 			{
-				OnFolderDrop(path);
+				OnFolderDrop(mCurrentFolder,path);
 			}
 			else if (PlatformFile::IsExist(path))
 			{
@@ -100,7 +104,6 @@ namespace Portakal
 		*/
 		mItemSize = { 64,64 };
 		mItemGap = { 12,12 };
-		mSelectedFolder = nullptr;
 	}
 
 	void DomainObserverWindow::OnFinalize()
@@ -145,7 +148,7 @@ namespace Portakal
 			*/
 			ImGui::SetCursorPos(currentCursorPosition);
 			const String tag = "##" + pFolder->GetFolderName();
-			if (ImGui::Selectable(*tag, mSelectedFolder == pFolder, ImGuiSelectableFlags_AllowDoubleClick, { mItemSize.X,mItemSize.Y}))
+			if (ImGui::Selectable(*tag, mSelectedFolders.Has(pFolder), ImGuiSelectableFlags_AllowDoubleClick, {mItemSize.X,mItemSize.Y}))
 			{
 				if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 				{
@@ -191,6 +194,25 @@ namespace Portakal
 		for (unsigned int i = 0; i < files.GetCursor(); i++)
 		{
 			DomainFile* pFile = files[i];
+
+			/*
+			* Draw selectable
+			*/
+			ImGui::SetCursorPos(currentCursorPosition);
+			const String tag = "##" + pFile->GetName();
+			if (ImGui::Selectable(*tag, mSelectedFiles.Has(pFile), ImGuiSelectableFlags_AllowDoubleClick, { mItemSize.X,mItemSize.Y }))
+			{
+				if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+				{
+					OpenFile(pFile);
+				}
+				else
+				{
+					SelectFile(pFile);
+				}
+			}
+			ImGui::SetCursorPos(currentCursorPosition);
+
 
 			/*
 			* Draw image
@@ -313,19 +335,47 @@ namespace Portakal
 
 		mCurrentFolder->CreateFileFromSource(path);
 	}
-	void DomainObserverWindow::OnFolderDrop(const String& path)
+	void DomainObserverWindow::OnFolderDrop(DomainFolder* pTargetFolder,const String& path)
 	{
+		/*
+		* Create folder
+		*/
+		DomainFolder* pRootFolder = pTargetFolder->CreateFolder(PlatformDirectory::GetName(path));
 
+		/*
+		* Iterate and create folders
+		*/
+		Array<String> subFolderPaths;
+		PlatformDirectory::GetFolderNames(path + "\\", subFolderPaths);
+
+		for (unsigned int i = 0; i < subFolderPaths.GetCursor(); i++)
+		{
+			OnFolderDrop(pRootFolder,subFolderPaths[i]);
+		}
+
+		/*
+		* Iterate and create files
+		*/
+		Array<String> files;
+		PlatformDirectory::GetFileNames(path+"\\", files);
+		for (unsigned int i = 0; i < files.GetCursor(); i++)
+		{
+			pRootFolder->CreateFileFromSource(files[i]);
+		}
 	}
 
 	void DomainObserverWindow::ClearSelectedItems()
 	{
-		mSelectedFolder = nullptr;
+		mSelectedFolders.Clear();
+		mSelectedFiles.Clear();
 	}
 
 	void DomainObserverWindow::SelectFolder(DomainFolder* pFolder)
 	{
-		mSelectedFolder = pFolder;
+		if (!ImGui::IsKeyDown(ImGuiKey_LeftCtrl))
+			ClearSelectedItems();
+		
+		mSelectedFolders.Add(pFolder);
 	}
 
 	void DomainObserverWindow::OpenFolder(DomainFolder* pFolder)
@@ -334,6 +384,8 @@ namespace Portakal
 			return;
 
 		mCurrentFolder = pFolder;
+
+		ClearSelectedItems();
 	}
 
 	void DomainObserverWindow::ReturnToParentFolder()
@@ -349,6 +401,20 @@ namespace Portakal
 		mCurrentFolder->CreateFolder(folderName);
 
 		Memory::Set(mFolderNameCache, 0, PLATFORM_FOLDER_NAME_SIZE);
+	}
+
+	void DomainObserverWindow::SelectFile(DomainFile* pFile)
+	{
+		if (!ImGui::IsKeyDown(ImGuiKey_LeftCtrl))
+			ClearSelectedItems();
+
+		mSelectedFiles.Add(pFile);
+	}
+
+	void DomainObserverWindow::OpenFile(DomainFile* pFile)
+	{
+		AuthorizationToolWindow* pWindow = EditorWindowAPI::CreateWindowViaType<AuthorizationToolWindow>();
+		pWindow->SetToolData(pFile);
 	}
 
 }

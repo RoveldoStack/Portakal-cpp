@@ -5,7 +5,7 @@ namespace Portakal
 {
 	EditorWindowAPI* EditorWindowAPI::mAPI = nullptr;
 
-	EditorWindow* EditorWindowAPI::CreateWindow(Type* pType)
+	EditorWindow* EditorWindowAPI::CreateWindowViaType(Type* pType)
 	{
 		if (mAPI == nullptr)
 			return nullptr;

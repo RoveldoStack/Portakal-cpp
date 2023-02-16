@@ -14,10 +14,10 @@
 #include <Editor/GUI/MenuItem/MenuItemTemplates.h>
 #include <Editor/GUI/MenuItem/GUIMainMenuItemModule.h>
 #include <Editor/Project/ProjectModule.h>
-#include <Editor/GUI/Window/DomainObserverWindow.h>
-#include <Editor/GUI/Window/WorldObserverWindow.h>
-#include <Editor/GUI/Window/ObjectObserverWindow.h>
-#include <Editor/GUI/Window/GameObserverWindow.h>
+#include <Editor/GUI/Window/Templates/DomainObserverWindow.h>
+#include <Editor/GUI/Window/Templates/WorldObserverWindow.h>
+#include <Editor/GUI/Window/Templates/ObjectObserverWindow.h>
+#include <Editor/GUI/Window/Templates/GameObserverWindow.h>
 #include <Editor/Domain/DomainModule.h>
 #include <Editor/Resource/EditorResourceModule.h>
 #include <Runtime/Platform/PlatformMonitor.h>

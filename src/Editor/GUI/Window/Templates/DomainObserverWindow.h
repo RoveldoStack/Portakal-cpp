@@ -8,6 +8,7 @@ namespace Portakal
 	class WindowEvent;
 	class DragDropEvent;
 	class EditorImageResource;
+	class DomainFile;
 	class PORTAKAL_API DomainObserverWindow : public EditorWindow
 	{
 		GENERATE_CLASS(DomainObserverWindow);
@@ -25,16 +26,21 @@ namespace Portakal
 
 	private:
 		void OnFileDrop(const String& path);
-		void OnFolderDrop(const String& path);
+		void OnFolderDrop(DomainFolder* pTargetFolder,const String& path);
 
 		void ClearSelectedItems();
+
 		void SelectFolder(DomainFolder* pFolder);
 		void OpenFolder(DomainFolder* pFolder);
 		void ReturnToParentFolder();
 		void CreateFolder(const String& folderName);
+
+		void SelectFile(DomainFile* pFile);
+		void OpenFile(DomainFile* pFile);
 	private:
 		DomainFolder* mCurrentFolder;
-		DomainFolder* mSelectedFolder;
+		Array<DomainFolder*> mSelectedFolders;
+		Array<DomainFile*> mSelectedFiles;
 		EditorImageResource* mInvalidIcon;
 		EditorImageResource* mFolderIcon;
 		Vector2F mItemSize;

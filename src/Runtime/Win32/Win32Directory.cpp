@@ -45,14 +45,12 @@ namespace Portakal
 
 		return true;
 	}
-	bool Win32Directory::GetName(const String& path, String& nameOut)
+	String Win32Directory::GetName(const String& path)
 	{
 		if (!IsDirectoryExist(path))
-			return false;
+			return "";
 
-		nameOut = PathFindFileNameA(*path);
-
-		return true;
+		return PathFindFileNameA(*path);
 	}
 	bool Win32Directory::GetFileNames(const String& path, Array<String>& namesOut)
 	{

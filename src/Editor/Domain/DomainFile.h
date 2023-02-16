@@ -11,11 +11,13 @@ namespace Portakal
 	class IAssetVisualizer;
 	class IAssetImporter;
 	class IAssetProcessor;
+	class IAssetAuthorizationTool;
 	class PORTAKAL_API DomainFile
 	{
 		friend class DomainFolder;
 	public:
 		FORCEINLINE DomainFolder* GetOwnerFolder() const noexcept { return mOwnerFolder; }
+		FORCEINLINE IAssetAuthorizationTool* GetAuthorizationTool() const noexcept { return mAuthorizationTool; }
 		FORCEINLINE IAssetSerializer* GetSerializer() const noexcept { return mSerializer; }
 		FORCEINLINE IAssetVisualizer* GetVisualizer() const noexcept { return mVisualizer; }
 		FORCEINLINE Array<IAssetImporter*> GetImporters() const noexcept { return mImporters; }
@@ -36,6 +38,7 @@ namespace Portakal
 
 	private:
 		DomainFolder* mOwnerFolder;
+		IAssetAuthorizationTool* mAuthorizationTool;
 		IAssetSerializer* mSerializer;
 		IAssetVisualizer* mVisualizer;
 		Array<IAssetImporter*> mImporters;
