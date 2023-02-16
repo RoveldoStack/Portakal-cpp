@@ -9,13 +9,13 @@ namespace Portakal
 {
 	SimpleTextAssetVisualizer::SimpleTextAssetVisualizer()
 	{
-		mResource = (EditorImageResource*)EditorResourceAPI::GetResource("ShaderIcon.png");
+		mResource = (EditorImageResource*)EditorResourceAPI::GetResource("TextIcon.png");
 	}
 	SimpleTextAssetVisualizer::~SimpleTextAssetVisualizer()
 	{
 		mResource = nullptr;
 	}
-	TextureResource* SimpleTextAssetVisualizer::OnPaint(const DomainFile* pFile)
+	TextureResource* SimpleTextAssetVisualizer::OnPaint(DomainFile* pFile)
 	{
 		if (mResource == nullptr)
 			return nullptr;

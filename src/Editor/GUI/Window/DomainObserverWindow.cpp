@@ -16,11 +16,14 @@
 #include <Runtime/Platform/PlatformDirectory.h>
 #include <Runtime/Platform/PlatformFile.h>
 #include <Editor/Asset/TextAssetSerializer.h>
+#include <Editor/Asset/TextureAssetImporter.h>
 #include <Editor/Domain/DomainFile.h>
 #include <Editor/Asset/IAssetVisualizer.h>
 #include <Runtime/Assert/Assert.h>
 #include <Runtime/Platform/PlatformExplorer.h>
 #include <Runtime/Memory/Memory.h>
+#include <Editor/Asset/TextureAssetVisualizer.h>
+#include <Editor/Asset/TextureAssetSerializer.h>
 
 namespace Portakal
 {
@@ -192,16 +195,19 @@ namespace Portakal
 			/*
 			* Draw image
 			*/
-			TextureResource* pTexture = pFile->GetVisualizer()->OnPaint(pFile);
-			if (pTexture == nullptr)
+			IAssetVisualizer* pVisualizer = pFile->GetVisualizer();
+			TextureResource* pTexture = pVisualizer != nullptr ? pVisualizer->OnPaint(pFile) : nullptr;
+			ImGui::SetCursorPos(currentCursorPosition);
+			if (pVisualizer == nullptr || pTexture == nullptr)
 			{
 				ImGui::Image(mInvalidIcon->GetTexture()->GetIsolatedResourceTable()->GetHandle(), {mItemSize.X,mItemSize.Y});
-				continue;
+
 			}
-
-			ImGui::SetCursorPos(currentCursorPosition);
-			ImGui::Image(pTexture->GetIsolatedResourceTable()->GetHandle(), { mItemSize.X,mItemSize.Y });
-
+			else
+			{
+				ImGui::Image(pTexture->GetIsolatedResourceTable()->GetHandle(), { mItemSize.X,mItemSize.Y });
+			}
+			
 			/*
 			* Draw text
 			*/
@@ -251,6 +257,7 @@ namespace Portakal
 			if (ImGui::Selectable("Open in explorer"))
 			{
 				PlatformExplorer::OpenExplorer(mCurrentFolder->GetFolderPath());
+				ImGui::EndPopup();
 			}
 			else if (ImGui::Selectable("Folder"))
 			{
@@ -293,12 +300,9 @@ namespace Portakal
 			{
 				CreateFolder(mFolderNameCache);
 				ImGui::CloseCurrentPopup();
-				ImGui::EndPopup();
 			}
-			else
-			{
-				ImGui::EndPopup();
-			}
+
+			ImGui::EndPopup();
 		}
 
 	}

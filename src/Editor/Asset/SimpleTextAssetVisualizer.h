@@ -15,7 +15,7 @@ namespace Portakal
 		EditorImageResource* mResource;
 
 		// Inherited via IAssetVisualizer
-		virtual TextureResource* OnPaint(const DomainFile* pFile) override;
+		virtual TextureResource* OnPaint(DomainFile* pFile) override;
 	};
 
 	START_GENERATE_TYPE(SimpleTextAssetVisualizer);

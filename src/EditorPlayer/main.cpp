@@ -39,10 +39,10 @@ int main(unsigned int argumentCount, const char** ppArguments)
 
 	Portakal::WindowCreateDesc windowDesc = {};
 	windowDesc.Name = "Portakal Editor Player";
-	windowDesc.PositionX = 100;
-	windowDesc.PositionY = 100;
-	windowDesc.Width = 1024;
-	windowDesc.Height = 1024;
+	windowDesc.PositionX = 0;
+	windowDesc.PositionY = 0;
+	windowDesc.Width = 2560;
+	windowDesc.Height = 1440;
 
 	windowModuleParams.CreateDescs.Add(windowDesc);
 	
@@ -79,6 +79,7 @@ int main(unsigned int argumentCount, const char** ppArguments)
 	resourceRequests.Add({"SceneEntityIcon.png",Portakal::EditorResourceType::Image });
 	resourceRequests.Add({"SceneIcon.png",Portakal::EditorResourceType::Image });
 	resourceRequests.Add({"ShaderIcon.png",Portakal::EditorResourceType::Image });
+	resourceRequests.Add({"TextIcon.png",Portakal::EditorResourceType::Image });
 
 	pApplication->CreateModule<Portakal::EditorResourceModule>(resourceRequests);
 	/*

@@ -6,6 +6,7 @@
 
 namespace Portakal
 {
+	class DomainFile;
 	class ResourceSubObject;
 	class PORTAKAL_API IAssetSerializer : public Class
 	{
@@ -16,8 +17,7 @@ namespace Portakal
 
 		virtual void SerializeToEditor(const ResourceSubObject* pObject) = 0;
 		virtual void SerializeToPackage(const ResourceSubObject* pObject) = 0;
-		virtual ResourceSubObject* DeserializeFromEditor(const String& text) = 0;
-		virtual ResourceSubObject* DeserializeFromRaw(const ByteBlock& block) = 0;
+		virtual ResourceSubObject* Deserialize(const DomainFile* pFile) = 0;
 	};
 
 	START_GENERATE_TYPE(IAssetSerializer);

@@ -141,7 +141,10 @@ namespace Portakal
 		* Check if there is a valid match for the requested file
 		*/
 		if (foundImporters.GetCursor() == 0) // return if there is no importers
+		{
+			LOG("DomainFolder", "Found no asset importers");
 			return;
+		}
 
 		/*
 		* Read the file

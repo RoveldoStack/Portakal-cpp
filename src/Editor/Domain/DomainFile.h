@@ -22,10 +22,14 @@ namespace Portakal
 		FORCEINLINE Array<IAssetProcessor*> GetProcessors() const noexcept { return mProcessors; }
 		FORCEINLINE ResourceSubObject* GetLoadedSubObject() const noexcept { return mSubObject; }
 		FORCEINLINE String GetFileDescriptorPath() const noexcept { return mFileDescriptorPath; }
-		FORCEINLINE String GetSOurceFilePath() const noexcept { return mSourceFilePath; }
+		FORCEINLINE String GetSourceFilePath() const noexcept { return mSourceFilePath; }
 		FORCEINLINE String GetName() const noexcept { return mName; }
 		FORCEINLINE String GetResourceType() const noexcept { return mResourceType; }
 		FORCEINLINE Guid GetID() const noexcept { return mID; }
+		FORCEINLINE bool IsLoaded() const noexcept { return mSubObject != nullptr; }
+
+		void LoadSync();
+		void UnloadSync();
 	private:
 		DomainFile(const String& fileDescriptorPath,DomainFolder* pOwnerFolder);
 		~DomainFile();

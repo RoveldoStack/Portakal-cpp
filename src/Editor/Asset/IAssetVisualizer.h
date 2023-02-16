@@ -12,7 +12,7 @@ namespace Portakal
 		IAssetVisualizer() = default;
 		~IAssetVisualizer() = default;
 		
-		virtual TextureResource* OnPaint(const DomainFile* pFile) = 0;
+		virtual TextureResource* OnPaint(DomainFile* pFile) = 0;
 	};
 
 	START_GENERATE_TYPE(IAssetVisualizer);

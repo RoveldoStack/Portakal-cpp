@@ -228,11 +228,14 @@ namespace Portakal
 	{
 		ImGuiIO& io = ImGui::GetIO();
 		io.MouseDown[pEvent->GetButton()] = true;
+
+		LOG("Imgui", "Mouse down: %d", pEvent->GetButton());
 	}
 	void ImGuiRenderer::OnMouseButtonUp(const MouseButtonUpEvent* pEvent)
 	{
 		ImGuiIO& io = ImGui::GetIO();
 		io.MouseDown[pEvent->GetButton()] = false;
+		LOG("Imgui", "Mouse up: %d", pEvent->GetButton());
 	}
 	void ImGuiRenderer::OnMouseWheel(const MouseWheelEvent* pEvent)
 	{

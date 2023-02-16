@@ -164,7 +164,7 @@ namespace Portakal
         */
         WNDCLASSEX wc = { 0 };
         wc.cbSize = sizeof(WNDCLASSEX);
-        wc.style =   CS_HREDRAW | CS_VREDRAW | CS_DBLCLKS ;
+        wc.style =   CS_HREDRAW | CS_VREDRAW ;
         wc.lpfnWndProc = (WNDPROC)Win32WindowMessageProc;
         wc.cbClsExtra = 0;
         wc.cbWndExtra = sizeof(Win32Window*);

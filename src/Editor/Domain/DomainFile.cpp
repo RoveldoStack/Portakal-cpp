@@ -12,10 +12,27 @@
 #include <Runtime/Yaml/Yaml.h>
 #include <Editor/Asset/CustomAssetProcessorAttribute.h>
 #include <Editor/Asset/IAssetProcessor.h>
+#include <Runtime/Resource/ResourceSubObject.h>
 
 namespace Portakal
 {
+    void DomainFile::LoadSync()
+    {
+        if (IsLoaded())
+            return;
 
+        mSubObject = mSerializer->Deserialize(this);
+    }
+    void DomainFile::UnloadSync()
+    {
+        if (!IsLoaded())
+            return;
+
+        if (mSubObject != nullptr)
+            mSubObject->Destroy();
+
+        mSubObject = nullptr;
+    }
     DomainFile::DomainFile(const String& fileDescriptorPath, DomainFolder* pOwnerFolder)
     {
         /*

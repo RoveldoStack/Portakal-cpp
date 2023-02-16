@@ -22,7 +22,7 @@ namespace Portakal
 		TaggedObject(const String& name,const Guid& id) : mName(name), mID(id),mDestroyed(false) {}
 		TaggedObject(const String& name) : mName(name), mID(Guid::Create()),mDestroyed(false) {}
 		TaggedObject(const Guid& id) : mID(id),mDestroyed(false) {}
-		TaggedObject() = default;
+		TaggedObject() : mDestroyed(false) {}
 
 		~TaggedObject() = default;
 
@@ -31,6 +31,7 @@ namespace Portakal
 		String mName;
 		Guid mID;
 		bool mDestroyed;
+
 	};
 	START_GENERATE_TYPE(TaggedObject);
 		START_TYPE_PROPERTIES(TaggedObject);
@@ -38,13 +39,12 @@ namespace Portakal
 		VIRTUAL_TYPE;
 	END_GENERATE_TYPE(TaggedObject);
 
-
-	FORCEINLINE bool operator ==(const TaggedObject& a, const TaggedObject& b)
+	/*FORCEINLINE bool operator ==(const TaggedObject& a, const TaggedObject& b)
 	{
 		return a.GetID() == b.GetID();
 	}
 	FORCEINLINE bool operator !=(const TaggedObject& a, const TaggedObject& b)
 	{
 		return a.GetID() != b.GetID();
-	}
+	}*/
 }

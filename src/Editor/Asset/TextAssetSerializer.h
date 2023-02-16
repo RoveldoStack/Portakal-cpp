@@ -14,14 +14,13 @@ namespace Portakal
 		// Inherited via IAssetSerializer
 		virtual void SerializeToEditor(const ResourceSubObject* pObject) override;
 		virtual void SerializeToPackage(const ResourceSubObject* pObject) override;
-		virtual ResourceSubObject* DeserializeFromEditor(const String& text) override;
-		virtual ResourceSubObject* DeserializeFromRaw(const ByteBlock& block) override;
+		virtual ResourceSubObject* Deserialize(const DomainFile* pFile) override;
 	};
 
 	START_GENERATE_TYPE(TextAssetSerializer);
 	START_TYPE_PROPERTIES(TextAssetSerializer);
 	REGISTER_BASE_TYPE(IAssetSerializer);
-	REGISTER_TYPE_ATTRIBUTE(CustomAssetSerializerAttribute, "simple-text", {".txt",".docx"});
+	REGISTER_TYPE_ATTRIBUTE(CustomAssetSerializerAttribute, "simple-text");
 	END_TYPE_PROPERTIES;
 	CONCRETE_TYPE(TextAssetSerializer);
 
