@@ -10,6 +10,8 @@
 #include <Runtime/Assert/Assert.h>
 #include <Editor/Domain/DomainFileDescriptor.h>
 #include <Runtime/Yaml/Yaml.h>
+#include <Editor/Asset/CustomAssetProcessorAttribute.h>
+#include <Editor/Asset/IAssetProcessor.h>
 
 namespace Portakal
 {
@@ -83,7 +85,7 @@ namespace Portakal
         }
 
         /*
-        * Find importer
+        * Find importers
         */
         Array<IAssetImporter*> importers;
         for (unsigned int i = 0; i < types.GetCursor(); i++)
@@ -101,7 +103,27 @@ namespace Portakal
                 continue;
 
             importers.Add((IAssetImporter*)pType->CreateDefaultHeapObject());
-            break;
+        }
+
+        /*
+        * Find processors
+        */
+        Array<IAssetProcessor*> processors;
+        for (unsigned int i = 0; i < types.GetCursor(); i++)
+        {
+            const Type* pType = types[i];
+
+            if (!pType->IsSubClassOf(typeof(IAssetImporter)))
+                continue;
+
+            CustomAssetProcessorAttribute* pAttribute = pType->GetAttribute<CustomAssetProcessorAttribute>();
+            if (pAttribute == nullptr)
+                continue;
+
+            if (pAttribute->GetResourceType() != fileDescriptor.ResourceType)
+                continue;
+
+            processors.Add((IAssetProcessor*)pType->CreateDefaultHeapObject());
         }
 
         /*
@@ -116,6 +138,7 @@ namespace Portakal
         mSerializer = pSerializer;
         mVisualizer = pVisualizer;
         mImporters = importers;
+        mProcessors = processors;
         mSubObject = nullptr;
     }
     DomainFile::~DomainFile()
