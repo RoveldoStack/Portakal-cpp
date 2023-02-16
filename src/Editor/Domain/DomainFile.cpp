@@ -5,6 +5,8 @@
 #include <Editor/Asset/IAssetVisualizer.h>
 #include <Editor/Asset/CustomAssetVisualizerAttribute.h>
 #include <Editor/Asset/SimpleTextAssetVisualizer.h>
+#include <Editor/Asset/CustomAssetImporterAttribute.h>
+#include <Editor/Asset/IAssetImporter.h>
 #include <Runtime/Assert/Assert.h>
 #include <Editor/Domain/DomainFileDescriptor.h>
 #include <Runtime/Yaml/Yaml.h>
@@ -81,6 +83,28 @@ namespace Portakal
         }
 
         /*
+        * Find importer
+        */
+        Array<IAssetImporter*> importers;
+        for (unsigned int i = 0; i < types.GetCursor(); i++)
+        {
+            const Type* pType = types[i];
+
+            if (!pType->IsSubClassOf(typeof(IAssetImporter)))
+                continue;
+
+            CustomAssetImporterAttribute* pAttribute = pType->GetAttribute<CustomAssetImporterAttribute>();
+            if (pAttribute == nullptr)
+                continue;
+
+            if (pAttribute->GetResourceType() != fileDescriptor.ResourceType)
+                continue;
+
+            importers.Add((IAssetImporter*)pType->CreateDefaultHeapObject());
+            break;
+        }
+
+        /*
         * Setup
         */
         mID = fileDescriptor.ID;
@@ -91,6 +115,7 @@ namespace Portakal
         mOwnerFolder = pOwnerFolder;
         mSerializer = pSerializer;
         mVisualizer = pVisualizer;
+        mImporters = importers;
         mSubObject = nullptr;
     }
     DomainFile::~DomainFile()

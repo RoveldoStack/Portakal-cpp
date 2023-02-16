@@ -4,6 +4,7 @@
 
 namespace Portakal
 {
+	class DomainFile;
 	class PORTAKAL_API SimpleTextAssetImporter : public IAssetImporter
 	{
 		GENERATE_CLASS(SimpleTextAssetImporter);
@@ -11,7 +12,7 @@ namespace Portakal
 		SimpleTextAssetImporter() = default;
 		~SimpleTextAssetImporter() = default;
 
-		virtual void OnImport(DomainFolder* pTargetFolder,const String& targetPath, const ByteBlock& dataBlock) override;
+		virtual void OnImport(DomainFolder* pTargetFolder,const String& sourcePath) override;
 	};
 
 	START_GENERATE_TYPE(SimpleTextAssetImporter);

@@ -4,6 +4,7 @@
 namespace Portakal
 {
 	class DomainFolder;
+	class DomainFile;
 	class PORTAKAL_API IAssetImporter : public Class
 	{
 		GENERATE_CLASS(IAssetImporter);
@@ -11,7 +12,7 @@ namespace Portakal
 		IAssetImporter() = default;
 		~IAssetImporter() = default;
 
-		virtual void OnImport(DomainFolder* pTargetFolder,const String& targetPath,const ByteBlock& dataBlock) = 0;
+		virtual void OnImport(DomainFolder* pTargetFolder,const String& sourcePath) = 0;
 	};
 
 	START_GENERATE_TYPE(IAssetImporter);

@@ -11,6 +11,7 @@
 #include <Editor/Asset/CustomAssetImporterAttribute.h>
 #include <Editor/Asset/IAssetImporter.h>
 #include <Editor/Asset/SimpleTextAssetImporter.h>
+#include <Editor/Asset/SimpleTextAssetImporter2.h>
 #include <Editor/Domain/DomainFileDescriptorYamlSerialize.h>
 namespace Portakal
 {
@@ -102,11 +103,11 @@ namespace Portakal
 		const String extension = PlatformFile::GetExtension(sourceFilePath);
 
 		/*
-		* Check for asset serializer
+		* Check for asset importer
 		*/
 		const Array<Type*> types = Assembly::GetProcessAssembly()->GetTypes();
-		CustomAssetImporterAttribute* pFoundAttribute = nullptr;
-		Type* pFoundType = nullptr;
+		Array<IAssetImporter*> foundImporters;
+		Array<CustomAssetImporterAttribute*> foundImporterAttributes;
 		for (unsigned int i = 0; i < types.GetCursor(); i++)
 		{
 			/*
@@ -132,14 +133,14 @@ namespace Portakal
 			if (index == -1)
 				continue;
 
-			pFoundAttribute = pAttribute;
-			pFoundType = pType;
+			foundImporterAttributes.Add(pAttribute);
+			foundImporters.Add((IAssetImporter*)pType->CreateDefaultHeapObject());
 		}
 
 		/*
 		* Check if there is a valid match for the requested file
 		*/
-		if (pFoundType == nullptr) // return if there is no importers
+		if (foundImporters.GetCursor() == 0) // return if there is no importers
 			return;
 
 		/*
@@ -153,34 +154,19 @@ namespace Portakal
 		}
 
 		/*
-		* Write file descriptor file
+		* Run import asset procedures
 		*/
-		const String name = PlatformFile::GetNameWithoutExtension(sourceFilePath);
-		const String targetPath = mPath + "\\" + PlatformFile::GetName(sourceFilePath);
-		const String descriptorPath = mPath + "\\" + name + ".fd";
-		CreateFileDescriptor(name,PlatformFile::GetName(targetPath), pFoundAttribute->GetResourceType());
-
-		/*
-		* Copy source file
-		*/
-		if (!PlatformFile::Copy(targetPath, sourceFilePath))
+		for (unsigned int i = 0; i < foundImporters.GetCursor(); i++)
 		{
-			LOG("DomainFolder", "Failed to copy the source file");
-			return;
+			IAssetImporter* pFoundImporter = foundImporters[i];
+
+			/*
+			* Import
+			*/
+			pFoundImporter->OnImport(this,sourceFilePath);
+
+			delete pFoundImporter;
 		}
-
-		/*
-		* Create file's asset importer
-		*/
-		IAssetImporter* pImporter = (IAssetImporter*)pFoundType->CreateDefaultHeapObject();
-
-		pImporter->OnImport(this, targetPath, fileContent);
-
-		/*
-		* Create file
-		*/
-		DomainFile* pFile = new DomainFile(descriptorPath, this);
-		mFiles.Add(pFile);
 	}
 	void DomainFolder::CreateFileDescriptor(const String& name,const String& sourceFilePath, const String& resourceType)
 	{
@@ -234,5 +220,13 @@ namespace Portakal
 		*/
 		DomainFolder* pFolder = new DomainFolder(this,folderPath);
 		mSubFolders.Add(pFolder);
+	}
+	DomainFile* DomainFolder::RegisterFileViaDescriptor(const String& descriptorFilePath)
+	{
+		DomainFile* pFile = new DomainFile(descriptorFilePath, this);
+
+		mFiles.Add(pFile);
+
+		return pFile;
 	}
 }

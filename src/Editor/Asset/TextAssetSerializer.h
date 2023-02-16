@@ -21,7 +21,7 @@ namespace Portakal
 	START_GENERATE_TYPE(TextAssetSerializer);
 	START_TYPE_PROPERTIES(TextAssetSerializer);
 	REGISTER_BASE_TYPE(IAssetSerializer);
-	REGISTER_TYPE_ATTRIBUTE(CustomAssetSerializerAttribute, "simple_text", {".txt",".docx"});
+	REGISTER_TYPE_ATTRIBUTE(CustomAssetSerializerAttribute, "simple-text", {".txt",".docx"});
 	END_TYPE_PROPERTIES;
 	CONCRETE_TYPE(TextAssetSerializer);
 

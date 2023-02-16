@@ -1,4 +1,4 @@
-#include "SimpleTextAssetImporter.h"
+#include "SimpleTextAssetImporter2.h"
 #include <Runtime/Log/Log.h>
 #include <Runtime/Platform/PlatformFile.h>
 #include <Editor/Domain/DomainFolder.h>
@@ -6,14 +6,14 @@
 
 namespace Portakal
 {
-	
-	void SimpleTextAssetImporter::OnImport(DomainFolder* pTargetFolder,const String& sourcePath)
+
+	void SimpleTextAssetImporter2::OnImport(DomainFolder* pTargetFolder, const String& sourcePath)
 	{
 		/*
 		* Create text file descriptor
 		*/
-		const String name = PlatformFile::GetNameWithoutExtension(sourcePath);
-		const String targetPath = pTargetFolder->GetFolderPath() + "\\" + PlatformFile::GetName(sourcePath);
+		const String name = PlatformFile::GetNameWithoutExtension(sourcePath) + "2";
+		const String targetPath = pTargetFolder->GetFolderPath() + "\\" + name + ".txt";
 		const String descriptorPath = pTargetFolder->GetFolderPath() + "\\" + name + ".fd";
 		pTargetFolder->CreateFileDescriptor(name, PlatformFile::GetName(targetPath), "simple-text");
 
@@ -25,6 +25,7 @@ namespace Portakal
 		{
 			LOG("SimpleTextAssetImporter", "Failed read the simple text");
 		}
+		content += "SEXX";
 
 		/*
 		* Write the text content
@@ -37,5 +38,5 @@ namespace Portakal
 		*/
 		pTargetFolder->RegisterFileViaDescriptor(descriptorPath);
 	}
-	
+
 }
