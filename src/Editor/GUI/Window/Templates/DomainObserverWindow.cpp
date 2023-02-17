@@ -126,6 +126,14 @@ namespace Portakal
 			return;
 
 		/*
+		* Handle pre events
+		*/
+		if (ImGui::IsKeyPressed(ImGuiKey_Delete))
+		{
+			DeleteSelectedItems();
+		}
+
+		/*
 		* Draw header
 		*/
 		ImGui::Text(*mCurrentFolder->GetFolderPath());
@@ -252,7 +260,7 @@ namespace Portakal
 		}
 
 		/*
-		* Handle events
+		* Handle post events
 		*/ 
 		if (ImGui::IsWindowFocused() && !ImGui::IsAnyItemHovered() && ImGui::IsMouseClicked(ImGuiMouseButton_Right))// right click to empty space
 		{
@@ -266,7 +274,7 @@ namespace Portakal
 		{
 			ClearSelectedItems();
 		}
-
+		
 		/*
 		* Handle popups
 		*/
@@ -341,6 +349,11 @@ namespace Portakal
 		* Create folder
 		*/
 		DomainFolder* pRootFolder = pTargetFolder->CreateFolder(PlatformDirectory::GetName(path));
+		if (pRootFolder == nullptr)
+		{
+			LOG("DomainObserverWindow", "Failed to drop the folder");
+			return;
+		}
 
 		/*
 		* Iterate and create folders
@@ -368,6 +381,23 @@ namespace Portakal
 	{
 		mSelectedFolders.Clear();
 		mSelectedFiles.Clear();
+	}
+
+	void DomainObserverWindow::DeleteSelectedItems()
+	{
+		/*
+		* Delete files
+		*/
+		for (unsigned int i = 0; i < mSelectedFiles.GetCursor(); i++)
+			mSelectedFiles[i]->Delete();
+		mSelectedFiles.Clear();
+
+		/*
+		* Delete folders
+		*/
+		for (unsigned int i = 0; i < mSelectedFolders.GetCursor(); i++)
+			mSelectedFolders[i]->Delete();
+		mSelectedFolders.Clear();
 	}
 
 	void DomainObserverWindow::SelectFolder(DomainFolder* pFolder)

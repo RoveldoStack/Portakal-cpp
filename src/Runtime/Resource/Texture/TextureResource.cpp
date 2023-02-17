@@ -30,6 +30,8 @@ namespace Portakal
 
 		AllocateTexture(TextureType::Texture2D, TextureUsage::ReadOnly, result.Format, result.Width, result.Height, result.Depth);
 		UpdateTexture(result.pData, 0, 0, 0);
+
+		delete result.pData;
 	}
 	void TextureResource::AllocateTexture(const TextureType type, const TextureUsage usage, const TextureFormat format, const unsigned int width, const unsigned height, const unsigned depth)
 	{

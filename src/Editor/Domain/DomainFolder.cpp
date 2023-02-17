@@ -190,10 +190,62 @@ namespace Portakal
 
 		if (!PlatformFile::Write(path, fileDescriptorYAML))
 		{
-			LOG("DomainFOlder", "Failed to write file descriptor");
+			LOG("DomainFolder", "Failed to write file descriptor");
 			return;
 		}
+	}
+	void DomainFolder::DeleteFile(DomainFile* pFile)
+	{
+		/*
+		* Validate if this file's parent folder
+		*/
+		if (!mFiles.Has(pFile))
+			return;
 
+		/*
+		* Unload resource
+		*/
+		pFile->UnloadSync();
+
+		/*
+		* Delete physical files
+		*/
+		DeleteFilePhysical(pFile);
+
+		mFiles.Remove(pFile);
+
+		delete pFile;
+	}
+	void DomainFolder::Delete()
+	{
+		/*
+		* First delete files
+		*/
+		for (unsigned int i = 0; i < mFiles.GetCursor(); i++)
+		{
+			DomainFile* pFile = mFiles[i];
+
+			DeleteFile(pFile);
+
+			i--;
+		}
+		mFiles.Clear();
+
+		/*
+		* Delete sub folders
+		*/
+		for (unsigned int i = 0; i < mSubFolders.GetCursor(); i++)
+		{
+			DeleteSubFolder(mSubFolders[i]);
+			i--;
+		}
+		mSubFolders.Clear();
+
+		
+		/*
+		* Remove this folder from the owner
+		*/
+		mParentFolder->DeleteSubFolder(this);
 	}
 	DomainFolder* DomainFolder::CreateFolder(const String& name)
 	{
@@ -227,6 +279,20 @@ namespace Portakal
 
 		return pFolder;
 	}
+	void DomainFolder::DeleteSubFolder(DomainFolder* pFolder)
+	{
+		/*
+		* Delete physical folders
+		*/
+		if (!PlatformDirectory::Delete(pFolder->GetFolderPath()))
+		{
+			LOG("DomainFolder", "Failed to delete the folder");
+			return;
+		}
+
+		mSubFolders.Remove(pFolder);
+		delete pFolder;
+	}
 	DomainFile* DomainFolder::RegisterFileViaDescriptor(const String& descriptorFilePath)
 	{
 		DomainFile* pFile = new DomainFile(descriptorFilePath, this);
@@ -234,5 +300,39 @@ namespace Portakal
 		mFiles.Add(pFile);
 
 		return pFile;
+	}
+	void DomainFolder::DeleteFilePhysical(DomainFile* pFile)
+	{
+		LOG("DomainFolder", "Deleting file: %s", *pFile->GetSourceFilePath());
+
+		/*
+		* Unload resource
+		*/
+		pFile->UnloadSync();
+
+		/*
+		* Delete physical files
+		*/
+		if (PlatformFile::IsExist(pFile->GetFileDescriptorPath()))
+		{
+			if (!PlatformFile::Delete(pFile->GetFileDescriptorPath()))
+			{
+				LOG("DomainFolder", "Failed to delete the file descriptor");
+				return;
+			}
+		}
+		
+		if (PlatformFile::IsExist(pFile->GetSourceFilePath()))
+		{
+			if (!PlatformFile::Delete(pFile->GetSourceFilePath()))
+			{
+				LOG("DomainFolder", "Failed to delete the file source");
+				return;
+			}
+		}
+		else
+		{
+
+		}
 	}
 }

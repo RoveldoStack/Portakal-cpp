@@ -15,6 +15,7 @@
 #include <Runtime/Resource/ResourceSubObject.h>
 #include <Editor/Asset/CustomAssetAuthorizationToolAttribute.h>
 #include <Editor/Asset/IAssetAuthorizationTool.h>
+#include <Editor/Domain/DomainFolder.h>
 
 namespace Portakal
 {
@@ -34,6 +35,13 @@ namespace Portakal
             mSubObject->Destroy();
 
         mSubObject = nullptr;
+    }
+    void DomainFile::Delete()
+    {
+        if (mOwnerFolder == nullptr)
+            return;
+
+        mOwnerFolder->DeleteFile(this);
     }
     DomainFile::DomainFile(const String& fileDescriptorPath, DomainFolder* pOwnerFolder)
     {

@@ -29,6 +29,7 @@ namespace Portakal
 		void OnFolderDrop(DomainFolder* pTargetFolder,const String& path);
 
 		void ClearSelectedItems();
+		void DeleteSelectedItems();
 
 		void SelectFolder(DomainFolder* pFolder);
 		void OpenFolder(DomainFolder* pFolder);

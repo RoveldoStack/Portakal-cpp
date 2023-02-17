@@ -124,8 +124,6 @@ namespace Portakal
 		if (fileSize <= 0 || expectedReadInterval > fileSize)
 			return false;
 
-		LOG("Read", "Attempt start %d, end %d, total %d", startIndex, endIndex, expectedReadInterval);
-
 		unsigned long numberOfBytesRead = 0;
 		OVERLAPPED overlappedData = { 0 };
 

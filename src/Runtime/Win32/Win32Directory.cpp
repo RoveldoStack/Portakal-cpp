@@ -24,13 +24,13 @@ namespace Portakal
 			return false;
 
 		Array<String> subItems;
-		GetFileNames(path, subItems);
+		GetFileNames(path + "\\", subItems);
 
 		for (unsigned int i = 0; i < subItems.GetCursor(); i++)
 		{
 			const String itemPath = subItems[i];
 
-			const bool bFile = IsDirectoryExist(itemPath);
+			const bool bFile = !IsDirectoryExist(itemPath);
 			if (bFile)
 			{
 				PlatformFile::Delete(itemPath);
@@ -40,7 +40,9 @@ namespace Portakal
 				Delete(itemPath);
 			}
 		}
+
 		LOG("Win32Directory", "Removed %d items from path %s", subItems.GetCursor(), *path);
+		
 		RemoveDirectoryA(*path);
 
 		return true;

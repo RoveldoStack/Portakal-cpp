@@ -21,8 +21,14 @@ namespace Portakal
 
 		void CreateFileFromSource(const String& sourceFilePath);
 		void CreateFileDescriptor(const String& name, const String& sourceFilePath, const String& resourceType);
+		void DeleteFile(DomainFile* pFile);
+		void Delete();
+
 		DomainFolder* CreateFolder(const String& name);
+		void DeleteSubFolder(DomainFolder* pFolder);
 		DomainFile* RegisterFileViaDescriptor(const String& descriptorFilePath);
+	private:
+		void DeleteFilePhysical(DomainFile* pFile);
 	private:
 		DomainFolder* mParentFolder;
 		Array<DomainFile*> mFiles;

@@ -202,6 +202,8 @@ namespace Portakal
 
 		_childObjects.RemoveIndex(index);
 
+		pObject->OnDestroy();
+
 		delete pObject;
 	}
 	void GraphicsDevice::RegisterChildObject(GraphicsDeviceObject* pObject)

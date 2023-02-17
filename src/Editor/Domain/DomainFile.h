@@ -32,6 +32,7 @@ namespace Portakal
 
 		void LoadSync();
 		void UnloadSync();
+		void Delete();
 	private:
 		DomainFile(const String& fileDescriptorPath,DomainFolder* pOwnerFolder);
 		~DomainFile();
@@ -49,6 +50,5 @@ namespace Portakal
 		String mName;
 		String mResourceType;
 		Guid mID;
-
 	};
 }
