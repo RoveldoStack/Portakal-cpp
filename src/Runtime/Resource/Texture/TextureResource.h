@@ -16,6 +16,9 @@ namespace Portakal
 
 		FORCEINLINE Texture* GetTexture() const noexcept { return mTexture; }
 		FORCEINLINE ResourceTable* GetIsolatedResourceTable() const noexcept { return mIsolatedResourceTable; }
+		FORCEINLINE unsigned int GetWidth() const noexcept;
+		FORCEINLINE unsigned int GetHeight() const noexcept;
+		FORCEINLINE unsigned int GetDepth() const noexcept;
 
 		void CreateTextureFromPath(const String& path);
 		void AllocateTexture(const TextureType type, const TextureUsage usage, const TextureFormat format, const unsigned int width, const unsigned height, const unsigned depth);

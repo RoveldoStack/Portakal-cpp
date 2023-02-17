@@ -227,6 +227,10 @@ namespace Portakal
 			*/
 			IAssetVisualizer* pVisualizer = pFile->GetVisualizer();
 			TextureResource* pTexture = pVisualizer != nullptr ? pVisualizer->OnPaint(pFile) : nullptr;
+
+			const unsigned int textureWidth = pTexture->GetWidth();
+			const unsigned int textureHeight = pTexture->GetHeight();
+
 			ImGui::SetCursorPos(currentCursorPosition);
 			if (pVisualizer == nullptr || pTexture == nullptr)
 			{

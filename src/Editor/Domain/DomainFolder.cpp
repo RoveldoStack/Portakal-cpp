@@ -48,7 +48,6 @@ namespace Portakal
 			/*
 			* Create domain file
 			*/
-			const String sourceFilePath = path + "\\";
 			DomainFile* pFile = new DomainFile(filePath, this);
 
 			mFiles.Add(pFile);

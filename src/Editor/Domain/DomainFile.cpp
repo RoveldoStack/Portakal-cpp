@@ -54,7 +54,6 @@ namespace Portakal
         * Read descriptor
         */
         String fileContent;
-
         ASSERT(PlatformFile::Read(fileDescriptorPath, fileContent), "DomainFile", "Failed to read the file descriptor");
 
         DomainFileDescriptor fileDescriptor = {};

@@ -3,6 +3,7 @@
 #include <Shlwapi.h>
 #include <stdio.h>
 #include <Runtime/Log/Log.h>
+#include <Runtime/Platform/PlatformError.h>
 
 namespace Portakal
 {
@@ -128,21 +129,25 @@ namespace Portakal
 		OVERLAPPED overlappedData = { 0 };
 
 		const HANDLE fileHandle = CreateFileA(*path, GENERIC_READ, FILE_SHARE_READ, NULL,
-			OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL | FILE_FLAG_OVERLAPPED, NULL);
+			OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+
 		if (!fileHandle)
 			return false;
 
 		unsigned char* readBuffer = new unsigned char[expectedReadInterval];
-		const bool readSuccess = ReadFileEx(fileHandle, readBuffer, expectedReadInterval, &overlappedData, FileIOCompletionRoutine);
+		DWORD nReadBytes = 0;
+		if (!ReadFile(fileHandle, readBuffer, expectedReadInterval,&nReadBytes, NULL))
+		{
+			CloseHandle(fileHandle);
+			return false;
+		}
 
-		if (!readSuccess)
+		if (nReadBytes != expectedReadInterval) // check if read bytes matches the expected interval
 			return false;
 
 		contentOut = String((char*)readBuffer, expectedReadInterval);
 
-		CloseHandle(fileHandle);
-
-		return true;
+		return CloseHandle(fileHandle);
 	}
 	bool Win32File::Read(const String& path, ByteBlock& block, const unsigned long long startIndex, const unsigned long long endIndex)
 	{
@@ -171,7 +176,7 @@ namespace Portakal
 		OVERLAPPED overlappedData = { 0 };
 
 		const HANDLE fileHandle = CreateFileA(*path, GENERIC_READ, FILE_SHARE_READ, NULL,
-			OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL | FILE_FLAG_OVERLAPPED, NULL);
+			OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 
 		/*
 		* Validate file handle
@@ -184,10 +189,18 @@ namespace Portakal
 		*/
 		unsigned char* readBuffer = new unsigned char[expectedReadInterval];
 
-		const bool readSuccess = ReadFileEx(fileHandle, readBuffer, expectedReadInterval, &overlappedData, FileIOCompletionRoutine);
-
-		if (!readSuccess)
+		DWORD nBytesRead = 0;
+		if (!ReadFile(fileHandle, readBuffer, expectedReadInterval, &nBytesRead, NULL))
+		{
+			CloseHandle(fileHandle);
 			return false;
+		}
+
+		if (nBytesRead != expectedReadInterval)
+		{
+			CloseHandle(fileHandle);
+			return false;
+		}
 
 		block.Copy(readBuffer, expectedReadInterval);
 

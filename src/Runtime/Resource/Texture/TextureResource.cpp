@@ -20,6 +20,18 @@ namespace Portakal
 	{
 		DeleteTexture();
 	}
+	unsigned int TextureResource::GetWidth() const noexcept
+	{
+		return mTexture != nullptr ? mTexture->GetWidth() : 0;
+	}
+	unsigned int TextureResource::GetHeight() const noexcept
+	{
+		return mTexture != nullptr ? mTexture->GetHeight() : 0;
+	}
+	unsigned int TextureResource::GetDepth() const noexcept
+	{
+		return mTexture != nullptr ? mTexture->GetDepth() : 0;
+	}
 	void TextureResource::CreateTextureFromPath(const String& path)
 	{
 		TextureLoadResult result = {};
