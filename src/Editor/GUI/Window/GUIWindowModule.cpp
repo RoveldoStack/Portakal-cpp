@@ -94,8 +94,8 @@ namespace Portakal
 			/*
 			* Split the view
 			*/
-			unsigned int dockIDLeft = ImGui::DockBuilderSplitNode(dockspaceID, ImGuiDir_Left,0.35f,nullptr,&dockspaceID);
-			unsigned int dockIDRight = ImGui::DockBuilderSplitNode(dockspaceID, ImGuiDir_Right, 0.55f, nullptr, &dockspaceID);
+			unsigned int dockIDLeft = ImGui::DockBuilderSplitNode(dockspaceID, ImGuiDir_Left,0.15f,nullptr,&dockspaceID);
+			unsigned int dockIDRight = ImGui::DockBuilderSplitNode(dockspaceID, ImGuiDir_Right, 0.25f, nullptr, &dockspaceID);
 			unsigned int dockIDUp = ImGui::DockBuilderSplitNode(dockspaceID, ImGuiDir_Up, 0.25f, nullptr, &dockspaceID);
 			unsigned int dockIDDown = ImGui::DockBuilderSplitNode(dockspaceID, ImGuiDir_Down, 0.4f, nullptr, &dockspaceID);
 
