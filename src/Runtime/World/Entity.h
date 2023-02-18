@@ -8,6 +8,7 @@ namespace Portakal
 	class Scene;
 	class PORTAKAL_API Entity : public TaggedObject
 	{
+		friend Scene;
 	public:
 		FORCEINLINE Scene* GetOwnerScene() const noexcept { return mOwnerScene; }
 		FORCEINLINE Array<Component*> GetComponents() const noexcept { return mComponents; }
@@ -103,6 +104,9 @@ namespace Portakal
 		}
 
 		void DestroyEntity();
+	private:
+		Entity(Scene* pScene);
+		~Entity();
 	private:
 		Array<Component*> mComponents;
 		Scene* mOwnerScene;

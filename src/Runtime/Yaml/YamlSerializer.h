@@ -18,6 +18,6 @@ namespace Portakal
 	START_GENERATE_TYPE(YamlSerializer);
 		START_TYPE_PROPERTIES(YamlSerializer);
 		END_TYPE_PROPERTIES;
-	VIRTUAL_TYPE;
+	NO_DEFAULT_CONSTRUCTOR;
 	END_GENERATE_TYPE(YamlSerializer);
 }

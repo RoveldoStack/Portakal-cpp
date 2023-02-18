@@ -22,6 +22,6 @@ namespace Portakal
 	REGISTER_TYPE_ATTRIBUTE(YamlSerializerAttribute, typeof(DomainFileDescriptor));
 	REGISTER_BASE_TYPE(YamlSerializer);
 	END_TYPE_PROPERTIES;
-	CONCRETE_TYPE(DomainFileDescriptorYamlSerializer);
+	HAS_DEFAULT_CONSTRUCTOR(DomainFileDescriptorYamlSerializer);
 	END_GENERATE_TYPE(DomainFileDescriptorYamlSerializer);
 }

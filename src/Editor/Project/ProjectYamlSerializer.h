@@ -20,6 +20,6 @@ namespace Portakal
 	START_TYPE_PROPERTIES(ProjectYamlSerializer);
 	REGISTER_TYPE_ATTRIBUTE(YamlSerializerAttribute, typeof(ProjectYaml));
 	END_TYPE_PROPERTIES;
-	CONCRETE_TYPE(ProjectYamlSerializer);
+	HAS_DEFAULT_CONSTRUCTOR(ProjectYamlSerializer);
 	END_GENERATE_TYPE(ProjectYamlSerializer);
 }

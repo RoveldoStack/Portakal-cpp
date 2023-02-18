@@ -21,6 +21,7 @@
 #include <Editor/Domain/DomainModule.h>
 #include <Editor/Resource/EditorResourceModule.h>
 #include <Runtime/Platform/PlatformMonitor.h>
+#include <Runtime/World/SceneModule.h>
 
 
 int main(unsigned int argumentCount, const char** ppArguments)
@@ -58,6 +59,7 @@ int main(unsigned int argumentCount, const char** ppArguments)
 	graphicsModuleParams.WindowedDescs.Add(gdDesc);
 
 	pApplication->CreateModule<Portakal::GraphicsModule>(graphicsModuleParams);
+	pApplication->CreateModule<Portakal::SceneModule>();
 
 	/*
 	* Create project module

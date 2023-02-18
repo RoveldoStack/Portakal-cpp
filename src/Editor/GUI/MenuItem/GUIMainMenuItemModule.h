@@ -30,6 +30,6 @@ namespace Portakal
 	START_GENERATE_TYPE(GUIMainMenuItemModule);
 	START_TYPE_PROPERTIES(GUIMainMenuItemModule);
 	END_TYPE_PROPERTIES;
-	CONCRETE_TYPE(GUIMainMenuItemModule);
+	HAS_DEFAULT_CONSTRUCTOR(GUIMainMenuItemModule);
 	END_GENERATE_TYPE(GUIMainMenuItemModule);
 }

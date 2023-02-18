@@ -19,6 +19,6 @@ namespace Portakal
 	START_GENERATE_TYPE(CustomAssetProcessorAttribute);
 	START_TYPE_PROPERTIES(CustomAssetProcessorAttribute);
 	END_TYPE_PROPERTIES;
-	CONCRETE_TYPE(CustomAssetProcessorAttribute);
+	HAS_DEFAULT_CONSTRUCTOR(CustomAssetProcessorAttribute);
 	END_GENERATE_TYPE(CustomAssetProcessorAttribute);
 }

@@ -39,12 +39,11 @@ namespace Portakal
 	private:
 		Application* mOwnerApplication;
 	};
-	START_GENERATE_TYPE(ApplicationModule);
 
+	START_GENERATE_TYPE(ApplicationModule);
 	START_TYPE_PROPERTIES(ApplicationModule)
 	END_TYPE_PROPERTIES;
-
-	VIRTUAL_TYPE;
+	NO_DEFAULT_CONSTRUCTOR;
 	END_GENERATE_TYPE(ApplicationModule);
 
 

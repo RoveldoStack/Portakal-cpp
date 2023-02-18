@@ -31,6 +31,6 @@ namespace Portakal
 	START_GENERATE_TYPE(ImGuiExecutorModule);
 	START_TYPE_PROPERTIES(ImGuiExecutorModule);
 	END_TYPE_PROPERTIES;
-	CONCRETE_TYPE(ImGuiExecutorModule);
+	HAS_DEFAULT_CONSTRUCTOR(ImGuiExecutorModule);
 	END_GENERATE_TYPE(ImGuiExecutorModule);
 }

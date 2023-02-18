@@ -23,6 +23,6 @@ namespace Portakal
 	REGISTER_BASE_TYPE(IAssetVisualizer);
 	REGISTER_TYPE_ATTRIBUTE(CustomAssetVisualizerAttribute, "simple-text");
 	END_TYPE_PROPERTIES;
-	CONCRETE_TYPE(SimpleTextAssetVisualizer);
+	HAS_DEFAULT_CONSTRUCTOR(SimpleTextAssetVisualizer);
 	END_GENERATE_TYPE(SimpleTextAssetVisualizer);
 }

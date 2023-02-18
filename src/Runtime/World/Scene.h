@@ -2,21 +2,24 @@
 #include <Runtime/World/SceneDescriptor.h>
 #include <Runtime/World/SceneAspect.h>
 #include <Runtime/Reflection/Reflection.h>
+#include <Runtime/Object/TaggedObject.h>
 
 namespace Portakal
 {
 	class SceneAspect;
 	class Entity;
 
-	class PORTAKAL_API Scene
+	class PORTAKAL_API Scene : public TaggedObject
 	{
 		friend class SceneAPI;
 	public:
-		FORCEINLINE bool IsPrimal() const noexcept { return _primal; }
-		FORCEINLINE bool IsActive() const noexcept { return _active; }
+		Array<Entity*> GetEntities() const noexcept { return mEntities; }
+		Array<SceneAspect*> GetAspects() const noexcept { return mAspects; }
+		FORCEINLINE bool IsPrimal() const noexcept { return mPrimal; }
+		FORCEINLINE bool IsActive() const noexcept { return mActive; }
 
 		Entity* CreateEntity();
-		bool deleteEntity(Entity* pEntity);
+		bool DeleteEntity(Entity* pEntity);
 
 		template<typename TAspect,typename... TParameters>
 		TAspect* CreateAspect(TParameters... parameters)
@@ -27,7 +30,7 @@ namespace Portakal
 
 			pAspect->OnInitialize();
 
-			_aspects.Add(pAspect);
+			mAspects.Add(pAspect);
 
 			return pAspect;
 		}
@@ -43,7 +46,7 @@ namespace Portakal
 
 			pAspect->OnInitialize();
 
-			_aspects.Add(pAspect);
+			mAspects.Add(pAspect);
 
 			return pAspect;
 		}
@@ -58,7 +61,7 @@ namespace Portakal
 			pAspect->OnFinalize();
 			pAspect->_SetOnwerScene(nullptr);
 
-			_aspects.Remove(pAspect);
+			mAspects.Remove(pAspect);
 
 			return true;
 		}
@@ -73,7 +76,7 @@ namespace Portakal
 			pAspect->OnFinalize();
 			pAspect->_SetOnwerScene(nullptr);
 
-			_aspects.Remove(pAspect);
+			mAspects.Remove(pAspect);
 
 			return true;
 		}
@@ -83,9 +86,9 @@ namespace Portakal
 		{
 			const Type* pType = TypeAccessor<TComponent>::GetAccessorType();
 
-			for (unsigned int i = 0; i < _aspects.GetCursor(); i++)
+			for (unsigned int i = 0; i < mAspects.GetCursor(); i++)
 			{
-				SceneAspect* pAspect = _aspects[i];
+				SceneAspect* pAspect = mAspects[i];
 				if (pAspect->GetType() == pType)
 					return (TComponent*)pAspect;
 			}
@@ -94,25 +97,26 @@ namespace Portakal
 
 		SceneAspect* GetAspect(const Type* pType)
 		{
-			for (unsigned int i = 0; i < _aspects.GetCursor(); i++)
+			for (unsigned int i = 0; i < mAspects.GetCursor(); i++)
 			{
-				SceneAspect* pAspect = _aspects[i];
+				SceneAspect* pAspect = mAspects[i];
 				if (pAspect->GetType() == pType)
 					return pAspect;
 			}
 			return nullptr;
 		}
 
+		void MarkPrimal();
 	private:
 		Scene(const SceneDescriptor& descriptor);
 		Scene();
 
-		void _SetPrimalState(const bool state) { _primal = state; }
-		void _SetActiveState(const bool state) { _active = state; }
+		void _SetPrimalState(const bool state) { mPrimal = state; }
+		void _SetActiveState(const bool state) { mActive = state; }
 	private:
-		Array<SceneAspect*> _aspects;
-		Array<Entity*> _entities;
-		bool _primal;
-		bool _active;
+		Array<SceneAspect*> mAspects;
+		Array<Entity*> mEntities;
+		bool mPrimal;
+		bool mActive;
 	};
 }

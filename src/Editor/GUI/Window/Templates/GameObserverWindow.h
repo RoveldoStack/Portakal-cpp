@@ -22,6 +22,6 @@ namespace Portakal
 	START_GENERATE_TYPE(GameObserverWindow);
 	START_TYPE_PROPERTIES(GameObserverWindow);
 	END_TYPE_PROPERTIES;
-	CONCRETE_TYPE(GameObserverWindow);
+	HAS_DEFAULT_CONSTRUCTOR(GameObserverWindow);
 	END_GENERATE_TYPE(GameObserverWindow);
 }

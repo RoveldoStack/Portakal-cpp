@@ -39,6 +39,6 @@ namespace Portakal
 	START_GENERATE_TYPE(ProjectModule);
 	START_TYPE_PROPERTIES(ProjectModule);
 	END_TYPE_PROPERTIES;
-	CONCRETE_TYPE(ProjectModule);
+	HAS_DEFAULT_CONSTRUCTOR(ProjectModule);
 	END_GENERATE_TYPE(ProjectModule);
 }

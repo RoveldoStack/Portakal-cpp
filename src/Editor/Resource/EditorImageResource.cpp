@@ -7,8 +7,7 @@ namespace Portakal
 {
     EditorImageResource::EditorImageResource(const String& path, const String& name) : EditorResource(path,name,EditorResourceType::Image)
     {
-        mResource = new TextureResource();
-        mResource->CreateTextureFromPath(path);
+        mResource = new TextureResource(path);
     }
     EditorImageResource::~EditorImageResource()
     {

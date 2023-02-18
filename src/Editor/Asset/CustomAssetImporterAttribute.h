@@ -21,6 +21,6 @@ namespace Portakal
 	START_GENERATE_TYPE(CustomAssetImporterAttribute);
 	START_TYPE_PROPERTIES(CustomAssetImporterAttribute);
 	END_TYPE_PROPERTIES;
-	CONCRETE_TYPE(CustomAssetImporterAttribute);
+	HAS_DEFAULT_CONSTRUCTOR(CustomAssetImporterAttribute);
 	END_GENERATE_TYPE(CustomAssetImporterAttribute);
 }

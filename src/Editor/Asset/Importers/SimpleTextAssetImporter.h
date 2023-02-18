@@ -20,6 +20,6 @@ namespace Portakal
 	REGISTER_BASE_TYPE(IAssetImporter);
 	REGISTER_TYPE_ATTRIBUTE(CustomAssetImporterAttribute, "simple_text", { ".txt",".docx" });
 	END_TYPE_PROPERTIES;
-	CONCRETE_TYPE(SimpleTextAssetImporter);
+	HAS_DEFAULT_CONSTRUCTOR(SimpleTextAssetImporter);
 	END_GENERATE_TYPE(SimpleTextAssetImporter);
 }

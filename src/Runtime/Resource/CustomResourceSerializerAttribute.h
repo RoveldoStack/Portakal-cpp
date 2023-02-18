@@ -18,6 +18,6 @@ namespace Portakal
 	START_GENERATE_TYPE(CustomResourceSerializerAttribute);
 	START_TYPE_PROPERTIES(CustomResourceSerializerAttribute);
 	END_TYPE_PROPERTIES;
-	CONCRETE_TYPE(CustomResourceSerializerAttribute);
+	HAS_DEFAULT_CONSTRUCTOR(CustomResourceSerializerAttribute);
 	END_GENERATE_TYPE(CustomResourceSerializerAttribute);
 }

@@ -24,6 +24,6 @@ namespace Portakal
 	REGISTER_BASE_TYPE(YamlSerializer);
 	REGISTER_TYPE_ATTRIBUTE(YamlSerializerAttribute, typeof(SceneDescriptor));
 	END_TYPE_PROPERTIES;
-	CONCRETE_TYPE(SceneDescriptorYamlSerializer);
+	HAS_DEFAULT_CONSTRUCTOR(SceneDescriptorYamlSerializer);
 	END_GENERATE_TYPE(SceneDescriptorYamlSerializer);
 }

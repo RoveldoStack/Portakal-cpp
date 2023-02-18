@@ -77,10 +77,10 @@ namespace Portakal
 			mPrimalScene->_SetActiveState(false);
 		}
 
-		mPrimalScene = pScene;
-
 		pScene->_SetPrimalState(true);
 		pScene->_SetActiveState(false);
+
+		mPrimalScene = pScene;
 	}
 	void SceneAPI::DeleteSceneInternal(Scene* pScene)
 	{
@@ -98,6 +98,7 @@ namespace Portakal
 	SceneAPI::SceneAPI()
 	{
 		_api = this;
+		mPrimalScene = nullptr;
 	}
 
 	SceneAPI::~SceneAPI()

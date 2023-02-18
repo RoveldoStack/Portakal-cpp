@@ -9,46 +9,24 @@
 
 namespace Portakal
 {
-	TextureResource::TextureResource()
+	TextureResource::TextureResource(const TextureType type, const TextureUsage usage, const TextureFormat format, const unsigned int width, const unsigned height, const unsigned depth)
 	{
 		mDevice = GraphicsDeviceAPI::GetDefaultDevice();
 		mTexture = nullptr;
 		mIsolatedResourceTable = nullptr;
 		mCmdList = nullptr;
-	}
-	TextureResource::~TextureResource()
-	{
-		DeleteTexture();
-	}
-	unsigned int TextureResource::GetWidth() const noexcept
-	{
-		return mTexture != nullptr ? mTexture->GetWidth() : 0;
-	}
-	unsigned int TextureResource::GetHeight() const noexcept
-	{
-		return mTexture != nullptr ? mTexture->GetHeight() : 0;
-	}
-	unsigned int TextureResource::GetDepth() const noexcept
-	{
-		return mTexture != nullptr ? mTexture->GetDepth() : 0;
-	}
-	void TextureResource::CreateTextureFromPath(const String& path)
-	{
-		TextureLoadResult result = {};
-		TextureLoader::LoadTextureFromDisk(path,result);
+		mWidth = width;
+		mHeight = height;
+		mDepth = depth;
+		mFormat = format;
+		mUsage = usage;
+		mType = type;
+		mArrayLevel = 1;
+		mMipLevels = 0;
 
-		if (result.pData == nullptr)
-			return;
-
-		AllocateTexture(TextureType::Texture2D, TextureUsage::ReadOnly, result.Format, result.Width, result.Height, result.Depth);
-		UpdateTexture(result.pData, 0, 0, 0);
-
-		delete result.pData;
-	}
-	void TextureResource::AllocateTexture(const TextureType type, const TextureUsage usage, const TextureFormat format, const unsigned int width, const unsigned height, const unsigned depth)
-	{
-		DeleteTexture();
-
+		/*
+		* Create texture
+		*/
 		TextureCreateDesc desc = {};
 		desc.Type = type;
 		desc.Usage = usage;
@@ -64,6 +42,70 @@ namespace Portakal
 
 		GenerateIsolatedResourceTable();
 	}
+	TextureResource::TextureResource(const String& path)
+	{
+		mDevice = GraphicsDeviceAPI::GetDefaultDevice();
+		mTexture = nullptr;
+		mIsolatedResourceTable = nullptr;
+		mCmdList = nullptr;
+		mType = TextureType::Texture2D;
+		mUsage = TextureUsage::ReadOnly;
+		mFormat = TextureFormat::None;
+		mWidth = 0;
+		mHeight = 0;
+		mDepth = 0;
+		mArrayLevel = 0;
+		mMipLevels = 0;
+
+		/*
+		* Load texture data
+		*/
+		TextureLoadResult result = {};
+		TextureLoader::LoadTextureFromDisk(path, result);
+
+		if (result.pData == nullptr)
+			return;
+
+		/*
+		* Create texture
+		*/
+		TextureCreateDesc desc = {};
+		desc.Type = TextureType::Texture2D;
+		desc.Usage = TextureUsage::ReadOnly;
+		desc.Format = result.Format;
+		desc.Width = result.Width;
+		desc.Height = result.Height;
+		desc.Depth = result.Depth == 0 ? 1 : result.Depth;
+		desc.MipLevels = 0;
+		desc.ArrayLevels = 1;
+		desc.SampleCount = 1;
+
+		mTexture = mDevice->CreateTexture(desc);
+
+		GenerateIsolatedResourceTable();
+
+		/*
+		* Update the texture data
+		*/
+		UpdateTexture(result.pData, 0, 0, 0);
+
+		/*
+		* Initialize
+		*/
+		mType = TextureType::Texture2D;
+		mUsage = TextureUsage::ReadOnly;
+		mFormat = result.Format;
+		mWidth = result.Width;
+		mHeight = result.Height;
+		mDepth = result.Depth == 0 ? 1 : result.Depth;;
+		mArrayLevel = 1;
+		mMipLevels = 0;
+	}
+	TextureResource::~TextureResource()
+	{
+		DeleteTexture();
+	}
+	
 	void TextureResource::UpdateTexture(const unsigned char* pData, const unsigned int offsetX, const unsigned int offsetY, const unsigned int offsetZ)
 	{
 		if (mTexture == nullptr)

@@ -23,6 +23,6 @@ namespace Portakal
 	START_GENERATE_TYPE(ObjectObserverWindow);
 	START_TYPE_PROPERTIES(ObjectObserverWindow);
 	END_TYPE_PROPERTIES;
-	CONCRETE_TYPE(ObjectObserverWindow);
+	HAS_DEFAULT_CONSTRUCTOR(ObjectObserverWindow);
 	END_GENERATE_TYPE(ObjectObserverWindow);
 }

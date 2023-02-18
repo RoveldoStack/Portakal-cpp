@@ -24,6 +24,6 @@ namespace Portakal
 	REGISTER_BASE_TYPE(IAssetAuthorizationTool);
 	REGISTER_TYPE_ATTRIBUTE(CustomAssetAuthorizationToolAttribute,"texture");
 	END_TYPE_PROPERTIES;
-	CONCRETE_TYPE(TextureAuthorizationTool);
+	HAS_DEFAULT_CONSTRUCTOR(TextureAuthorizationTool);
 	END_GENERATE_TYPE(TextureAuthorizationTool);
 }

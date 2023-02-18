@@ -19,6 +19,6 @@ namespace Portakal
 	START_GENERATE_TYPE(MenuItemBehaviour);
 	START_TYPE_PROPERTIES(MenuItemBehaviour);
 	END_TYPE_PROPERTIES;
-	VIRTUAL_TYPE;
+	NO_DEFAULT_CONSTRUCTOR;
 	END_GENERATE_TYPE(MenuItemBehaviour);
 }

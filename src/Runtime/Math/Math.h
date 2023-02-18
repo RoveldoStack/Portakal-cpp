@@ -21,5 +21,7 @@ namespace Portakal
 		FORCEINLINE static float Sin(const float rad);
 		FORCEINLINE static float Tan(const float rad);
 		FORCEINLINE static float Abs(const float value);
+		FORCEINLINE static float Min(const float a, const float b);
+		FORCEINLINE static float Max(const float a, const float b);
 	};
 }

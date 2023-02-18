@@ -30,6 +30,6 @@ namespace Portakal
 	START_TYPE_PROPERTIES(AuthorizationToolWindow);
 	REGISTER_BASE_TYPE(EditorWindow);
 	END_TYPE_PROPERTIES;
-	CONCRETE_TYPE(AuthorizationToolWindow);
+	HAS_DEFAULT_CONSTRUCTOR(AuthorizationToolWindow);
 	END_GENERATE_TYPE(AuthorizationToolWindow);
 }

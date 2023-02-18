@@ -24,4 +24,12 @@ namespace Portakal
 	{
 		return value < 0 ? -value : value;
 	}
+	float Math::Min(const float a, const float b)
+	{
+		return a > b ? b : a;
+	}
+	float Math::Max(const float a, const float b)
+	{
+		return a > b ? a : b;
+	}
 }

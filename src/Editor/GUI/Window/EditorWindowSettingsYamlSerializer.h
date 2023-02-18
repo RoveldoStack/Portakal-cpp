@@ -20,6 +20,6 @@ namespace Portakal
 	START_TYPE_PROPERTIES(EditorWindowSettingsYamlSerializer);
 	REGISTER_TYPE_ATTRIBUTE(YamlSerializerAttribute, typeof(EditorWindowSettings));
 	END_TYPE_PROPERTIES;
-	CONCRETE_TYPE(EditorWindowSettingsYamlSerializer);
+	HAS_DEFAULT_CONSTRUCTOR(EditorWindowSettingsYamlSerializer);
 	END_GENERATE_TYPE(EditorWindowSettingsYamlSerializer);
 }

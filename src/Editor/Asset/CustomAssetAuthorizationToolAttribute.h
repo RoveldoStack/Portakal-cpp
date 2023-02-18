@@ -20,6 +20,6 @@ namespace Portakal
 	START_GENERATE_TYPE(CustomAssetAuthorizationToolAttribute);
 	START_TYPE_PROPERTIES(CustomAssetAuthorizationToolAttribute);
 	END_TYPE_PROPERTIES;
-	CONCRETE_TYPE(CustomAssetAuthorizationToolAttribute);
+	HAS_DEFAULT_CONSTRUCTOR(CustomAssetAuthorizationToolAttribute);
 	END_GENERATE_TYPE(CustomAssetAuthorizationToolAttribute);
 }

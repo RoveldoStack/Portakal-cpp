@@ -53,6 +53,6 @@ namespace Portakal
 	START_GENERATE_TYPE(DomainObserverWindow);
 	START_TYPE_PROPERTIES(DomainObserverWindow);
 	END_TYPE_PROPERTIES;
-	CONCRETE_TYPE(DomainObserverWindow);
+	HAS_DEFAULT_CONSTRUCTOR(DomainObserverWindow);
 	END_GENERATE_TYPE(DomainObserverWindow);
 }

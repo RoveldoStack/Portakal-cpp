@@ -3,30 +3,29 @@
 
 namespace Portakal
 {
+	class Scene;
 	class PORTAKAL_API WorldObserverWindow : public EditorWindow
 	{
 		GENERATE_CLASS(WorldObserverWindow);
 	public:
-		WorldObserverWindow() = default;
+		WorldObserverWindow() : mTargetScene(nullptr) {}
 		~WorldObserverWindow() = default;
 
-	private:
-
 		virtual void OnShow() override;
-		// Inherited via EditorWindow
 		virtual void OnHide() override;
-
 		virtual void OnInitialize() override;
-
 		virtual void OnFinalize() override;
-
 		virtual void OnPaint() override;
-
+	private:
+		void OnSceneChanged(Scene* pNewScene);
+		void RenderScene(Scene* pScene);
+	private:
+		Scene* mTargetScene;
 	};
 
 	START_GENERATE_TYPE(WorldObserverWindow);
 	START_TYPE_PROPERTIES(WorldObserverWindow);
 	END_TYPE_PROPERTIES;
-	CONCRETE_TYPE(WorldObserverWindow);
+	HAS_DEFAULT_CONSTRUCTOR(WorldObserverWindow);
 	END_GENERATE_TYPE(WorldObserverWindow);
 }

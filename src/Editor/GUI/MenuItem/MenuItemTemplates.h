@@ -21,7 +21,7 @@ namespace Portakal
 	START_TYPE_PROPERTIES(TestMenuItem);
 	REGISTER_TYPE_ATTRIBUTE(GUICustomMenuItem, "Test/My test button")
 	END_TYPE_PROPERTIES;
-	CONCRETE_TYPE(TestMenuItem);
+	HAS_DEFAULT_CONSTRUCTOR(TestMenuItem);
 	END_GENERATE_TYPE(TestMenuItem);
 
 
@@ -38,7 +38,21 @@ namespace Portakal
 	START_GENERATE_TYPE(TestWindowCreateButton);
 	START_TYPE_PROPERTIES(TestWindowCreateButton);
 	REGISTER_TYPE_ATTRIBUTE(GUICustomMenuItem, "Test/Test window")
-		END_TYPE_PROPERTIES;
-	CONCRETE_TYPE(TestWindowCreateButton);
+	END_TYPE_PROPERTIES;
+	HAS_DEFAULT_CONSTRUCTOR(TestWindowCreateButton);
 	END_GENERATE_TYPE(TestWindowCreateButton);
+
+	class PORTAKAL_API CreateEmptySceneButton : public MenuItemBehaviour
+	{
+		GENERATE_CLASS(CreateEmptySceneButton);
+	public:
+		virtual void OnClick() override;
+	};
+
+	START_GENERATE_TYPE(CreateEmptySceneButton);
+	START_TYPE_PROPERTIES(CreateEmptySceneButton);
+	REGISTER_TYPE_ATTRIBUTE(GUICustomMenuItem, "Scene/Create new")
+		END_TYPE_PROPERTIES;
+	HAS_DEFAULT_CONSTRUCTOR(CreateEmptySceneButton);
+	END_GENERATE_TYPE(CreateEmptySceneButton);
 }

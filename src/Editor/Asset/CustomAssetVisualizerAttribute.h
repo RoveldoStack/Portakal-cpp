@@ -18,6 +18,6 @@ namespace Portakal
 	START_GENERATE_TYPE(CustomAssetVisualizerAttribute);
 	START_TYPE_PROPERTIES(CustomAssetVisualizerAttribute);
 	END_TYPE_PROPERTIES;
-	CONCRETE_TYPE(CustomAssetVisualizerAttribute);
+	HAS_DEFAULT_CONSTRUCTOR(CustomAssetVisualizerAttribute);
 	END_GENERATE_TYPE(CustomAssetVisualizerAttribute);
 }

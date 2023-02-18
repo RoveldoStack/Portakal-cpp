@@ -31,7 +31,7 @@ namespace Portakal
 		START_TYPE_PROPERTIES(MessageModule)
 		END_TYPE_PROPERTIES;
 
-	CONCRETE_TYPE(MessageModule);
+	HAS_DEFAULT_CONSTRUCTOR(MessageModule);
 	END_GENERATE_TYPE(MessageModule);
 	 
 	

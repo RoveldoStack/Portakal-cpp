@@ -43,6 +43,6 @@ namespace Portakal
 		REGISTER_BASE_TYPE(ApplicationModule);
 	END_TYPE_PROPERTIES;
 
-	CONCRETE_TYPE(WindowModule);
+	HAS_DEFAULT_CONSTRUCTOR(WindowModule);
 	END_GENERATE_TYPE(WindowModule);
 }

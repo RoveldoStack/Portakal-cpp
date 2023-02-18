@@ -90,9 +90,9 @@ namespace Portakal
 
 
 
-#define VIRTUAL_TYPE FORCEINLINE virtual void* CreateDefaultHeapObject() const noexcept override { return nullptr; }
+#define NO_DEFAULT_CONSTRUCTOR FORCEINLINE virtual void* CreateDefaultHeapObject() const noexcept override { return nullptr; }
 
-#define CONCRETE_TYPE(type) FORCEINLINE virtual void* CreateDefaultHeapObject() const noexcept override { return new type(); }
+#define HAS_DEFAULT_CONSTRUCTOR(type) FORCEINLINE virtual void* CreateDefaultHeapObject() const noexcept override { return new type(); }
 
 #define typeof(type) TypeAccessor<type>::GetAccessorType()
 }

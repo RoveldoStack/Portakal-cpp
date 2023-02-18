@@ -9,6 +9,7 @@ namespace Portakal
 	class PORTAKAL_API SceneAPI
 	{
 		friend class SceneModule;
+
 		static SceneAPI* _api;
 	public:
 		static Scene* GetPrimalScene();

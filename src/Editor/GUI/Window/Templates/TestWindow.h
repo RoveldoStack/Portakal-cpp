@@ -21,6 +21,6 @@ namespace Portakal
 	START_TYPE_PROPERTIES(TestWindow);
 	REGISTER_BASE_TYPE(EditorWindow);
 	END_TYPE_PROPERTIES;
-	CONCRETE_TYPE(TestWindow);
+	HAS_DEFAULT_CONSTRUCTOR(TestWindow);
 	END_GENERATE_TYPE(TestWindow);
 }

@@ -26,7 +26,7 @@ namespace Portakal
 
 		~TaggedObject() = default;
 
-		virtual void DestroyCore() = 0;
+		virtual void DestroyCore() {}
 	private:
 		String mName;
 		Guid mID;
@@ -34,9 +34,9 @@ namespace Portakal
 
 	};
 	START_GENERATE_TYPE(TaggedObject);
-		START_TYPE_PROPERTIES(TaggedObject);
-		END_TYPE_PROPERTIES;
-		VIRTUAL_TYPE;
+	START_TYPE_PROPERTIES(TaggedObject);
+	END_TYPE_PROPERTIES;
+	NO_DEFAULT_CONSTRUCTOR;
 	END_GENERATE_TYPE(TaggedObject);
 
 	/*FORCEINLINE bool operator ==(const TaggedObject& a, const TaggedObject& b)

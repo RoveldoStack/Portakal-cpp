@@ -18,6 +18,6 @@ namespace Portakal
 	START_GENERATE_TYPE(ProjectYaml);
 	START_TYPE_PROPERTIES(ProjectYaml);
 	END_TYPE_PROPERTIES;
-	CONCRETE_TYPE(ProjectYaml);
+	HAS_DEFAULT_CONSTRUCTOR(ProjectYaml);
 	END_GENERATE_TYPE(ProjectYaml);
 }
