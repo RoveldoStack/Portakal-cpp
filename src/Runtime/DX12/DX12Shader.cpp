@@ -15,7 +15,7 @@ namespace Portakal
 			desc.Source.GetSource(),
 			desc.Source.GetCursor(),
 			nullptr,nullptr,nullptr,
-			desc.EntryPoint.GetSource(),
+			desc.EntryPointMethod.GetSource(),
 			*targetString,
 			D3DCOMPILE_ENABLE_STRICTNESS,
 			0,

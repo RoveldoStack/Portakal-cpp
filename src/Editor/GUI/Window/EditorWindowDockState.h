@@ -3,6 +3,9 @@
 
 namespace Portakal
 {
+	/// <summary>
+	/// Available dock states
+	/// </summary>
 	enum class PORTAKAL_API EditorWindowDockState : unsigned int
 	{
 		None = 0,

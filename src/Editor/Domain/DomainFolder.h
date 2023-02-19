@@ -6,28 +6,102 @@
 namespace Portakal
 {
 	class DomainFile;
+
+	/// <summary>
+	/// Represents a folder registered to the domain system
+	/// </summary>
 	class PORTAKAL_API DomainFolder
 	{
 	public:
 		DomainFolder(DomainFolder* pParentFolder, const String& path);
 		~DomainFolder();
 
+		/// <summary>
+		/// Returns the parent folder
+		/// </summary>
+		/// <returns></returns>
 		FORCEINLINE DomainFolder* GetParentFolder() const noexcept { return mParentFolder; }
+
+		/// <summary>
+		/// Returns whether it's the root folder of the domain
+		/// </summary>
+		/// <returns></returns>
 		FORCEINLINE bool IsRootFolder() const noexcept { return mParentFolder == nullptr; }
+
+		/// <summary>
+		/// Returns the files
+		/// </summary>
+		/// <returns></returns>
 		FORCEINLINE Array<DomainFile*> GetFiles() const noexcept { return mFiles; }
+
+		/// <summary>
+		/// Returns the sub folders
+		/// </summary>
+		/// <returns></returns>
 		FORCEINLINE Array<DomainFolder*> GetSubFolders() const noexcept { return mSubFolders; }
+
+		/// <summary>
+		/// Returns the folder path
+		/// </summary>
+		/// <returns></returns>
 		FORCEINLINE String GetFolderPath() const noexcept { return mPath; }
+
+		/// <summary>
+		/// Returns the folder name
+		/// </summary>
+		/// <returns></returns>
 		FORCEINLINE String GetFolderName() const noexcept { return mName; }
 
+		/// <summary>
+		/// Creates a file from the source path
+		/// </summary>
+		/// <param name="sourceFilePath"></param>
 		void CreateFileFromSource(const String& sourceFilePath);
+
+		/// <summary>
+		/// Creates a file descriptor
+		/// </summary>
+		/// <param name="name"></param>
+		/// <param name="sourceFilePath"></param>
+		/// <param name="resourceType"></param>
 		void CreateFileDescriptor(const String& name, const String& sourceFilePath, const String& resourceType);
+
+		/// <summary>
+		/// Registeres file via descriptor
+		/// </summary>
+		/// <param name="descriptorFilePath"></param>
+		/// <returns></returns>
+		DomainFile* RegisterFileViaDescriptor(const String& descriptorFilePath);
+
+		/// <summary>
+		/// Deletes the file
+		/// </summary>
+		/// <param name="pFile"></param>
 		void DeleteFile(DomainFile* pFile);
+
+		/// <summary>
+		/// Deletes this folder
+		/// </summary>
 		void Delete();
 
+		/// <summary>
+		/// Creates a folder
+		/// </summary>
+		/// <param name="name"></param>
+		/// <returns></returns>
 		DomainFolder* CreateFolder(const String& name);
+
+		/// <summary>
+		/// Deletes the sub folder
+		/// </summary>
+		/// <param name="pFolder"></param>
 		void DeleteSubFolder(DomainFolder* pFolder);
-		DomainFile* RegisterFileViaDescriptor(const String& descriptorFilePath);
 	private:
+
+		/// <summary>
+		/// Deletes the physical files
+		/// </summary>
+		/// <param name="pFile"></param>
 		void DeleteFilePhysical(DomainFile* pFile);
 	private:
 		DomainFolder* mParentFolder;

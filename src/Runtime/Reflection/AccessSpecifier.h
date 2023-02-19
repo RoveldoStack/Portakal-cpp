@@ -3,6 +3,9 @@
 
 namespace Portakal
 {
+	/// <summary>
+	/// Available access specifier flags
+	/// </summary>
 	enum class PORTAKAL_API AccessSpecifier : unsigned char
 	{
 		Public = 1,

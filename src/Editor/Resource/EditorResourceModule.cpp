@@ -13,7 +13,7 @@ namespace Portakal
     }
     void EditorResourceModule::OnInitialize()
     {
-        const String imageResourcesFolder = PlatformPaths::GetEditorInstallPath() + "\\Portakal\\Editor\\Resources\\";
+        const String imageResourcesFolder = PlatformPaths::GetApplicationLoadPath() + "\\Portakal\\Editor\\Resources\\";
 
         Array<EditorResource*> loadedResources;
         for (unsigned int i = 0; i < mParams.Requests.GetCursor(); i++)

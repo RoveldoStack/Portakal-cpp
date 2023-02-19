@@ -3,6 +3,9 @@
 
 namespace Portakal
 {
+	/// <summary>
+	/// Attribute for marking a processor class to target a resource type
+	/// </summary>
 	class PORTAKAL_API CustomAssetProcessorAttribute : public Attribute
 	{
 		GENERATE_CLASS(CustomAssetProcessorAttribute);
@@ -11,6 +14,10 @@ namespace Portakal
 		CustomAssetProcessorAttribute() = default;
 		~CustomAssetProcessorAttribute() = default;
 
+		/// <summary>
+		/// Returns the target resource type
+		/// </summary>
+		/// <returns></returns>
 		FORCEINLINE String GetResourceType() const noexcept { return mResourceType; }
 	private:
 		String mResourceType;

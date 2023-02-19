@@ -3,12 +3,15 @@
 
 namespace Portakal
 {
+	/// <summary>
+	/// Utility class for authoring the project paths
+	/// </summary>
 	class PORTAKAL_API ProjectPaths
 	{
 		friend class ProjectModule;
 	public:
-		ProjectPaths() = default;
-		~ProjectPaths() = default;
+		ProjectPaths() = delete;
+		~ProjectPaths() = delete;
 
 		FORCEINLINE static String GetProjectFolder() { return sProjectFolder; }
 		FORCEINLINE static String GetDomainFolder() { return sDomainFolder; }

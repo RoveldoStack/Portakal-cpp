@@ -3,6 +3,9 @@
 
 namespace Portakal
 {
+	/// <summary>
+	/// Console message listener implementation
+	/// </summary>
 	class PORTAKAL_API ConsoleMessageListener : public IMessageListener
 	{
 	public:

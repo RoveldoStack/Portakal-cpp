@@ -4,6 +4,9 @@
 
 namespace Portakal
 {
+	/// <summary>
+	/// Project yaml data header
+	/// </summary>
 	struct PORTAKAL_API ProjectYaml : public Class
 	{
 		GENERATE_CLASS(ProjectYaml);

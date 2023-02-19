@@ -3,6 +3,9 @@
 
 namespace Portakal
 {
+	/// <summary>
+	/// An attribute for marking a class as a menu item
+	/// </summary>
 	class PORTAKAL_API GUICustomMenuItem : public Attribute
 	{
 		GENERATE_CLASS(GUICustomMenuItem);
@@ -11,6 +14,10 @@ namespace Portakal
 		GUICustomMenuItem() = default;
 		~GUICustomMenuItem() = default;
 
+		/// <summary>
+		/// Returns the target menu path location
+		/// </summary>
+		/// <returns></returns>
 		FORCEINLINE String GetLocation() const noexcept { return mLocation; }
 	private:
 		const String mLocation;

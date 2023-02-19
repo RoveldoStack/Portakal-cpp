@@ -8,14 +8,33 @@
 
 namespace Portakal
 {
+	/// <summary>
+	/// API for enabling application to use editor window operations
+	/// </summary>
 	class PORTAKAL_API EditorWindowAPI
 	{
 	private:
 		static EditorWindowAPI* mAPI;
 	public:
+		/// <summary>
+		/// Creates new window via type
+		/// </summary>
+		/// <param name="pType"></param>
+		/// <returns></returns>
 		static EditorWindow* CreateWindowViaType(Type* pType);
+
+		/// <summary>
+		/// Creates new window via setting
+		/// </summary>
+		/// <param name="setting"></param>
+		/// <returns></returns>
 		static EditorWindow* CreateFromSetting(const EditorWindowSetting& setting);
 
+		/// <summary>
+		/// Creates a window via template type
+		/// </summary>
+		/// <typeparam name="TWindow"></typeparam>
+		/// <returns></returns>
 		template<typename TWindow>
 		static TWindow* CreateWindowViaType()
 		{
@@ -31,7 +50,12 @@ namespace Portakal
 		EditorWindowAPI();
 		~EditorWindowAPI();
 
+		/// <summary>
+		/// Returns the windows
+		/// </summary>
+		/// <returns></returns>
 		Array<EditorWindow*> GetWindows() const noexcept { return _windows; }
+
 		EditorWindow* CreateWindowInternal(Type* pTargetType);
 		EditorWindow* CreateWindowFromSettingsInternal(Type* pType, const EditorWindowSetting& setting);
 		void DeleteWindow(EditorWindow* pWindow);

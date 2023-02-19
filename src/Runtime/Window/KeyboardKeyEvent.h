@@ -9,6 +9,10 @@ namespace Portakal
 	class PORTAKAL_API KeyboardKeyEvent : public WindowEvent
 	{
 	public:
+		/// <summary>
+		/// Returns the related key
+		/// </summary>
+		/// <returns></returns>
 		FORCEINLINE unsigned int GetKey() const noexcept { return mKey; }
 	protected:
 		KeyboardKeyEvent(const unsigned int key) : mKey(key) {}

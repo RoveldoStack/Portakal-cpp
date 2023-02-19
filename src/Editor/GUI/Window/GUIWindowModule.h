@@ -5,6 +5,9 @@ namespace Portakal
 {
 	class EditorWindowAPI;
 
+	/// <summary>
+	/// An application module which authors the editor window components
+	/// </summary>
 	class PORTAKAL_API GUIWindowModule : public ApplicationModule
 	{
 		GENERATE_CLASS(GUIWindowModule);
@@ -24,8 +27,20 @@ namespace Portakal
 		virtual void OnEvent(WindowEvent* pEvent) override;
 
 	private:
+
+		/// <summary>
+		/// Creates default settings
+		/// </summary>
 		void CreateDefaultSettings();
+
+		/// <summary>
+		/// Saves the current settings to the settings file
+		/// </summary>
 		void SaveSettingsToFile();
+
+		/// <summary>
+		/// Loads the windows from the settings file
+		/// </summary>
 		void LoadWindowsFromFile();
 	private:
 		EditorWindowAPI* mAPI;

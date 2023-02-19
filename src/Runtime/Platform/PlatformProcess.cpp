@@ -14,23 +14,25 @@ namespace Portakal
 	void PlatformProcess::Start()
 	{
 		StartCore();
-		_active = true;
+		mActive = true;
 	}
 	void PlatformProcess::End()
 	{
 		EndCore();
-		_active = false;
+		mActive = false;
 	}
 
 	PlatformProcess::PlatformProcess(const String& path, const Array<String>& cmdArguments)
 	{
-		_concretedCmdArguments = path;
-
+		mConcretedCmdArguments = path;
 		for (unsigned int i = 0; i < cmdArguments.GetCursor(); i++)
 		{
 			const String argument = cmdArguments[i];
 
-			_concretedCmdArguments += " " + argument;
+			mConcretedCmdArguments += " " + argument;
 		}
+
+		mCmdArguments = cmdArguments;
+		mPath = path;
 	}
 }

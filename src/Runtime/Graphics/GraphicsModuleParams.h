@@ -5,9 +5,19 @@
 
 namespace Portakal
 {
+	/// <summary>
+	/// Required information to create a graphics module
+	/// </summary>
 	struct PORTAKAL_API GraphicsModuleParams
 	{
+		/// <summary>
+		/// Standalone device descriptions
+		/// </summary>
 		Array<StandaloneGraphicsDeviceCreateDesc> StandaloneDescs;
+
+		/// <summary>
+		/// Windowed device descriptions
+		/// </summary>
 		Array<WindowedGraphicsDeviceCreateDesc> WindowedDescs;
 	};
 }

@@ -4,8 +4,14 @@
 
 namespace Portakal
 {
+	/// <summary>
+	/// Required information to create commitable resource table
+	/// </summary>
 	struct PORTAKAL_API ResourceTableCreateDesc
 	{
+		/// <summary>
+		/// The resources
+		/// </summary>
 		Array<GraphicsDeviceObject*> Resources;
 	};
 }

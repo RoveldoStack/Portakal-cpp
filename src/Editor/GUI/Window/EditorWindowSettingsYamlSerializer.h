@@ -1,11 +1,14 @@
 #pragma once
-#include <Runtime/Yaml/YamlSerializer.h>
+#include <Runtime/Yaml/IYamlSerializer.h>
 #include <Runtime/Yaml/YamlSerializerAttribute.h>
 #include <Editor/GUI/Window/EditorWindowSettings.h>
 
 namespace Portakal
 {
-	class PORTAKAL_API EditorWindowSettingsYamlSerializer : public YamlSerializer
+	/// <summary>
+	/// Editor window settings file yaml serializer implementation
+	/// </summary>
+	class PORTAKAL_API EditorWindowSettingsYamlSerializer : public IYamlSerializer
 	{
 		GENERATE_CLASS(EditorWindowSettingsYamlSerializer);
 	public:
@@ -18,6 +21,7 @@ namespace Portakal
 
 	START_GENERATE_TYPE(EditorWindowSettingsYamlSerializer);
 	START_TYPE_PROPERTIES(EditorWindowSettingsYamlSerializer);
+	REGISTER_BASE_TYPE(IYamlSerializer);
 	REGISTER_TYPE_ATTRIBUTE(YamlSerializerAttribute, typeof(EditorWindowSettings));
 	END_TYPE_PROPERTIES;
 	HAS_DEFAULT_CONSTRUCTOR(EditorWindowSettingsYamlSerializer);

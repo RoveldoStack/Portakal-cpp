@@ -3,6 +3,9 @@
 
 namespace Portakal
 {
+	/// <summary>
+	/// Available texture formats
+	/// </summary>
 	enum class PORTAKAL_API TextureFormat : unsigned char
 	{
         None,

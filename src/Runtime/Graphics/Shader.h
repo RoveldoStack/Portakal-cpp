@@ -10,18 +10,31 @@ namespace Portakal
 	class PORTAKAL_API Shader : public GraphicsDeviceObject
 	{
 	public:
-		FORCEINLINE ShaderStage GetStage() const noexcept { return _stage; }
-		FORCEINLINE String GetEntryPoint() const noexcept { return _entryPoint; }
-		FORCEINLINE String GetSource() const noexcept { return _source; }
+		/// <summary>
+		/// Returns the shader stage
+		/// </summary>
+		/// <returns></returns>
+		FORCEINLINE ShaderStage GetStage() const noexcept { return mStage; }
+
+		/// <summary>
+		/// Returns the entry point method name
+		/// </summary>
+		/// <returns></returns>
+		FORCEINLINE String GetEntryPointMethod() const noexcept { return mEntryPointMethod; }
+
+		/// <summary>
+		/// Returns the shader source in text
+		/// </summary>
+		/// <returns></returns>
+		FORCEINLINE String GetSource() const noexcept { return mSource; }
 
 		FORCEINLINE virtual GraphicsDeviceObjectType GetDeviceObjectType() const noexcept override final { return GraphicsDeviceObjectType::Shader; }
 	protected:
-		Shader(const ShaderCreateDesc& desc) : _stage(desc.Stage), _entryPoint(desc.EntryPoint), _source(desc.Source) {}
+		Shader(const ShaderCreateDesc& desc) : mStage(desc.Stage), mEntryPointMethod(desc.EntryPointMethod), mSource(desc.Source) {}
 		virtual ~Shader() {}
-
 	private:
-		const ShaderStage _stage;
-		const String _entryPoint;
-		const String _source;
+		const ShaderStage mStage;
+		const String mEntryPointMethod;
+		const String mSource;
 	};
 }

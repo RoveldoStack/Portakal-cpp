@@ -12,7 +12,16 @@ namespace Portakal
 		WindowResizedEvent(const unsigned int width, const unsigned int height) : mWidth(width), mHeight(height) {}
 		~WindowResizedEvent() = default;
 
+		/// <summary>
+		/// Returns the width
+		/// </summary>
+		/// <returns></returns>
 		FORCEINLINE unsigned int GetWidth() const noexcept { return mWidth; }
+
+		/// <summary>
+		/// Returns the height
+		/// </summary>
+		/// <returns></returns>
 		FORCEINLINE unsigned int GetHeight() const noexcept { return mHeight; }
 
 		FORCEINLINE virtual WindowEventType GetEventType() const noexcept override final { return WindowEventType::WindowResized; }

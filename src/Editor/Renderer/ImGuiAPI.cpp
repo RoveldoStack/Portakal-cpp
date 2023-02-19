@@ -9,5 +9,5 @@
 
 namespace Portakal
 {
-	ImGuiAPI* ImGuiAPI::mAPI = nullptr;
+	ImGuiAPI* ImGuiAPI::sAPI = nullptr;
 }

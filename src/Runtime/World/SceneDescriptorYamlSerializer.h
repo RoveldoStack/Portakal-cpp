@@ -1,11 +1,14 @@
 #pragma once
 #include <Runtime/World/SceneDescriptor.h>
-#include <Runtime/Yaml/YamlSerializer.h>
+#include <Runtime/Yaml/IYamlSerializer.h>
 #include <Runtime/Yaml/YamlSerializerAttribute.h>
 
 namespace Portakal
 {
-	class PORTAKAL_API SceneDescriptorYamlSerializer : public YamlSerializer
+	/// <summary>
+	/// Yaml serializer for the scene descriptor
+	/// </summary>
+	class PORTAKAL_API SceneDescriptorYamlSerializer : public IYamlSerializer
 	{
 		GENERATE_CLASS(SceneDescriptorYamlSerializer);
 	public:
@@ -21,7 +24,7 @@ namespace Portakal
 
 	START_GENERATE_TYPE(SceneDescriptorYamlSerializer);
 	START_TYPE_PROPERTIES(SceneDescriptorYamlSerializer);
-	REGISTER_BASE_TYPE(YamlSerializer);
+	REGISTER_BASE_TYPE(IYamlSerializer);
 	REGISTER_TYPE_ATTRIBUTE(YamlSerializerAttribute, typeof(SceneDescriptor));
 	END_TYPE_PROPERTIES;
 	HAS_DEFAULT_CONSTRUCTOR(SceneDescriptorYamlSerializer);

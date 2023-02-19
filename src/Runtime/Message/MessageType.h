@@ -3,6 +3,9 @@
 
 namespace Portakal
 {
+	/// <summary>
+	/// Available message types
+	/// </summary>
 	enum class PORTAKAL_API MessageType
 	{
 		Information,

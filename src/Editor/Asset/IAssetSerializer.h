@@ -8,6 +8,10 @@ namespace Portakal
 {
 	class DomainFile;
 	class ResourceSubObject;
+
+	/// <summary>
+	/// Asset serializer interface, used for serializing the asset into editor and package formats also for deserialization of the raw format
+	/// </summary>
 	class PORTAKAL_API IAssetSerializer : public Class
 	{
 		GENERATE_CLASS(IAssetSerializer);
@@ -15,8 +19,23 @@ namespace Portakal
 		IAssetSerializer() = default;
 		~IAssetSerializer() = default;
 
+		/// <summary>
+		/// Serializes to the editor format
+		/// </summary>
+		/// <param name="pObject"></param>
 		virtual void SerializeToEditor(const ResourceSubObject* pObject) = 0;
+
+		/// <summary>
+		/// Serializes to the package format
+		/// </summary>
+		/// <param name="pObject"></param>
 		virtual void SerializeToPackage(const ResourceSubObject* pObject) = 0;
+
+		/// <summary>
+		/// Deserializes from the raw file format
+		/// </summary>
+		/// <param name="pFile"></param>
+		/// <returns></returns>
 		virtual ResourceSubObject* Deserialize(const DomainFile* pFile) = 0;
 	};
 

@@ -9,18 +9,55 @@ namespace Portakal
 	class SceneAspect;
 	class Entity;
 
+	/// <summary>
+	/// Scene represents a collection of entities and aspects.
+	/// Aspects defines the properties of a scene.
+	/// Entities populates these properties.
+	/// </summary>
 	class PORTAKAL_API Scene : public TaggedObject
 	{
 		friend class SceneAPI;
 	public:
+		/// <summary>
+		/// Returns the entities
+		/// </summary>
+		/// <returns></returns>
 		Array<Entity*> GetEntities() const noexcept { return mEntities; }
+
+		/// <summary>
+		/// Returns the aspects
+		/// </summary>
+		/// <returns></returns>
 		Array<SceneAspect*> GetAspects() const noexcept { return mAspects; }
+
+		/// <summary>
+		/// Returns whether its the primal scene
+		/// </summary>
+		/// <returns></returns>
 		FORCEINLINE bool IsPrimal() const noexcept { return mPrimal; }
+
+		/// <summary>
+		/// Returns whether its currently active and running
+		/// </summary>
 		FORCEINLINE bool IsActive() const noexcept { return mActive; }
 
+		/// <summary>
+		/// Creates anew entity
+		/// </summary>
+		/// <returns></returns>
 		Entity* CreateEntity();
+
+		/// <summary>
+		/// Deletes the existing entity
+		/// </summary>
+		/// <param name="pEntity"></param>
+		/// <returns></returns>
 		bool DeleteEntity(Entity* pEntity);
 
+		/// <summary>
+		/// Creates anew aspect with the given template type
+		/// </summary>
+		/// <typeparam name="TComponent"></typeparam>
 		template<typename TAspect,typename... TParameters>
 		TAspect* CreateAspect(TParameters... parameters)
 		{
@@ -35,6 +72,10 @@ namespace Portakal
 			return pAspect;
 		}
 
+		/// <summary>
+		/// Creates anew aspect with the given type
+		/// </summary>
+		/// <param name="state"></param>
 		SceneAspect* CreateAspect(const Type* pType)
 		{
 			SceneAspect* pAspect = (SceneAspect*)pType->CreateDefaultHeapObject();
@@ -51,6 +92,11 @@ namespace Portakal
 			return pAspect;
 		}
 
+		/// <summary>
+		/// Deletes the aspect with the given type
+		/// </summary>
+		/// <param name="pType"></param>
+		/// <returns></returns>
 		bool DeleteAspect(const Type* pType)
 		{
 			SceneAspect* pAspect = GetAspect(pType);
@@ -66,6 +112,9 @@ namespace Portakal
 			return true;
 		}
 
+		/// <summary>
+		/// Deletes the aspect with the given template type
+		/// </summary>
 		template<typename TAspect>
 		bool DeleteAspect()
 		{
@@ -81,6 +130,9 @@ namespace Portakal
 			return true;
 		}
 
+		/// <summary>
+		/// Returns the aspect with the given template type
+		/// </summary>
 		template<typename TComponent>
 		TComponent* GetAspect()
 		{
@@ -95,6 +147,9 @@ namespace Portakal
 			return nullptr;
 		}
 
+		/// <summary>
+		/// Returns the aspect with the given type
+		/// </summary>
 		SceneAspect* GetAspect(const Type* pType)
 		{
 			for (unsigned int i = 0; i < mAspects.GetCursor(); i++)
@@ -106,12 +161,22 @@ namespace Portakal
 			return nullptr;
 		}
 
+		/// <summary>
+		/// Marks this scene as the primal scene
+		/// </summary>
 		void MarkPrimal();
 	private:
 		Scene(const SceneDescriptor& descriptor);
 		Scene();
 
+		/// <summary>
+		/// Internal primal state setter
+		/// </summary>
 		void _SetPrimalState(const bool state) { mPrimal = state; }
+
+		/// <summary>
+		/// Internal active state setter
+		/// </summary>
 		void _SetActiveState(const bool state) { mActive = state; }
 	private:
 		Array<SceneAspect*> mAspects;

@@ -3,12 +3,19 @@
 
 namespace Portakal
 {
+	/// <summary>
+	/// Platform agnostic special path management class
+	/// </summary>
 	class PORTAKAL_API PlatformPaths
 	{
 	public:
 		PlatformPaths() = delete;
 		~PlatformPaths() = delete;
 
-		FORCEINLINE static String GetEditorInstallPath();
+		/// <summary>
+		/// Returns the general application load path
+		/// </summary>
+		/// <returns></returns>
+		FORCEINLINE static String GetApplicationLoadPath();
 	};
 }

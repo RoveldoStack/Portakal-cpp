@@ -3,15 +3,29 @@
 #include <Runtime/Containers/Guid.h>
 #include <Runtime/Containers/String.h>
 #include <Runtime/Yaml/YamlSerializerAttribute.h>
-#include <Runtime/Yaml/YamlSerializer.h>
+#include <Runtime/Yaml/IYamlSerializer.h>
 namespace Portakal
 {
+	/// <summary>
+	/// Domain file descriptor for yaml serialization
+	/// </summary>
 	struct PORTAKAL_API DomainFileDescriptor : public Class
 	{
 		GENERATE_CLASS(DomainFileDescriptor);
 
+		/// <summary>
+		/// Resource type
+		/// </summary>
 		String ResourceType;
+
+		/// <summary>
+		/// Source file path
+		/// </summary>
 		String SourceFile;
+
+		/// <summary>
+		/// Unique id
+		/// </summary>
 		Guid ID;
 	};
 

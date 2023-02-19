@@ -2,47 +2,47 @@
 
 namespace Portakal
 {
-	GraphicsDeviceAPI* GraphicsDeviceAPI::_api = nullptr;
+	GraphicsDeviceAPI* GraphicsDeviceAPI::sAPI = nullptr;
 
 	GraphicsDevice* GraphicsDeviceAPI::GetDefaultDevice()
 	{
-		if (_api == nullptr)
+		if (sAPI == nullptr)
 			return nullptr;
 
-		return _api->_devices.GetCursor() > 0 ? _api->_devices[0] : nullptr;
+		return sAPI->mDevices.GetCursor() > 0 ? sAPI->mDevices[0] : nullptr;
 	}
 	Array<GraphicsDevice*> GraphicsDeviceAPI::GetDevices()
 	{
-		if (_api == nullptr)
+		if (sAPI == nullptr)
 			return Array<GraphicsDevice*>();
 
-		return _api->_devices;
+		return sAPI->mDevices;
 	}
 	Array<GraphicsDevice*> GraphicsDeviceAPI::GetStandaloneDevices()
 	{
-		if (_api == nullptr)
+		if (sAPI == nullptr)
 			return Array<GraphicsDevice*>();
 
-		return _api->_standaloneDevices;
+		return sAPI->mStandaloneDevices;
 	}
 	Array<GraphicsDevice*> GraphicsDeviceAPI::GetWindowedDevices()
 	{
-		if (_api == nullptr)
+		if (sAPI == nullptr)
 			return Array<GraphicsDevice*>();
 
-		return _api->_windowedDevices;
+		return sAPI->mWindowedDevices;
 	}
 	GraphicsDeviceAPI::GraphicsDeviceAPI(const Array<GraphicsDevice*>& windowedDevices, const Array<GraphicsDevice*>& standaloneDevices)
 	{
-		_api = this;
+		sAPI = this;
 
-		_api->_standaloneDevices = standaloneDevices;
-		_api->_windowedDevices = windowedDevices;
-		_api->_devices = windowedDevices;
-		_api->_devices.AddRange(standaloneDevices);
+		sAPI->mStandaloneDevices = standaloneDevices;
+		sAPI->mWindowedDevices = windowedDevices;
+		sAPI->mDevices = windowedDevices;
+		sAPI->mDevices.AddRange(standaloneDevices);
 	}
 	GraphicsDeviceAPI::~GraphicsDeviceAPI()
 	{
-		_api = nullptr;
+		sAPI = nullptr;
 	}
 }

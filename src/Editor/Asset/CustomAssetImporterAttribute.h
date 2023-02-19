@@ -3,6 +3,9 @@
 
 namespace Portakal
 {
+	/// <summary>
+	/// Attribute for a importer class to target a resource type
+	/// </summary>
 	class PORTAKAL_API CustomAssetImporterAttribute : public Attribute
 	{
 		GENERATE_CLASS(CustomAssetImporterAttribute);
@@ -11,7 +14,16 @@ namespace Portakal
 		CustomAssetImporterAttribute() = default;
 		~CustomAssetImporterAttribute() = default;
 
+		/// <summary>
+		/// Returns the target resource type
+		/// </summary>
+		/// <returns></returns>
 		FORCEINLINE String GetResourceType() const noexcept { return mResourceType; }
+
+		/// <summary>
+		/// Returns the target extensions for the resource type
+		/// </summary>
+		/// <returns></returns>
 		FORCEINLINE Array<String> GetExtensions() const noexcept { return mExtensions; }
 	private:
 		String mResourceType;

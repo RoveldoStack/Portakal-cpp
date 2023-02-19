@@ -12,6 +12,11 @@ namespace Portakal
 		TextureLoaderUtils() = delete;
 		~TextureLoaderUtils() = delete;
 
+		/// <summary>
+		/// Returns the texture format according to the given channels
+		/// </summary>
+		/// <param name="channels"></param>
+		/// <returns></returns>
 		FORCEINLINE static TextureFormat GetTextureFormat(const unsigned int channels);
 	};
 }

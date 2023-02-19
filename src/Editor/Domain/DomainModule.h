@@ -4,6 +4,10 @@
 namespace Portakal
 {
 	class DomainAPI;
+
+	/// <summary>
+	/// Application module which authors the domain components
+	/// </summary>
 	class PORTAKAL_API DomainModule : public ApplicationModule
 	{
 	public:

@@ -6,6 +6,9 @@ namespace Portakal
 {
 	class GraphicsDeviceAPI;
 
+	/// <summary>
+	/// An application modules designed to author the core graphics related stuff
+	/// </summary>
 	class PORTAKAL_API GraphicsModule : public ApplicationModule
 	{
 		GENERATE_CLASS(GraphicsModule);

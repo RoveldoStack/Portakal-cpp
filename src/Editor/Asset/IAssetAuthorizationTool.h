@@ -4,6 +4,10 @@
 namespace Portakal
 {
 	class DomainFile;
+
+	/// <summary>
+	/// Asset authorization tool interface, used for displaying the asset specific configurations in the editor.
+	/// </summary>
 	class PORTAKAL_API IAssetAuthorizationTool : public Class
 	{
 		GENERATE_CLASS(IAssetAuthorizationTool);
@@ -11,8 +15,20 @@ namespace Portakal
 		IAssetAuthorizationTool() = default;
 		~IAssetAuthorizationTool() = default;
 
+		/// <summary>
+		/// Called upon first initialization
+		/// </summary>
 		virtual void OnInitialize() = 0;
+
+		/// <summary>
+		/// Called upon painting every frame (if visible)
+		/// </summary>
+		/// <param name="pFile"></param>
 		virtual void OnPaint(DomainFile* pFile) = 0;
+
+		/// <summary>
+		/// Called upon finalization
+		/// </summary>
 		virtual void OnFinalize() = 0;
 
 	};

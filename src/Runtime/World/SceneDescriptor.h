@@ -4,6 +4,9 @@
 #include <Runtime/Reflection/Reflection.h>
 namespace Portakal
 {
+	/// <summary>
+	/// Available component field types
+	/// </summary>
 	enum class PORTAKAL_API SceneComponentFieldType
 	{
 		Raw,
@@ -12,22 +15,34 @@ namespace Portakal
 		Resource
 	};
 
+	/// <summary>
+	/// Represents a single resource entry inside the scene
+	/// </summary>
 	struct PORTAKAL_API SceneResourceEntry
 	{
 		Guid ID;
 	};
 
+	/// <summary>
+	/// Represents a single aspect entry inside the scene
+	/// </summary>
 	struct PORTAKAL_API SceneAspectEntry
 	{
 		String TypeName;
 	};
 
+	/// <summary>
+	/// Represents a single entity entry inside the scene
+	/// </summary>
 	struct PORTAKAL_API SceneEntityEntry
 	{
 		String TagName;
 		Guid ID;
 	};
 
+	/// <summary>
+	/// Represents a single component field entry inside the scene
+	/// </summary>
 	struct PORTAKAL_API SceneComponentFieldEntry
 	{
 		String FieldName;
@@ -35,6 +50,9 @@ namespace Portakal
 		String Content;
 	};
 
+	/// <summary>
+	/// Represents a single component entry inside the scene
+	/// </summary>
 	struct PORTAKAL_API SceneComponentEntry
 	{
 		String TypeName;
@@ -44,8 +62,9 @@ namespace Portakal
 		Array<SceneComponentFieldEntry> Fields;
 	};
 
-	
-
+	/// <summary>
+	/// A descriptor for the scene, one can serialize scene into a scene descriptor and later can create a scene from it
+	/// </summary>
 	struct PORTAKAL_API SceneDescriptor : public Class
 	{
 		GENERATE_CLASS(SceneDescriptor);

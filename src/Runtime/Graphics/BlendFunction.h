@@ -3,6 +3,9 @@
 
 namespace Portakal
 {
+	/// <summary>
+	/// Represents the available blending functions
+	/// </summary>
 	enum class PORTAKAL_API BlendFunction
 	{
 		Add,

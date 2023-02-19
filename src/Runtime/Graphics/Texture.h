@@ -4,35 +4,82 @@
 
 namespace Portakal
 {
+	/// <summary>
+	/// Represents a texture allocated on the gpu
+	/// </summary>
 	class PORTAKAL_API Texture : public GraphicsDeviceObject
 	{
 	public:
-		FORCEINLINE TextureType GetTextureType() const noexcept { return _type; }
-		FORCEINLINE TextureUsage GetTextureUsage() const noexcept { return _usage; }
-		FORCEINLINE TextureFormat GetTextureFormat() const noexcept { return _format; }
-		FORCEINLINE unsigned int GetWidth() const noexcept { return _width; }
-		FORCEINLINE unsigned int GetHeight() const noexcept { return _height; }
-		FORCEINLINE unsigned int GetDepth() const noexcept { return _depth; }
-		FORCEINLINE unsigned char GetSampleCount() const noexcept { return _sampleCount; }
-		FORCEINLINE unsigned char GetMipLevels() const noexcept { return _mipLevels; }
-		FORCEINLINE unsigned char GetArrayLevels() const noexcept { return _arrayLevels; }
+		/// <summary>
+		/// Returns the texture type
+		/// </summary>
+		/// <returns></returns>
+		FORCEINLINE TextureType GetTextureType() const noexcept { return mType; }
+
+		/// <summary>
+		/// Returns the texture usage
+		/// </summary>
+		/// <returns></returns>
+		FORCEINLINE TextureUsage GetTextureUsage() const noexcept { return mUsage; }
+
+		/// <summary>
+		/// Returns the texture format
+		/// </summary>
+		/// <returns></returns>
+		FORCEINLINE TextureFormat GetTextureFormat() const noexcept { return mFormat; }
+
+		/// <summary>
+		/// Returns the width
+		/// </summary>
+		/// <returns></returns>
+		FORCEINLINE unsigned int GetWidth() const noexcept { return mWidth; }
+
+		/// <summary>
+		/// Returns the height
+		/// </summary>
+		/// <returns></returns>
+		FORCEINLINE unsigned int GetHeight() const noexcept { return mHeight; }
+
+		/// <summary>
+		/// Returns the depth
+		/// </summary>
+		/// <returns></returns>
+		FORCEINLINE unsigned int GetDepth() const noexcept { return mDepth; }
+
+		/// <summary>
+		/// Returns the sample count
+		/// </summary>
+		/// <returns></returns>
+		FORCEINLINE unsigned char GetSampleCount() const noexcept { return mSampleCount; }
+
+		/// <summary>
+		/// Returns the mip levels
+		/// </summary>
+		/// <returns></returns>
+		FORCEINLINE unsigned char GetMipLevels() const noexcept { return mMipLevels; }
+
+		/// <summary>
+		/// Returns array levels
+		/// </summary>
+		/// <returns></returns>
+		FORCEINLINE unsigned char GetArrayLevels() const noexcept { return mArrayLevels; }
 
 		FORCEINLINE virtual GraphicsDeviceObjectType GetDeviceObjectType() const noexcept override final { return GraphicsDeviceObjectType::Texture; }
 	protected:
-		Texture(const TextureCreateDesc& desc) : _type(desc.Type), _usage(desc.Usage), _format(desc.Format), _width(desc.Width), _height(desc.Height), _depth(desc.Depth), _sampleCount(desc.SampleCount), _mipLevels(desc.MipLevels), _arrayLevels(desc.ArrayLevels)
+		Texture(const TextureCreateDesc& desc) : mType(desc.Type), mUsage(desc.Usage), mFormat(desc.Format), mWidth(desc.Width), mHeight(desc.Height), mDepth(desc.Depth), mSampleCount(desc.SampleCount), mMipLevels(desc.MipLevels), mArrayLevels(desc.ArrayLevels)
 		{
 
 		}
 		virtual ~Texture(){}
 	private:
-		const TextureType _type;
-		const TextureUsage _usage;
-		const TextureFormat _format;
-		const unsigned int _width;
-		const unsigned int _height;
-		const unsigned int _depth;
-		const unsigned char _sampleCount;
-		const unsigned char _mipLevels;
-		const unsigned char _arrayLevels;
+		const TextureType mType;
+		const TextureUsage mUsage;
+		const TextureFormat mFormat;
+		const unsigned int mWidth;
+		const unsigned int mHeight;
+		const unsigned int mDepth;
+		const unsigned char mSampleCount;
+		const unsigned char mMipLevels;
+		const unsigned char mArrayLevels;
 	};
 }

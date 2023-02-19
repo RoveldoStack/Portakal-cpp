@@ -4,7 +4,7 @@
 namespace Portakal
 {
 	/// <summary>
-	/// Supported shader stages
+	/// Available shader stages
 	/// </summary>
 	enum class PORTAKAL_API ShaderStage
 	{

@@ -3,6 +3,9 @@
 
 namespace Portakal
 {
+	/// <summary>
+	/// Available graphics device objects
+	/// </summary>
 	enum class PORTAKAL_API GraphicsDeviceObjectType
 	{
 		Framebuffer,

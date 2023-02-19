@@ -5,6 +5,9 @@ namespace Portakal
 {
 	class MenuItemTree;
 
+	/// <summary>
+	/// An application module which authors the core main menu bar components
+	/// </summary>
 	class PORTAKAL_API GUIMainMenuItemModule : public ApplicationModule
 	{
 		GENERATE_CLASS(GUIMainMenuItemModule);

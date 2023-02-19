@@ -3,6 +3,9 @@
 
 namespace Portakal
 {
+	/// <summary>
+	/// Available resource types which is commitable to the pipeline
+	/// </summary>
 	enum class PORTAKAL_API PipelineResourceType
 	{
         ConstantBuffer,

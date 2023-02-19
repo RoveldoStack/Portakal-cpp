@@ -6,6 +6,9 @@ namespace Portakal
 {
 	class Type;
 
+	/// <summary>
+	/// Base attribute class, attributes are used to give runtime information to class, method and fields
+	/// </summary>
 	class PORTAKAL_API Attribute : public Class
 	{
 	public:

@@ -3,6 +3,9 @@
 
 namespace Portakal
 {
+	/// <summary>
+	/// Available sampler filtering types
+	/// </summary>
 	enum class PORTAKAL_API SamplerFiltering
 	{
         //

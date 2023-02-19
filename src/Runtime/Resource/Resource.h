@@ -6,13 +6,24 @@
 namespace Portakal
 {
 	class ResourceSubObject;
+
+	/// <summary>
+	/// Represents a single resource registered to the application
+	/// </summary>
 	class PORTAKAL_API Resource
 	{
 	public:
 		Resource();
 		~Resource();
 
+		/// <summary>
+		/// Loads sync
+		/// </summary>
 		void LoadSync();
+
+		/// <summary>
+		/// Unloads sync
+		/// </summary>
 		void UnloadSync();
 	private:
 		ResourceSubObject* mSubObject;
@@ -22,7 +33,6 @@ namespace Portakal
 		String mType;
 		unsigned long long mByteOffset;
 		unsigned long long mSize;
-
 		bool mLoaded;
 
 	};

@@ -9,6 +9,6 @@ namespace Portakal
 		Win32Paths() = delete;
 		~Win32Paths() = delete;
 		
-		FORCEINLINE static String GetEditorInstallPath();
+		FORCEINLINE static String GetApplicationLoadPath();
 	};
 }

@@ -3,11 +3,14 @@
 
 namespace Portakal
 {
+	/// <summary>
+	/// Available input element data types
+	/// </summary>
 	enum class InputElementDataFormat : unsigned char
 	{
-        //
-       // Summary:
-       //     One 32-bit floating point value.
+         //
+        // Summary:
+        //     One 32-bit floating point value.
         Float1,
         //
         // Summary:

@@ -6,6 +6,10 @@
 namespace Portakal
 {
 	class EditorResource;
+
+	/// <summary>
+	/// API for enabling application to use editor resources
+	/// </summary>
 	class PORTAKAL_API EditorResourceAPI
 	{
 		friend class EditorResourceModule;

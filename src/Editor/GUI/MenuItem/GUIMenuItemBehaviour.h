@@ -4,6 +4,9 @@
 
 namespace Portakal
 {
+	/// <summary>
+	/// Describes a menu item button behaviour
+	/// </summary>
 	class PORTAKAL_API MenuItemBehaviour : Class
 	{
 		GENERATE_CLASS(MenuItemBehaviour);
@@ -11,8 +14,15 @@ namespace Portakal
 		MenuItemBehaviour() = default;
 		~MenuItemBehaviour() = default;
 
+		/// <summary>
+		/// Called upon clicking
+		/// </summary>
 		virtual void OnClick() = 0;
 
+		/// <summary>
+		/// Returns the name of the button
+		/// </summary>
+		/// <returns></returns>
 		virtual String GetItemName() const noexcept { return "No name";}
 	};
 

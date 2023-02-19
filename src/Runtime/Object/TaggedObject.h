@@ -4,15 +4,46 @@
 
 namespace Portakal
 {
+	/// <summary>
+	/// Represents an identifiable unique object
+	/// </summary>
 	class PORTAKAL_API TaggedObject : public Class
 	{
 		GENERATE_CLASS(TaggedObject);
 	public:
+		/// <summary>
+		/// Returns the object name
+		/// </summary>
+		/// <returns></returns>
 		FORCEINLINE String GetTagName() const noexcept { return mName; }
-		FORCEINLINE void SetTagName(const String& name) { mName = name; }
+
+		/// <summary>
+		/// Returns the unique object id
+		/// </summary>
+		/// <returns></returns>
 		FORCEINLINE Guid GetID() const noexcept { return mID; }
+
+		/// <summary>
+		/// Returns whether this object is destroyed or not
+		/// </summary>
+		/// <returns></returns>
 		FORCEINLINE bool IsDestroyed() const noexcept { return mDestroyed; }
+
+		/// <summary>
+		/// Sets the object name
+		/// </summary>
+		/// <param name="name"></param>
+		FORCEINLINE void SetTagName(const String& name) { mName = name; }
+
+		/// <summary>
+		/// Overrides the unique id of this object, use it with caution
+		/// </summary>
+		/// <param name="id"></param>
 		void OverrideID(const Guid& id) { mID = id; }
+
+		/// <summary>
+		/// Destroys the object
+		/// </summary>
 		void Destroy()
 		{
 			DestroyCore();

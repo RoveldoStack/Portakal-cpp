@@ -3,17 +3,52 @@
 
 namespace Portakal
 {
+	/// <summary>
+	/// Platform agnostic process interface
+	/// </summary>
 	class PORTAKAL_API PlatformProcess
 	{
 	public:
+		/// <summary>
+		/// Creates anew process
+		/// </summary>
+		/// <param name="path"></param>
+		/// <param name="cmdArguments"></param>
+		/// <returns></returns>
 		static PlatformProcess* Create(const String& path, const Array<String>& cmdArguments);
 
-		FORCEINLINE String GetPath() const noexcept { return _path; }
-		FORCEINLINE Array<String> GetCmdArguments() const noexcept { return _cmdArguments; }
-		FORCEINLINE String GetConcretedCmdArguments() const noexcept { return _concretedCmdArguments; }
-		FORCEINLINE bool IsActive() const noexcept { return _active; }
+		/// <summary>
+		/// Returns the process executable path
+		/// </summary>
+		/// <returns></returns>
+		FORCEINLINE String GetPath() const noexcept { return mPath; }
 
+		/// <summary>
+		/// Returns the given command line arguments to the process
+		/// </summary>
+		/// <returns></returns>
+		FORCEINLINE Array<String> GetCmdArguments() const noexcept { return mCmdArguments; }
+
+		/// <summary>
+		/// Returns the concreted command line arguments to the process
+		/// </summary>
+		/// <returns></returns>
+		FORCEINLINE String GetConcretedCmdArguments() const noexcept { return mConcretedCmdArguments; }
+
+		/// <summary>
+		/// Returns whether the process runs or not
+		/// </summary>
+		/// <returns></returns>
+		FORCEINLINE bool IsActive() const noexcept { return mActive; }
+
+		/// <summary>
+		/// Starts the process
+		/// </summary>
 		void Start();
+
+		/// <summary>
+		/// Ends or terminates the process
+		/// </summary>
 		void End();
 	protected:
 		PlatformProcess(const String& path,const Array<String>& cmdArguments);
@@ -22,9 +57,9 @@ namespace Portakal
 		virtual void StartCore() = 0;
 		virtual void EndCore() = 0;
 	private:
-		String _path;
-		Array<String> _cmdArguments;
-		String _concretedCmdArguments;
-		bool _active;
+		String mPath;
+		Array<String> mCmdArguments;
+		String mConcretedCmdArguments;
+		bool mActive;
 	};
 }

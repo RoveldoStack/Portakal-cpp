@@ -1,11 +1,14 @@
 #pragma once
 #include <Editor/Domain/DomainFileDescriptor.h>
-#include <Runtime/Yaml/YamlSerializer.h>
+#include <Runtime/Yaml/IYamlSerializer.h>
 #include <Runtime/Yaml/YamlSerializerAttribute.h>
 
 namespace Portakal
 {
-	class PORTAKAL_API DomainFileDescriptorYamlSerializer : public YamlSerializer
+	/// <summary>
+	/// Domain file yaml serilizer implementation
+	/// </summary>
+	class PORTAKAL_API DomainFileDescriptorYamlSerializer : public IYamlSerializer
 	{
 		GENERATE_CLASS(DomainFileDescriptorYamlSerializer);
 	public:
@@ -20,7 +23,7 @@ namespace Portakal
 	START_GENERATE_TYPE(DomainFileDescriptorYamlSerializer);
 	START_TYPE_PROPERTIES(DomainFileDescriptorYamlSerializer);
 	REGISTER_TYPE_ATTRIBUTE(YamlSerializerAttribute, typeof(DomainFileDescriptor));
-	REGISTER_BASE_TYPE(YamlSerializer);
+	REGISTER_BASE_TYPE(IYamlSerializer);
 	END_TYPE_PROPERTIES;
 	HAS_DEFAULT_CONSTRUCTOR(DomainFileDescriptorYamlSerializer);
 	END_GENERATE_TYPE(DomainFileDescriptorYamlSerializer);

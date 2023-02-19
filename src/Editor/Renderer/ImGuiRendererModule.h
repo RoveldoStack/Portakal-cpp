@@ -5,6 +5,9 @@ namespace Portakal
 	class CommandList;
 	class GraphicsDevice;
 
+	/// <summary>
+	/// An application which authors the finalization rendering of the imgui commands
+	/// </summary>
 	class PORTAKAL_API ImGuiRendererModule : public ApplicationModule
 	{
 		GENERATE_CLASS(ImGuiRendererModule);

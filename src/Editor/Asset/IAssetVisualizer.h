@@ -5,6 +5,10 @@ namespace Portakal
 {
 	class DomainFile;
 	class TextureResource;
+
+	/// <summary>
+	/// Asster visualizer interface, it's used to customize the behaviour of the asset icons
+	/// </summary>
 	class PORTAKAL_API IAssetVisualizer : public Class
 	{
 		GENERATE_CLASS(IAssetVisualizer);
@@ -12,6 +16,11 @@ namespace Portakal
 		IAssetVisualizer() = default;
 		~IAssetVisualizer() = default;
 		
+		/// <summary>
+		/// Called every frame for painting the icon
+		/// </summary>
+		/// <param name="pFile"></param>
+		/// <returns></returns>
 		virtual TextureResource* OnPaint(DomainFile* pFile) = 0;
 	};
 

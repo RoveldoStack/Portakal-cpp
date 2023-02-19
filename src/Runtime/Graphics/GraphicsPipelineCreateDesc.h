@@ -11,16 +11,49 @@ namespace Portakal
 {
 	class Shader;
 
+	/// <summary>
+	/// Required information to create graphics pipeline
+	/// </summary>
 	struct PORTAKAL_API GraphicsPipelineCreateDesc
 	{
+		/// <summary>
+		/// The blending state
+		/// </summary>
 		BlendingStateDesc BlendingState;
-		DepthStencilStateDesc DepthStencilState;
-		RasterizerStateDesc RasterizerState;
-		MeshTopology MeshTopology;
-		Array<Shader*> Shaders;
-		InputLayoutDesc InputLayout;
-		ResourceStateDesc ResourceState;
-		OutputDesc OutputDesc;
 
+		/// <summary>
+		/// The depth stencil state
+		/// </summary>
+		DepthStencilStateDesc DepthStencilState;
+
+		/// <summary>
+		/// The rasterizer state
+		/// </summary>
+		RasterizerStateDesc RasterizerState;
+
+		/// <summary>
+		/// Mesh topology of the input
+		/// </summary>
+		MeshTopology MeshTopology;
+
+		/// <summary>
+		/// The shader set
+		/// </summary>
+		Array<Shader*> Shaders;
+
+		/// <summary>
+		/// Input layout of the vertex buffer
+		/// </summary>
+		InputLayoutDesc InputLayout;
+
+		/// <summary>
+		/// The resource state 
+		/// </summary>
+		ResourceStateDesc ResourceState;
+
+		/// <summary>
+		/// The output description
+		/// </summary>
+		OutputDesc OutputDesc;
 	};
 }

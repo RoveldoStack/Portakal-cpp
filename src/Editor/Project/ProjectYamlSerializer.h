@@ -1,11 +1,14 @@
 #pragma once
 #include <Editor/Project/ProjectYaml.h>
-#include <Runtime/Yaml/YamlSerializer.h>
+#include <Runtime/Yaml/IYamlSerializer.h>
 #include <Runtime/Yaml/YamlSerializerAttribute.h>
 
 namespace Portakal
 {
-	class PORTAKAL_API ProjectYamlSerializer : public YamlSerializer
+	/// <summary>
+	/// Project header file yaml serializer implementation
+	/// </summary>
+	class PORTAKAL_API ProjectYamlSerializer : public IYamlSerializer
 	{
 		GENERATE_CLASS(ProjectYamlSerializer);
 	public:
@@ -18,6 +21,7 @@ namespace Portakal
 
 	START_GENERATE_TYPE(ProjectYamlSerializer);
 	START_TYPE_PROPERTIES(ProjectYamlSerializer);
+	REGISTER_BASE_TYPE(IYamlSerializer);
 	REGISTER_TYPE_ATTRIBUTE(YamlSerializerAttribute, typeof(ProjectYaml));
 	END_TYPE_PROPERTIES;
 	HAS_DEFAULT_CONSTRUCTOR(ProjectYamlSerializer);

@@ -3,53 +3,53 @@
 
 namespace Portakal
 {
-	SceneAPI* SceneAPI::_api = nullptr;
+	SceneAPI* SceneAPI::sAPI = nullptr;
 
 	Scene* SceneAPI::GetPrimalScene()
 	{
-		if (_api == nullptr)
+		if (sAPI == nullptr)
 			return nullptr;
 
-		return _api->mPrimalScene;
+		return sAPI->mPrimalScene;
 	}
 	Array<Scene*> SceneAPI::GetScenes()
 	{
-		if (_api == nullptr)
+		if (sAPI == nullptr)
 			return Array<Scene*>();
 
-		return _api->mScenes;
+		return sAPI->mScenes;
 	}
 	Scene* SceneAPI::CreateScene(const bool bMarkPrimal)
 	{
-		if (_api == nullptr)
+		if (sAPI == nullptr)
 			return nullptr;
 
-		return _api->CreateSceneInternal(bMarkPrimal);
+		return sAPI->CreateSceneInternal(bMarkPrimal);
 	}
 	Scene* SceneAPI::CreateScene(const SceneDescriptor& descriptor, const bool bMarkPrimal)
 	{
-		if (_api == nullptr)
+		if (sAPI == nullptr)
 			return nullptr;
 
-		return _api->CreateSceneInternal(descriptor,bMarkPrimal);
+		return sAPI->CreateSceneInternal(descriptor,bMarkPrimal);
 	}
 	void SceneAPI::MarkScenePrimal(Scene* pScene)
 	{
-		if (_api == nullptr)
+		if (sAPI == nullptr)
 			return;
 
-		_api->MarkScenePrimalInternal(pScene);
+		sAPI->MarkScenePrimalInternal(pScene);
 	}
 	void SceneAPI::DeleteScene(Scene* pScene)
 	{
-		if (_api == nullptr)
+		if (sAPI == nullptr)
 			return;
 
-		_api->DeleteSceneInternal(pScene);
+		sAPI->DeleteSceneInternal(pScene);
 	}
 	Scene* SceneAPI::CreateSceneInternal(const bool bMarkPrimal)
 	{
-		if (_api == nullptr)
+		if (sAPI == nullptr)
 			return nullptr;
 
 		Scene* pScene = new Scene();
@@ -60,7 +60,7 @@ namespace Portakal
 	}
 	Scene* SceneAPI::CreateSceneInternal(const SceneDescriptor& descriptor, const bool bMarkPrimal)
 	{
-		if (_api == nullptr)
+		if (sAPI == nullptr)
 			return nullptr;
 
 		Scene* pScene = new Scene(descriptor);
@@ -84,7 +84,7 @@ namespace Portakal
 	}
 	void SceneAPI::DeleteSceneInternal(Scene* pScene)
 	{
-		if (_api == nullptr || pScene == nullptr)
+		if (sAPI == nullptr || pScene == nullptr)
 			return;
 
 		if (mPrimalScene == pScene)
@@ -97,13 +97,13 @@ namespace Portakal
 
 	SceneAPI::SceneAPI()
 	{
-		_api = this;
+		sAPI = this;
 		mPrimalScene = nullptr;
 	}
 
 	SceneAPI::~SceneAPI()
 	{
-		_api = nullptr;
+		sAPI = nullptr;
 	}
 
 	void SceneAPI::RegisterTargetScene(Scene* pScene, const bool bMarkPrimal)

@@ -6,7 +6,7 @@
 namespace Portakal
 {
 #define SPECIAL_FOLDER_SIZE 512
-	String Win32Paths::GetEditorInstallPath()
+	String Win32Paths::GetApplicationLoadPath()
 	{
 		char* pBuffer = new char[SPECIAL_FOLDER_SIZE];
 

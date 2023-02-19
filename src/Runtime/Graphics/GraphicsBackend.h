@@ -3,6 +3,9 @@
 
 namespace Portakal
 {
+	/// <summary>
+	/// Available graphics backends
+	/// </summary>
 	enum class PORTAKAL_API GraphicsBackend
 	{
 		Directx11,

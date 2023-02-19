@@ -5,9 +5,17 @@ namespace Portakal
 {
 	class Type;
 
+	/// <summary>
+	/// Base reflecteable class
+	/// </summary>
 	class PORTAKAL_API Class
 	{
 	public:
+
+		/// <summary>
+		/// Returns the type
+		/// </summary>
+		/// <returns></returns>
 		FORCEINLINE virtual Type* GetType() const noexcept = 0;
 	};
 

@@ -3,6 +3,9 @@
 
 namespace Portakal
 {
+	/// <summary>
+	/// Represents the available command queue types
+	/// </summary>
 	enum class PORTAKAL_API CommandQueueType
 	{
 		Graphics,

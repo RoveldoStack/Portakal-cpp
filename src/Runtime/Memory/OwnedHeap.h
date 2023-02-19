@@ -3,6 +3,10 @@
 
 namespace Portakal
 {
+	/// <summary>
+	/// Simple smart unique ptr implementation
+	/// </summary>
+	/// <typeparam name="TType"></typeparam>
 	template<typename TType>
 	class OwnedHeap
 	{

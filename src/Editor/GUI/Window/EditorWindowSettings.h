@@ -6,17 +6,43 @@
 
 namespace Portakal
 {
+	/// <summary>
+	/// Editor window settings
+	/// </summary>
 	struct PORTAKAL_API EditorWindowSetting
 	{
+		/// <summary>
+		/// Title of the window
+		/// </summary>
 		String Name;
+
+		/// <summary>
+		/// Unique id of the window
+		/// </summary>
 		Guid ID;
+
+		/// <summary>
+		/// Dock state of the window
+		/// </summary>
 		EditorWindowDockState DockState;
+
+		/// <summary>
+		/// Owner window id
+		/// </summary>
 		Guid OwnerID;
 	};
 
+	/// <summary>
+	/// Editor window settings file
+	/// </summary>
 	struct PORTAKAL_API EditorWindowSettings : public Class
 	{
 		GENERATE_CLASS(EditorWindowSettings);
+
+		/// <summary>
+		/// Generates the default window layout
+		/// </summary>
+		/// <returns></returns>
 		static EditorWindowSettings Default()
 		{
 			EditorWindowSettings settings = {};

@@ -3,6 +3,9 @@
 
 namespace Portakal
 {
+	/// <summary>
+	/// Represents a block of bytes allocated
+	/// </summary>
 	class PORTAKAL_API ByteBlock
 	{
 	public:

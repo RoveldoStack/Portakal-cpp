@@ -3,6 +3,9 @@
 
 namespace Portakal
 {
+	/// <summary>
+	/// Available stencil operations
+	/// </summary>
 	enum class PORTAKAL_API StencilOperation
 	{
         Keep,

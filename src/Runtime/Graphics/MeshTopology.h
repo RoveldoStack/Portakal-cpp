@@ -3,6 +3,9 @@
 
 namespace Portakal
 {
+    /// <summary>
+    /// Available mesh topologies
+    /// </summary>
     enum class PORTAKAL_API MeshTopology
     {
         TriangleList,

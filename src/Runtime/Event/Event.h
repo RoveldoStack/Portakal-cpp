@@ -11,6 +11,10 @@ namespace Portakal
 	class Event final
 	{
 	public:
+		/// <summary>
+		/// Calls all the subscribed delegates
+		/// </summary>
+		/// <param name="...parameters"></param>
 		void Invoke(TParameters... parameters)
 		{
 			for (unsigned int i = 0; i < mDelegates.GetCursor(); i++)

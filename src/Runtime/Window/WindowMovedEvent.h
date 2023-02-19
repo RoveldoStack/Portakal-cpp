@@ -12,7 +12,16 @@ namespace Portakal
 		WindowMovedEvent(const unsigned int x, const unsigned int y) : mX(x), mY(y) {}
 		~WindowMovedEvent() = default;
 
+		/// <summary>
+		/// Returns the pos-x
+		/// </summary>
+		/// <returns></returns>
 		FORCEINLINE unsigned int GetX() const noexcept { return mX; }
+
+		/// <summary>
+		/// Returns the pox-y
+		/// </summary>
+		/// <returns></returns>
 		FORCEINLINE unsigned int GetY() const noexcept { return mY; }
 
 		FORCEINLINE virtual WindowEventType GetEventType() const noexcept override final { return WindowEventType::WindowMoved; }

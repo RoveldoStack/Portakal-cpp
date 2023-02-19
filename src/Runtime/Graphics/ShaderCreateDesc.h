@@ -9,8 +9,19 @@ namespace Portakal
 	/// </summary>
 	struct PORTAKAL_API ShaderCreateDesc
 	{
+		/// <summary>
+		/// The target stage
+		/// </summary>
 		ShaderStage Stage;
-		String EntryPoint;
+
+		/// <summary>
+		/// The entry point method name
+		/// </summary>
+		String EntryPointMethod;
+
+		/// <summary>
+		/// The source of text
+		/// </summary>
 		String Source;
 	};
 }

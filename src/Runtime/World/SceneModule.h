@@ -4,6 +4,10 @@
 namespace Portakal
 {
 	class SceneAPI;
+
+	/// <summary>
+	/// An application module which autors the core scene components
+	/// </summary>
 	class PORTAKAL_API SceneModule : public ApplicationModule
 	{
 		GENERATE_CLASS(SceneModule);

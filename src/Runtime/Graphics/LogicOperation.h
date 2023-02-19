@@ -3,6 +3,9 @@
 
 namespace Portakal
 {
+	/// <summary>
+	/// Available graphics logical operations
+	/// </summary>
 	enum class PORTAKAL_API LogicOperation
 	{
 		Clear,

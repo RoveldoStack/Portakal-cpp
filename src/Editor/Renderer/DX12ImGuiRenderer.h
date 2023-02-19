@@ -5,6 +5,7 @@
 
 namespace Portakal
 {
+
 	class PORTAKAL_API DX12ImGuiRenderer : public ImGuiRenderer
 	{
 	public:

@@ -4,6 +4,10 @@
 namespace Portakal
 {
 	class DomainFile;
+
+	/// <summary>
+	/// Asset processor used after importing any asset
+	/// </summary>
 	class PORTAKAL_API IAssetProcessor : public Class
 	{
 		GENERATE_CLASS(IAssetProcessor);
@@ -11,6 +15,10 @@ namespace Portakal
 		IAssetProcessor() = default;
 		~IAssetProcessor() = default;
 
+		/// <summary>
+		/// Called on processing the asset
+		/// </summary>
+		/// <param name="pFile"></param>
 		virtual void OnProcess(DomainFile* pFile) = 0;
 	};
 

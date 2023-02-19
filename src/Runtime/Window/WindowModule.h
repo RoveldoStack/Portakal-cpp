@@ -4,6 +4,9 @@
 
 namespace Portakal
 {
+	/// <summary>
+	/// Module create params
+	/// </summary>
 	struct PORTAKAL_API WindowModuleParams
 	{
 		Array<WindowCreateDesc> CreateDescs;
@@ -11,6 +14,10 @@ namespace Portakal
 
 	class WindowAPI;
 	class Window;
+
+	/// <summary>
+	/// An application module for authoring the core window related operations
+	/// </summary>
 	class PORTAKAL_API WindowModule : public ApplicationModule
 	{
 		GENERATE_CLASS(WindowModule);

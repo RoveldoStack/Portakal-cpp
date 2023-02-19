@@ -7,8 +7,8 @@ typedef Portakal::Win32Paths PlatformAbstraction;
 
 namespace Portakal
 {
-	String PlatformPaths::GetEditorInstallPath()
+	String PlatformPaths::GetApplicationLoadPath()
 	{
-		return PlatformAbstraction::GetEditorInstallPath();
+		return PlatformAbstraction::GetApplicationLoadPath();
 	}
 }

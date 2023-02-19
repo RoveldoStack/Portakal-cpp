@@ -115,7 +115,7 @@ namespace Portakal
 
 		TextureUpdateDesc desc = {};
 		desc.pData = pData;
-		desc.MipLevel = 0;
+		desc.MipSlice = 0;
 		desc.ArrayLevel = 0;
 		desc.OffsetWidth = offsetX;
 		desc.OffsetHeight = offsetY;

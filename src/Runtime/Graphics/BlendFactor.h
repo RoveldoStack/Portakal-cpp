@@ -3,6 +3,9 @@
 
 namespace Portakal
 {
+	/// <summary>
+	/// Represents the possible blending values(coefs)
+	/// </summary>
 	enum class PORTAKAL_API BlendFactor
 	{
         Zero,

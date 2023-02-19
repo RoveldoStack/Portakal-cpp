@@ -3,6 +3,9 @@
 
 namespace Portakal
 {
+	/// <summary>
+	/// Module params
+	/// </summary>
 	struct ProjectModuleCreateParams
 	{
 		String FolderPath;
@@ -11,6 +14,9 @@ namespace Portakal
 
 	class ProjectAPI;
 
+	/// <summary>
+	/// An application module which authors the core components of the project
+	/// </summary>
 	class PORTAKAL_API ProjectModule : public ApplicationModule
 	{
 		GENERATE_CLASS(ProjectModule);

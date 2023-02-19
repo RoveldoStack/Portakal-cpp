@@ -3,6 +3,9 @@
 
 namespace Portakal
 {
+	/// <summary>
+	/// Available message box flags
+	/// </summary>
 	enum class PORTAKAL_API PlatformMessageBoxFlags : unsigned int
 	{
 		None = 1 << 0,

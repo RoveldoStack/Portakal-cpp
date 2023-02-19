@@ -8,16 +8,23 @@ namespace Portakal
 	class CommandList;
 	class ImGuiRenderer;
 
+	/// <summary>
+	/// API for enabling application using the ImGui operatio
+	/// </summary>
 	class PORTAKAL_API ImGuiAPI
 	{
 		friend class ImGuiExecutorModule;
 	private:
-		static ImGuiAPI* mAPI;
+		static ImGuiAPI* sAPI;
 	public:
-		static ImGuiRenderer* GetDefaultRenderer() { return mAPI->mRenderer; }
+		/// <summary>
+		/// Returns the default imgui renderer
+		/// </summary>
+		/// <returns></returns>
+		static ImGuiRenderer* GetDefaultRenderer() { return sAPI->mRenderer; }
 	private:
-		ImGuiAPI(ImGuiRenderer* pRenderer) : mRenderer(pRenderer) { mAPI = this; }
-		~ImGuiAPI() { mRenderer = nullptr; mAPI = nullptr; }
+		ImGuiAPI(ImGuiRenderer* pRenderer) : mRenderer(pRenderer) { sAPI = this; }
+		~ImGuiAPI() { mRenderer = nullptr; sAPI = nullptr; }
 
 	private:
 		ImGuiRenderer* mRenderer;

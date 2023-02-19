@@ -3,6 +3,9 @@
 
 namespace Portakal
 {
+	/// <summary>
+	/// Available sampler address types
+	/// </summary>
 	enum class PORTAKAL_API SamplerAddress : unsigned char
 	{
         //

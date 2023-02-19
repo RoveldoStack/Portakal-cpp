@@ -5,6 +5,9 @@ namespace Portakal
 {
 	class MessageAPI;
 
+	/// <summary>
+	/// An application modules which is responsible for the messaging throughout the application
+	/// </summary>
 	class PORTAKAL_API MessageModule : public ApplicationModule
 	{
 		GENERATE_CLASS(MessageModule);

@@ -3,6 +3,9 @@
 
 namespace Portakal
 {
+	/// <summary>
+	/// Available texture types
+	/// </summary>
 	enum class PORTAKAL_API TextureType
 	{
 		Texture1D,

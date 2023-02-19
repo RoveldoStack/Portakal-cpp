@@ -8,6 +8,9 @@ namespace Portakal
 {
 	class Field;
 
+	/// <summary>
+	/// Represents a reflectable type info per class
+	/// </summary>
 	class PORTAKAL_API Type
 	{
 		friend class FieldDispatcher;
@@ -17,12 +20,44 @@ namespace Portakal
 		Type() = default;
 		~Type() = default;
 
+		/// <summary>
+		/// Returns a field via name
+		/// </summary>
+		/// <param name="name"></param>
+		/// <returns></returns>
 		FORCEINLINE Field* GetField(const String& name);
+
+		/// <summary>
+		/// Returns all the fields
+		/// </summary>
+		/// <returns></returns>
 		FORCEINLINE Array<Field*> GetFields() const noexcept { return mFields; }
+
+		/// <summary>
+		/// Returns all the fields with a access specifier filter
+		/// </summary>
+		/// <param name="specifier"></param>
+		/// <returns></returns>
 		FORCEINLINE Array<Field*> GetFields(const AccessSpecifier specifier);
+
+		/// <summary>
+		/// Returns the inherited base types
+		/// </summary>
+		/// <returns></returns>
 		FORCEINLINE Array<Type*> GetBaseTypes() const noexcept { return mBaseTypes; }
+
+		/// <summary>
+		/// Returns whether this is a sub class of the given type
+		/// </summary>
+		/// <param name="pType"></param>
+		/// <returns></returns>
 		FORCEINLINE bool IsSubClassOf(const Type* pType) const noexcept;
 
+		/// <summary>
+		/// Returns a attribute which is attached to this type
+		/// </summary>
+		/// <typeparam name="TAttribute"></typeparam>
+		/// <returns></returns>
 		template<typename TAttribute>
 		TAttribute* GetAttribute() const noexcept
 		{
@@ -38,12 +73,42 @@ namespace Portakal
 
 			return nullptr;
 		}
+
+		/// <summary>
+		/// Returns the size of this type
+		/// </summary>
+		/// <returns></returns>
 		FORCEINLINE virtual unsigned int GetSize() const noexcept = 0;
+
+		/// <summary>
+		/// Returns type name
+		/// </summary>
+		/// <returns></returns>
 		FORCEINLINE virtual String GetTypeName() const noexcept = 0;
+
+		/// <summary>
+		/// Creates a defualt heap object
+		/// </summary>
+		/// <returns></returns>
 		FORCEINLINE virtual void* CreateDefaultHeapObject() const noexcept = 0;
 	protected:
+
+		/// <summary>
+		/// Internal base class register method
+		/// </summary>
+		/// <param name="pType"></param>
 		void _RegisterBaseType(Type* pType);
+
+		/// <summary>
+		/// Internal field register method
+		/// </summary>
+		/// <param name="pField"></param>
 		FORCEINLINE void _RegisterField(Field* pField);
+
+		/// <summary>
+		/// Internal attribute register method
+		/// </summary>
+		/// <param name="pAttribute"></param>
 		FORCEINLINE void _RegisterAttribute(Attribute* pAttribute);
 	private:
 		Array<Field*> mFields;
@@ -51,6 +116,10 @@ namespace Portakal
 		Array<Type*> mBaseTypes;
 	};
 
+	/// <summary>
+	/// Utility type accessor class for enabling to access the type information outside of the class
+	/// </summary>
+	/// <typeparam name="TType"></typeparam>
 	template<typename TType>
 	class TypeAccessor
 	{

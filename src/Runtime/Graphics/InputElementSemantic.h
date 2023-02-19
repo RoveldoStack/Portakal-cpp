@@ -3,6 +3,9 @@
 
 namespace Portakal
 {
+	/// <summary>
+	/// Available input semantic types
+	/// </summary>
 	enum class PORTAKAL_API InputElementSemantic : unsigned char
 	{
 		Position,

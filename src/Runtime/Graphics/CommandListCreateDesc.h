@@ -4,6 +4,9 @@
 
 namespace Portakal
 {
+	/// <summary>
+	/// Required data to create a command list
+	/// </summary>
 	struct PORTAKAL_API CommandListCreateDesc
 	{
 

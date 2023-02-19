@@ -4,7 +4,7 @@
 namespace Portakal
 {
 	/// <summary>
-	/// Supported texture usages
+	/// Available texture usages
 	/// </summary>
 	enum class PORTAKAL_API TextureUsage : unsigned int
 	{
