@@ -7,6 +7,7 @@
 #include <Runtime/Win32/Win32Window.h>
 #include <Runtime/DX12/DX12Device.h>
 #include <Runtime/Assert/Assert.h>
+#include "DX12ImGuiTextureBinding.h"
 
 
 namespace Portakal
@@ -65,4 +66,8 @@ namespace Portakal
 
 		ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), (ID3D12GraphicsCommandList*)pList);
     }
+	ImGuiTextureBinding* DX12ImGuiRenderer::CreateTextureBinding(TextureResource* pTexture)
+	{
+		return new DX12ImGuiTextureBinding(pTexture);
+	}
 }

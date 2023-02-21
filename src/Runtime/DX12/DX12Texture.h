@@ -16,7 +16,6 @@ namespace Portakal
 		FORCEINLINE ID3D12Resource* GetDXTexture() const noexcept { return mResource.Get(); }
 	private:
 		DXPTR<ID3D12Resource> mResource;
-		D3D12_RESOURCE_STATES mCurrentState;
 
 		// Inherited via Texture
 		virtual void OnDestroy() override;

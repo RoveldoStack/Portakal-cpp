@@ -13,7 +13,6 @@ namespace Portakal
 	{
 		mDevice = GraphicsDeviceAPI::GetDefaultDevice();
 		mTexture = nullptr;
-		mIsolatedResourceTable = nullptr;
 		mCmdList = nullptr;
 		mWidth = width;
 		mHeight = height;
@@ -39,14 +38,11 @@ namespace Portakal
 		desc.SampleCount = 1;
 
 		mTexture = mDevice->CreateTexture(desc);
-
-		GenerateIsolatedResourceTable();
 	}
 	TextureResource::TextureResource(const String& path)
 	{
 		mDevice = GraphicsDeviceAPI::GetDefaultDevice();
 		mTexture = nullptr;
-		mIsolatedResourceTable = nullptr;
 		mCmdList = nullptr;
 		mType = TextureType::Texture2D;
 		mUsage = TextureUsage::ReadOnly;
@@ -81,8 +77,6 @@ namespace Portakal
 		desc.SampleCount = 1;
 
 		mTexture = mDevice->CreateTexture(desc);
-
-		GenerateIsolatedResourceTable();
 
 		/*
 		* Update the texture data
@@ -134,10 +128,6 @@ namespace Portakal
 		if (mTexture != nullptr)
 			mTexture->DeleteDeviceObject();
 
-		if (mIsolatedResourceTable != nullptr)
-			mIsolatedResourceTable->DeleteDeviceObject();
-
-		mIsolatedResourceTable = nullptr;
 		mTexture = nullptr;
 	}
 	void TextureResource::CreateCmdList()
@@ -146,13 +136,6 @@ namespace Portakal
 			return;
 
 		mCmdList = mDevice->CreateGraphicsCommandList({});
-	}
-	void TextureResource::GenerateIsolatedResourceTable()
-	{
-		ResourceTableCreateDesc desc = {};
-		desc.Resources.Add(mTexture);
-
-		mIsolatedResourceTable = mDevice->CreateResourceTable(desc);
 	}
 	void TextureResource::DestroyCore()
 	{

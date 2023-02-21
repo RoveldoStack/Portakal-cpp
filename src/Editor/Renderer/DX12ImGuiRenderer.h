@@ -17,6 +17,10 @@ namespace Portakal
 		virtual void StartRenderingCore() override;
 		virtual void FinalizeRenderingCore(CommandList* pCmdBuffer) override;
 	private:
+		// Inherited via ImGuiRenderer
+		virtual ImGuiTextureBinding* CreateTextureBinding(TextureResource* pTexture) override;
+	private:
 		DXPTR<ID3D12DescriptorHeap> mFontHeap;
+
 	};
 }

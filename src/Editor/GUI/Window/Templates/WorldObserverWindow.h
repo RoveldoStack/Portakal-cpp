@@ -20,6 +20,7 @@ namespace Portakal
 		void OnSceneChanged(Scene* pNewScene);
 		void RenderScene(Scene* pScene);
 	private:
+		Array<Type*> mAvailableAspects;
 		Scene* mTargetScene;
 	};
 

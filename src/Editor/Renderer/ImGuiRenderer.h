@@ -2,6 +2,7 @@
 #include <Runtime/Core/Core.h>
 #include <Libs/ImGui/imgui.h>
 #include <Runtime/Graphics/GraphicsBackend.h>
+#include <Runtime/Containers/Registry.h>
 
 namespace Portakal
 {
@@ -18,6 +19,8 @@ namespace Portakal
 	class KeyboardKeyUpEvent;
 	class KeyboardCharEvent;
 
+	class ImGuiTextureBinding;
+	class TextureResource;
 	/// <summary>
 	/// Represents a imgui renderer (later it will be revised for suiting any type of user imgui renderer implementation)
 	/// </summary>
@@ -33,6 +36,19 @@ namespace Portakal
 	public:
 		ImGuiRenderer(GraphicsDevice* pDevice);
 		virtual ~ImGuiRenderer();
+
+		/// <summary>
+		/// Returns an existing binding o creating anew binding for the texture
+		/// </summary>
+		/// <param name="pTexture"></param>
+		/// <returns></returns>
+		FORCEINLINE ImGuiTextureBinding* GetOrCreateTextureBinding(TextureResource* pTexture);
+
+		/// <summary>
+		/// Deletes an existing binding
+		/// </summary>
+		/// <param name="pTexture"></param>
+		FORCEINLINE void DeleteTextureBinding(TextureResource* pTexture);
 
 		/// <summary>
 		/// Starts the rendering session
@@ -67,6 +83,7 @@ namespace Portakal
 	protected:
 		virtual void StartRenderingCore() = 0;
 		virtual void FinalizeRenderingCore(CommandList* pCmdBuffer) = 0;
+		virtual ImGuiTextureBinding* CreateTextureBinding(TextureResource* pTexture) = 0;
 	private:
 		/// <summary>
 		/// Called on when window is resized
@@ -116,6 +133,7 @@ namespace Portakal
 		/// <param name="pEvent"></param>
 		void OnKeyboardChar(const KeyboardCharEvent* pEvent);
 	private:
+		Registry<TextureResource*, ImGuiTextureBinding*> mTextureBindings;
 		ImGuiContext* mContext;
 		GraphicsDevice* mDevice;
 	};

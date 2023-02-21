@@ -436,9 +436,9 @@ namespace Portakal
                 Array<D3D12_RESOURCE_BARRIER> barriers;
 
                 //Barrier colors
-                for (unsigned int i = 0; i < 3; i++)
+                for (unsigned int i = 0; i < colorAttachments.GetCursor(); i++)
                 {
-                    DX12Texture* const pColorTarget = (DX12Texture* const)colorAttachments[i].pTexture;
+                    DX12Texture* pColorTarget = (DX12Texture*)colorAttachments[i].pTexture;
                     D3D12_RESOURCE_BARRIER barrier = {};
                     barrier.Transition.pResource = pColorTarget->GetDXTexture();
                     barrier.Transition.StateBefore = pColorTarget->GetDXResourceState();

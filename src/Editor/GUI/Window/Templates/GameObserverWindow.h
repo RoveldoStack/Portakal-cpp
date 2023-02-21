@@ -3,6 +3,8 @@
 
 namespace Portakal
 {
+	class Scene;
+	class DisplayAspect;
 	class PORTAKAL_API GameObserverWindow : public EditorWindow
 	{
 		GENERATE_CLASS(GameObserverWindow);
@@ -17,6 +19,11 @@ namespace Portakal
 		virtual void OnInitialize() override;
 		virtual void OnFinalize() override;
 		virtual void OnPaint() override;
+	private:
+		void OnSceneChanged(Scene* pNewScene);
+		void CreateDisplay(DisplayAspect* pAspect);
+	private:
+		Scene* mTargetScene;
 	};
 
 	START_GENERATE_TYPE(GameObserverWindow);

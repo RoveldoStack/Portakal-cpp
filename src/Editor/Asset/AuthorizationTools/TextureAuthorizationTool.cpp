@@ -6,6 +6,10 @@
 #include <Runtime/Graphics/ResourceTable.h>
 #include <Runtime/Math/Vector2.h>
 #include <Runtime/Math/Math.h>
+#include <Editor/Renderer/ImGuiAPI.h>
+#include <Editor/Renderer/ImGuiTextureBinding.h>
+#include <Editor/Renderer/ImGuiRenderer.h>
+
 namespace Portakal
 {
 	void TextureAuthorizationTool::OnInitialize()
@@ -29,7 +33,8 @@ namespace Portakal
 		const Vector2F dimension = { pTexture->GetWidth() * multiplier,pTexture->GetHeight() * multiplier };
 
 		ImGui::Text("Texture auth tool");
-		ImGui::Image(pTexture->GetIsolatedResourceTable()->GetHandle(), { dimension.X,dimension.Y});
+		ImGuiTextureBinding* pBinding = ImGuiAPI::GetDefaultRenderer()->GetOrCreateTextureBinding(pTexture);
+		ImGui::Image(pBinding->GetTable()->GetHandle(), {dimension.X,dimension.Y});
 
 	}
 	void TextureAuthorizationTool::OnFinalize()

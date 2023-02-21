@@ -157,6 +157,35 @@ namespace Portakal
 	{
 		ImGui::DestroyContext(mContext);
 	}
+	ImGuiTextureBinding* ImGuiRenderer::GetOrCreateTextureBinding(TextureResource* pTexture)
+	{
+		const int index = mTextureBindings.FindIndex(pTexture);
+
+		RegistryEntry<TextureResource*, ImGuiTextureBinding*> entry = {};
+		if (index == -1) // create
+		{
+			ImGuiTextureBinding* pBinding = CreateTextureBinding(pTexture);
+			entry = mTextureBindings.Register(pTexture, pBinding);
+		}
+		else
+		{
+			entry = mTextureBindings.GetEntryViaIndex(index);
+		}
+
+		return entry.Value;
+	}
+	void ImGuiRenderer::DeleteTextureBinding(TextureResource* pTexture)
+	{
+		const int index = mTextureBindings.FindIndex(pTexture);
+		if (index == -1)
+			return;
+
+		RegistryEntry<TextureResource*, ImGuiTextureBinding*> entry = mTextureBindings.GetEntryViaIndex(index);
+
+		mTextureBindings.Remove(pTexture);
+
+		delete entry.Value;
+	}
 	void ImGuiRenderer::StartRendering(const float deltaTime)
 	{
 		ImGuiIO& io = ImGui::GetIO();

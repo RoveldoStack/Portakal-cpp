@@ -5,6 +5,7 @@ namespace Portakal
 {
 	class GraphicsDevice;
 	class TextureResource;
+	class ImGuiTextureBinding;
 
 	/// <summary>
 	/// Editor resource specialized in images
@@ -20,7 +21,14 @@ namespace Portakal
 		/// </summary>
 		/// <returns></returns>
 		FORCEINLINE TextureResource* GetTexture() const noexcept { return mResource; }
+
+		/// <summary>
+		/// Returns the imgui texture binding 
+		/// </summary>
+		/// <returns></returns>
+		FORCEINLINE ImGuiTextureBinding* GetImGuiTexture() const noexcept { return mBinding; }
 	private:
 		TextureResource* mResource;
+		ImGuiTextureBinding* mBinding;
 	};
 }

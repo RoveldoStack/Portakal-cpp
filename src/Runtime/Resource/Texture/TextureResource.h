@@ -40,12 +40,6 @@ namespace Portakal
 		FORCEINLINE Texture* GetTexture() const noexcept { return mTexture; }
 
 		/// <summary>
-		/// Returns the isolated resource table for the texture
-		/// </summary>
-		/// <returns></returns>
-		FORCEINLINE ResourceTable* GetIsolatedResourceTable() const noexcept { return mIsolatedResourceTable; }
-
-		/// <summary>
 		/// Returns the width
 		/// </summary>
 		/// <returns></returns>
@@ -89,16 +83,10 @@ namespace Portakal
 		/// </summary>
 		void CreateCmdList();
 
-		/// <summary>
-		/// Generates the isolated resource table
-		/// </summary>
-		void GenerateIsolatedResourceTable();
-
 		virtual void DestroyCore() override;
 	private:
 		GraphicsDevice* mDevice;
 		CommandList* mCmdList;
-		ResourceTable* mIsolatedResourceTable;
 		Texture* mTexture;
 		TextureType mType;
 		TextureUsage mUsage;

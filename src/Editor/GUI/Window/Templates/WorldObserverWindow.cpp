@@ -2,7 +2,9 @@
 #include <Runtime/World/Scene.h>
 #include <Runtime/World/SceneAPI.h>
 #include <Runtime/World/Entity.h>
+#include <Runtime/World/SceneAspect.h>
 #include <Libs/ImGui/imgui.h>
+#include <Runtime/World/Aspects/SpriteRendererAspect.h>
 
 namespace Portakal
 {
@@ -16,11 +18,23 @@ namespace Portakal
 	}
 	void WorldObserverWindow::OnInitialize()
 	{
+		/*
+		* Collect aspects
+		*/
+		const Array<Type*> allTypes = Assembly::GetProcessAssembly()->GetTypes();
+		for (unsigned int i = 0; i < allTypes.GetCursor(); i++)
+		{
+			Type* pType = allTypes[i];
 
+			if (pType->IsSubClassOf(typeof(SceneAspect)))
+			{
+				mAvailableAspects.Add(pType);
+			}
+		}
 	}
 	void WorldObserverWindow::OnFinalize()
 	{
-
+		mAvailableAspects.Clear();
 	}
 	void WorldObserverWindow::OnPaint()
 	{
@@ -62,7 +76,23 @@ namespace Portakal
 		*/
 		if (ImGui::CollapsingHeader("Aspects"))
 		{
+			//Draw aspects
+			const Array<SceneAspect*> aspects = pScene->GetAspects();
+			for (unsigned int i = 0; i < aspects.GetCursor(); i++)
+			{
+				const SceneAspect* pAspect = aspects[i];
 
+				ImGui::Selectable(*pAspect->GetType()->GetTypeName());
+			}
+
+			//Draw register aspect button
+			if (mAvailableAspects.GetCursor() > 0)
+			{
+				if (ImGui::Button("+"))
+				{
+					ImGui::OpenPopup("CreateAspectContext");
+				}
+			}
 		}
 
 		/*
@@ -97,6 +127,20 @@ namespace Portakal
 			{
 				Entity* pEntity = pScene->CreateEntity();
 				pEntity->SetTagName("Empty entity");
+			}
+
+			ImGui::EndPopup();
+		}
+		if (ImGui::BeginPopup("CreateAspectContext"))
+		{
+			for (unsigned int i = 0; i < mAvailableAspects.GetCursor(); i++)
+			{
+				const Type* pType = mAvailableAspects[i];
+
+				if (ImGui::Selectable(*pType->GetTypeName()))
+				{
+					mTargetScene->CreateAspect(pType);
+				}
 			}
 
 			ImGui::EndPopup();

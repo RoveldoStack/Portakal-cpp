@@ -1,6 +1,7 @@
 #include "SceneModule.h"
 #include <Runtime/World/SceneAPI.h>
-
+#include <Runtime/World/SceneAspect.h>
+#include <Runtime/World/Scene.h>
 namespace Portakal
 {
     void SceneModule::OnInitialize()
@@ -17,7 +18,17 @@ namespace Portakal
     }
     void SceneModule::OnTick()
     {
-
+        const Array<Scene*> scenes = mAPI->GetScenes();
+        for (unsigned int sceneIndex = 0; sceneIndex < scenes.GetCursor(); sceneIndex++)
+        {
+            Scene* pScene = scenes[sceneIndex];
+            const Array<SceneAspect*> aspects = pScene->GetAspects();
+            for (unsigned int aspectIndex = 0; aspectIndex < aspects.GetCursor(); aspectIndex++)
+            {
+                SceneAspect* pAspect = aspects[aspectIndex];
+                pAspect->OnExecute();
+            }
+        }
     }
     void SceneModule::OnPostTick()
     {

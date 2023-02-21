@@ -28,6 +28,9 @@
 #include <Editor/GUI/Window/Templates/AuthorizationToolWindow.h>
 #include <Editor/GUI/Window/EditorWindowAPI.h>
 #include <Editor/Asset/AuthorizationTools/TextureAuthorizationTool.h>
+#include <Editor/Renderer/ImGuiAPI.h>
+#include <Editor/Renderer/ImGuiRenderer.h>
+#include <Editor/Renderer/ImGuiTextureBinding.h>
 
 namespace Portakal
 {
@@ -172,7 +175,7 @@ namespace Portakal
 			/*
 			* Draw image
 			*/
-			ImGui::Image(mFolderIcon->GetTexture()->GetIsolatedResourceTable()->GetHandle(), { mItemSize.X,mItemSize.Y });
+			ImGui::Image(mFolderIcon->GetImGuiTexture()->GetBinding(), {mItemSize.X,mItemSize.Y});
 
 			/*
 			* Draw text
@@ -234,12 +237,17 @@ namespace Portakal
 			ImGui::SetCursorPos(currentCursorPosition);
 			if (pVisualizer == nullptr || pTexture == nullptr)
 			{
-				ImGui::Image(mInvalidIcon->GetTexture()->GetIsolatedResourceTable()->GetHandle(), {mItemSize.X,mItemSize.Y});
+				ImGui::Image(mInvalidIcon->GetImGuiTexture()->GetBinding(), {mItemSize.X,mItemSize.Y});
 
 			}
 			else
 			{
-				ImGui::Image(pTexture->GetIsolatedResourceTable()->GetHandle(), { mItemSize.X,mItemSize.Y });
+				ImGuiTextureBinding* pImGuiTexture = ImGuiAPI::GetDefaultRenderer()->GetOrCreateTextureBinding(pTexture);
+
+				if(pImGuiTexture == nullptr)
+					ImGui::Image(mInvalidIcon->GetImGuiTexture()->GetBinding(), { mItemSize.X,mItemSize.Y });
+				else
+					ImGui::Image(pImGuiTexture->GetBinding(), {mItemSize.X,mItemSize.Y});
 			}
 			
 			/*

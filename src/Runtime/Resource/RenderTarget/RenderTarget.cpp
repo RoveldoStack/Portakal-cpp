@@ -3,6 +3,7 @@
 #include <Runtime/Graphics/GraphicsDevice.h>
 #include <Runtime/Graphics/GraphicsDeviceAPI.h>
 #include <Runtime/Graphics/Framebuffer.h>
+#include <Runtime/Graphics/ResourceTable.h>
 
 namespace Portakal
 {
@@ -74,6 +75,10 @@ namespace Portakal
 			delete mDepthStencilTarget;
 			mDepthStencilTarget = nullptr;
 		}
+
+		if (mIsolatedResourceTable != nullptr)
+			mIsolatedResourceTable->DeleteDeviceObject();
+		mIsolatedResourceTable = nullptr;
 	}
 	void RenderTarget::CreateResources(const unsigned int width, const unsigned int height, const Array<TextureFormat>& colorTargetFormats, const TextureFormat depthStencilFormat)
 	{
@@ -102,27 +107,33 @@ namespace Portakal
 		* Create framebuffer
 		*/
 		FramebufferCreateDesc framebufferDesc = {};
-
+		ResourceTableCreateDesc tableCreateDesc = {};
 		Array<FramebufferAttachmentDesc> colorAttachments;
 		for (unsigned int i = 0; i < colorTextures.GetCursor(); i++)
 		{
 			FramebufferAttachmentDesc desc = {};
-			desc.ArrayLayer = 1;
+			desc.ArrayLayer = 0;
 			desc.MipLevel = 0;
 			desc.pTexture = colorTextures[i]->GetTexture();
 
 			framebufferDesc.ColorTargets.Add(desc);
+			tableCreateDesc.Resources.Add(desc.pTexture);
 		}
 
 		if (pDepthStencilTexture != nullptr)
 		{
 			FramebufferAttachmentDesc desc = {};
-			desc.ArrayLayer = 1;
+			desc.ArrayLayer = 0;
 			desc.MipLevel = 0;
 			desc.pTexture = pDepthStencilTexture->GetTexture();
 
 			framebufferDesc.DepthStencilTarget = desc;
 		}
+
+		/*
+		* Create isolated resource table
+		*/
+		mIsolatedResourceTable = mDevice->CreateResourceTable(tableCreateDesc);
 
 		mFramebuffer = mDevice->CreateFramebuffer(framebufferDesc);
 		mColorTargets = colorTextures;

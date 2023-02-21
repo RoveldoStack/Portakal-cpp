@@ -7,7 +7,7 @@ namespace Portakal
 	class Framebuffer;
 	class TextureResource;
 	class GraphicsDevice;
-
+	class ResourceTable;
 	/// <summary>
 	/// A resource specialized in render targets
 	/// </summary>
@@ -29,6 +29,18 @@ namespace Portakal
 		/// </summary>
 		/// <returns></returns>
 		FORCEINLINE unsigned int GetHeight() const noexcept;
+
+		/// <summary>
+		/// Returns the underlying framebuffer object
+		/// </summary>
+		/// <returns></returns>
+		FORCEINLINE Framebuffer* GetFramebuffer() const noexcept { return mFramebuffer; }
+
+		/// <summary>
+		/// Returns the dedicated resource table for this render target
+		/// </summary>
+		/// <returns></returns>
+		FORCEINLINE ResourceTable* GetIsolatedResourceTable() const noexcept { return mIsolatedResourceTable; }
 
 		/// <summary>
 		/// Resized the render target
@@ -55,6 +67,7 @@ namespace Portakal
 	private:
 		GraphicsDevice* mDevice;
 		Framebuffer* mFramebuffer;
+		ResourceTable* mIsolatedResourceTable;
 		Array<TextureResource*> mColorTargets;
 		TextureResource* mDepthStencilTarget;
 		unsigned int mWidth;

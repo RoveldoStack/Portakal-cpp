@@ -61,6 +61,9 @@ namespace Portakal
 		template<typename TAspect,typename... TParameters>
 		TAspect* CreateAspect(TParameters... parameters)
 		{
+			if (GetAspect<TAspect>() != nullptr)
+				return nullptr;
+
 			TAspect* pAspect = new TAspect(parameters...);
 
 			pAspect->_SetOwnerScene(this);
@@ -78,6 +81,9 @@ namespace Portakal
 		/// <param name="state"></param>
 		SceneAspect* CreateAspect(const Type* pType)
 		{
+			if (GetAspect(pType) != nullptr)
+				return nullptr;
+
 			SceneAspect* pAspect = (SceneAspect*)pType->CreateDefaultHeapObject();
 
 			if (pAspect == nullptr)

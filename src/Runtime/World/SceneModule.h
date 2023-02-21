@@ -11,7 +11,7 @@ namespace Portakal
 	class PORTAKAL_API SceneModule : public ApplicationModule
 	{
 		GENERATE_CLASS(SceneModule);
-		GENERATE_APPLICATION_MODULE(false, false, false);
+		GENERATE_APPLICATION_MODULE(true, false, false);
 	public:
 		SceneModule() = default;
 		~SceneModule() = default;
