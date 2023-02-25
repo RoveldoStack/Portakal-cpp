@@ -30,4 +30,7 @@ namespace Portakal
 	{
 		SceneAPI::MarkScenePrimal(this);
 	}
+	void Scene::DestroyCore()
+	{
+	}
 }

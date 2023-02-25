@@ -15,7 +15,7 @@ namespace Portakal
 	{
 		GENERATE_CLASS(RenderTarget);
 	public:
-		RenderTarget(const unsigned int width, const unsigned int height, const Array<TextureFormat>& colorTargetFormats, const TextureFormat depthStencilFormat);
+		RenderTarget(const unsigned int width, const unsigned int height, const Array<TextureFormat>& colorTargetFormats, const TextureFormat depthStencilFormat,const Array<String>& colorTargetNames = {});
 		~RenderTarget();
 
 		/// <summary>
@@ -37,10 +37,16 @@ namespace Portakal
 		FORCEINLINE Framebuffer* GetFramebuffer() const noexcept { return mFramebuffer; }
 
 		/// <summary>
-		/// Returns the dedicated resource table for this render target
+		/// REturns the color target textures
 		/// </summary>
 		/// <returns></returns>
-		FORCEINLINE ResourceTable* GetIsolatedResourceTable() const noexcept { return mIsolatedResourceTable; }
+		FORCEINLINE Array<TextureResource*> GetColorTargets() const noexcept { return mColorTargets; }
+
+		/// <summary>
+		/// Returns the depth stencil target texture
+		/// </summary>
+		/// <returns></returns>
+		FORCEINLINE TextureResource* GetDepthStencilTarget() const noexcept { return mDepthStencilTarget; }
 
 		/// <summary>
 		/// Resized the render target
@@ -62,12 +68,11 @@ namespace Portakal
 		/// <param name="height"></param>
 		/// <param name="colorTargetFormats"></param>
 		/// <param name="depthStencilFormat"></param>
-		void CreateResources(const unsigned int width,const unsigned int height,const Array<TextureFormat>& colorTargetFormats,const TextureFormat depthStencilFormat);
+		void CreateResources(const unsigned int width,const unsigned int height,const Array<TextureFormat>& colorTargetFormats,const TextureFormat depthStencilFormat, const Array<String>& colorTargetNames);
 		virtual void DestroyCore() override;
 	private:
 		GraphicsDevice* mDevice;
 		Framebuffer* mFramebuffer;
-		ResourceTable* mIsolatedResourceTable;
 		Array<TextureResource*> mColorTargets;
 		TextureResource* mDepthStencilTarget;
 		unsigned int mWidth;

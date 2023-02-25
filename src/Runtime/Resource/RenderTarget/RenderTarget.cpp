@@ -4,17 +4,20 @@
 #include <Runtime/Graphics/GraphicsDeviceAPI.h>
 #include <Runtime/Graphics/Framebuffer.h>
 #include <Runtime/Graphics/ResourceTable.h>
+#include <Runtime/Assert/Assert.h>
 
 namespace Portakal
 {
-	RenderTarget::RenderTarget(const unsigned int width, const unsigned int height, const Array<TextureFormat>& colorTargetFormats, const TextureFormat depthStencilFormat)
+	RenderTarget::RenderTarget(const unsigned int width, const unsigned int height, const Array<TextureFormat>& colorTargetFormats, const TextureFormat depthStencilFormat, const Array<String>& colorTargetNames)
 	{
 		mDevice = GraphicsDeviceAPI::GetDefaultDevice();
+
+		ASSERT(colorTargetFormats.GetCursor() == colorTargetNames.GetCursor(),"RenderTarget","Given color target names are not matched with the given format count");
 
 		/*
 		* Create resources
 		*/
-		CreateResources(width, height, colorTargetFormats, depthStencilFormat);
+		CreateResources(width, height, colorTargetFormats, depthStencilFormat,colorTargetNames);
 	}
 	RenderTarget::~RenderTarget()
 	{
@@ -35,9 +38,11 @@ namespace Portakal
 		* Create a copy of the former attachment descriptions
 		*/
 		Array<TextureFormat> colorTargetFormats;
+		Array<String> colorTargetNames;
 		for (unsigned int i = 0; i < mColorTargets.GetCursor(); i++)
 		{
 			colorTargetFormats.Add(mColorTargets[i]->GetFormat());
+			colorTargetNames.Add(mColorTargets[i]->GetTagName());
 		}
 		TextureFormat depthStencilFormat = mDepthStencilTarget != nullptr ? mDepthStencilTarget->GetFormat() : TextureFormat::None;
 
@@ -49,7 +54,7 @@ namespace Portakal
 		/*
 		* Create the new attachments and the framebuffer
 		*/
-		CreateResources(width, height, colorTargetFormats, depthStencilFormat);
+		CreateResources(width, height, colorTargetFormats, depthStencilFormat,colorTargetNames);
 	}
 	void RenderTarget::Delete()
 	{
@@ -75,12 +80,8 @@ namespace Portakal
 			delete mDepthStencilTarget;
 			mDepthStencilTarget = nullptr;
 		}
-
-		if (mIsolatedResourceTable != nullptr)
-			mIsolatedResourceTable->DeleteDeviceObject();
-		mIsolatedResourceTable = nullptr;
 	}
-	void RenderTarget::CreateResources(const unsigned int width, const unsigned int height, const Array<TextureFormat>& colorTargetFormats, const TextureFormat depthStencilFormat)
+	void RenderTarget::CreateResources(const unsigned int width, const unsigned int height, const Array<TextureFormat>& colorTargetFormats, const TextureFormat depthStencilFormat, const Array<String>& colorTargetNames)
 	{
 		/*
 		* Create color targets
@@ -90,7 +91,10 @@ namespace Portakal
 		{
 			const TextureFormat format = colorTargetFormats[i];
 
-			colorTextures.Add(new TextureResource(TextureType::Texture2D, TextureUsage::RenderTarget, format, width, height, 1));
+			TextureResource* pColorTarget = new TextureResource(TextureType::Texture2D, TextureUsage::RenderTarget, format, width, height, 1);
+			pColorTarget->SetTagName(colorTargetNames[i]);
+
+			colorTextures.Add(pColorTarget);
 		}
 
 		/*
@@ -99,8 +103,8 @@ namespace Portakal
 		TextureResource* pDepthStencilTexture = nullptr;
 		if (depthStencilFormat != TextureFormat::None)
 		{
-
 			pDepthStencilTexture = new TextureResource(TextureType::Texture2D, TextureUsage::DepthStencil, depthStencilFormat, width, height, 1);
+			pDepthStencilTexture->SetTagName("Depth stencil");
 		}
 
 		/*
@@ -129,11 +133,6 @@ namespace Portakal
 
 			framebufferDesc.DepthStencilTarget = desc;
 		}
-
-		/*
-		* Create isolated resource table
-		*/
-		mIsolatedResourceTable = mDevice->CreateResourceTable(tableCreateDesc);
 
 		mFramebuffer = mDevice->CreateFramebuffer(framebufferDesc);
 		mColorTargets = colorTextures;

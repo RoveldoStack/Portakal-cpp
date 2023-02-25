@@ -10,4 +10,9 @@ namespace Portakal
 	{
 
 	}
+
+	void Entity::DestroyCore()
+	{
+
+	}
 }

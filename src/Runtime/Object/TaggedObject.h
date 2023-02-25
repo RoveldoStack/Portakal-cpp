@@ -57,7 +57,7 @@ namespace Portakal
 
 		~TaggedObject() = default;
 
-		virtual void DestroyCore() {}
+		virtual void DestroyCore() = 0;
 	private:
 		String mName;
 		Guid mID;

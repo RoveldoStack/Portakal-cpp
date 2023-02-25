@@ -55,4 +55,20 @@ namespace Portakal
 		END_TYPE_PROPERTIES;
 	HAS_DEFAULT_CONSTRUCTOR(CreateEmptySceneButton);
 	END_GENERATE_TYPE(CreateEmptySceneButton);
+
+	class PORTAKAL_API CreateDisplayButton : public MenuItemBehaviour
+	{
+		GENERATE_CLASS(CreateDisplayButton);
+	public:
+		virtual void OnClick() override;
+	};
+
+	START_GENERATE_TYPE(CreateDisplayButton);
+
+	START_TYPE_PROPERTIES(CreateDisplayButton);
+	REGISTER_TYPE_ATTRIBUTE(GUICustomMenuItem, "Display/Create new")
+	END_TYPE_PROPERTIES;
+
+	HAS_DEFAULT_CONSTRUCTOR(CreateDisplayButton);
+	END_GENERATE_TYPE(CreateDisplayButton);
 }

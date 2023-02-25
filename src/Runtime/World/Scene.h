@@ -171,6 +171,8 @@ namespace Portakal
 		/// Marks this scene as the primal scene
 		/// </summary>
 		void MarkPrimal();
+
+		virtual void DestroyCore() override;
 	private:
 		Scene(const SceneDescriptor& descriptor);
 		Scene();

@@ -145,6 +145,8 @@ namespace Portakal
 		/// Destroys this entity
 		/// </summary>
 		void DestroyEntity();
+
+		virtual void DestroyCore() override;
 	private:
 		Entity(Scene* pScene);
 		~Entity();

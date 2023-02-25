@@ -126,11 +126,11 @@ namespace Portakal
 
 			return entry;
 		}
-		FORCEINLINE void Remove(const TKey& key) noexcept
+		FORCEINLINE bool Remove(const TKey& key) noexcept
 		{
 			const int index = FindIndex(key);
 			if (index == -1)
-				return;
+				return false;
 
 			for (unsigned int i = index + 1; i < mCursor; i++)
 			{
@@ -138,6 +138,8 @@ namespace Portakal
 			}
 
 			mCursor--;
+
+			return true;
 		}
 
 		void Clear()
