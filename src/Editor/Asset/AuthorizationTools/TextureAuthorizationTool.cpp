@@ -9,6 +9,7 @@
 #include <Editor/Renderer/ImGuiAPI.h>
 #include <Editor/Renderer/ImGuiTextureBinding.h>
 #include <Editor/Renderer/ImGuiRenderer.h>
+#include <Runtime/Resource/Resource.h>
 
 namespace Portakal
 {
@@ -21,7 +22,7 @@ namespace Portakal
 		if (!pFile->IsLoaded())
 			pFile->LoadSync();
 
-		TextureResource* pTexture = (TextureResource*)pFile->GetLoadedSubObject();
+		TextureResource* pTexture = (TextureResource*)pFile->GetResource()->GetSubObject();
 		if (pTexture == nullptr)
 		{
 			return;

@@ -30,13 +30,6 @@ namespace Portakal
 		/// </summary>
 		/// <param name="pObject"></param>
 		virtual void SerializeToPackage(const ResourceSubObject* pObject) = 0;
-
-		/// <summary>
-		/// Deserializes from the raw file format
-		/// </summary>
-		/// <param name="pFile"></param>
-		/// <returns></returns>
-		virtual ResourceSubObject* Deserialize(const DomainFile* pFile) = 0;
 	};
 
 	START_GENERATE_TYPE(IAssetSerializer);

@@ -5,8 +5,8 @@
 
 namespace Portakal
 {
+	class Resource;
 	class IAssetSerializer;
-	class ResourceSubObject;
 	class DomainFolder;
 	class IAssetVisualizer;
 	class IAssetImporter;
@@ -57,10 +57,10 @@ namespace Portakal
 		FORCEINLINE Array<IAssetProcessor*> GetProcessors() const noexcept { return mProcessors; }
 
 		/// <summary>
-		/// Returns the loaded sub resource object
+		/// Returns the resource
 		/// </summary>
 		/// <returns></returns>
-		FORCEINLINE ResourceSubObject* GetLoadedSubObject() const noexcept { return mSubObject; }
+		FORCEINLINE Resource* GetResource() const noexcept { return mResource; }
 
 		/// <summary>
 		/// Returns the file descriptor path
@@ -96,7 +96,7 @@ namespace Portakal
 		/// Returns whether it's loaded or not
 		/// </summary>
 		/// <returns></returns>
-		FORCEINLINE bool IsLoaded() const noexcept { return mSubObject != nullptr; }
+		FORCEINLINE bool IsLoaded() const noexcept;
 
 		/// <summary>
 		/// Loads sync
@@ -123,7 +123,7 @@ namespace Portakal
 		IAssetVisualizer* mVisualizer;
 		Array<IAssetImporter*> mImporters;
 		Array<IAssetProcessor*> mProcessors;
-		ResourceSubObject* mSubObject;
+		Resource* mResource;
 		String mFileDescriptorPath;
 		String mSourceFilePath;
 		String mName;

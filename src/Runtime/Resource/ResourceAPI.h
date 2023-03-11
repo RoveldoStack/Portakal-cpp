@@ -1,5 +1,7 @@
 #pragma once
 #include <Runtime/Core/Core.h>
+#include <Runtime/Containers/Array.h>
+#include <Runtime/Resource/Resource.h>
 
 namespace Portakal
 {
@@ -8,8 +10,20 @@ namespace Portakal
 	/// </summary>
 	class PORTAKAL_API ResourceAPI
 	{
-	public:
-
+		friend class ResourceModule;
 	private:
+		static ResourceAPI* sAPI;
+	public:
+		static Resource* GetResourceViaID(const Guid& id);
+		static Resource* RegisterResource(const String& path,const String& type);
+	private:
+		ResourceAPI(const String& packagesPath);
+		ResourceAPI();
+		~ResourceAPI();
+
+		Resource* _GetResourceViaID(const Guid& id);
+		Resource* _RegisterResource(const String& path,const String& type);
+	private:
+		Array<Resource*> mResources;
 	};
 }

@@ -22,6 +22,8 @@
 #include <Editor/Resource/EditorResourceModule.h>
 #include <Runtime/Platform/PlatformMonitor.h>
 #include <Runtime/World/SceneModule.h>
+#include <Runtime/Resource/ResourceModule.h>
+#include <Runtime/Resource/Texture/TextureSerializer.h>
 
 
 int main(unsigned int argumentCount, const char** ppArguments)
@@ -59,6 +61,7 @@ int main(unsigned int argumentCount, const char** ppArguments)
 	graphicsModuleParams.WindowedDescs.Add(gdDesc);
 
 	pApplication->CreateModule<Portakal::GraphicsModule>(graphicsModuleParams);
+	pApplication->CreateModule<Portakal::ResourceModule>();
 	pApplication->CreateModule<Portakal::SceneModule>();
 
 	/*

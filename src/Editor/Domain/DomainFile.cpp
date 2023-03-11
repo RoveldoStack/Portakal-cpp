@@ -16,25 +16,31 @@
 #include <Editor/Asset/CustomAssetAuthorizationToolAttribute.h>
 #include <Editor/Asset/IAssetAuthorizationTool.h>
 #include <Editor/Domain/DomainFolder.h>
+#include <Runtime/Resource/Resource.h>
+#include <Runtime/Resource/ResourceAPI.h>
 
 namespace Portakal
 {
+    bool DomainFile::IsLoaded() const noexcept
+    {
+        if (mResource == nullptr)
+            return false;
+
+        return mResource->IsLoaded();
+    }
     void DomainFile::LoadSync()
     {
         if (IsLoaded())
             return;
 
-        mSubObject = mSerializer->Deserialize(this);
+        mResource->LoadSync();
     }
     void DomainFile::UnloadSync()
     {
         if (!IsLoaded())
             return;
 
-        if (mSubObject != nullptr)
-            mSubObject->Destroy();
-
-        mSubObject = nullptr;
+        mResource->UnloadSync();
     }
     void DomainFile::Delete()
     {
@@ -64,6 +70,11 @@ namespace Portakal
         */
         const String sourceFilePath = PlatformFile::GetFileDirectory(fileDescriptorPath) + "\\" + fileDescriptor.SourceFile;
         ASSERT(PlatformFile::IsExist(sourceFilePath), "DomainFile", "Source file couldnt be found!");
+
+        /*
+        * Create resource
+        */
+        mResource = ResourceAPI::RegisterResource(sourceFilePath,fileDescriptor.ResourceType);
 
         /*
         * Find serializer
@@ -188,7 +199,6 @@ namespace Portakal
         mVisualizer = pVisualizer;
         mImporters = importers;
         mProcessors = processors;
-        mSubObject = nullptr;
     }
     DomainFile::~DomainFile()
     {

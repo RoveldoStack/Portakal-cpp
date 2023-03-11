@@ -7,12 +7,13 @@ namespace Portakal
 	{
 		GENERATE_CLASS(CustomResourceSerializerAttribute);
 	public:
-		CustomResourceSerializerAttribute(const String& type);
+		CustomResourceSerializerAttribute(const String& resourceType) : mResourceType(resourceType) {}
+		CustomResourceSerializerAttribute() = default;
 		~CustomResourceSerializerAttribute() = default;
 
-		FORCEINLINE String GetType() const noexcept { return mType; }
+		FORCEINLINE String GetResourceType() const noexcept { return mResourceType; }
 	private:
-		String mType;
+		String mResourceType;
 	};
 
 	START_GENERATE_TYPE(CustomResourceSerializerAttribute);

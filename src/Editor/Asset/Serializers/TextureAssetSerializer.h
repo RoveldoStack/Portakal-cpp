@@ -13,7 +13,6 @@ namespace Portakal
 
 		virtual void SerializeToEditor(const ResourceSubObject* pObject) override;
 		virtual void SerializeToPackage(const ResourceSubObject* pObject) override;
-		virtual ResourceSubObject* Deserialize(const DomainFile* pFile) override;
 
 	};
 

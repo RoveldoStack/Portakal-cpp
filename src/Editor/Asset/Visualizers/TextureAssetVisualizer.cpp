@@ -3,6 +3,7 @@
 #include <Runtime/Resource/Texture/TextureResource.h>
 #include <Editor/Resource/EditorResourceAPI.h>
 #include <Editor/Resource/EditorImageResource.h>
+#include <Runtime/Resource/Resource.h>
 namespace Portakal
 {
 	TextureResource* TextureAssetVisualizer::OnPaint(DomainFile* pFile)
@@ -10,7 +11,7 @@ namespace Portakal
 		if (!pFile->IsLoaded())
 			pFile->LoadSync();
 
-		TextureResource* pTexture = (TextureResource*)pFile->GetLoadedSubObject();
+		TextureResource* pTexture = (TextureResource*)pFile->GetResource()->GetSubObject();
 
 		return pTexture != nullptr ? pTexture : ((EditorImageResource*)EditorResourceAPI::GetResource("TextIcon.png"))->GetTexture();
 	}

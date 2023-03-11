@@ -42,6 +42,12 @@ namespace Portakal
 		FORCEINLINE bool IsActive() const noexcept { return mActive; }
 
 		/// <summary>
+		/// Generates and outputs the descriptor of this scene
+		/// </summary>
+		/// <param name="outDescriptor"></param>
+		void GenerateDescriptor(SceneDescriptor& outDescriptor) const noexcept;
+
+		/// <summary>
 		/// Creates anew entity
 		/// </summary>
 		/// <returns></returns>
@@ -172,11 +178,17 @@ namespace Portakal
 		/// </summary>
 		void MarkPrimal();
 
+		/// <summary>
+		/// Activates the scene, this activation can be ignored by some scene aspects
+		/// </summary>
+		void SetActivationState(const bool bActive);
+
 		virtual void DestroyCore() override;
 	private:
 		Scene(const SceneDescriptor& descriptor);
 		Scene();
 
+		void CreateFromDescriptor(const SceneDescriptor& descriptor);
 		/// <summary>
 		/// Internal primal state setter
 		/// </summary>

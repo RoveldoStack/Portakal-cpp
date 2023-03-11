@@ -6,6 +6,7 @@
 #include <Runtime/Graphics/CommandList.h>
 #include <Runtime/Graphics/ResourceTable.h>
 #include <Runtime/Graphics/TextureLoader.h>
+#include <Runtime/Log/Log.h>
 
 namespace Portakal
 {
@@ -97,7 +98,7 @@ namespace Portakal
 	}
 	TextureResource::~TextureResource()
 	{
-		DeleteTexture();
+		LOG("Texture Resource", "Delete");
 	}
 	
 	void TextureResource::UpdateTexture(const unsigned char* pData, const unsigned int offsetX, const unsigned int offsetY, const unsigned int offsetZ)
@@ -139,6 +140,7 @@ namespace Portakal
 	}
 	void TextureResource::DestroyCore()
 	{
+		LOG("TextureResource", "Destroy core");
 		DeleteTexture();
 	}
 }

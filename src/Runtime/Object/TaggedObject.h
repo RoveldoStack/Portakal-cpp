@@ -55,7 +55,13 @@ namespace Portakal
 		TaggedObject(const Guid& id) : mID(id),mDestroyed(false) {}
 		TaggedObject() : mDestroyed(false) {}
 
-		~TaggedObject() = default;
+		~TaggedObject()
+		{
+			if (mDestroyed)
+				return;
+
+			Destroy();
+		}
 
 		virtual void DestroyCore() = 0;
 	private:

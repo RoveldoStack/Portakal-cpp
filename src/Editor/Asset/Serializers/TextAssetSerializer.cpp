@@ -10,8 +10,4 @@ namespace Portakal
 	{
 
 	}
-	ResourceSubObject* TextAssetSerializer::Deserialize(const DomainFile* pFile)
-	{
-		return nullptr;
-	}
 }

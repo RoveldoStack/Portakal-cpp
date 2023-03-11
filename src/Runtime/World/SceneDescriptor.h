@@ -32,15 +32,6 @@ namespace Portakal
 	};
 
 	/// <summary>
-	/// Represents a single entity entry inside the scene
-	/// </summary>
-	struct PORTAKAL_API SceneEntityEntry
-	{
-		String TagName;
-		Guid ID;
-	};
-
-	/// <summary>
 	/// Represents a single component field entry inside the scene
 	/// </summary>
 	struct PORTAKAL_API SceneComponentFieldEntry
@@ -58,9 +49,20 @@ namespace Portakal
 		String TypeName;
 		String TagName;
 		Guid ID;
-		Guid OwnerEntityID;
 		Array<SceneComponentFieldEntry> Fields;
 	};
+
+	/// <summary>
+	/// Represents a single entity entry inside the scene
+	/// </summary>
+	struct PORTAKAL_API SceneEntityEntry
+	{
+		String TagName;
+		Guid ID;
+		Array<SceneComponentEntry> Components;
+	};
+
+	
 
 	/// <summary>
 	/// A descriptor for the scene, one can serialize scene into a scene descriptor and later can create a scene from it
@@ -72,9 +74,9 @@ namespace Portakal
 		SceneDescriptor() = default;
 		~SceneDescriptor() = default;
 
+		Array<SceneResourceEntry> Resources;
 		Array<SceneAspectEntry> Aspects;
 		Array<SceneEntityEntry> Entities;
-		Array<SceneComponentEntry> Components;
 	};
 
 	START_GENERATE_TYPE(SceneDescriptor);

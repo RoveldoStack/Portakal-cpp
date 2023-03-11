@@ -15,4 +15,8 @@ namespace Portakal
 	{
 
 	}
+	Entity::Entity() : mOwnerScene(nullptr)
+	{
+
+	}
 }

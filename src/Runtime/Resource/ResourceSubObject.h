@@ -10,9 +10,9 @@ namespace Portakal
 	/// </summary>
 	class PORTAKAL_API ResourceSubObject : public TaggedObject
 	{
+		friend class Resource;
 		GENERATE_CLASS(ResourceSubObject);
 	public:
-
 		/// <summary>
 		/// Returns the resource owner 
 		/// </summary>
@@ -24,6 +24,8 @@ namespace Portakal
 		/// </summary>
 		/// <returns></returns>
 		FORCEINLINE bool IsVirtual() const noexcept{ return mOwnerResource == nullptr; }
+	private:
+		void _SetOwnerResource(Resource* pOwnerResource) { mOwnerResource = pOwnerResource; }
 	private:
 		Resource* mOwnerResource;
 	};

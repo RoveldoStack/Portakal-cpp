@@ -12,6 +12,7 @@ namespace Portakal
 	/// </summary>
 	class PORTAKAL_API Entity : public TaggedObject
 	{
+		GENERATE_CLASS(Entity);
 		friend Scene;
 	public:
 
@@ -43,7 +44,7 @@ namespace Portakal
 			pComponent->OnInitialize();
 
 			mComponents.Add(pComponent);
-			return nullptr;
+			return pComponent;
 		}
 
 		/// <summary>
@@ -149,9 +150,17 @@ namespace Portakal
 		virtual void DestroyCore() override;
 	private:
 		Entity(Scene* pScene);
+		Entity();
 		~Entity();
 	private:
 		Array<Component*> mComponents;
 		Scene* mOwnerScene;
 	};
+
+	START_GENERATE_TYPE(Entity);
+	START_TYPE_PROPERTIES(Entity);
+	REGISTER_BASE_TYPE(TaggedObject);
+	END_TYPE_PROPERTIES;
+	HAS_DEFAULT_CONSTRUCTOR(Entity);
+	END_GENERATE_TYPE(Entity);
 }

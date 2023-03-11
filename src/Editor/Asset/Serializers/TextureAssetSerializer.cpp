@@ -12,10 +12,4 @@ namespace Portakal
     {
 
     }
-    ResourceSubObject* TextureAssetSerializer::Deserialize(const DomainFile* pFile)
-    {
-        TextureResource* pTexture = new TextureResource(pFile->GetSourceFilePath());
-
-        return pTexture;
-    }
 }
