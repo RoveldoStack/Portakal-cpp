@@ -6,6 +6,7 @@
 #include <Runtime/Graphics/GraphicsBufferUpdateDesc.h>
 #include <Runtime/Graphics/TextureUpdateDesc.h>
 #include <Runtime/Graphics/CommandQueueType.h>
+#include <Runtime/Math/Color4.h>
 
 namespace Portakal
 {
@@ -89,7 +90,7 @@ namespace Portakal
 		/// <param name="g"></param>
 		/// <param name="b"></param>
 		/// <param name="a"></param>
-		FORCEINLINE void ClearColor(const unsigned int index,const float r, const float g, const float b, const float a);
+		FORCEINLINE void ClearColor(const unsigned int index,const ColorRgba& color);
 
 		/// <summary>
 		/// Clears the currently bound framebuffer's depth stencil attachment's depth value
@@ -190,7 +191,7 @@ namespace Portakal
 		FORCEINLINE virtual void SetViewportsCore(const Array<ViewportDesc>& viewports) = 0;
 		FORCEINLINE virtual void SetScissorsCore(const Array<ScissorDesc>& scissors) = 0;
 
-		FORCEINLINE virtual void ClearColorCore(const unsigned int index,const float r, const float g, const float b, const float a) = 0;
+		FORCEINLINE virtual void ClearColorCore(const unsigned int index,const ColorRgba& color) = 0;
 		FORCEINLINE virtual void ClearDepthCore(const float depth) = 0;
 		FORCEINLINE virtual void ClearStencilCore(const int stencil) = 0;
 

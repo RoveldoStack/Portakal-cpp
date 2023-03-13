@@ -43,6 +43,7 @@ namespace Portakal
 		String(const char* other);
 		String(unsigned int size);
 		String(const char* target, unsigned int size);
+		String(const unsigned char* target, unsigned int size);
 
 		~String();
 

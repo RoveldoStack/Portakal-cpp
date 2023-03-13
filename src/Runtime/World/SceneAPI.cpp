@@ -91,6 +91,7 @@ namespace Portakal
 			mPrimalScene = nullptr;
 
 		//TODO: delete scene
+		delete pScene;
 
 		mScenes.Remove(pScene);
 	}

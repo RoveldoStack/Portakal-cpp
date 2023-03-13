@@ -31,6 +31,12 @@
 #include <Editor/Renderer/ImGuiAPI.h>
 #include <Editor/Renderer/ImGuiRenderer.h>
 #include <Editor/Renderer/ImGuiTextureBinding.h>
+#include <Editor/Asset/Visualizers/SceneAssetVisualizer.h>
+#include <Runtime/World/Scene.h>
+#include <Runtime/World/SceneAPI.h>
+#include <Runtime/Resource/Resource.h>
+#include <Runtime/World/Scene.h>
+
 
 namespace Portakal
 {
@@ -309,7 +315,9 @@ namespace Portakal
 			}
 			else if (ImGui::Selectable("Scene"))
 			{
-
+				ImGui::CloseCurrentPopup();
+				ImGui::EndPopup();
+				ImGui::OpenPopup("SceneCreatePopup");
 			}
 			else if (ImGui::Selectable("Material"))
 			{
@@ -328,6 +336,7 @@ namespace Portakal
 				ImGui::EndPopup();
 			}
 		}
+
 		if (ImGui::BeginPopup("FolderCreatePopup")) // folder create popup
 		{
 			ImGui::Text("Create Folder");
@@ -343,6 +352,29 @@ namespace Portakal
 				CreateFolder(mFolderNameCache);
 				ImGui::CloseCurrentPopup();
 			}
+
+			ImGui::EndPopup();
+		}
+		if (ImGui::BeginPopup("SceneCreatePopup")) // scene create popup
+		{
+			ImGui::Text("Create Scene");
+			ImGui::Separator();
+			ImGui::Spacing();
+
+			ImGui::Text("Name: ");
+			ImGui::SameLine();
+			ImGui::InputText("##sceneNameInput", mSceneNameCache, PLATFORM_FOLDER_NAME_SIZE);
+
+			if (ImGui::Button("Create"))
+			{
+				String name = mSceneNameCache;
+				name += ".pscene";
+
+				CreateResourceFile(name, "scene");
+				ImGui::CloseCurrentPopup();
+			}
+
+			Memory::Set(mSceneNameCache, 0, PLATFORM_FILE_NAME_SIZE);
 
 			ImGui::EndPopup();
 		}
@@ -445,6 +477,11 @@ namespace Portakal
 		Memory::Set(mFolderNameCache, 0, PLATFORM_FOLDER_NAME_SIZE);
 	}
 
+	void DomainObserverWindow::CreateResourceFile(const String& name, const String& type)
+	{
+		mCurrentFolder->CreateResourceFile(name,type);
+	}
+
 	void DomainObserverWindow::SelectFile(DomainFile* pFile)
 	{
 		if (!ImGui::IsKeyDown(ImGuiKey_LeftCtrl))
@@ -455,6 +492,15 @@ namespace Portakal
 
 	void DomainObserverWindow::OpenFile(DomainFile* pFile)
 	{
+		if (pFile->GetResourceType() == "scene")
+		{
+			pFile->LoadSync();
+
+			Scene* pScene = (Scene*)pFile->GetResource()->GetSubObject();
+
+			SceneAPI::MarkScenePrimal(pScene);
+			return;
+		}
 		AuthorizationToolWindow* pWindow = EditorWindowAPI::CreateWindowViaType<AuthorizationToolWindow>();
 		pWindow->SetToolData(pFile);
 	}

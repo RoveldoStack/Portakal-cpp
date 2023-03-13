@@ -19,7 +19,7 @@ namespace Portakal
 		virtual void BindFramebufferCore(Framebuffer* pFramebuffer) override;
 		virtual void SetViewportsCore(const Array<ViewportDesc>& viewports) override;
 		virtual void SetScissorsCore(const Array<ScissorDesc>& scissors) override;
-		virtual void ClearColorCore(const unsigned int index,const float r, const float g, const float b, const float a) override;
+		virtual void ClearColorCore(const unsigned int index,const ColorRgba& color) override;
 		virtual void ClearDepthCore(const float depth) override;
 		virtual void ClearStencilCore(const int stencil) override;
 		virtual void SetVertexBufferCore(GraphicsBuffer* pBuffer) override;
@@ -34,7 +34,7 @@ namespace Portakal
 		void FreeFormerFramebufferBarriers();
 	private:
 		Array<DXPTR<ID3D12Resource>> mIntermediateUploadBuffers;
-		DXPTR<ID3D12GraphicsCommandList> mCmdList;
+		DXPTR<ID3D12GraphicsCommandList5> mCmdList;
 		ID3D12CommandAllocator* mAllocator;
 
 

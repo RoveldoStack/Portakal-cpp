@@ -7,7 +7,7 @@ namespace Portakal
 	/// <summary>
 	/// Available component field types
 	/// </summary>
-	enum class PORTAKAL_API SceneComponentFieldType
+	enum class PORTAKAL_API SceneComponentFieldType : unsigned int
 	{
 		Raw,
 		Entity,

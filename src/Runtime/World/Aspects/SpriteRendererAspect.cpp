@@ -42,7 +42,7 @@ namespace Portakal
 
             mCmdList->BindFramebuffer(pRt->GetFramebuffer());
 
-            mCmdList->ClearColor(0, 1, 0, 0, 1);
+            mCmdList->ClearColor(0,ColorRgba::CornflowerBlue());
         }
         mCmdList->Unlock();
 

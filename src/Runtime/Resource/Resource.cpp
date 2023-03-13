@@ -4,6 +4,7 @@
 #include <Runtime/Resource/ResourceSubObject.h>
 #include <Runtime/Resource/CustomResourceSerializerAttribute.h>
 #include <Runtime/Assert/Assert.h>
+#include <Runtime/Resource/Scene/SceneSerializer.h>
 
 namespace Portakal
 {
@@ -24,10 +25,16 @@ namespace Portakal
 
         ResourceSubObject* pSubObject = mCompressed ? mSerializer->DeserializeCompressed(tempBlock) : mSerializer->Deserialize(tempBlock);
 
+        if (mType == "scene")
+        {
+            LOG("test", "est");
+        }
         /*
         * Set resource
         */
         pSubObject->_SetOwnerResource(this);
+        pSubObject->SetTagName(mName);
+
         mSubObject = pSubObject;
 
         mLoaded = true;
@@ -54,7 +61,7 @@ namespace Portakal
         mLoaded = false;
     }
     Resource::Resource(const String& path, const String& resourceType,const bool bCompressed)
-        : mSubObject(nullptr),mLoaded(false),mCompressed(bCompressed)
+        : mSubObject(nullptr),mLoaded(false),mCompressed(bCompressed),mSerializer(nullptr)
     {
         /*
         * Get custom resource serializer
@@ -77,6 +84,11 @@ namespace Portakal
             const CustomResourceSerializerAttribute* pAttribute = pType->GetAttribute<CustomResourceSerializerAttribute>();
             if (pAttribute == nullptr)
                 continue;
+
+            if (pAttribute->GetResourceType() != resourceType)
+            {
+                continue;
+            }
 
             pFoundType = pType;
         }

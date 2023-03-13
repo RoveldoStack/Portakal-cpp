@@ -26,10 +26,8 @@ namespace Portakal
 
 		mSource = new char[(double)mCursor + 1];
 
-		for (unsigned int i = 0; i < mCursor; i++)
-		{
-			mSource[i] = target[i];
-		}
+		Memory::Copy((void*)target, mSource, mCursor);
+
 		mSource[mCursor] = '\0';
 
 	}
@@ -44,10 +42,18 @@ namespace Portakal
 		mCursor = size;
 		mSource = new char[(double)mCursor + 1];
 
-		for (unsigned int i = 0; i < mCursor; i++)
-		{
-			mSource[i] = target[i];
-		}
+		Memory::Copy((void*)target,mSource, size);
+
+		mSource[mCursor] = '\0';
+
+	}
+	String::String(const unsigned char* target, const unsigned int size)
+	{
+		mCursor = size;
+		mSource = new char[(double)mCursor + 1];
+
+		Memory::Copy((void*)target, mSource, size);
+
 		mSource[mCursor] = '\0';
 
 	}

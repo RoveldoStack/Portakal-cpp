@@ -59,6 +59,13 @@ namespace Portakal
 		void CreateFileFromSource(const String& sourceFilePath);
 
 		/// <summary>
+		/// Creates anew file
+		/// </summary>
+		/// <param name="sourceFilePath"></param>
+		/// <param name="type"></param>
+		void CreateResourceFile(const String& name,const String& type);
+
+		/// <summary>
 		/// Creates a file descriptor
 		/// </summary>
 		/// <param name="name"></param>

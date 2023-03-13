@@ -62,7 +62,7 @@ namespace Portakal
 
 		pCmdBuffer->BindFramebuffer(pSwapchain->GetFramebuffer());
 
-		pCmdBuffer->ClearColor(0,0, 0.5f, 0.3f, 1.0f);
+		pCmdBuffer->ClearColor(0,ColorRgba::DarkGreen());
 
 		ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), (ID3D12GraphicsCommandList*)pList);
     }

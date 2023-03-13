@@ -21,7 +21,7 @@ namespace Portakal
 		/// <param name="yaml"></param>
 		/// <param name="pObject"></param>
 		template<typename TObject>
-		static void ToObject(const String& yaml, TObject* pObject)
+		static bool ToObject(const String& yaml, TObject* pObject)
 		{
 			/*
 			* Get serializer
@@ -32,7 +32,7 @@ namespace Portakal
 			* Validate serializer
 			*/
 			if (pSerializer == nullptr)
-				return;
+				return false;
 
 			/*
 			* Get yaml node
@@ -45,6 +45,8 @@ namespace Portakal
 			pSerializer->Deserialize(node, pObject);
 
 			delete pSerializer;
+
+			return true;
 		}
 
 		/// <summary>

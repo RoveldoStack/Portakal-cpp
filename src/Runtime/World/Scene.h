@@ -2,7 +2,7 @@
 #include <Runtime/World/SceneDescriptor.h>
 #include <Runtime/World/SceneAspect.h>
 #include <Runtime/Reflection/Reflection.h>
-#include <Runtime/Object/TaggedObject.h>
+#include <Runtime/Resource/ResourceSubObject.h>
 
 namespace Portakal
 {
@@ -14,7 +14,7 @@ namespace Portakal
 	/// Aspects defines the properties of a scene.
 	/// Entities populates these properties.
 	/// </summary>
-	class PORTAKAL_API Scene : public TaggedObject
+	class PORTAKAL_API Scene : public ResourceSubObject
 	{
 		friend class SceneAPI;
 	public:

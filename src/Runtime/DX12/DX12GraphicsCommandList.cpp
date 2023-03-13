@@ -5,7 +5,7 @@
 #include <Runtime/Assert/Assert.h>
 #include <Runtime/Memory/Memory.h>
 #include <Runtime/Graphics/TextureUtils.h>
-
+#include <d3d11.h>
 namespace Portakal
 {
     DX12GraphicsCommandList::DX12GraphicsCommandList(const CommandListCreateDesc& desc, DX12Device* pDevice) : CommandList(desc,CommandQueueType::Graphics)
@@ -36,7 +36,7 @@ namespace Portakal
         Framebuffer* pFramebuffer = GetBoundFramebuffer();
         if (pFramebuffer != nullptr)
             FreeFormerFramebufferBarriers();
-
+        
         ASSERT(SUCCEEDED(mCmdList->Close()), "DX12CommandList", "Failed to close the command list");
     }
     void DX12GraphicsCommandList::BindPipelineCore(Pipeline* pPipeline)
@@ -201,13 +201,13 @@ namespace Portakal
 
         mCmdList->RSSetScissorRects(dxScissors.GetCursor(), dxScissors.GetData());
     }
-    void DX12GraphicsCommandList::ClearColorCore(const unsigned int index,const float r, const float g, const float b, const float a)
+    void DX12GraphicsCommandList::ClearColorCore(const unsigned int index,const ColorRgba& color)
     {
         const DX12Framebuffer* pFramebuffer = (const DX12Framebuffer*)GetBoundFramebuffer();
         if (pFramebuffer == nullptr)
             return;
 
-        const float clearColor[] = { r,g,b,a };
+        const float clearColor[] = { color.R/255.0f,color.G/255.0f,color.B/255.0f,color.A/255.0f };
         const DX12Device* pDevice = (const DX12Device*)GetOwnerDevice();
         const Swapchain* pSwapchain = pDevice->GetSwapchain();
         const unsigned int handleIncrementSize = pDevice->GetDXDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);

@@ -170,6 +170,65 @@ namespace Portakal
 			delete pFoundImporter;
 		}
 	}
+	void DomainFolder::CreateResourceFile(const String& name, const String& type)
+	{
+		const String nameWithoutExtension = PlatformFile::GetNameWithoutExtension(name);
+		const String sourceFilePath = mPath + "\\" + name;
+		const String descriptorFilePath = mPath + "\\" + nameWithoutExtension + ".fd";
+
+		/*
+		* Validate if source file already exists
+		*/
+		if (PlatformFile::IsExist(sourceFilePath))
+			return;
+
+		/*
+		* Validate if descriptor file already exists
+		*/
+		if (PlatformFile::IsExist(descriptorFilePath))
+			return;
+
+		/*
+		* Create descriptor file
+		*/
+		DomainFileDescriptor fileDescriptor = {};
+		fileDescriptor.ID = Guid::Create();
+		fileDescriptor.SourceFile = name;
+		fileDescriptor.ResourceType = type;
+
+		const String fileDescriptorYAML = Yaml::ToYaml(&fileDescriptor);
+		if (!PlatformFile::Create(descriptorFilePath))
+		{
+			LOG("DomainFolder", "Failed to create descriptor file");
+			return;
+		}
+		if (!PlatformFile::Write(descriptorFilePath, fileDescriptorYAML))
+		{
+			LOG("DomainFolder", "Failed to write descriptor file for type %s", *type);
+			return;
+		}
+
+		/*
+		* Create default file
+		*/
+		ByteBlock defaultFileContent = {};
+		if (!PlatformFile::Create(sourceFilePath))
+		{
+			LOG("DOmainFolder", "Failed to create default file");
+			return;
+		}
+		if (!PlatformFile::Write(sourceFilePath, defaultFileContent))
+		{
+			LOG("DomainFolder", "Failed to write default file");
+			return;
+		}
+
+		/*
+		* Create file
+		*/
+		DomainFile* pFile = new DomainFile(descriptorFilePath,this);
+		mFiles.Add(pFile);
+	}
 	void DomainFolder::CreateFileDescriptor(const String& name,const String& sourceFilePath, const String& resourceType)
 	{
 		const String path = mPath + "\\" + name + ".fd";

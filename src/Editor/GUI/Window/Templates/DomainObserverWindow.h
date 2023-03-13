@@ -36,6 +36,7 @@ namespace Portakal
 		void ReturnToParentFolder();
 		void CreateFolder(const String& folderName);
 
+		void CreateResourceFile(const String& name, const String& type);
 		void SelectFile(DomainFile* pFile);
 		void OpenFile(DomainFile* pFile);
 	private:
@@ -48,6 +49,7 @@ namespace Portakal
 		Vector2F mItemGap;
 
 		char mFolderNameCache[PLATFORM_FOLDER_NAME_SIZE];
+		char mSceneNameCache[PLATFORM_FILE_NAME_SIZE];
 	};
 
 	START_GENERATE_TYPE(DomainObserverWindow);

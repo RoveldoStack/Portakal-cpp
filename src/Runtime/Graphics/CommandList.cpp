@@ -59,11 +59,11 @@ namespace Portakal
 
 		SetScissors(scissors);
 	}
-	void CommandList::ClearColor(const unsigned int index,const float r, const float g, const float b, const float a)
+	void CommandList::ClearColor(const unsigned int index, const ColorRgba& color)
 	{
 		CheckBoundFramebuffer();
 
-		ClearColorCore(index,r, g, b, a);
+		ClearColorCore(index, color);
 	}
 	void CommandList::ClearDepth(const float depth)
 	{

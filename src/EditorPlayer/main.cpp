@@ -24,6 +24,7 @@
 #include <Runtime/World/SceneModule.h>
 #include <Runtime/Resource/ResourceModule.h>
 #include <Runtime/Resource/Texture/TextureSerializer.h>
+#include <Editor/Asset/Serializers/SceneAssetSerializer.h>
 
 
 int main(unsigned int argumentCount, const char** ppArguments)
