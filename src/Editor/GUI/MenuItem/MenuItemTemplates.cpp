@@ -8,7 +8,8 @@ namespace Portakal
 {
 	void CreateEmptySceneButton::OnClick()
 	{
-		Scene* pScene = SceneAPI::CreateScene(true);
+		Scene* pScene = new Scene();
+		pScene->MarkPrimal();
 		pScene->SetTagName("Runtime test scene");
 	}
 	void CreateDisplayButton::OnClick()

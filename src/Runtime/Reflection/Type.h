@@ -9,6 +9,17 @@ namespace Portakal
 	class Field;
 
 	/// <summary>
+	/// Utility type accessor class for enabling to access the type information outside of the class
+	/// </summary>
+	/// <typeparam name="TType"></typeparam>
+	template<typename TType>
+	class TypeAccessor
+	{
+
+	};
+
+
+	/// <summary>
 	/// Represents a reflectable type info per class
 	/// </summary>
 	class PORTAKAL_API Type
@@ -114,16 +125,6 @@ namespace Portakal
 		Array<Field*> mFields;
 		Array<Attribute*> mAttributes;
 		Array<Type*> mBaseTypes;
-	};
-
-	/// <summary>
-	/// Utility type accessor class for enabling to access the type information outside of the class
-	/// </summary>
-	/// <typeparam name="TType"></typeparam>
-	template<typename TType>
-	class TypeAccessor
-	{
-
 	};
 
 	class PORTAKAL_API BaseTypeDispatcher

@@ -26,7 +26,6 @@ namespace Portakal
 		virtual void PostValidate() override {}
 		virtual void OnEvent(WindowEvent* pEvent) override {}
 	private:
-		MessageAPI* mAPI;
 	};
 
 	START_GENERATE_TYPE(MessageModule);

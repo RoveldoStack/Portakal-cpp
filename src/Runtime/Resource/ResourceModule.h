@@ -22,7 +22,6 @@ namespace Portakal
 		virtual void PostValidate() override;
 		virtual void OnEvent(WindowEvent* pEvent) override;
 	private:
-		ResourceAPI* mAPI;
 	};
 
 	START_GENERATE_TYPE(ResourceModule);

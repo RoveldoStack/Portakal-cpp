@@ -25,7 +25,6 @@ namespace Portakal
 		virtual void PostValidate() override;
 		virtual void OnEvent(WindowEvent* pEvent) override;
 	private:
-		SceneAPI* mAPI;
 	};
 
 	START_GENERATE_TYPE(SceneModule);

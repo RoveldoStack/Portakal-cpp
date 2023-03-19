@@ -2,6 +2,7 @@
 #include <Runtime/Core/Core.h>
 #include <Runtime/Containers/Array.h>
 #include <Runtime/Containers/Guid.h>
+#include <Runtime/Memory/ByteBlock.h>
 
 namespace Portakal
 {
@@ -23,6 +24,7 @@ namespace Portakal
 		FORCEINLINE unsigned long long GetFileByteOffset() const noexcept { return mByteOffset; }
 		FORCEINLINE unsigned long long GetSize() const noexcept { return mSize; }
 		FORCEINLINE bool IsLoaded() const noexcept { return mLoaded; }
+		FORCEINLINE bool IsCached() const noexcept { return mCached; }
 
 		/// <summary>
 		/// Loads sync
@@ -33,12 +35,16 @@ namespace Portakal
 		/// Unloads sync
 		/// </summary>
 		void UnloadSync();
+
+		void CacheSync();
+		void ClearCacheSync();
 	private:
 		Resource(const String& path,const String& resourceType,const bool bCompressed = false); // Constructor for files
 		~Resource();
 	private:
 		IResourceSerializer* mSerializer;
 		ResourceSubObject* mSubObject;
+		ByteBlock mCachedData;
 		Guid mID;
 		String mName;
 		String mAbsolutePath;
@@ -46,6 +52,7 @@ namespace Portakal
 		unsigned long long mByteOffset;
 		unsigned long long mSize;
 		bool mLoaded;
+		bool mCached;
 		const bool mCompressed;
 
 	};

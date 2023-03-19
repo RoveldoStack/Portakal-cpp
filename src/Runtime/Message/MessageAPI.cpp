@@ -3,57 +3,19 @@
 
 namespace Portakal
 {
-	MessageAPI* MessageAPI::_api = nullptr;
+	Array<IMessageListener*> MessageAPI::sListeners;
 
-	void MessageAPI::BroadcastMessage(const String& message, const MessageType type)
-	{
-		if (_api == nullptr)
-			return;
-
-		_api->BroadcastMessageInternal(message, type);
-	}
 	void MessageAPI::RegisterListener(IMessageListener* pListener)
 	{
-		if (_api == nullptr)
-			return;
-
-		_api->RegisterListenerInternal(pListener);
+		sListeners.Add(pListener);
 	}
 	void MessageAPI::RemoveListener(IMessageListener* pListener)
 	{
-		if (_api == nullptr)
-			return;
-
-		_api->RemoveListenerInternal(pListener);
+		sListeners.Remove(pListener);
 	}
-	MessageAPI::MessageAPI()
+	void MessageAPI::BroadcastMessage(const String& message)
 	{
-		_api = this;
-	}
-	MessageAPI::~MessageAPI()
-	{
-		_api = nullptr;
-
-		for (int i = 0; i < mListeners.GetCursor(); i++)
-		{
-			delete mListeners[i];
-		}
-		mListeners.Clear();
-	}
-
-	void MessageAPI::BroadcastMessageInternal(const String& message, const MessageType type)
-	{
-		for (int i = 0; i < mListeners.GetCursor(); i++)
-		{
-			mListeners[i]->OnMessageReceived(message, type);
-		}
-	}
-	void MessageAPI::RegisterListenerInternal(IMessageListener* pListener)
-	{
-		mListeners.Add(pListener);
-	}
-	void MessageAPI::RemoveListenerInternal(IMessageListener* pListener)
-	{
-		mListeners.Remove(pListener);
+		for (unsigned int i = 0; i < sListeners.GetCursor(); i++)
+			sListeners[i]->OnMessageReceived(message, MessageType::Information);
 	}
 }

@@ -16,9 +16,37 @@ namespace Portakal
 	{
 		if (sAPI == nullptr)
 			return false;
+
+		return sAPI->_StartGame();
+	}
+	bool EditorGameAPI::PauseGame()
+	{
+		if (sAPI == nullptr)
+			return false;
+
+		return sAPI->_PauseGame();
+	}
+	bool EditorGameAPI::Stop()
+	{
+		if (sAPI == nullptr)
+			return false;
+
+		return sAPI->_StopGame();
+	}
+	EditorGameAPI::EditorGameAPI() :
+		mCurrentState(EditorGameState::Idle)
+	{
+
+	}
+	EditorGameAPI::~EditorGameAPI()
+	{
+		sAPI = nullptr;
+	}
+	bool EditorGameAPI::_StartGame()
+	{
 		if (SceneAPI::GetPrimalScene() == nullptr) // validate if there is a primal scene
 			return false;
-		if (sAPI->mCurrentState != EditorGameState::Idle)
+		if (mCurrentState != EditorGameState::Idle)
 			return false;
 
 		/*
@@ -30,46 +58,40 @@ namespace Portakal
 		/*
 		* Start the current game
 		*/
-		sAPI->mCurrentState = EditorGameState::Running;
 		pPrimalScene->SetActivationState(true);
 
+		mCurrentState = EditorGameState::Running;
 		return true;
 	}
-	bool EditorGameAPI::PauseGame()
+	bool EditorGameAPI::_PauseGame()
 	{
-		if (sAPI == nullptr)
-			return false;
 		if (SceneAPI::GetPrimalScene() == nullptr) // validate if there is a primal scene
 			return false;
-		if (sAPI->mCurrentState != EditorGameState::Running)
+
+		if (mCurrentState != EditorGameState::Running)
 			return false;
 
 		return false;
 	}
-	bool EditorGameAPI::Stop()
+	bool EditorGameAPI::_StopGame()
 	{
-		if (sAPI == nullptr)
-			return false;
 		if (SceneAPI::GetPrimalScene() == nullptr) // validate if there is a primal scene
 			return false;
-		if (sAPI->mCurrentState != EditorGameState::Running)
+
+		if (mCurrentState != EditorGameState::Running)
 			return false;
 
 		/*
-		* Get current primal scene
+		* Destroy the current scene
 		*/
 		Scene* pPrimalScene = SceneAPI::GetPrimalScene();
-		pPrimalScene->SetActivationState(false);
+		pPrimalScene->Destroy();
 
-		return false;
-	}
-	EditorGameAPI::EditorGameAPI() :
-		mCurrentState(EditorGameState::Idle)
-	{
+		/*
+		* Create and reload scene
+		*/
+		Scene* mStartupScene = new Scene(mStartSceneDescriptor);
 
-	}
-	EditorGameAPI::~EditorGameAPI()
-	{
-		sAPI = nullptr;
+		return true;
 	}
 }

@@ -10,25 +10,15 @@ namespace Portakal
 	/// </summary>
 	class PORTAKAL_API WindowAPI
 	{
-		friend class WindowModule;
-	private:
-		static WindowAPI* _api;
 	public:
-		/// <summary>
-		/// Returns the defualt window
-		/// </summary>
-		/// <returns></returns>
-		static Window* GetDefaultWindow();
-
-		/// <summary>
-		/// Returns the windows
-		/// </summary>
-		/// <returns></returns>
-		static Array<Window*> GetWindows();
+		FORCEINLINE static Window* GetDefaultWindow();
+		FORCEINLINE static Array<Window*> GetWindows();
+		static void RegisterWindow(Window* pWindow);
+		static void RemoveWindow(Window* pWindow);
 	private:
-		WindowAPI(const Array<Window*>& windows);
-		~WindowAPI();
+		static Array<Window*> sWindows;
 	private:
-		Array<Window*> mWindows;
+		WindowAPI() = delete;
+		~WindowAPI() = delete;
 	};
 }

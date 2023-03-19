@@ -13,40 +13,25 @@ namespace Portakal
 	/// </summary>
 	class PORTAKAL_API GraphicsDeviceAPI
 	{
-		friend class GraphicsModule;
-	private:
-		static GraphicsDeviceAPI* sAPI;
 	public:
-		/// <summary>
-		/// Returns the default device of the application
-		/// </summary>
-		/// <returns></returns>
-		static GraphicsDevice* GetDefaultDevice();
+		FORCEINLINE static GraphicsDevice* GetDefaultDevice();
+		FORCEINLINE static GraphicsDevice* GetDefaultWindowedDevice();
+		FORCEINLINE static GraphicsDevice* GetDefaultStandaloneDevice();
+		FORCEINLINE static Array<GraphicsDevice*> GetAllDevices();
+		FORCEINLINE static Array<GraphicsDevice*> GetWindowedDevices();
+		FORCEINLINE static Array<GraphicsDevice*> GetStandaloneDevices();
 
-		/// <summary>
-		/// Returns all the available devices
-		/// </summary>
-		/// <returns></returns>
-		/// 
-		static Array<GraphicsDevice*> GetDevices();
-
-		/// <summary>
-		/// Returns only the standalone devices
-		/// </summary>
-		/// <returns></returns>
-		static Array<GraphicsDevice*> GetStandaloneDevices();
-
-		/// <summary>
-		/// Returns only the windowed devices
-		/// </summary>
-		/// <returns></returns>
-		static Array<GraphicsDevice*> GetWindowedDevices();
+		static void RegisterStandaloneDevice(GraphicsDevice* pDevice);
+		static void RemoveStandaloneDevice(GraphicsDevice* pDevice);
+		static void RegisterWindowedDevice(GraphicsDevice* pDevice);
+		static void RemoveWindowedDevice(GraphicsDevice* pDevice);
 	private:
-		GraphicsDeviceAPI(const Array<GraphicsDevice*>& windowedDevices,const Array<GraphicsDevice*>& standaloneDevices);
-		~GraphicsDeviceAPI();
-	private:
-		Array<GraphicsDevice*> mDevices;
-		Array<GraphicsDevice*> mStandaloneDevices;
-		Array<GraphicsDevice*> mWindowedDevices;
+		static Array<GraphicsDevice*> sDevices;
+		static Array<GraphicsDevice*> sStandaloneDevices;
+		static Array<GraphicsDevice*> sWindowedDevices;
+	public:
+		GraphicsDeviceAPI() = delete;
+		~GraphicsDeviceAPI() = delete;
+	
 	};
 }

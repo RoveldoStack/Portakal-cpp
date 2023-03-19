@@ -19,16 +19,18 @@ namespace Portakal
         /*
         * Deserialize object
         */
-        ByteBlock tempBlock = {};
-
-        ASSERT(PlatformFile::Read(mAbsolutePath, tempBlock, mByteOffset, mByteOffset + mSize), "Resource", "Failed to load the file");
-
-        ResourceSubObject* pSubObject = mCompressed ? mSerializer->DeserializeCompressed(tempBlock) : mSerializer->Deserialize(tempBlock);
-
-        if (mType == "scene")
+        ResourceSubObject* pSubObject = nullptr;
+        if (mCached)
         {
-            LOG("test", "est");
+            pSubObject = mCompressed ? mSerializer->DeserializeCompressed(mCachedData) : mSerializer->Deserialize(mCachedData);
         }
+        else
+        {
+            ByteBlock tempBlock = {};
+            ASSERT(PlatformFile::Read(mAbsolutePath, tempBlock, mByteOffset, mByteOffset + mSize), "Resource", "Failed to load the file");
+            pSubObject = mCompressed ? mSerializer->DeserializeCompressed(tempBlock) : mSerializer->Deserialize(tempBlock);
+        }
+
         /*
         * Set resource
         */
@@ -60,8 +62,26 @@ namespace Portakal
         mSubObject = nullptr;
         mLoaded = false;
     }
+    void Resource::CacheSync()
+    {
+        if (mCached)
+            return;
+
+        ASSERT(PlatformFile::Read(mAbsolutePath, mCachedData, mByteOffset, mByteOffset + mSize), "Resource", "Failed to load the file");
+
+        mCached = true;
+    }
+    void Resource::ClearCacheSync()
+    {
+        if (!mCached)
+            return;
+
+        mCachedData.Clear();
+
+        mCached = false;
+    }
     Resource::Resource(const String& path, const String& resourceType,const bool bCompressed)
-        : mSubObject(nullptr),mLoaded(false),mCompressed(bCompressed),mSerializer(nullptr)
+        : mSubObject(nullptr),mLoaded(false),mCompressed(bCompressed),mSerializer(nullptr),mCached(false)
     {
         /*
         * Get custom resource serializer

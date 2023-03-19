@@ -4,19 +4,20 @@
 
 namespace Portakal
 {
+	IMessageListener* pListener = nullptr;
 	void MessageModule::OnInitialize()
 	{
-		mAPI = new MessageAPI();
-
 		/*
 		* Register default message
 		*/
+		pListener = new ConsoleMessageListener();
 		MessageAPI::RegisterListener(new ConsoleMessageListener());
 
 	}
 	void MessageModule::OnFinalize()
 	{
-		delete mAPI;
-		mAPI = nullptr;
+		MessageAPI::RemoveListener(pListener);
+		delete pListener;
+		pListener = nullptr;
 	}
 }

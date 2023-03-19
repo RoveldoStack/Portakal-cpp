@@ -40,9 +40,6 @@ namespace Portakal
 	private:
 		const WindowModuleParams mParams;
 		Array<Window*> mWindows;
-		WindowAPI* mAPI;
-
-		
 	};
 	START_GENERATE_TYPE(WindowModule);
 

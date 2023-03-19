@@ -2,47 +2,62 @@
 
 namespace Portakal
 {
-	GraphicsDeviceAPI* GraphicsDeviceAPI::sAPI = nullptr;
+	Array<GraphicsDevice*> GraphicsDeviceAPI::sDevices;
+	Array<GraphicsDevice*> GraphicsDeviceAPI::sStandaloneDevices;
+	Array<GraphicsDevice*> GraphicsDeviceAPI::sWindowedDevices;
 
 	GraphicsDevice* GraphicsDeviceAPI::GetDefaultDevice()
 	{
-		if (sAPI == nullptr)
-			return nullptr;
+		if (sWindowedDevices.GetCursor() > 0)
+			return sWindowedDevices[0];
+		if (sStandaloneDevices.GetCursor() > 0)
+			return sStandaloneDevices[0];
 
-		return sAPI->mDevices.GetCursor() > 0 ? sAPI->mDevices[0] : nullptr;
+		return nullptr;
 	}
-	Array<GraphicsDevice*> GraphicsDeviceAPI::GetDevices()
+	GraphicsDevice* GraphicsDeviceAPI::GetDefaultWindowedDevice()
 	{
-		if (sAPI == nullptr)
-			return Array<GraphicsDevice*>();
-
-		return sAPI->mDevices;
+		if (sWindowedDevices.GetCursor() > 0)
+			return sWindowedDevices[0];
+		return nullptr;
 	}
-	Array<GraphicsDevice*> GraphicsDeviceAPI::GetStandaloneDevices()
+	GraphicsDevice* GraphicsDeviceAPI::GetDefaultStandaloneDevice()
 	{
-		if (sAPI == nullptr)
-			return Array<GraphicsDevice*>();
+		if (sStandaloneDevices.GetCursor() > 0)
+			return sStandaloneDevices[0];
 
-		return sAPI->mStandaloneDevices;
+		return nullptr;
+	}
+	Array<GraphicsDevice*> GraphicsDeviceAPI::GetAllDevices()
+	{
+		return sDevices;
 	}
 	Array<GraphicsDevice*> GraphicsDeviceAPI::GetWindowedDevices()
 	{
-		if (sAPI == nullptr)
-			return Array<GraphicsDevice*>();
-
-		return sAPI->mWindowedDevices;
+		return sWindowedDevices;
 	}
-	GraphicsDeviceAPI::GraphicsDeviceAPI(const Array<GraphicsDevice*>& windowedDevices, const Array<GraphicsDevice*>& standaloneDevices)
+	Array<GraphicsDevice*> GraphicsDeviceAPI::GetStandaloneDevices()
 	{
-		sAPI = this;
-
-		sAPI->mStandaloneDevices = standaloneDevices;
-		sAPI->mWindowedDevices = windowedDevices;
-		sAPI->mDevices = windowedDevices;
-		sAPI->mDevices.AddRange(standaloneDevices);
+		return sStandaloneDevices;
 	}
-	GraphicsDeviceAPI::~GraphicsDeviceAPI()
+	void GraphicsDeviceAPI::RegisterStandaloneDevice(GraphicsDevice* pDevice)
 	{
-		sAPI = nullptr;
+		sStandaloneDevices.Add(pDevice);
+		sDevices.Add(pDevice);
+	}
+	void GraphicsDeviceAPI::RemoveStandaloneDevice(GraphicsDevice* pDevice)
+	{
+		sStandaloneDevices.Remove(pDevice);
+		sDevices.Remove(pDevice);
+	}
+	void GraphicsDeviceAPI::RegisterWindowedDevice(GraphicsDevice* pDevice)
+	{
+		sWindowedDevices.Add(pDevice);
+		sDevices.Add(pDevice);
+	}
+	void GraphicsDeviceAPI::RemoveWindowedDevice(GraphicsDevice* pDevice)
+	{
+		sWindowedDevices.Remove(pDevice);
+		sDevices.Remove(pDevice);
 	}
 }

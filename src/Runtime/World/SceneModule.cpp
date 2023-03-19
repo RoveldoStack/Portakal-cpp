@@ -6,11 +6,11 @@ namespace Portakal
 {
     void SceneModule::OnInitialize()
     {
-        mAPI = new SceneAPI();
+
     }
     void SceneModule::OnFinalize()
     {
-        delete mAPI;
+
     }
     void SceneModule::OnPreTick()
     {
@@ -18,7 +18,7 @@ namespace Portakal
     }
     void SceneModule::OnTick()
     {
-        const Array<Scene*> scenes = mAPI->GetScenes();
+        const Array<Scene*> scenes = SceneAPI::GetScenes();
         for (unsigned int sceneIndex = 0; sceneIndex < scenes.GetCursor(); sceneIndex++)
         {
             Scene* pScene = scenes[sceneIndex];

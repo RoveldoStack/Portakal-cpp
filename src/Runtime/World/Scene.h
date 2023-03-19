@@ -18,6 +18,9 @@ namespace Portakal
 	{
 		friend class SceneAPI;
 	public:
+		Scene(const SceneDescriptor& descriptor);
+		Scene();
+
 		/// <summary>
 		/// Returns the entities
 		/// </summary>
@@ -182,13 +185,9 @@ namespace Portakal
 		/// Activates the scene, this activation can be ignored by some scene aspects
 		/// </summary>
 		void SetActivationState(const bool bActive);
-
-		virtual void DestroyCore() override;
 	private:
-		Scene(const SceneDescriptor& descriptor);
-		Scene();
-
 		void CreateFromDescriptor(const SceneDescriptor& descriptor);
+
 		/// <summary>
 		/// Internal primal state setter
 		/// </summary>
@@ -198,6 +197,8 @@ namespace Portakal
 		/// Internal active state setter
 		/// </summary>
 		void _SetActiveState(const bool state) { mActive = state; }
+
+		virtual void DestroyCore() override;
 	private:
 		Array<SceneAspect*> mAspects;
 		Array<Entity*> mEntities;

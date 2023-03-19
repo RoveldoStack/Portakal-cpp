@@ -8,10 +8,12 @@
 #include <Runtime/Graphics/Swapchain.h>
 #include <Runtime/Window/Window.h>
 #include <Runtime/DX12/DX12Device.h>
+#include "GraphicsDeviceAPI.h"
 namespace Portakal
 {
 	GraphicsDevice* GraphicsDevice::CreateStandalone(const StandaloneGraphicsDeviceCreateDesc& desc)
 	{
+		GraphicsDeviceAPI::RegisterStandaloneDevice(nullptr);
 		return nullptr;
 	}
 	GraphicsDevice* GraphicsDevice::CreateWindowed(const WindowedGraphicsDeviceCreateDesc& desc)
@@ -57,6 +59,8 @@ namespace Portakal
 		swapchainDesc.Height = desc.pOwnerWindow->GetHeight();
 
 		pDevice->CreateSwapchain(swapchainDesc);
+
+		GraphicsDeviceAPI::RegisterWindowedDevice(pDevice);
 
 		return pDevice;
 	}

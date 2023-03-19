@@ -12,7 +12,7 @@ namespace Portakal
 		*/
 		if (block.GetBlockSizeInBytes() == 0)
 		{
-			return SceneAPI::CreateScene(false);
+			return new Scene();
 		}
 
 		/*
@@ -29,7 +29,7 @@ namespace Portakal
 		/*
 		* Create Scene
 		*/
-		Scene* pScene = SceneAPI::CreateScene(descriptor,false);
+		Scene* pScene = new Scene(descriptor);
 
 		return pScene;
 	}

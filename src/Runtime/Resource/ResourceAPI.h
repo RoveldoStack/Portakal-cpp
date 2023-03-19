@@ -10,20 +10,13 @@ namespace Portakal
 	/// </summary>
 	class PORTAKAL_API ResourceAPI
 	{
-		friend class ResourceModule;
-	private:
-		static ResourceAPI* sAPI;
 	public:
+		static Resource* RegisterResource(const String& path, const String& type);
 		static Resource* GetResourceViaID(const Guid& id);
-		static Resource* RegisterResource(const String& path,const String& type);
 	private:
-		ResourceAPI(const String& packagesPath);
-		ResourceAPI();
-		~ResourceAPI();
-
-		Resource* _GetResourceViaID(const Guid& id);
-		Resource* _RegisterResource(const String& path,const String& type);
+		static Array<Resource*> sResources;
 	private:
-		Array<Resource*> mResources;
+		ResourceAPI() = delete;
+		~ResourceAPI() = delete;
 	};
 }

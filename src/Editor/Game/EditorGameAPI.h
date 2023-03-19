@@ -42,6 +42,11 @@ namespace Portakal
 	private:
 		EditorGameAPI();
 		~EditorGameAPI();
+
+		bool _StartGame();
+		bool _PauseGame();
+		bool _StopGame();
+
 	private:
 		EditorGameState mCurrentState;
 		SceneDescriptor mStartSceneDescriptor;

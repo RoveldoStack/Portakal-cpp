@@ -9,16 +9,21 @@
 typedef Portakal::Win32Window PlatformAbstraction;
 #endif
 #include <Runtime/Log/Log.h>
+#include "WindowAPI.h"
 
 namespace Portakal
 {
 	Window* Window::Create(const WindowCreateDesc& desc)
 	{
-		return new PlatformAbstraction(desc);
+		Window* pWindow = new PlatformAbstraction(desc);
+
+		WindowAPI::RegisterWindow(pWindow);
+
+		return pWindow;
 	}
 	Window::~Window()
 	{
-
+		WindowAPI::RegisterWindow(this);
 	}
 	void Window::Show()
 	{

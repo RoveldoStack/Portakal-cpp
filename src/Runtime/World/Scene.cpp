@@ -13,11 +13,15 @@ namespace Portakal
 		mPrimal = false;
 		
 		CreateFromDescriptor(descriptor);
+
+		SceneAPI::RegisterScene(this);
 	}
 	Scene::Scene()
 	{
 		mActive = false;
 		mPrimal = false;
+
+		SceneAPI::RegisterScene(this);
 	}
 	void Scene::GenerateDescriptor(SceneDescriptor& outDescriptor) const noexcept
 	{
@@ -156,7 +160,8 @@ namespace Portakal
 	}
 	void Scene::MarkPrimal()
 	{
-		SceneAPI::MarkScenePrimal(this);
+		SceneAPI::ReportPrimal(this);
+		mPrimal = true;
 	}
 	void Scene::SetActivationState(const bool bActive)
 	{
@@ -164,7 +169,7 @@ namespace Portakal
 	}
 	void Scene::DestroyCore()
 	{
-
+		SceneAPI::RemoveScene(this);
 	}
 	const Type* GetTypeFromArray(const Array<const Type*>& types, const String& targetTypeName)
 	{

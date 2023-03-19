@@ -27,12 +27,10 @@ namespace Portakal
             standaloneDevices.Add(pDevice);
         }
 
-        _api = new GraphicsDeviceAPI(windowedDevices,standaloneDevices);
     }
     void GraphicsModule::OnFinalize()
     {
-        delete _api;
-        _api = nullptr;
+
     }
     void GraphicsModule::OnPreTick()
     {

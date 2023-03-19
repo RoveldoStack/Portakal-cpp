@@ -498,7 +498,7 @@ namespace Portakal
 
 			Scene* pScene = (Scene*)pFile->GetResource()->GetSubObject();
 
-			SceneAPI::MarkScenePrimal(pScene);
+			pScene->MarkPrimal();
 			return;
 		}
 		AuthorizationToolWindow* pWindow = EditorWindowAPI::CreateWindowViaType<AuthorizationToolWindow>();

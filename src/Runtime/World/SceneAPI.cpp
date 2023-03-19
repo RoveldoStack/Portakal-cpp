@@ -3,117 +3,36 @@
 
 namespace Portakal
 {
-	SceneAPI* SceneAPI::sAPI = nullptr;
+	Array<Scene*> SceneAPI::sScenes;
+	Scene* SceneAPI::sPrimalScene = nullptr;
 
 	Scene* SceneAPI::GetPrimalScene()
 	{
-		if (sAPI == nullptr)
-			return nullptr;
-
-		return sAPI->mPrimalScene;
+		return sPrimalScene;
 	}
 	Array<Scene*> SceneAPI::GetScenes()
 	{
-		if (sAPI == nullptr)
-			return Array<Scene*>();
-
-		return sAPI->mScenes;
+		return sScenes;
 	}
-	Scene* SceneAPI::CreateScene(const bool bMarkPrimal)
+	void SceneAPI::RegisterScene(Scene* pScene)
 	{
-		if (sAPI == nullptr)
-			return nullptr;
-
-		return sAPI->CreateSceneInternal(bMarkPrimal);
+		sScenes.Add(pScene);
 	}
-	Scene* SceneAPI::CreateScene(const SceneDescriptor& descriptor, const bool bMarkPrimal)
+	void SceneAPI::RemoveScene(Scene* pScene)
 	{
-		if (sAPI == nullptr)
-			return nullptr;
+		sScenes.Remove(pScene);
 
-		return sAPI->CreateSceneInternal(descriptor,bMarkPrimal);
-	}
-	void SceneAPI::MarkScenePrimal(Scene* pScene)
-	{
-		if (sAPI == nullptr)
-			return;
-
-		sAPI->MarkScenePrimalInternal(pScene);
-	}
-	void SceneAPI::DeleteScene(Scene* pScene)
-	{
-		if (sAPI == nullptr)
-			return;
-
-		sAPI->DeleteSceneInternal(pScene);
-	}
-	Scene* SceneAPI::CreateSceneInternal(const bool bMarkPrimal)
-	{
-		if (sAPI == nullptr)
-			return nullptr;
-
-		Scene* pScene = new Scene();
-
-		RegisterTargetScene(pScene,bMarkPrimal);
-
-		return pScene;
-	}
-	Scene* SceneAPI::CreateSceneInternal(const SceneDescriptor& descriptor, const bool bMarkPrimal)
-	{
-		if (sAPI == nullptr)
-			return nullptr;
-
-		Scene* pScene = new Scene(descriptor);
-
-		RegisterTargetScene(pScene, bMarkPrimal);
-
-		return pScene;
-	}
-	void SceneAPI::MarkScenePrimalInternal(Scene* pScene)
-	{
-		if (mPrimalScene != nullptr)
+		if (pScene == sPrimalScene)
 		{
-			mPrimalScene->_SetPrimalState(false);
-			mPrimalScene->_SetActiveState(false);
+			sPrimalScene = nullptr;
 		}
-
-		pScene->_SetPrimalState(true);
-		pScene->_SetActiveState(false);
-
-		mPrimalScene = pScene;
 	}
-	void SceneAPI::DeleteSceneInternal(Scene* pScene)
+	void SceneAPI::ReportPrimal(Scene* pScene)
 	{
-		if (sAPI == nullptr || pScene == nullptr)
-			return;
-
-		if (mPrimalScene == pScene)
-			mPrimalScene = nullptr;
-
-		//TODO: delete scene
-		delete pScene;
-
-		mScenes.Remove(pScene);
-	}
-
-	SceneAPI::SceneAPI()
-	{
-		sAPI = this;
-		mPrimalScene = nullptr;
-	}
-
-	SceneAPI::~SceneAPI()
-	{
-		sAPI = nullptr;
-	}
-
-	void SceneAPI::RegisterTargetScene(Scene* pScene, const bool bMarkPrimal)
-	{
-		if (bMarkPrimal)
+		if (sPrimalScene != nullptr)
 		{
-			MarkScenePrimalInternal(pScene);
+			sPrimalScene->_SetPrimalState(false);
 		}
-
-		mScenes.Add(pScene);
+		sPrimalScene = pScene;
 	}
 }

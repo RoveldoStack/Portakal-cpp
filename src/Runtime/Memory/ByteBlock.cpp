@@ -48,4 +48,10 @@ namespace Portakal
 		Memory::Copy(pData, mBlock, size);
 		mSize = size;
 	}
+	void ByteBlock::Clear()
+	{
+		delete[] mBlock;
+		mBlock = nullptr;
+		mSize = 0;
+	}
 }

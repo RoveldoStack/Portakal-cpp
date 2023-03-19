@@ -2,34 +2,25 @@
 
 namespace Portakal
 {
-	WindowAPI* WindowAPI::_api = nullptr;
+	Array<Window*> WindowAPI::sWindows;
 
-	WindowAPI::WindowAPI(const Array<Window*>& windows)
-	{
-		mWindows = windows;
-		_api = this;
-	}
-	WindowAPI::~WindowAPI()
-	{
-		_api = nullptr;
-
-		mWindows.Clear();
-	}
 	Window* WindowAPI::GetDefaultWindow()
 	{
-		if (_api == nullptr)
-			return nullptr;
+		if (sWindows.GetCursor() > 0)
+			return sWindows[0];
 
-		if (_api->mWindows.GetCursor() == 0)
-			return nullptr;
-
-		return _api->mWindows[0];
+		return nullptr;
 	}
 	Array<Window*> WindowAPI::GetWindows()
 	{
-		if (_api == nullptr)
-			return Array<Window*>();
-
-		return _api->mWindows;
+		return sWindows;
+	}
+	void WindowAPI::RegisterWindow(Window* pWindow)
+	{
+		sWindows.Add(pWindow);
+	}
+	void WindowAPI::RemoveWindow(Window* pWindow)
+	{
+		sWindows.Remove(pWindow);
 	}
 }

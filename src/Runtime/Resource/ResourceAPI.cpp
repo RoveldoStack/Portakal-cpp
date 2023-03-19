@@ -5,52 +5,13 @@
 
 namespace Portakal
 {
-    ResourceAPI* ResourceAPI::sAPI = nullptr;
+    Array<Resource*> ResourceAPI::sResources;
 
     Resource* ResourceAPI::GetResourceViaID(const Guid& id)
     {
-        if (sAPI == nullptr)
-            return nullptr;
-
-        return sAPI->_GetResourceViaID(id);
-    }
-    Resource* ResourceAPI::RegisterResource(const String& path,const String& type)
-    {
-        if (sAPI == nullptr)
-            return nullptr;
-
-        return sAPI->_RegisterResource(path,type);
-    }
-    ResourceAPI::ResourceAPI(const String& packagesPath)
-    {
-        sAPI = this;
-    }
-    ResourceAPI::ResourceAPI()
-    {
-        sAPI = this;
-    }
-    ResourceAPI::~ResourceAPI()
-    {
-        /*
-        * Clear resources
-        */
-        for (unsigned int i = 0; i < mResources.GetCursor(); i++)
+        for (unsigned int i = 0; i < sResources.GetCursor(); i++)
         {
-            Resource* pResource = mResources[i];
-
-            LOG("ResourceAPI", "Delete resource %s", *pResource->GetAbsolutePath());
-
-            delete pResource;
-        }
-        mResources.Clear();
-
-        sAPI = nullptr;
-    }
-    Resource* ResourceAPI::_GetResourceViaID(const Guid& id)
-    {
-        for (unsigned int i = 0; i < mResources.GetCursor(); i++)
-        {
-            Resource* pResource = mResources[i];
+            Resource* pResource = sResources[i];
 
             LOG("ResoureceAPI", "Deleted resource %s", *pResource->GetResourceType());
 
@@ -59,7 +20,7 @@ namespace Portakal
         }
         return nullptr;
     }
-    Resource* ResourceAPI::_RegisterResource(const String& path,const String& type)
+    Resource* ResourceAPI::RegisterResource(const String& path,const String& type)
     {
         /*
         * Validate if there is a valid resource on the given path
@@ -70,10 +31,12 @@ namespace Portakal
         /*
         * Create resource
         */
-        Resource* pResource = new Resource(path,type);
+        Resource* pResource = new Resource(path, type);
 
-        mResources.Add(pResource);
+        sResources.Add(pResource);
 
         return pResource;
     }
+  
+   
 }

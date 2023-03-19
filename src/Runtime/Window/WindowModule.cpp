@@ -23,7 +23,6 @@ namespace Portakal
             LOG("WindowModule", "Width: %d, Height: %d", pMonitor->GetWidth(), pMonitor->GetHeight());
         }
 
-        mAPI = new WindowAPI(mWindows);
     }
     void WindowModule::OnFinalize()
     {
@@ -37,25 +36,29 @@ namespace Portakal
         }
         mWindows.Clear();
 
-        delete mAPI;
-        mAPI = nullptr;
     }
     void WindowModule::OnPreTick()
     {
+
     }
     void WindowModule::OnTick()
     {
+
     }
     void WindowModule::OnPostTick()
     {
+
     }
     void WindowModule::PreValidate()
     {
+
     }
     void WindowModule::PostValidate()
     {
+
     }
     void WindowModule::OnEvent(WindowEvent* pEvent)
     {
+
     }
 }
