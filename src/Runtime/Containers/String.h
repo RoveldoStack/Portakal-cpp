@@ -37,7 +37,7 @@ namespace Portakal
 		/// <param name="value"></param>
 		/// <returns></returns>
 		static int ToInteger(const String& value);
-
+	public:
 		String();
 		String(const String& other);
 		String(const char* other);

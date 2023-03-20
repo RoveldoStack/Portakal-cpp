@@ -3,116 +3,70 @@
 
 namespace Portakal
 {
-	EditorWindowAPI* EditorWindowAPI::mAPI = nullptr;
+	Array<EditorWindow*> EditorWindowAPI::sWindows;
 
-	EditorWindow* EditorWindowAPI::CreateWindowViaType(Type* pType)
+	EditorWindow* EditorWindowAPI::Create(Type* pType)
 	{
-		if (mAPI == nullptr)
+		if (pType == nullptr)
+			return nullptr;
+		if (!pType->IsSubClassOf(typeof(EditorWindow)))
 			return nullptr;
 
-		return mAPI->CreateWindowInternal(pType);
+		EditorWindow* pWindow = (EditorWindow*)pType->CreateDefaultHeapObject();
+		pWindow->_SetParentWindow(nullptr);
+		pWindow->_SetPosition({ 0,0 });
+		pWindow->_SetSize({ 0,0 });
+
+		pWindow->OnInitialize();
+		pWindow->OnShow();
+
+		sWindows.Add(pWindow);
+
+		return pWindow;
 	}
-	EditorWindow* EditorWindowAPI::CreateFromSetting(const EditorWindowSetting& settings)
+	EditorWindow* EditorWindowAPI::CreateFromSetting(const EditorWindowSetting& setting)
 	{
-		if (mAPI == nullptr)
-			return nullptr;
 		/*
-		* Try get type
+		* Try find type
 		*/
 		Array<Type*> types = Assembly::GetProcessAssembly()->GetTypes();
 		Type* pFoundType = nullptr;
 		for (unsigned int i = 0; i < types.GetCursor(); i++)
 		{
 			Type* pType = types[i];
-			if (pType->GetTypeName() == settings.Name)
+			if (pType->GetTypeName() == setting.Name)
 			{
-				pFoundType = pType;
-				break;
+				if (pType->IsSubClassOf(typeof(EditorWindow)))
+				{
+					pFoundType = pType;
+					break;
+				}
 			}
 		}
-
 		if (pFoundType == nullptr)
 			return nullptr;
 
-		
-		return mAPI->CreateWindowFromSettingsInternal(pFoundType,settings);
-	}
-	EditorWindowAPI::EditorWindowAPI()
-	{
-		mAPI = this;
-	}
-	EditorWindowAPI::~EditorWindowAPI()
-	{
-		mAPI = nullptr;
-	}
-	EditorWindow* EditorWindowAPI::CreateWindowInternal(Type* pTargetType)
-	{
-		if (!pTargetType->IsSubClassOf(typeof(EditorWindow)))
-			return nullptr;
-
-		EditorWindow* pWindow = (EditorWindow*)pTargetType->CreateDefaultHeapObject();
-		if (pWindow == nullptr)
-			return nullptr;
-
 		/*
-		* Set properties
+		* Create type
 		*/
-		pWindow->OnInitialize();
-		pWindow->OnShow();
-
-		_windows.Add(pWindow);
-
-		return pWindow;
-	}
-	EditorWindow* EditorWindowAPI::CreateWindowFromSettingsInternal(Type* pType, const EditorWindowSetting& setting)
-	{
-		/*
-		* Create
-		*/
-		EditorWindow* pWindow = (EditorWindow*)pType->CreateDefaultHeapObject();
-		if (pWindow == nullptr)
-			return nullptr;
-
-		pWindow->_SetVisibility(true);
+		EditorWindow* pWindow = (EditorWindow*)pFoundType->CreateDefaultHeapObject();
+		pWindow->_SetParentWindow(nullptr);
+		pWindow->_SetPosition({ 0,0 });
+		pWindow->_SetSize({ 0,0 });
 		pWindow->mID = setting.ID;
 		pWindow->mDockState = setting.DockState;
-
 		pWindow->OnInitialize();
 		pWindow->OnShow();
 
-		mAPI->_windows.Add(pWindow);
+		sWindows.Add(pWindow);
 
 		return pWindow;
-	}
-	void EditorWindowAPI::DeleteWindow(EditorWindow* pWindow)
-	{
-		if (pWindow == nullptr)
-			return;
-
-		pWindow->OnHide();
-		pWindow->OnFinalize();
-
-		_windows.Remove(pWindow);
-
-		delete pWindow;
-	}
-	void EditorWindowAPI::PreValidate()
-	{
-		for (int i = 0; i < _windows.GetCursor(); i++)
-		{
-			DeleteWindow(_windows[i]);
-			i--;
-		}
-	}
-	void EditorWindowAPI::PostValidate()
-	{
-
 	}
 	void EditorWindowAPI::Paint()
 	{
-		for (unsigned int i = 0; i < _windows.GetCursor(); i++)
+		for (unsigned int i = 0; i < sWindows.GetCursor(); i++)
 		{
-			EditorWindow* pWindow = _windows[i];
+			EditorWindow* pWindow = sWindows[i];
 
 			bool bActive = true;
 			const bool bFormerVisibleState = pWindow->IsVisible();
@@ -146,6 +100,7 @@ namespace Portakal
 			if (pWindow->HasCloseRequest() || !bActive)
 			{
 				DeleteWindow(pWindow);
+				i--;
 			}
 			else // update states
 			{
@@ -162,5 +117,18 @@ namespace Portakal
 			*/
 			ImGui::End();
 		}
+	}
+	void EditorWindowAPI::ClearAllWindows()
+	{
+
+	}
+	void EditorWindowAPI::DeleteWindow(EditorWindow* pWindow)
+	{
+		pWindow->OnHide();
+		pWindow->OnFinalize();
+
+		sWindows.Remove(pWindow);
+
+		delete pWindow;
 	}
 }

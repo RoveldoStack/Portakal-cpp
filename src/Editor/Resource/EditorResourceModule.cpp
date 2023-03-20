@@ -7,7 +7,7 @@
 
 namespace Portakal
 {
-    EditorResourceModule::EditorResourceModule(const Array<EditorResourceRequest>& requests) : mParams({requests}),mAPI(nullptr)
+    EditorResourceModule::EditorResourceModule(const Array<EditorResourceRequest>& requests) : mParams({requests})
     {
        
     }
@@ -68,12 +68,11 @@ namespace Portakal
         /*
         * Create api
         */
-        mAPI = new EditorResourceAPI(loadedResources);
+        EditorResourceAPI::sResources = loadedResources;
     }
     void EditorResourceModule::OnFinalize()
     {
-        delete mAPI;
-        mAPI = nullptr;
+        EditorResourceAPI::ClearResources();
     }
     void EditorResourceModule::OnPreTick()
     {

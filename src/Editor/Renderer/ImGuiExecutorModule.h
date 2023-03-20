@@ -28,7 +28,6 @@ namespace Portakal
 
 	private:
 		ImGuiRenderer* mRenderer;
-		ImGuiAPI* mAPI;
 	};
 
 	START_GENERATE_TYPE(ImGuiExecutorModule);

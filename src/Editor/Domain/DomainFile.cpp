@@ -18,6 +18,8 @@
 #include <Editor/Domain/DomainFolder.h>
 #include <Runtime/Resource/Resource.h>
 #include <Runtime/Resource/ResourceAPI.h>
+#include <Editor/Asset/IAssetOpenOperation.h>
+#include <Editor/Asset/CustomAssetOpenOperationAttribute.h>
 
 namespace Portakal
 {
@@ -48,6 +50,13 @@ namespace Portakal
             return;
 
         mOwnerFolder->DeleteFile(this);
+    }
+    void DomainFile::OpenSync()
+    {
+        LoadSync();
+
+        for (unsigned int i = 0; i < mOpenOperations.GetCursor(); i++)
+            mOpenOperations[i]->OnOpen(this);
     }
     DomainFile::DomainFile(const String& fileDescriptorPath, DomainFolder* pOwnerFolder)
     {
@@ -186,6 +195,26 @@ namespace Portakal
         }
 
         /*
+        * Find open operations
+        */
+        Array<IAssetOpenOperation*> openOperations;
+        for (unsigned int i = 0; i < types.GetCursor(); i++)
+        {
+            const Type* pType = types[i];
+
+            if (!pType->IsSubClassOf(typeof(IAssetOpenOperation)))
+                continue;
+
+            const CustomAssetOpenOperationAttribute* pAttribute = pType->GetAttribute<CustomAssetOpenOperationAttribute>();
+            if (pAttribute == nullptr)
+                continue;
+            if (pAttribute->GetResourceType() != fileDescriptor.ResourceType)
+                continue;
+
+            openOperations.Add((IAssetOpenOperation*)pType->CreateDefaultHeapObject());
+        }
+
+        /*
         * Setup
         */
         mID = fileDescriptor.ID;
@@ -199,6 +228,8 @@ namespace Portakal
         mVisualizer = pVisualizer;
         mImporters = importers;
         mProcessors = processors;
+        mOpenOperations = openOperations;
+
     }
     DomainFile::~DomainFile()
     {

@@ -10,19 +10,12 @@ namespace Portakal
 	class PORTAKAL_API ProjectAPI
 	{
 		friend class ProjectModule;
-	private:
-		static ProjectAPI* sAPI;
 	public:
-		/// <summary>
-		/// Returns the current project header data
-		/// </summary>
-		/// <returns></returns>
-		static Project GetProject();
-
+		FORCEINLINE static Project GetProject() { return sProject; }
 	private:
-		ProjectAPI(const Project& project);
-		~ProjectAPI();
+		static Project sProject;
 	private:
-		Project mProject;
+		ProjectAPI() = delete;
+		~ProjectAPI() = delete;
 	};
 }

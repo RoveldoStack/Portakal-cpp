@@ -18,11 +18,6 @@ namespace Portakal
 	void GUIWindowModule::OnInitialize()
 	{
 		/*
-		* Initialize api
-		*/
-		mAPI = new EditorWindowAPI();
-
-		/*
 		* Check if settings exists
 		*/
 		const String settingsPath = ProjectPaths::GetSettingsFolder() + "\\WindowSettings.psettings";
@@ -36,9 +31,7 @@ namespace Portakal
 	void GUIWindowModule::OnFinalize()
 	{
 		SaveSettingsToFile();
-
-		delete mAPI;
-		mAPI = nullptr;
+		EditorWindowAPI::ClearAllWindows();
 	}
 	void GUIWindowModule::OnPreTick()
 	{
@@ -124,7 +117,7 @@ namespace Portakal
 		/*
 		* Update api
 		*/
-		mAPI->Paint();
+		EditorWindowAPI::Paint();
 
 		/*
 		* Update windows
@@ -156,15 +149,13 @@ namespace Portakal
 		SaveSettingsToFile();
 
 		/*
-		* Pre validate
+		* Clears all the windows
 		*/
-		mAPI->PreValidate();
+		EditorWindowAPI::ClearAllWindows();
 	}
 	void GUIWindowModule::PostValidate()
 	{
 		LoadWindowsFromFile();
-
-		mAPI->PostValidate();
 	}
 	void GUIWindowModule::OnEvent(WindowEvent* pEvent)
 	{

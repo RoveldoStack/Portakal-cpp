@@ -12,6 +12,7 @@ namespace Portakal
 	class IAssetImporter;
 	class IAssetProcessor;
 	class IAssetAuthorizationTool;
+	class IAssetOpenOperation;
 
 	/// <summary>
 	/// Represents a registered file to the domain system
@@ -55,6 +56,12 @@ namespace Portakal
 		/// </summary>
 		/// <returns></returns>
 		FORCEINLINE Array<IAssetProcessor*> GetProcessors() const noexcept { return mProcessors; }
+
+		/// <summary>
+		/// Returns the assigned open operations
+		/// </summary>
+		/// <returns></returns>
+		FORCEINLINE Array<IAssetOpenOperation*> GetOpenOperations() const noexcept { return mOpenOperations; }
 
 		/// <summary>
 		/// Returns the resource
@@ -112,6 +119,11 @@ namespace Portakal
 		/// Deletes this file
 		/// </summary>
 		void Delete();
+
+		/// <summary>
+		/// Tries to open sync
+		/// </summary>
+		void OpenSync();
 	private:
 		DomainFile(const String& fileDescriptorPath,DomainFolder* pOwnerFolder);
 		~DomainFile();
@@ -123,6 +135,7 @@ namespace Portakal
 		IAssetVisualizer* mVisualizer;
 		Array<IAssetImporter*> mImporters;
 		Array<IAssetProcessor*> mProcessors;
+		Array<IAssetOpenOperation*> mOpenOperations;
 		Resource* mResource;
 		String mFileDescriptorPath;
 		String mSourceFilePath;

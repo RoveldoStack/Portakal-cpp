@@ -59,7 +59,7 @@ namespace Portakal
         /*
         * Set project
         */
-        mAPI = new ProjectAPI(project);
+        ProjectAPI::sProject = project;
 
         /*
         * Setup project paths
@@ -70,7 +70,7 @@ namespace Portakal
     }
     void ProjectModule::OnFinalize()
     {
-        delete mAPI;
+        ProjectAPI::sProject = {};
     }
     void ProjectModule::OnPreTick()
     {

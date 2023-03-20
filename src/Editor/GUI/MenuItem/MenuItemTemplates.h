@@ -31,7 +31,7 @@ namespace Portakal
 	public:
 		virtual void OnClick() override
 		{
-			EditorWindowAPI::CreateWindowViaType<TestWindow>();
+			EditorWindowAPI::Create<TestWindow>();
 		}
 	};
 

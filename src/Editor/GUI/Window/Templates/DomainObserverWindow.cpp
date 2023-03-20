@@ -36,6 +36,7 @@
 #include <Runtime/World/SceneAPI.h>
 #include <Runtime/Resource/Resource.h>
 #include <Runtime/World/Scene.h>
+#include <Editor/Asset/IAssetOpenOperation.h>
 
 
 namespace Portakal
@@ -372,10 +373,9 @@ namespace Portakal
 
 				CreateResourceFile(name, "scene");
 				ImGui::CloseCurrentPopup();
+
+				Memory::Set(mSceneNameCache, 0, PLATFORM_FILE_NAME_SIZE);
 			}
-
-			Memory::Set(mSceneNameCache, 0, PLATFORM_FILE_NAME_SIZE);
-
 			ImGui::EndPopup();
 		}
 
@@ -492,16 +492,19 @@ namespace Portakal
 
 	void DomainObserverWindow::OpenFile(DomainFile* pFile)
 	{
-		if (pFile->GetResourceType() == "scene")
-		{
-			pFile->LoadSync();
+		/*
+		* Run open operation interfaces
+		*/
+		pFile->OpenSync();
 
-			Scene* pScene = (Scene*)pFile->GetResource()->GetSubObject();
-
-			pScene->MarkPrimal();
+		/*
+		* Validate if given domain file has a target authorization tool
+		*/
+		if (pFile->GetAuthorizationTool() == nullptr)
 			return;
-		}
-		AuthorizationToolWindow* pWindow = EditorWindowAPI::CreateWindowViaType<AuthorizationToolWindow>();
+
+		
+		AuthorizationToolWindow* pWindow = EditorWindowAPI::Create<AuthorizationToolWindow>();
 		pWindow->SetToolData(pFile);
 	}
 

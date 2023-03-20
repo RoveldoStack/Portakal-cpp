@@ -14,7 +14,7 @@ namespace Portakal
 	};
 
 	class EditorResourceAPI;
-
+	class EditorResource;
 	/// <summary>
 	/// An application which authors the editor resources
 	/// </summary>
@@ -23,14 +23,11 @@ namespace Portakal
 		GENERATE_CLASS(EditorResourceModule);
 	public:
 		EditorResourceModule(const Array<EditorResourceRequest>& requests);
-		EditorResourceModule() : mAPI (nullptr) {}
+		EditorResourceModule() = default;
 		~EditorResourceModule() = default;
 
 		GENERATE_APPLICATION_MODULE(false, false, false);
 	private:
-		const EditorResourceModuleCreateParams mParams;
-		EditorResourceAPI* mAPI;
-
 		virtual void OnInitialize() override;
 		virtual void OnFinalize() override;
 		virtual void OnPreTick() override;
@@ -39,6 +36,8 @@ namespace Portakal
 		virtual void PreValidate() override;
 		virtual void PostValidate() override;
 		virtual void OnEvent(WindowEvent* pEvent) override;
+	private:
+		const EditorResourceModuleCreateParams mParams;
 	};
 
 	START_GENERATE_TYPE(EditorResourceModule);

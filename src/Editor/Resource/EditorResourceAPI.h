@@ -13,15 +13,14 @@ namespace Portakal
 	class PORTAKAL_API EditorResourceAPI
 	{
 		friend class EditorResourceModule;
-	private:
-		static EditorResourceAPI* sAPI;
 	public:
 		static EditorResource* GetResource(const String& name);
 	private:
-		EditorResourceAPI(const Array<EditorResource*>& resources);
-		~EditorResourceAPI();
+		static void ClearResources();
 	private:
-		Array<EditorResource*> mResources;
-
+		static Array<EditorResource*> sResources;
+	private:
+		EditorResourceAPI() = delete;
+		~EditorResourceAPI() = delete;
 	};
 }

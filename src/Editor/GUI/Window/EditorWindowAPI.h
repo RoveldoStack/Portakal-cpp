@@ -13,63 +13,48 @@ namespace Portakal
 	/// </summary>
 	class PORTAKAL_API EditorWindowAPI
 	{
-	private:
-		static EditorWindowAPI* mAPI;
+		friend class GUIWindowModule;
 	public:
-		/// <summary>
-		/// Creates new window via type
-		/// </summary>
-		/// <param name="pType"></param>
-		/// <returns></returns>
-		static EditorWindow* CreateWindowViaType(Type* pType);
+		FORCEINLINE static Array<EditorWindow*> GetWindows() { return sWindows; }
 
-		/// <summary>
-		/// Creates new window via setting
-		/// </summary>
-		/// <param name="setting"></param>
-		/// <returns></returns>
-		static EditorWindow* CreateFromSetting(const EditorWindowSetting& setting);
-
-		/// <summary>
-		/// Creates a window via template type
-		/// </summary>
-		/// <typeparam name="TWindow"></typeparam>
-		/// <returns></returns>
-		template<typename TWindow>
-		static TWindow* CreateWindowViaType()
+		template<typename TWindow,typename... TParams>
+		static TWindow* Create(TParams... params)
 		{
-			if (mAPI == nullptr)
+			/*
+			* Validate if it's a sub class of EditorWindow class
+			*/
+			Type* pType = TypeAccessor<TWindow>::GetAccessorType();
+			if (!pType->IsSubClassOf(typeof(EditorWindow)))
 			{
-				LOG("EditorWindowAPI", "Invalid  api");
 				return nullptr;
 			}
 
-			return mAPI->CreateWindowInternal<TWindow>();
+			/*
+			* Create instance
+			*/
+			TWindow* pWindow = new TWindow(params...);
+			pWindow->_SetParentWindow(nullptr);
+			pWindow->_SetPosition({ 100,100 });
+			pWindow->_SetSize({ 512,512 });
+
+			pWindow->OnInitialize();
+			pWindow->OnShow();
+
+			sWindows.Add(pWindow);
+
+			return pWindow;
 		}
-	public:
-		EditorWindowAPI();
-		~EditorWindowAPI();
 
-		/// <summary>
-		/// Returns the windows
-		/// </summary>
-		/// <returns></returns>
-		Array<EditorWindow*> GetWindows() const noexcept { return _windows; }
-
-		EditorWindow* CreateWindowInternal(Type* pTargetType);
-		EditorWindow* CreateWindowFromSettingsInternal(Type* pType, const EditorWindowSetting& setting);
-		void DeleteWindow(EditorWindow* pWindow);
-
-		void PreValidate();
-		void PostValidate();
-		void Paint();
-
-		template<typename TWindow>
-		TWindow* CreateWindowInternal()
-		{
-			return (TWindow*)CreateWindowInternal(TypeAccessor<TWindow>::GetAccessorType());
-		}
+		static EditorWindow* Create(Type* pType);
 	private:
-		Array<EditorWindow*> _windows;
+		static EditorWindow* CreateFromSetting(const EditorWindowSetting& setting);
+		static void Paint();
+		static void ClearAllWindows();
+		static void DeleteWindow(EditorWindow* pWindow);
+	private:
+		static Array<EditorWindow*> sWindows;
+	private:
+		EditorWindowAPI() = delete;
+		~EditorWindowAPI() = delete;
 	};
 }
