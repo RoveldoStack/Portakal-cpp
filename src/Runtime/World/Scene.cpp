@@ -139,12 +139,12 @@ namespace Portakal
 
 					componentEntry.Fields.Add(fieldEntry);
 				}
+
+				entityEntry.Components.Add(componentEntry);
 			}
 
+			outDescriptor.Entities.Add(entityEntry);
 		}
-
-
-
 	}
 	Entity* Scene::CreateEntity()
 	{
@@ -171,7 +171,7 @@ namespace Portakal
 	{
 		SceneAPI::RemoveScene(this);
 	}
-	const Type* GetTypeFromArray(const Array<const Type*>& types, const String& targetTypeName)
+	Type* GetTypeFromArray(const Array<Type*>& types, const String& targetTypeName)
 	{
 		for (unsigned int i = 0; i < types.GetCursor(); i++)
 			if (types[i]->GetTypeName() == targetTypeName)
@@ -184,11 +184,11 @@ namespace Portakal
 		* Get all component and aspect types
 		*/
 		const Array<Type*> types = Assembly::GetProcessAssembly()->GetTypes();
-		Array<const Type*> aspectTypes;
-		Array<const Type*> componentTypes;
+		Array<Type*> aspectTypes;
+		Array<Type*> componentTypes;
 		for (unsigned int i = 0; i < types.GetCursor(); i++)
 		{
-			const Type* pType = types[i];
+			Type* pType = types[i];
 
 			if (pType->IsSubClassOf(typeof(SceneAspect)))
 			{
@@ -231,17 +231,16 @@ namespace Portakal
 		{
 			const SceneAspectEntry& entry = descriptor.Aspects[i];
 
-			const Type* pType = GetTypeFromArray(aspectTypes, entry.TypeName);
-			Type* pFoundType = nullptr;
+			Type* pType = GetTypeFromArray(aspectTypes, entry.TypeName);
 			if (pType == nullptr) // couldnt found the requested aspect type, create default invalid aspect type!
 			{
-				pFoundType = typeof(InvalidAspect);
+				pType = typeof(InvalidAspect);
 			}
 
 			/*
 			* Create aspect
 			*/
-			SceneAspect* pAspect = CreateAspect(pFoundType);
+			SceneAspect* pAspect = CreateAspect(pType);
 			if (pType == nullptr) // set intended value if it's an InvalidAspect
 			{
 				InvalidAspect* pInvalidAspect = (InvalidAspect*)pAspect;
@@ -255,6 +254,10 @@ namespace Portakal
 		for (unsigned int entityIndex = 0; entityIndex < descriptor.Entities.GetCursor(); entityIndex++)
 		{
 			const SceneEntityEntry& entityEntry = descriptor.Entities[entityIndex];
+
+			Entity* pEntity = CreateEntity();
+			pEntity->SetTagName(entityEntry.TagName);
+			pEntity->OverrideID(entityEntry.ID);
 		}
 	}
 }

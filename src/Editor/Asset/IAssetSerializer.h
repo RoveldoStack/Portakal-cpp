@@ -23,13 +23,13 @@ namespace Portakal
 		/// Serializes to the editor format
 		/// </summary>
 		/// <param name="pObject"></param>
-		virtual void SerializeToEditor(const ResourceSubObject* pObject) = 0;
+		virtual void SerializeToEditor(const ResourceSubObject* pObject,ByteBlock& outBlock) = 0;
 
 		/// <summary>
 		/// Serializes to the package format
 		/// </summary>
 		/// <param name="pObject"></param>
-		virtual void SerializeToPackage(const ResourceSubObject* pObject) = 0;
+		virtual void SerializeToPackage(const ResourceSubObject* pObject, ByteBlock& outBlock) = 0;
 	};
 
 	START_GENERATE_TYPE(IAssetSerializer);

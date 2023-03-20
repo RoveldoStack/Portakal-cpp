@@ -124,6 +124,11 @@ namespace Portakal
 		/// Tries to open sync
 		/// </summary>
 		void OpenSync();
+
+		/// <summary>
+		/// Saves the file
+		/// </summary>
+		void SaveSync();
 	private:
 		DomainFile(const String& fileDescriptorPath,DomainFolder* pOwnerFolder);
 		~DomainFile();

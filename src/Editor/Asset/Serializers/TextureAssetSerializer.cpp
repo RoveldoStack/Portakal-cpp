@@ -4,11 +4,11 @@
 
 namespace Portakal
 {
-    void TextureAssetSerializer::SerializeToEditor(const ResourceSubObject* pObject)
+    void TextureAssetSerializer::SerializeToEditor(const ResourceSubObject* pObject, ByteBlock& outBlock)
     {
 
     }
-    void TextureAssetSerializer::SerializeToPackage(const ResourceSubObject* pObject)
+    void TextureAssetSerializer::SerializeToPackage(const ResourceSubObject* pObject, ByteBlock& outBlock)
     {
 
     }

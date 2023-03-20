@@ -5,9 +5,39 @@
 #include <Runtime/World/SceneAspect.h>
 #include <Libs/ImGui/imgui.h>
 #include <Runtime/World/Aspects/SpriteRendererAspect.h>
+#include <Editor/Game/EditorGameAPI.h>
+#include <Runtime/Resource/Resource.h>
+#include <Runtime/Resource/ResourceAPI.h>
+#include <Runtime/Log/Log.h>
+#include <Editor/Domain/DomainAPI.h>
+#include <Editor/Domain/DomainFile.h>
+
 
 namespace Portakal
 {
+	Array<WorldObserverWindow*> WorldObserverWindow::sWindows;
+
+	void WorldObserverWindow::SignalSceneChanged(Scene* pScene)
+	{
+		if (pScene->IsPrimal() && EditorGameAPI::GetCurrentState() != EditorGameState::Idle)
+			return;
+
+		for (unsigned int i = 0; i < sWindows.GetCursor(); i++)
+		{
+			if(sWindows[i]->mTargetScene == pScene)
+				sWindows[i]->OnSceneContentChanged();
+		}
+	}
+	void WorldObserverWindow::SignalSceneSaved(Scene* pScene)
+	{
+		for (unsigned int i = 0; i < sWindows.GetCursor(); i++)
+		{
+			WorldObserverWindow* pWindow = sWindows[i];
+
+			if (pWindow->mTargetScene == pScene)
+				pWindow->mSceneContentChanged = false;
+		}
+	}
 	void WorldObserverWindow::OnShow()
 	{
 
@@ -18,6 +48,8 @@ namespace Portakal
 	}
 	void WorldObserverWindow::OnInitialize()
 	{
+		sWindows.Add(this);
+
 		/*
 		* Collect aspects
 		*/
@@ -34,6 +66,7 @@ namespace Portakal
 	}
 	void WorldObserverWindow::OnFinalize()
 	{
+		sWindows.Remove(this);
 		mAvailableAspects.Clear();
 	}
 	void WorldObserverWindow::OnPaint()
@@ -62,12 +95,45 @@ namespace Portakal
 	{
 		mTargetScene = pNewScene;
 	}
+	void WorldObserverWindow::OnSceneContentChanged()
+	{
+		mSceneContentChanged = true;
+	}
+	void WorldObserverWindow::SaveScene()
+	{
+		/*
+		* Get scene resource if any
+		*/
+		DomainFile* pFile = DomainAPI::GetFileViaID(mTargetScene->GetID());
+		if (pFile == nullptr)
+		{
+			LOG("WorldObserverWindow", "No domain file");
+			return;
+		}
+
+		/*
+		* Save
+		*/
+		pFile->SaveSync();
+
+		mSceneContentChanged = false;
+		SignalSceneSaved(mTargetScene);
+	}
 	void WorldObserverWindow::RenderScene(Scene* pScene)
 	{
 		/*
 		* Draw header
 		*/
-		ImGui::Text(*mTargetScene->GetTagName());
+		const String title = mTargetScene->GetTagName() + (mSceneContentChanged ? "*" : "");
+		ImGui::Text(*title);
+		ImGui::SameLine();
+		if (mSceneContentChanged)
+		{
+			if (ImGui::Button("Save"))
+			{
+				SaveScene();
+			}
+		}
 		ImGui::Separator();
 		ImGui::Spacing();
 
@@ -127,6 +193,7 @@ namespace Portakal
 			{
 				Entity* pEntity = pScene->CreateEntity();
 				pEntity->SetTagName("Empty entity");
+				WorldObserverWindow::SignalSceneChanged(pScene);
 			}
 
 			ImGui::EndPopup();

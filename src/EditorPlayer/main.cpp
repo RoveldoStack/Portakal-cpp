@@ -26,6 +26,7 @@
 #include <Runtime/Resource/Texture/TextureSerializer.h>
 #include <Editor/Asset/Serializers/SceneAssetSerializer.h>
 #include <Editor/Asset/OpenOperations/SceneOpenOperation.h>
+#include <Runtime/Memory/OwnedHeap.h>
 
 int main(unsigned int argumentCount, const char** ppArguments)
 {

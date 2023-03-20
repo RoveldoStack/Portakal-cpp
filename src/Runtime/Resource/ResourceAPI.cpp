@@ -13,14 +13,12 @@ namespace Portakal
         {
             Resource* pResource = sResources[i];
 
-            LOG("ResoureceAPI", "Deleted resource %s", *pResource->GetResourceType());
-
             if (pResource->GetID() == id)
                 return pResource;
         }
         return nullptr;
     }
-    Resource* ResourceAPI::RegisterResource(const String& path,const String& type)
+    Resource* ResourceAPI::RegisterResource(const String& path, const ResourceDescriptor& descriptor)
     {
         /*
         * Validate if there is a valid resource on the given path
@@ -31,7 +29,7 @@ namespace Portakal
         /*
         * Create resource
         */
-        Resource* pResource = new Resource(path, type);
+        Resource* pResource = new Resource(path,descriptor);
 
         sResources.Add(pResource);
 

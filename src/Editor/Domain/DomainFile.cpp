@@ -20,6 +20,7 @@
 #include <Runtime/Resource/ResourceAPI.h>
 #include <Editor/Asset/IAssetOpenOperation.h>
 #include <Editor/Asset/CustomAssetOpenOperationAttribute.h>
+#include <Editor/Asset/Serializers/SceneAssetSerializer.h>
 
 namespace Portakal
 {
@@ -58,6 +59,35 @@ namespace Portakal
         for (unsigned int i = 0; i < mOpenOperations.GetCursor(); i++)
             mOpenOperations[i]->OnOpen(this);
     }
+    void DomainFile::SaveSync()
+    {
+        /*
+        * Validate if loaded
+        */
+        if (!IsLoaded())
+            return;
+        if (mSerializer == nullptr)
+        {
+            LOG("DomainFile", "Couldnt not SaveSync, cannot found serializer interface for type: %s", *mResourceType);
+            return;
+        }
+
+        /*
+        * Validate source file
+        */
+        ASSERT(PlatformFile::IsExist(mSourceFilePath), "DomainFile", "Couldnt found the file %s", *mSourceFilePath);
+
+        /*
+        * Deserialize into editor
+        */
+        ByteBlock block;
+        mSerializer->SerializeToEditor(mResource->GetSubObject(),block);
+
+        /*
+        * Write
+        */
+        PlatformFile::Write(mSourceFilePath, block);
+    }
     DomainFile::DomainFile(const String& fileDescriptorPath, DomainFolder* pOwnerFolder)
     {
         /*
@@ -83,7 +113,8 @@ namespace Portakal
         /*
         * Create resource
         */
-        mResource = ResourceAPI::RegisterResource(sourceFilePath,fileDescriptor.ResourceType);
+        const ResourceDescriptor descriptor = { fileDescriptor.ResourceType,fileDescriptor.ID };
+        mResource = ResourceAPI::RegisterResource(sourceFilePath, descriptor);
 
         /*
         * Find serializer

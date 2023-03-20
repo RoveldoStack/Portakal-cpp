@@ -36,6 +36,7 @@ namespace Portakal
         */
         pSubObject->_SetOwnerResource(this);
         pSubObject->SetTagName(mName);
+        pSubObject->OverrideID(mID);
 
         mSubObject = pSubObject;
 
@@ -80,7 +81,7 @@ namespace Portakal
 
         mCached = false;
     }
-    Resource::Resource(const String& path, const String& resourceType,const bool bCompressed)
+    Resource::Resource(const String& path,const ResourceDescriptor& descriptor,const bool bCompressed)
         : mSubObject(nullptr),mLoaded(false),mCompressed(bCompressed),mSerializer(nullptr),mCached(false)
     {
         /*
@@ -105,7 +106,7 @@ namespace Portakal
             if (pAttribute == nullptr)
                 continue;
 
-            if (pAttribute->GetResourceType() != resourceType)
+            if (pAttribute->GetResourceType() != descriptor.ResourceType)
             {
                 continue;
             }
@@ -123,9 +124,9 @@ namespace Portakal
         * Setup
         */
         mAbsolutePath = path;
-        mType = resourceType;
-        mID = Guid::Create();
-        mName = PlatformFile::GetName(path);
+        mType = descriptor.ResourceType;
+        mID = descriptor.ID;
+        mName = PlatformFile::GetNameWithoutExtension(path);
         mByteOffset = 0;
         mSize = PlatformFile::GetSize(path);
     }

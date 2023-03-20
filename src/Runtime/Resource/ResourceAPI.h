@@ -11,7 +11,7 @@ namespace Portakal
 	class PORTAKAL_API ResourceAPI
 	{
 	public:
-		static Resource* RegisterResource(const String& path, const String& type);
+		static Resource* RegisterResource(const String& path,const ResourceDescriptor& descriptor);
 		static Resource* GetResourceViaID(const Guid& id);
 	private:
 		static Array<Resource*> sResources;

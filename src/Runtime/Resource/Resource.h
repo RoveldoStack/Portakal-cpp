@@ -3,6 +3,7 @@
 #include <Runtime/Containers/Array.h>
 #include <Runtime/Containers/Guid.h>
 #include <Runtime/Memory/ByteBlock.h>
+#include "ResourceDescriptor.h"
 
 namespace Portakal
 {
@@ -39,7 +40,7 @@ namespace Portakal
 		void CacheSync();
 		void ClearCacheSync();
 	private:
-		Resource(const String& path,const String& resourceType,const bool bCompressed = false); // Constructor for files
+		Resource(const String& path,const ResourceDescriptor& descriptor,const bool bCompressed = false); // Constructor for files
 		~Resource();
 	private:
 		IResourceSerializer* mSerializer;

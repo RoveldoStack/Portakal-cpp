@@ -12,8 +12,8 @@ namespace Portakal
 		~TextAssetSerializer() = default;
 
 		// Inherited via IAssetSerializer
-		virtual void SerializeToEditor(const ResourceSubObject* pObject) override;
-		virtual void SerializeToPackage(const ResourceSubObject* pObject) override;
+		virtual void SerializeToEditor(const ResourceSubObject* pObject, ByteBlock& outBlock) override;
+		virtual void SerializeToPackage(const ResourceSubObject* pObject, ByteBlock& outBlock) override;
 	};
 
 	START_GENERATE_TYPE(TextAssetSerializer);

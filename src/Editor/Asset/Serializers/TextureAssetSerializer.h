@@ -11,8 +11,8 @@ namespace Portakal
 		TextureAssetSerializer() = default;
 		~TextureAssetSerializer() = default;
 
-		virtual void SerializeToEditor(const ResourceSubObject* pObject) override;
-		virtual void SerializeToPackage(const ResourceSubObject* pObject) override;
+		virtual void SerializeToEditor(const ResourceSubObject* pObject, ByteBlock& outBlock) override;
+		virtual void SerializeToPackage(const ResourceSubObject* pObject, ByteBlock& outBlock) override;
 
 	};
 
