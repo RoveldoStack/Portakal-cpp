@@ -36,7 +36,6 @@ namespace Portakal
 
 	protected:
 		Component() = default;
-	private:
 		~Component() = default;
 
 		/// <summary>

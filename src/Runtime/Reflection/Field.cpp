@@ -14,4 +14,9 @@ namespace Portakal
 	{
 
 	}
+	void Field::GetRawBytes(void* pObject, ByteBlock& blockOut) const
+	{
+		unsigned char* pData = (unsigned char*)pObject;
+		blockOut.Copy(pData, GetFieldType()->GetSize());
+	}
 }

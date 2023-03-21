@@ -14,6 +14,7 @@ namespace Portakal
 	/// </summary>
 	class PORTAKAL_API TextureResource : public ResourceSubObject
 	{
+		GENERATE_CLASS(TextureResource);
 	public:
 		/// <summary>
 		/// Creates a transient texture
@@ -31,6 +32,7 @@ namespace Portakal
 		/// </summary>
 		/// <param name="path"></param>
 		TextureResource(const String& path);
+		TextureResource() = default;
 		~TextureResource();
 
 		/// <summary>
@@ -97,4 +99,11 @@ namespace Portakal
 		unsigned int mArrayLevel;
 		unsigned int mMipLevels;
 	};
+
+	START_GENERATE_TYPE(TextureResource);
+	START_TYPE_PROPERTIES(TextureResource);
+	REGISTER_BASE_TYPE(ResourceSubObject);
+	END_TYPE_PROPERTIES;
+	HAS_DEFAULT_CONSTRUCTOR(TextureResource);
+	END_GENERATE_TYPE(TextureResource);
 }

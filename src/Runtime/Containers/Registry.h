@@ -70,6 +70,10 @@ namespace Portakal
 			mCapacityMultiplier = 2;
 		}
 
+		FORCEINLINE unsigned int GetCursor() const noexcept
+		{
+			return mCursor;
+		}
 		FORCEINLINE RegistryEntry<TKey, TValue>& GetEntryViaIndex(const unsigned int index) const noexcept
 		{
 			return mData[index];

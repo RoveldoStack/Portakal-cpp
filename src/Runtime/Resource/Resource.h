@@ -55,6 +55,5 @@ namespace Portakal
 		bool mLoaded;
 		bool mCached;
 		const bool mCompressed;
-
 	};
 }

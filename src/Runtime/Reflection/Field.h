@@ -1,6 +1,7 @@
 #pragma once
 #include <Runtime/Reflection/Type.h>
 #include <Runtime/Reflection/AccessSpecifier.h>
+#include <Runtime/Memory/ByteBlock.h>
 namespace Portakal
 {
 	/// <summary>
@@ -35,6 +36,8 @@ namespace Portakal
 		/// </summary>
 		/// <returns></returns>
 		FORCEINLINE AccessSpecifier GetAccessSpecifier() const noexcept { return mAccessSpecifier; }
+
+		void GetRawBytes(void* pObject,ByteBlock& blockOut) const;
 
 		/// <summary>
 		/// Sets the field value
@@ -77,5 +80,7 @@ namespace Portakal
 		~FieldDispatcher();
 	};
 
-#define REGISTER_FIELD(member,type,accessSpecifier) pType->_RegisterField(new Field(typeof(type),#member,offsetof(type,name),acessSpecifier));
+#define REGISTER_FIELD(cls,member,type,accessSpecifier) pType->_RegisterField(new Field(TypeAccessor<type>::GetAccessorType(),#member,offsetof(cls,member),accessSpecifier));
+
+#define REGISTER_FIELD_SELF(cls,member,accessSpecifier) pType->_RegisterField(new Field(pType,#member,offsetof(cls,member),accessSpecifier));
 }

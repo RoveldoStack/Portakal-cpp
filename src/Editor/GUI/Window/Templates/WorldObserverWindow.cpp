@@ -11,7 +11,8 @@
 #include <Runtime/Log/Log.h>
 #include <Editor/Domain/DomainAPI.h>
 #include <Editor/Domain/DomainFile.h>
-
+#include <Editor/GUI/Object/EditorObjectAPI.h>
+#include <Editor/GUI/Object/Templates/EntityObjectVisualizer.h>
 
 namespace Portakal
 {
@@ -170,9 +171,13 @@ namespace Portakal
 
 			for (unsigned int i = 0; i < entities.GetCursor(); i++)
 			{
-				const Entity* pEntity = entities[i];
+				Entity* pEntity = entities[i];
 
-				ImGui::Selectable(*pEntity->GetTagName());
+				if (ImGui::Selectable(*(pEntity->GetTagName() + "##" + Guid::ToString(pEntity->GetID())))) // if selected
+				{
+					LOG("WorldObjserverWindow", "Entity selected!");
+					EditorObjectAPI::SignalNewObject(pEntity);
+				}
 			}
 		}
 

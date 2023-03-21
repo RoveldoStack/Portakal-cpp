@@ -4,7 +4,9 @@
 #include <Runtime/Resource/ResourceSubObject.h>
 #include <Runtime/Resource/ResourceAPI.h>
 #include <Runtime/Message/MessageAPI.h>
-#include "Aspects/InvalidAspect.h"
+#include <Runtime/World/Components/InvalidComponent.h>
+#include <Runtime/World/Aspects/InvalidAspect.h>
+
 namespace Portakal
 {
 	Scene::Scene(const SceneDescriptor& descriptor)
@@ -41,7 +43,7 @@ namespace Portakal
 			* Get and record components
 			*/
 			const Array<Component*> components = pEntity->GetComponents();
-			for (unsigned int componentIndex = 0; components.GetCursor(); componentIndex++)
+			for (unsigned int componentIndex = 0; componentIndex < components.GetCursor(); componentIndex++)
 			{
 				const Component* pComponent = components[componentIndex];
 
@@ -97,7 +99,7 @@ namespace Portakal
 			* Get and record components
 			*/
 			const Array<Component*> components = pEntity->GetComponents();
-			for (unsigned int componentIndex = 0; components.GetCursor(); componentIndex++)
+			for (unsigned int componentIndex = 0; componentIndex < components.GetCursor(); componentIndex++)
 			{
 				const Component* pComponent = components[componentIndex];
 
@@ -122,19 +124,25 @@ namespace Portakal
 					const Type* pFieldType = pField->GetFieldType();
 					if (pFieldType == typeof(Entity)) // its an entity
 					{
+						const Entity* pObject = pField->GetValue<Entity*>((void*)pComponent);
 						fieldEntry.Type = SceneComponentFieldType::Entity;
+						fieldEntry.Content = Guid::ToString(pObject == nullptr ? Guid::Zero() : pObject->GetID());
 					}
 					else if (pFieldType->IsSubClassOf(typeof(Component))) // its a component
 					{
+						const Component* pObject = pField->GetValue<Component*>((void*)pComponent);
 						fieldEntry.Type = SceneComponentFieldType::Component;
+						fieldEntry.Content = Guid::ToString(pObject == nullptr ? Guid::Zero() : pObject->GetID());
 					}
 					else if (pFieldType->IsSubClassOf(typeof(ResourceSubObject)))
 					{
+						const ResourceSubObject* pObject = pField->GetValue<ResourceSubObject*>((void*)pComponent);
 						fieldEntry.Type = SceneComponentFieldType::Resource;
+						fieldEntry.Content = Guid::ToString(pObject == nullptr ? Guid::Zero() : pObject->GetID());
 					}
 					else
 					{
-						// run custom raw content serialization
+						fieldEntry.Type = SceneComponentFieldType::Raw;
 					}
 
 					componentEntry.Fields.Add(fieldEntry);
@@ -241,7 +249,7 @@ namespace Portakal
 			* Create aspect
 			*/
 			SceneAspect* pAspect = CreateAspect(pType);
-			if (pType == nullptr) // set intended value if it's an InvalidAspect
+			if (pType == typeof(InvalidAspect)) // set intended value if it's an InvalidAspect
 			{
 				InvalidAspect* pInvalidAspect = (InvalidAspect*)pAspect;
 				pInvalidAspect->SetIntendedAspect(entry.TypeName);
@@ -249,7 +257,7 @@ namespace Portakal
 		}
 
 		/*
-		* Load entities
+		* Load entities and components
 		*/
 		for (unsigned int entityIndex = 0; entityIndex < descriptor.Entities.GetCursor(); entityIndex++)
 		{
@@ -258,6 +266,41 @@ namespace Portakal
 			Entity* pEntity = CreateEntity();
 			pEntity->SetTagName(entityEntry.TagName);
 			pEntity->OverrideID(entityEntry.ID);
+
+			/*
+			* Load components
+			*/
+			for (unsigned int componentIndex = 0; componentIndex < entityEntry.Components.GetCursor(); componentIndex++)
+			{
+				const SceneComponentEntry& componentEntry = entityEntry.Components[componentIndex];
+
+				Type* pType = GetTypeFromArray(componentTypes, componentEntry.TypeName);
+				if (pType == nullptr)
+				{
+					pType = typeof(InvalidComponent);
+				}
+
+				/*
+				* Create component
+				*/
+				Component* pComponent = pEntity->CreateComponent(pType);
+				if (pType == typeof(InvalidComponent))
+				{
+					InvalidComponent* pInvalidComponent = (InvalidComponent*)pComponent;
+					pInvalidComponent->SetIntendedType(componentEntry.TypeName);
+					continue;
+				}
+
+				/*
+				* Load fields
+				*/
+				for (unsigned int fieldIndex = 0; fieldIndex < componentEntry.Fields.GetCursor(); fieldIndex++)
+				{
+					const SceneComponentFieldEntry& fieldEntry = componentEntry.Fields[fieldIndex];
+
+
+				}
+			}
 		}
 	}
 }

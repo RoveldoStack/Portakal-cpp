@@ -40,7 +40,7 @@ namespace Portakal
 				return nullptr;
 
 			pComponent->_SetOwnerEntity(this);
-
+			pComponent->SetTagName(pType->GetTypeName());
 			pComponent->OnInitialize();
 
 			mComponents.Add(pComponent);
