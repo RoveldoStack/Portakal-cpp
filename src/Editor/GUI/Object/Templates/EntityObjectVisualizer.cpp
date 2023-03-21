@@ -7,6 +7,7 @@
 #include <Editor/GUI/Component/CustomEditorComponentAttribute.h>
 #include <Editor/GUI/Component/Templates/DefaultComponentVisualizer.h>
 #include <Editor/GUI/Component/Templates/Transform2DComponentVisualizer.h>
+#include <Editor/GUI/Component/Templates/SpriteCameraComponentVisualizer.h>
 
 namespace Portakal
 {

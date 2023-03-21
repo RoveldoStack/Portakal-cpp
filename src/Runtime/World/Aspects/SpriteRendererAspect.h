@@ -4,6 +4,7 @@
 namespace Portakal
 {
 	class CommandList;
+	class SpriteCamera;
 	class PORTAKAL_API SpriteRendererAspect : public SceneAspect
 	{
 		GENERATE_CLASS(SpriteRendererAspect);
@@ -11,6 +12,8 @@ namespace Portakal
 		SpriteRendererAspect() = default;
 		~SpriteRendererAspect() = default;
 
+		void RegisterCamera(SpriteCamera* pCamera);
+		void RemoveCamera(SpriteCamera* pCamera);
 
 		// Inherited via SceneAspect
 		virtual void OnInitialize() override;
@@ -19,6 +22,7 @@ namespace Portakal
 
 		virtual void OnFinalize() override;
 	private:
+		Array<SpriteCamera*> mCameras;
 		CommandList* mCmdList;
 	};
 

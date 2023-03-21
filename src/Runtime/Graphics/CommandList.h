@@ -93,6 +93,13 @@ namespace Portakal
 		FORCEINLINE void ClearColor(const unsigned int index,const ColorRgba& color);
 
 		/// <summary>
+		/// Clears the currently bound framebuffer attachment index
+		/// </summary>
+		/// <param name="index"></param>
+		/// <param name="color"></param>
+		void ClearColor(const unsigned int index, const ColorRgbaF& color);
+
+		/// <summary>
 		/// Clears the currently bound framebuffer's depth stencil attachment's depth value
 		/// </summary>
 		/// <param name="depth"></param>
@@ -192,6 +199,7 @@ namespace Portakal
 		FORCEINLINE virtual void SetScissorsCore(const Array<ScissorDesc>& scissors) = 0;
 
 		FORCEINLINE virtual void ClearColorCore(const unsigned int index,const ColorRgba& color) = 0;
+		FORCEINLINE virtual void ClearColorCore(const unsigned int index, const ColorRgbaF& color) = 0;
 		FORCEINLINE virtual void ClearDepthCore(const float depth) = 0;
 		FORCEINLINE virtual void ClearStencilCore(const int stencil) = 0;
 

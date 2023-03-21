@@ -65,6 +65,12 @@ namespace Portakal
 
 		ClearColorCore(index, color);
 	}
+	void CommandList::ClearColor(const unsigned int index, const ColorRgbaF& color)
+	{
+		CheckBoundFramebuffer();
+
+		ClearColorCore(index, color);
+	}
 	void CommandList::ClearDepth(const float depth)
 	{
 		CheckBoundFramebuffer();

@@ -20,6 +20,7 @@ namespace Portakal
 		virtual void SetViewportsCore(const Array<ViewportDesc>& viewports) override;
 		virtual void SetScissorsCore(const Array<ScissorDesc>& scissors) override;
 		virtual void ClearColorCore(const unsigned int index,const ColorRgba& color) override;
+		virtual void ClearColorCore(const unsigned int index, const ColorRgbaF& color) override;
 		virtual void ClearDepthCore(const float depth) override;
 		virtual void ClearStencilCore(const int stencil) override;
 		virtual void SetVertexBufferCore(GraphicsBuffer* pBuffer) override;

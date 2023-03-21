@@ -225,6 +225,31 @@ namespace Portakal
         mCmdList->ClearRenderTargetView(cpuHandle, clearColor, 0, nullptr);
 
     }
+
+    void DX12GraphicsCommandList::ClearColorCore(const unsigned int index, const ColorRgbaF& color)
+    {
+        const DX12Framebuffer* pFramebuffer = (const DX12Framebuffer*)GetBoundFramebuffer();
+        if (pFramebuffer == nullptr)
+            return;
+
+       // const float clearColor[] = { color.R / 255.0f,color.G / 255.0f,color.B / 255.0f,color.A / 255.0f };
+        const DX12Device* pDevice = (const DX12Device*)GetOwnerDevice();
+        const Swapchain* pSwapchain = pDevice->GetSwapchain();
+        const unsigned int handleIncrementSize = pDevice->GetDXDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
+        D3D12_CPU_DESCRIPTOR_HANDLE cpuHandle = pFramebuffer->GetDXColorHeapDescriptor()->GetCPUDescriptorHandleForHeapStart();
+
+        if (pFramebuffer->IsSwapchain())
+        {
+            cpuHandle.ptr += pSwapchain->GetCurrentImageIndex() * handleIncrementSize;
+        }
+        else
+        {
+            cpuHandle.ptr + index * handleIncrementSize;
+        }
+
+        mCmdList->ClearRenderTargetView(cpuHandle, &color.R, 0, nullptr);
+
+    }
     void DX12GraphicsCommandList::ClearDepthCore(const float depth)
     {
         const Framebuffer* pFramebuffer = GetBoundFramebuffer();
