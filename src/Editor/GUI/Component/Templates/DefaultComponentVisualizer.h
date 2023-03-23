@@ -18,6 +18,7 @@ namespace Portakal
 
 		// Inherited via EditorComponentVisualizer
 		virtual void OnPaint() override;
+	private:
 
 	};
 

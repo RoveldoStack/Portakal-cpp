@@ -1,0 +1,9 @@
+#pragma once
+#include <Editor/Domain/DomainModule.h>
+#include <Editor/Game/EditorGameModule.h>
+#include <Editor/GUI/MenuItem/GUIMainMenuItemModule.h>
+#include <Editor/GUI/Window/GUIWindowModule.h>
+#include <Editor/Project/ProjectModule.h>
+#include <Editor/Renderer/ImGuiExecutorModule.h>
+#include <Editor/Renderer/ImGuiRendererModule.h>
+#include <Editor/Resource/EditorResourceModule.h>

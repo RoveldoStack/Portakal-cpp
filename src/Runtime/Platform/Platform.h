@@ -1,7 +1,15 @@
 #pragma once
+#include <Runtime/Core/Core.h>
+#include <Runtime/Platform/PlatformType.h>
 
-#ifdef PORTAKAL_OS_WINDOWS
-#include <Runtime/Win32/Win32API.h>
-#include <Runtime/Win32/Win32FileSystem.h>
-#else
-#endif
+namespace Portakal
+{
+	class PORTAKAL_API Platform
+	{
+	public:
+		FORCEINLINE static PlatformType GetCurrentPlatform();
+	public:
+		Platform() = delete;
+		~Platform() = delete;
+	};
+}

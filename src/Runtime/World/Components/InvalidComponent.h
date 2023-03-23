@@ -9,6 +9,10 @@ namespace Portakal
 	public:
 		FORCEINLINE String GetIntendedType() const noexcept { return mIntendedType; }
 		FORCEINLINE void SetIntendedType(const String& type) { mIntendedType = type; }
+
+
+		int myInt;
+		String myString;
 	private:
 		String mIntendedType;
 
@@ -22,6 +26,8 @@ namespace Portakal
 	START_GENERATE_TYPE(InvalidComponent);
 	START_TYPE_PROPERTIES(InvalidComponent);
 	REGISTER_BASE_TYPE(Component);
+	REGISTER_FIELD(InvalidComponent, myInt, int, AccessSpecifier::Public);
+	REGISTER_FIELD(InvalidComponent, myString, String, AccessSpecifier::Public);
 	END_TYPE_PROPERTIES;
 	HAS_DEFAULT_CONSTRUCTOR(InvalidComponent);
 	END_GENERATE_TYPE(InvalidComponent);

@@ -1,35 +1,50 @@
-#include <Runtime/Platform/PlatformMessage.h>
-#include <Runtime/Yaml/Yaml.h>
-#include <Runtime/Window/Window.h>
 #include "EditorPlayerApplication.h"
-#include <Runtime/Message/MessageModule.h>
-#include <Runtime/Window/WindowModule.h>
-#include <Runtime/World/Entity.h>
-#include <Runtime/World/Scene.h>
-#include <Runtime/Graphics/GraphicsModule.h>
-#include <Runtime/Window/WindowAPI.h>
-#include <Editor/Renderer/ImGuiExecutorModule.h>
-#include <Editor/Renderer/ImGuiRendererModule.h>
-#include <Editor/GUI/Window/GUIWindowModule.h>
+#include <Runtime/RuntimeModules.h>
+#include <Runtime/Resource/ResourceSerializers.h>
+#include <Editor/EditorModules.h>
+#include <Editor/GUI/Component/EditorComponentVisualizerTemplates.h>
 #include <Editor/GUI/MenuItem/MenuItemTemplates.h>
-#include <Editor/GUI/MenuItem/GUIMainMenuItemModule.h>
-#include <Editor/Project/ProjectModule.h>
-#include <Editor/GUI/Window/Templates/DomainObserverWindow.h>
-#include <Editor/GUI/Window/Templates/WorldObserverWindow.h>
-#include <Editor/GUI/Window/Templates/ObjectObserverWindow.h>
-#include <Editor/GUI/Window/Templates/GameObserverWindow.h>
-#include <Editor/Domain/DomainModule.h>
-#include <Editor/Resource/EditorResourceModule.h>
-#include <Runtime/Platform/PlatformMonitor.h>
-#include <Runtime/World/SceneModule.h>
-#include <Runtime/Resource/ResourceModule.h>
-#include <Runtime/Resource/Texture/TextureSerializer.h>
-#include <Editor/Asset/Serializers/SceneAssetSerializer.h>
-#include <Editor/Asset/OpenOperations/SceneOpenOperation.h>
-#include <Runtime/Memory/OwnedHeap.h>
+#include <Editor/GUI/Object/EditorObjectVisualizerTemplates.h>
+#include <Editor/GUI/Window/GUIWindowTemplates.h>
+#include <Editor/Asset/AsserSerializers.h>
+#include <Editor/Asset/AssetAuthorizationTools.h>
+#include <Editor/Asset/AssetImporters.h>
+#include <Editor/Asset/AssetOpenOperations.h>
+#include <Editor/Asset/AssetVisualizers.h>
+#include <Runtime/Job/IJob.h>
+#include <thread>
+#include <Runtime/Win32/Win32Thread.h>
+
+namespace Portakal
+{
+	
+	class TestJob : public IJob
+	{
+	public:
+		TestJob(const String& str) : mStr(str)
+		{
+
+		}
+		virtual void Run() override
+		{
+			while (true)
+			{
+				LOG("TestJob", "Output: %s",*mStr);
+				PlatformThread::WaitCurrentThread(100);
+			}
+		}
+	private:
+		const String mStr;
+	};
+	
+
+	
+}
 
 int main(unsigned int argumentCount, const char** ppArguments)
 {
+	Portakal::PlatformThread::Create<Portakal::TestJob>(2,"my test job implementation");
+
 	/*
 	* Initialize application
 	*/

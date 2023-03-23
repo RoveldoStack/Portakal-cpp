@@ -223,7 +223,6 @@ namespace Portakal
 	template<typename TValue>
 	Array<TValue>::Array(std::initializer_list<TValue> initializerList)
 	{
-
 		/*
 		* Allocate space
 		*/

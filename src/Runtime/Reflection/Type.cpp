@@ -58,11 +58,11 @@ namespace Portakal
     }
     void Type::_RegisterBaseType(Type* pType)
     {
-        LOG("Type", "Registered a base type: [%s] to the type: [%s]", *pType->GetTypeName(), *GetTypeName());
         mBaseTypes.Add(pType);
     }
     BaseTypeDispatcher::BaseTypeDispatcher(Type* pTargetType, Type* pBaseType)
     {
+        LOG("Reflection", "Registered type %s to type %d", *pBaseType->GetTypeName(), *pTargetType->GetTypeName());
         pTargetType->_RegisterBaseType(pBaseType);
     }
 }

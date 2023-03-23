@@ -46,11 +46,11 @@ namespace Portakal
 		/// <param name="pObject"></param>
 		/// <param name="value"></param>
 		template<typename TValue>
-		void SetValue(void* pObject, const TValue& value) noexcept
+		void SetValue(void* pObject, const TValue& value) const noexcept
 		{
 			unsigned char* pObjectByte = (unsigned char*)pObject + mOffset;
-
-			*pObjectByte = value;
+			TValue* pV = (TValue*)pObjectByte;
+			*pV = value;
 		}
 
 		/// <summary>

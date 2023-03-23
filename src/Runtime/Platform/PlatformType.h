@@ -10,7 +10,7 @@ namespace Portakal
 	{
 		Windows,
 		Linux,
-		Mac,
+		Mac,	 // maybe
 		Android, // maybe
 		IOS, // maybe
 		PS3, // maybe

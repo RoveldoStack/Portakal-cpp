@@ -1,4 +1,5 @@
 #pragma once
 
-#include <Runtime/Compiler/Compiler.h>
-#include <Runtime/Platform/Platform.h>
+#include <Runtime/Compiler/CompilerDefinitions.h>
+#include <Runtime/Platform/PlatformAPI.h>
+#include <Runtime/Architecture/Architecture.h>

@@ -232,7 +232,6 @@ namespace Portakal
         if (pFramebuffer == nullptr)
             return;
 
-       // const float clearColor[] = { color.R / 255.0f,color.G / 255.0f,color.B / 255.0f,color.A / 255.0f };
         const DX12Device* pDevice = (const DX12Device*)GetOwnerDevice();
         const Swapchain* pSwapchain = pDevice->GetSwapchain();
         const unsigned int handleIncrementSize = pDevice->GetDXDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);

@@ -22,7 +22,7 @@ namespace Portakal
 #define GENERATE_CLASS(type) private:\
 									friend class EMPTY(type)_Type;\
 									static inline Type* sType = nullptr;\
-								 public:\
 									static void SetType(Type* pType) { sType = pType;}\
+								 public:\
 									FORCEINLINE virtual Type* GetType() const noexcept override { return sType;}
 }

@@ -147,9 +147,12 @@ namespace Portakal
 			const Array<SceneAspect*> aspects = pScene->GetAspects();
 			for (unsigned int i = 0; i < aspects.GetCursor(); i++)
 			{
-				const SceneAspect* pAspect = aspects[i];
+				SceneAspect* pAspect = aspects[i];
 
-				ImGui::Selectable(*pAspect->GetType()->GetTypeName());
+				if (ImGui::Selectable(*pAspect->GetType()->GetTypeName()))
+				{
+					EditorObjectAPI::SignalNewObject(pAspect);
+				}
 			}
 
 			//Draw register aspect button

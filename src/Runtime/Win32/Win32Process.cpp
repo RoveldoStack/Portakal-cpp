@@ -3,7 +3,7 @@
 
 namespace Portakal
 {
-    Win32Process::~Win32Process()
+    Win32Process::Win32Process(const String& path, const Array<String>& cmdArguments) : PlatformProcess(path, cmdArguments), mHandle(NULL), mProcessInfo()
     {
 
     }
@@ -22,7 +22,7 @@ namespace Portakal
         */
         CreateProcess(
             *GetPath(),
-            (char*)*GetConcretedCmdArguments(),
+            (char*)*GetConcretedCommand(),
             NULL,
             NULL,
             FALSE,
@@ -34,9 +34,17 @@ namespace Portakal
         );
 
     }
-    void Win32Process::EndCore()
+    void Win32Process::WaitForFinishCore()
     {
+        WaitForSingleObject(mProcessInfo.hProcess, INFINITE);
         CloseHandle(mProcessInfo.hProcess);
         CloseHandle(mProcessInfo.hThread);
     }
+    void Win32Process::TerminateCore()
+    {
+        TerminateProcess(mProcessInfo.hProcess, 0);
+        CloseHandle(mProcessInfo.hProcess);
+        CloseHandle(mProcessInfo.hThread);
+    }
+    
 }

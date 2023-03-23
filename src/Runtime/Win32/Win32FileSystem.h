@@ -1,3 +1,0 @@
-#pragma once
-#define PLATFORM_FOLDER_NAME_SIZE 255
-#define PLATFORM_FILE_NAME_SIZE 255

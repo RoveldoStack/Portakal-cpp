@@ -16,23 +16,34 @@ namespace Portakal
 		StartCore();
 		mActive = true;
 	}
-	void PlatformProcess::End()
+	void PlatformProcess::Terminate()
 	{
-		EndCore();
+		TerminateCore();
 		mActive = false;
 	}
 
-	PlatformProcess::PlatformProcess(const String& path, const Array<String>& cmdArguments)
+	void PlatformProcess::WaitForFinish()
 	{
-		mConcretedCmdArguments = path;
-		for (unsigned int i = 0; i < cmdArguments.GetCursor(); i++)
+		WaitForFinishCore();
+		mActive = false;
+	}
+
+	PlatformProcess::PlatformProcess(const String& path, const Array<String>& parameters) : mPath(path),mParameters(parameters)
+	{
+		mConcretedCommand = path;
+		for (unsigned int i = 0; i < parameters.GetCursor(); i++)
 		{
-			const String argument = cmdArguments[i];
+			const String argument = parameters[i];
 
-			mConcretedCmdArguments += " " + argument;
+			mConcretedCommand += " " + argument;
 		}
-
-		mCmdArguments = cmdArguments;
-		mPath = path;
+	}
+	PlatformProcess::~PlatformProcess()
+	{
+		if (mActive)
+		{
+			TerminateCore();
+		}
+		mActive = false;
 	}
 }

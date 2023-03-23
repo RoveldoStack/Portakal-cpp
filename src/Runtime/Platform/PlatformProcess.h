@@ -9,6 +9,9 @@ namespace Portakal
 	class PORTAKAL_API PlatformProcess
 	{
 	public:
+		PlatformProcess(const String& path, const Array<String>& parameters);
+		~PlatformProcess();
+
 		/// <summary>
 		/// Creates anew process
 		/// </summary>
@@ -27,13 +30,13 @@ namespace Portakal
 		/// Returns the given command line arguments to the process
 		/// </summary>
 		/// <returns></returns>
-		FORCEINLINE Array<String> GetCmdArguments() const noexcept { return mCmdArguments; }
+		FORCEINLINE Array<String> GetParameters() const noexcept { return mParameters; }
 
 		/// <summary>
 		/// Returns the concreted command line arguments to the process
 		/// </summary>
 		/// <returns></returns>
-		FORCEINLINE String GetConcretedCmdArguments() const noexcept { return mConcretedCmdArguments; }
+		FORCEINLINE String GetConcretedCommand() const noexcept { return mConcretedCommand; }
 
 		/// <summary>
 		/// Returns whether the process runs or not
@@ -47,19 +50,22 @@ namespace Portakal
 		void Start();
 
 		/// <summary>
-		/// Ends or terminates the process
+		/// Terminates the process
 		/// </summary>
-		void End();
-	protected:
-		PlatformProcess(const String& path,const Array<String>& cmdArguments);
-		virtual ~PlatformProcess() {}
+		void Terminate();
+
+		/// <summary>
+		/// Waits for process to finish
+		/// </summary>
+		void WaitForFinish();
 
 		virtual void StartCore() = 0;
-		virtual void EndCore() = 0;
+		virtual void WaitForFinishCore() = 0;
+		virtual void TerminateCore() = 0;
 	private:
-		String mPath;
-		Array<String> mCmdArguments;
-		String mConcretedCmdArguments;
+		const String mPath;
+		const Array<String> mParameters;
+		String mConcretedCommand;
 		bool mActive;
 	};
 }

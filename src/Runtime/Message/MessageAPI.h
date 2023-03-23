@@ -26,4 +26,5 @@ namespace Portakal
 	};
 
 #define BROADCAST_MESSAGE(message) MessageAPI::BroadcastMessage(message);
+#define INFORMATION(message,...)
 }

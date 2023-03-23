@@ -23,6 +23,7 @@ namespace Portakal
 			mCurrentVisualizer->OnFinalize();
 			mCurrentVisualizer->_SetTargetObject(nullptr);
 			delete mCurrentVisualizer;
+			mCurrentVisualizer = nullptr;
 		}
 
 		/*
@@ -39,6 +40,7 @@ namespace Portakal
 				break;
 			}
 		}
+
 		if (pVisualizerType == nullptr)
 			return;
 
@@ -78,13 +80,7 @@ namespace Portakal
 			* Get attribute
 			*/
 			CustomEditorObjectAttribute* pAttribute = pType->GetAttribute<CustomEditorObjectAttribute>();
-			if (pAttribute == nullptr)
-				continue;
-
-			/*
-			* Validate attribute if it's a sub type of TaggedObject
-			*/
-			if (!pAttribute->GetTargetObjectType()->IsSubClassOf(typeof(TaggedObject)))
+			if (pAttribute == nullptr || pAttribute->GetTargetObjectType() == nullptr)
 				continue;
 
 			mVisualizerEntries.Add({pType,pAttribute});
