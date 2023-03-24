@@ -11,14 +11,13 @@
 #include <Editor/Asset/AssetImporters.h>
 #include <Editor/Asset/AssetOpenOperations.h>
 #include <Editor/Asset/AssetVisualizers.h>
-#include <Runtime/Job/IJob.h>
-#include <thread>
-#include <Runtime/Win32/Win32Thread.h>
+#include <Runtime/Job/Job.h>
+#include <Runtime/Job/JobPool.h>
 
 namespace Portakal
 {
 	
-	class TestJob : public IJob
+	class TestJob : public Job
 	{
 	public:
 		TestJob(const String& str) : mStr(str)
@@ -27,10 +26,15 @@ namespace Portakal
 		}
 		virtual void Run() override
 		{
+			unsigned int count = 0;
 			while (true)
 			{
+				if (count == 5)
+					return;
+
 				LOG("TestJob", "Output: %s",*mStr);
-				PlatformThread::WaitCurrentThread(100);
+				PlatformThread::SleepCurrentThread(700);
+				count++;
 			}
 		}
 	private:
@@ -41,9 +45,21 @@ namespace Portakal
 	
 }
 
+Portakal::JobPool* pJobPool = nullptr;
 int main(unsigned int argumentCount, const char** ppArguments)
 {
-	Portakal::PlatformThread::Create<Portakal::TestJob>(2,"my test job implementation");
+	pJobPool = new Portakal::JobPool(2);
+
+	pJobPool->Submit<Portakal::TestJob>("Job 0");
+	pJobPool->Submit<Portakal::TestJob>("Job 1");
+	pJobPool->Submit<Portakal::TestJob>("Job 2");
+	pJobPool->Submit<Portakal::TestJob>("Job 3");
+	pJobPool->Submit<Portakal::TestJob>("Job 4");
+	pJobPool->Submit<Portakal::TestJob>("Job 5");
+	pJobPool->Submit<Portakal::TestJob>("Job 6");
+
+
+	//Portakal::PlatformThread::Create<Portakal::TestJob>(2,"Job 0");
 
 	/*
 	* Initialize application

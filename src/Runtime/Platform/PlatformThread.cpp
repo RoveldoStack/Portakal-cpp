@@ -1,4 +1,5 @@
 #include "PlatformThread.h"
+#include <Runtime/Job/Job.h>
 
 #ifdef PORTAKAL_OS_WINDOWS
 #include <Runtime/Win32/Win32Thread.h>
@@ -7,15 +8,20 @@ typedef Portakal::Win32Thread PlatformAbstraction;
 
 namespace Portakal
 {
-	PlatformThread* PlatformThread::Create(const unsigned int stackSize,IJob* pJob)
+	PlatformThread* PlatformThread::Dispatch(const unsigned int stackSize,Job* pJob)
 	{
 		return new PlatformAbstraction(stackSize,pJob);
 	}
-	void PlatformThread::WaitCurrentThread(const unsigned long long waitAmount)
+	void PlatformThread::SleepCurrentThread(const unsigned long long waitAmount)
 	{
 		PlatformAbstraction::WaitCurrentThread(waitAmount);
 	}
 	
+	PlatformThread::PlatformThread(const unsigned int stackSize, Job* pJob) : mJob(pJob), mStackSize(stackSize), mRunning(false)
+	{
+		pJob->_SetOwnerThread(this);
+	}
+
 	PlatformThread::~PlatformThread()
 	{
 		if (mRunning)

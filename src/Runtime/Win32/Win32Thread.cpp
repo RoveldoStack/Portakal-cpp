@@ -1,14 +1,14 @@
 #include "Win32Thread.h"
-#include <Runtime/Job/IJob.h>
+#include <Runtime/Job/Job.h>
 
 namespace Portakal
 {
 	void Win32Thread::DispatchThread(void* pTarget)
 	{
-		IJob* pJob = (IJob*)pTarget;
+		Job* pJob = (Job*)pTarget;
 		pJob->Run();
 	}
-	Win32Thread::Win32Thread(const unsigned int stackSize,IJob* pJob) : PlatformThread(stackSize,pJob), mHandle(NULL)
+	Win32Thread::Win32Thread(const unsigned int stackSize,Job* pJob) : PlatformThread(stackSize,pJob), mHandle(NULL)
 	{
 		mHandle = CreateThread(NULL, 2, (LPTHREAD_START_ROUTINE)Win32Thread::DispatchThread, pJob, NULL, NULL);
 	}

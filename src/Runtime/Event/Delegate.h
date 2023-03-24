@@ -1,3 +1,4 @@
+#pragma once
 #include <functional>
 #define GENERATE_DELEGATE(function) std::bind(&function,std::placeholders::_1)
 #define GENERATE_DELEGATE_PARAMETERLESS(function) std::bind(&function)

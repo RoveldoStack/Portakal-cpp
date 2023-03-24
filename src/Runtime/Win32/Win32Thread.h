@@ -11,7 +11,7 @@ namespace Portakal
 	private:
 		static void DispatchThread(void* pSelf);
 	public:
-		Win32Thread(const unsigned int stackSize,IJob* pJob);
+		Win32Thread(const unsigned int stackSize,Job* pJob);
 		~Win32Thread() = default;
 
 
