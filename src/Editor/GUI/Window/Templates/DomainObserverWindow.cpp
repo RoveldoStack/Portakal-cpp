@@ -95,7 +95,7 @@ namespace Portakal
 			return;
 		}
 
-		pTargetWindow->RegisterEventListener(GENERATE_MEMBER_DELEGATE(this, DomainObserverWindow::OnEvent, void, const WindowEvent*));
+		pTargetWindow->RegisterEventListener(GENERATE_MEMBER_DELEGATE1(this, DomainObserverWindow::OnEvent, void, const WindowEvent*));
 
 		/*
 		* Load icons
@@ -124,7 +124,7 @@ namespace Portakal
 			MessageAPI::BroadcastMessage("Window missing, unable to unregister for event feed");
 			return;
 		}
-		pTargetWindow->RemoveEventListener(GENERATE_MEMBER_DELEGATE(this, DomainObserverWindow::OnEvent, void, const WindowEvent*));
+		pTargetWindow->RemoveEventListener(GENERATE_MEMBER_DELEGATE1(this, DomainObserverWindow::OnEvent, void, const WindowEvent*));
 	}
 
 	void DomainObserverWindow::OnPaint()

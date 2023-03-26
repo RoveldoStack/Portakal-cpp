@@ -13,32 +13,31 @@
 #include <Editor/Asset/AssetVisualizers.h>
 #include <Runtime/Job/Job.h>
 #include <Runtime/Job/JobPool.h>
-
+#include <Runtime/Job/JobFiber.h>
 namespace Portakal
 {
 	
 	class TestJob : public Job
 	{
 	public:
-		TestJob(const String& str) : mStr(str)
+		TestJob(const String& str,const unsigned int tickAmount) : mStr(str) , mTickAmount(tickAmount)
 		{
 
 		}
 		virtual void Run() override
 		{
 			unsigned int count = 0;
-			while (true)
+			while (count!=5)
 			{
-				if (count == 5)
-					return;
-
+				
 				LOG("TestJob", "Output: %s",*mStr);
-				PlatformThread::SleepCurrentThread(700);
+				PlatformThread::SleepCurrentThread(mTickAmount);
 				count++;
 			}
 		}
 	private:
 		const String mStr;
+		const unsigned int mTickAmount;
 	};
 	
 
@@ -48,15 +47,66 @@ namespace Portakal
 Portakal::JobPool* pJobPool = nullptr;
 int main(unsigned int argumentCount, const char** ppArguments)
 {
-	pJobPool = new Portakal::JobPool(2);
+	pJobPool = new Portakal::JobPool(12);
 
-	pJobPool->Submit<Portakal::TestJob>("Job 0");
-	pJobPool->Submit<Portakal::TestJob>("Job 1");
-	pJobPool->Submit<Portakal::TestJob>("Job 2");
-	pJobPool->Submit<Portakal::TestJob>("Job 3");
-	pJobPool->Submit<Portakal::TestJob>("Job 4");
-	pJobPool->Submit<Portakal::TestJob>("Job 5");
-	pJobPool->Submit<Portakal::TestJob>("Job 6");
+	Portakal::JobFiber* pFiber = new Portakal::JobFiber();
+	pFiber->RegisterNode
+	(
+		{
+		new Portakal::TestJob("First node first job",200),
+		new Portakal::TestJob("First node second job",200)
+		}
+	);
+	pFiber->RegisterNode
+	(
+		{
+		new Portakal::TestJob("Second node first job",400),
+		new Portakal::TestJob("Second node second job",400)
+		}
+	);
+
+	pFiber->RegisterNode
+	(
+		{
+		new Portakal::TestJob("Third node first job",100),
+		new Portakal::TestJob("Third node second job",100)
+		}
+	);
+
+	Portakal::JobFiber* pFiber2 = new Portakal::JobFiber();
+	pFiber2->RegisterNode
+	(
+		{
+		new Portakal::TestJob("Other node first job",350),
+		new Portakal::TestJob("Other node second job",350)
+		}
+	);
+
+	Portakal::JobFiber* pFiber3 = new Portakal::JobFiber();
+	pFiber3->RegisterNode
+	(
+		{
+		new Portakal::TestJob("Heavy node first job",350),
+		new Portakal::TestJob("Heavy node second job",350),
+		new Portakal::TestJob("Heavy node second job",350),
+		new Portakal::TestJob("Heavy node second job",350),
+		new Portakal::TestJob("Heavy node second job",350),
+		new Portakal::TestJob("Heavy node second job",350)
+		}
+	);
+
+	pJobPool->SubmitJobFiber(pFiber);
+	pJobPool->SubmitJobFiber(pFiber2);
+	pJobPool->SubmitJobFiber(pFiber3);
+	
+
+	pJobPool->SubmitJob<Portakal::TestJob>("Standalone job 0",350);
+	pJobPool->SubmitJob<Portakal::TestJob>("Standalone job 1",350);
+	pJobPool->SubmitJob<Portakal::TestJob>("Standalone job 2",350);
+	pJobPool->SubmitJob<Portakal::TestJob>("Standalone job 3",350);
+	pJobPool->SubmitJob<Portakal::TestJob>("Standalone job 4",350);
+	pJobPool->SubmitJob<Portakal::TestJob>("Standalone job 5",350);
+	pJobPool->SubmitJob<Portakal::TestJob>("Standalone job 6",350);
 
 
 	//Portakal::PlatformThread::Create<Portakal::TestJob>(2,"Job 0");

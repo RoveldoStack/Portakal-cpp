@@ -2,12 +2,13 @@
 #include <Runtime/Job/Job.h>
 #include <Runtime/Containers/Array.h>
 #include <Runtime/Platform/PlatformThread.h>
-#include <Runtime/Platform/PlatformMutex.h>
+#include <Runtime/Platform/PlatformCriticalSection.h>
 #include <Runtime/Event/Delegate.h>
+#include <Runtime/Job/JobFiber.h>
 
 namespace Portakal
 {
-	class JobPoolJob;
+	class JobPoolWorkerThread;
 
 	/// <summary>
 	/// Job pool authoring class
@@ -43,26 +44,46 @@ namespace Portakal
 		/// <typeparam name="...TParameters"></typeparam>
 		/// <param name="...parameters"></param>
 		template<typename TClass,typename... TParameters>
-		void Submit(TParameters... parameters)
+		void SubmitJob(TParameters... parameters)
 		{
 			TClass* pJob = new TClass(parameters...);
 
-			SubmitJob(pJob);
+			SubmitTargetJob(pJob);
 		}
 
 		/// <summary>
-		/// Submits external jobs, but takes the ownership of the jbo
+		/// Submits external jobs, but takes the ownership of the job
 		/// </summary>
 		/// <param name="pJob"></param>
-		void SubmitJob(Job* pJob);
+		void SubmitTargetJob(Job* pJob);
+
+		/// <summary>
+		/// Submits anew fiber
+		/// </summary>
+		/// <param name="pFiber"></param>
+		void SubmitJobFiber(JobFiber* pFiber);
 	private:
-		void SignalThreadJobFinished(JobPoolJob* pThread);
+		struct FiberEntry
+		{
+			JobFiber* pFiber;
+			Array<JobPoolWorkerThread*> IdleThreads;
+			Array<JobPoolWorkerThread*> BusyThreads;
+		};
 	private:
-		Array<JobPoolJob*> mBusyThreads;
-		Array<JobPoolJob*> mIdleThreads;
+		void SignalThreadJobFinished(JobPoolWorkerThread* pThread,Job* pJob);
+		void SignalFiberThreadJobFinished(JobPoolWorkerThread* pThread,JobFiber* pFiber,Job* pJob);
+		void DispatchFiber(JobFiber* pFiber);
+		FiberEntry* GetFiberEntry(JobFiber* pFiber);
+		void RemoveFiberEntry(JobFiber* pFiber);
+		void PopulateFibers();
+	
+	private:
+		Array<JobPoolWorkerThread*> mBusyThreads;
+		Array<JobPoolWorkerThread*> mIdleThreads;
 		Array<Job*> mQueuedJobs;
+		Array<FiberEntry> mFibers;
 		Delegate<void,PlatformThread*> mSignalDelegate;
-		PlatformMutex* mMutex;
+		PlatformCriticalSection* mCriticalSection;
 		const unsigned int mThreadCount;
 	};
 }

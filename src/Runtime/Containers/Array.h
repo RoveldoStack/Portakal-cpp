@@ -570,6 +570,9 @@ namespace Portakal
 	template<typename TValue>
 	void Array<TValue>::RemoveIndex(unsigned int index)
 	{
+		if (mCursor == 0)
+			return;
+
 		/*
 		* Shift elements
 		*/

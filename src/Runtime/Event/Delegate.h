@@ -2,8 +2,11 @@
 #include <functional>
 #define GENERATE_DELEGATE(function) std::bind(&function,std::placeholders::_1)
 #define GENERATE_DELEGATE_PARAMETERLESS(function) std::bind(&function)
-#define GENERATE_MEMBER_DELEGATE(object,function,rType,...) Delegate<rType,__VA_ARGS__>(std::bind(&function,object,std::placeholders::_1))
-#define GENERATE_MEMBER_DELEGATE_PARAMETERLESS(object,function) std::bind(&function,object)
+#define GENERATE_MEMBER_DELEGATE0(object,function) std::bind(&function,object)
+#define GENERATE_MEMBER_DELEGATE1(object,function,rType,...) Delegate<rType,__VA_ARGS__>(std::bind(&function,object,std::placeholders::_1))
+#define GENERATE_MEMBER_DELEGATE2(object,function,rType,...) Delegate<rType,__VA_ARGS__>(std::bind(&function,object,std::placeholders::_1,std::placeholders::_2))
+#define GENERATE_MEMBER_DELEGATE3(object,function,rType,...) Delegate<rType,__VA_ARGS__>(std::bind(&function,object,std::placeholders::_1,std::placeholders::_2,std::placeholders::_3))
+
 
 namespace Portakal
 {

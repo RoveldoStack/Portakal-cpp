@@ -4,15 +4,20 @@
 namespace Portakal
 {
 	class PlatformThread;
+	class PlatformCriticalSection;
 	/// <summary>
 	/// Simple executable job on other threads
 	/// </summary>
 	class PORTAKAL_API Job
 	{
 		friend class PlatformThread;
+		friend class JobPool;
 	public:
-		Job() : mOwnerThread(nullptr) {}
+		Job();
 		virtual ~Job() = default;
+
+		FORCEINLINE bool IsWorking();
+		FORCEINLINE bool IsFinished();
 
 		/// <summary>
 		/// Job run method
@@ -26,7 +31,12 @@ namespace Portakal
 		FORCEINLINE PlatformThread* GetOwnerThread() const noexcept { return mOwnerThread; }
 	private:
 		void _SetOwnerThread(PlatformThread* pThread) { mOwnerThread = pThread; }
+		void _SetWorkingState(const bool bState);
+		void _MarkFinished();
 	private:
 		PlatformThread* mOwnerThread;
+		PlatformCriticalSection* mCriticalSection;
+		bool mWorking;
+		bool mFinished;
 	};
 }
