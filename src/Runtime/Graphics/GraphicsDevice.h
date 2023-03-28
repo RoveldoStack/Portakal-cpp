@@ -41,6 +41,8 @@ namespace Portakal
 	struct StandaloneGraphicsDeviceCreateDesc;
 	struct WindowedGraphicsDeviceCreateDesc;
 
+	class Fence;
+
 	/// <summary>
 	/// Represents a both physical and logical graphics device, it may only target one physical device!
 	/// </summary>
@@ -132,11 +134,19 @@ namespace Portakal
 		ResourceTable* CreateResourceTable(const ResourceTableCreateDesc& desc);
 
 		/// <summary>
+		/// Creates anew fence
+		/// </summary>
+		/// <returns></returns>
+		Fence* CreateFence();
+
+		/// <summary>
 		/// Updates the target buffer
 		/// </summary>
 		/// <param name="pBuffer"></param>
 		/// <param name="desc"></param>
 		void UpdateBuffer(GraphicsBuffer* pBuffer, const GraphicsBufferUpdateDesc& desc);
+
+		void SignalFence();
 
 		/// <summary>
 		/// Waits for the device to be come idle
@@ -206,6 +216,7 @@ namespace Portakal
 		virtual Pipeline* CreateGraphicsPipelineCore(const GraphicsPipelineCreateDesc& desc) = 0;
 		virtual Pipeline* CreateComputePipelineCore(const ComputePipelineCreateDesc& desc) = 0;
 		virtual ResourceTable* CreateResourceTableCore(const ResourceTableCreateDesc& desc) = 0;
+		virtual Fence* CreateFenceCore() = 0;
 
 		virtual void UpdateBufferCore(GraphicsBuffer* pBuffer, const GraphicsBufferUpdateDesc& desc) = 0;
 

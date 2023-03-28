@@ -19,7 +19,6 @@ namespace Portakal
 		*/
 		IDXGIFactory4* pFactory = pDevice->GetDXFactory();
 		ID3D12CommandQueue* pCmdQueue = pDevice->GetDXGraphicsCmdQueue();
-		ID3D12CommandAllocator* pCmdAllocator = pDevice->GetDXGraphicsCmdAllocator();
 		ID3D12Device* pDX12Device = pDevice->GetDXDevice();
 
 		DXGI_MODE_DESC modeDesc = {};

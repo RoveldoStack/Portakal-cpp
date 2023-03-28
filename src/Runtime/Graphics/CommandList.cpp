@@ -8,6 +8,8 @@ namespace Portakal
 {
 	void CommandList::Lock()
 	{
+		//mCriticalSection->Lock();
+
 		ClearCachedState();
 
 		LockCore();
@@ -18,6 +20,8 @@ namespace Portakal
 		UnlockCore();
 
 		mLock = false;
+
+		//mCriticalSection->Release();
 	}
 	void CommandList::BindPipeline(Pipeline* pPipeline)
 	{
@@ -33,7 +37,7 @@ namespace Portakal
 	}
 	void CommandList::SetViewports(const Array<ViewportDesc>& viewports)
 	{
-		CheckBoundFramebuffer();
+		//CheckBoundFramebuffer();
 
 		SetViewportsCore(viewports);
 
@@ -47,7 +51,7 @@ namespace Portakal
 	}
 	void CommandList::SetScissors(const Array<ScissorDesc>& scissors)
 	{
-		CheckBoundFramebuffer();
+		//CheckBoundFramebuffer();
 
 		SetScissorsCore(scissors);
 
@@ -61,25 +65,25 @@ namespace Portakal
 	}
 	void CommandList::ClearColor(const unsigned int index, const ColorRgba& color)
 	{
-		CheckBoundFramebuffer();
+		//CheckBoundFramebuffer();
 
 		ClearColorCore(index, color);
 	}
 	void CommandList::ClearColor(const unsigned int index, const ColorRgbaF& color)
 	{
-		CheckBoundFramebuffer();
+		//CheckBoundFramebuffer();
 
 		ClearColorCore(index, color);
 	}
 	void CommandList::ClearDepth(const float depth)
 	{
-		CheckBoundFramebuffer();
+		//CheckBoundFramebuffer();
 
 		ClearDepthCore(depth);
 	}
 	void CommandList::ClearStencil(const int stencil)
 	{
-		CheckBoundFramebuffer();
+		//CheckBoundFramebuffer();
 
 		ClearStencilCore(stencil);
 	}
@@ -125,6 +129,13 @@ namespace Portakal
 		CheckBoundVertexIndexBuffer();
 
 		DrawIndexedCore(indexCount);
+	}
+	CommandList::CommandList(const CommandListCreateDesc& desc, const CommandQueueType queueType) : mBoundPipeline(nullptr), mBoundFramebuffer(nullptr), mBoundVertexBuffer(nullptr), mBoundIndexBuffer(nullptr), mQueueType(queueType), mLock(false) 
+	{
+		mCriticalSection = PlatformCriticalSection::Create();
+	}
+	CommandList::~CommandList()
+	{
 	}
 	void CommandList::CheckBoundFramebuffer()
 	{

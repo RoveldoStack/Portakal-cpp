@@ -26,6 +26,7 @@ namespace Portakal
     }
     void DX12GraphicsCommandList::LockCore()
     {
+
         ASSERT(SUCCEEDED(mCmdList->Reset(mAllocator, nullptr)), "DX12CommandList", "Failed to reset the command buffer");
     }
     void DX12GraphicsCommandList::UnlockCore()

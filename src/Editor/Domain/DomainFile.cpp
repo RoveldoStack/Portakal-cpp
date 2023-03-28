@@ -31,6 +31,13 @@ namespace Portakal
 
         return mResource->IsLoaded();
     }
+    void DomainFile::LoadAsync()
+    {
+        if (IsLoaded())
+            return;
+
+        mResource->LoadAsync();
+    }
     void DomainFile::LoadSync()
     {
         if (IsLoaded())

@@ -7,6 +7,7 @@
 #include <Runtime/Graphics/TextureUpdateDesc.h>
 #include <Runtime/Graphics/CommandQueueType.h>
 #include <Runtime/Math/Color4.h>
+#include <Runtime/Platform/PlatformCriticalSection.h>
 
 namespace Portakal
 {
@@ -150,8 +151,8 @@ namespace Portakal
 		/// <param name="indexCount"></param>
 		FORCEINLINE void DrawIndexed(const unsigned int indexCount);
 	protected:
-		CommandList(const CommandListCreateDesc& desc,const CommandQueueType queueType) : mBoundPipeline(nullptr), mBoundFramebuffer(nullptr), mBoundVertexBuffer(nullptr), mBoundIndexBuffer(nullptr),mQueueType(queueType),mLock(false) {}
-		virtual ~CommandList() {}
+		CommandList(const CommandListCreateDesc& desc, const CommandQueueType queueType);
+		virtual ~CommandList();
 
 		/// <summary>
 		/// Returns the currently bound pipeline
@@ -247,6 +248,7 @@ namespace Portakal
 		Array<ViewportDesc> mBoundViewports;
 		Array<ScissorDesc> mBoundScissors;
 		CommandQueueType mQueueType;
+		PlatformCriticalSection* mCriticalSection;
 		bool mLock;
 	};
 }

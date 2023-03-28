@@ -5,9 +5,49 @@
 #include <Runtime/Resource/CustomResourceSerializerAttribute.h>
 #include <Runtime/Assert/Assert.h>
 #include <Runtime/Resource/Scene/SceneSerializer.h>
-
+#include <Runtime/Resource/ResourceLoadJob.h>
 namespace Portakal
 {
+    ResourceSubObject* Resource::GetSubObject() const noexcept
+    {
+        mCriticalSection->Lock();
+        ResourceSubObject* pObject = mSubObject;
+        mCriticalSection->Release();
+
+        return pObject;
+    }
+    bool Resource::IsLoaded() const noexcept
+    {
+        mCriticalSection->Lock();
+        const bool state = mLoaded;
+        mCriticalSection->Release();
+
+        return state;
+    }
+    bool Resource::IsCached() const noexcept
+    {
+        mCriticalSection->Lock();
+        const bool state = mCached;
+        mCriticalSection->Release();
+        return state;
+    }
+    void Resource::LoadAsync()
+    {
+        if (IsLoaded())
+            return;
+        if (mSerializer == nullptr)
+            return;
+        if (mJob != nullptr)
+            return;
+
+        mJob = new ResourceLoadJob(mSerializer, mAbsolutePath, mByteOffset, mSize, GENERATE_MEMBER_DELEGATE1(this, Resource::OnResourceLoadedAsync, void, ResourceSubObject*));
+
+        PlatformThread::Create(mJob, 2);
+    }
+    void Resource::UnloadAsync()
+    {
+
+    }
     void Resource::LoadSync()
     {
         /*
@@ -82,7 +122,7 @@ namespace Portakal
         mCached = false;
     }
     Resource::Resource(const String& path,const ResourceDescriptor& descriptor,const bool bCompressed)
-        : mSubObject(nullptr),mLoaded(false),mCompressed(bCompressed),mSerializer(nullptr),mCached(false)
+        : mSubObject(nullptr),mLoaded(false),mCompressed(bCompressed),mSerializer(nullptr),mCached(false),mJob(nullptr)
     {
         /*
         * Get custom resource serializer
@@ -123,6 +163,7 @@ namespace Portakal
         /*
         * Setup
         */
+        mCriticalSection = PlatformCriticalSection::Create();
         mAbsolutePath = path;
         mType = descriptor.ResourceType;
         mID = descriptor.ID;
@@ -156,5 +197,21 @@ namespace Portakal
 
         mSubObject = nullptr;
         mLoaded = false;
+    }
+    void Resource::OnResourceLoadedAsync(ResourceSubObject* pObject)
+    {
+        LOG("Resource", "Loaded async resource");
+        mCriticalSection->Lock();
+
+        pObject->_SetOwnerResource(this);
+        pObject->SetTagName(mName);
+        pObject->OverrideID(mID);
+
+        mSubObject = pObject;
+        mLoaded = pObject != nullptr;
+        delete mJob;
+        mJob = nullptr;
+
+        mCriticalSection->Release();
     }
 }

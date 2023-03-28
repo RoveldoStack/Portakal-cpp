@@ -3,6 +3,7 @@
 #include <Editor/Renderer/ImGuiAPI.h>
 #include <Runtime/Window/Window.h>
 #include <Editor/Renderer/DX12ImGuiRenderer.h>
+#include <Editor/Renderer/DX11ImGuiRenderer.h>
 #include <Runtime/Input/Keys.h>
 #include <Runtime/Log/Log.h>
 #include <Runtime/Window/WindowEvents.h>
@@ -17,6 +18,7 @@ namespace Portakal
 		{
 			case Portakal::GraphicsBackend::Directx11:
 			{
+				pRenderer = new DX11ImGuiRenderer(pDevice);
 				break;
 			}
 			case Portakal::GraphicsBackend::Directx12:

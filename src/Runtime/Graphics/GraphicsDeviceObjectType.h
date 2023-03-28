@@ -16,6 +16,7 @@ namespace Portakal
 		ResourceTable,
 		CommandList,
 		Pipeline,
-		Swapchain
+		Swapchain,
+		Fence
 	};
 }

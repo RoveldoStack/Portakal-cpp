@@ -21,6 +21,7 @@ namespace Portakal
 	{
 		if (mTable != nullptr)
 			mTable->DeleteDeviceObject();
+
 		mTable = nullptr;
 	}
 }

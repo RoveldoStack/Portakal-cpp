@@ -34,7 +34,7 @@ namespace Portakal
 		desc.Width = width;
 		desc.Height = height;
 		desc.Depth = depth == 0 ? 1 : depth;
-		desc.MipLevels = 0;
+		desc.MipLevels = 1;
 		desc.ArrayLevels = 1;
 		desc.SampleCount = 1;
 
@@ -73,7 +73,7 @@ namespace Portakal
 		desc.Width = result.Width;
 		desc.Height = result.Height;
 		desc.Depth = result.Depth == 0 ? 1 : result.Depth;
-		desc.MipLevels = 0;
+		desc.MipLevels = 1;
 		desc.ArrayLevels = 1;
 		desc.SampleCount = 1;
 

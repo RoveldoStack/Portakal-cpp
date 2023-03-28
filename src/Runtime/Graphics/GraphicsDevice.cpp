@@ -8,6 +8,8 @@
 #include <Runtime/Graphics/Swapchain.h>
 #include <Runtime/Window/Window.h>
 #include <Runtime/DX12/DX12Device.h>
+#include <Runtime/DX11/DX11Device.h>
+
 #include "GraphicsDeviceAPI.h"
 namespace Portakal
 {
@@ -26,7 +28,10 @@ namespace Portakal
 		switch (desc.Backend)
 		{
 			case Portakal::GraphicsBackend::Directx11:
+			{
+				pDevice = new DX11Device(desc);
 				break;
+			}
 			case Portakal::GraphicsBackend::Directx12:
 			{
 				pDevice = new DX12Device(desc);
@@ -175,6 +180,14 @@ namespace Portakal
 		RegisterChildObject(pTable);
 
 		return pTable;
+	}
+	Fence* GraphicsDevice::CreateFence()
+	{
+		Fence* pFence = CreateFenceCore();
+
+		RegisterChildObject(pFence);
+
+		return pFence;
 	}
 	void GraphicsDevice::UpdateBuffer(GraphicsBuffer* pBuffer, const GraphicsBufferUpdateDesc& desc)
 	{

@@ -8,3 +8,4 @@
 #include <Runtime/DX12/DX12GraphicsCommandList.h>
 #include <Runtime/DX12/DX12GraphicsPipeline.h>
 #include <Runtime/DX12/DX12ResourceTable.h>
+#include <Runtime/DX12/DX12Fence.h>

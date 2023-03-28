@@ -8,3 +8,4 @@
 #include <Runtime/Graphics/CommandList.h>
 #include <Runtime/Graphics/ResourceTable.h>
 #include <Runtime/Graphics/Swapchain.h>
+#include <Runtime/Graphics/Fence.h>

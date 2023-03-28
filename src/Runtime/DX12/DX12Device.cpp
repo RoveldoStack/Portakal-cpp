@@ -81,6 +81,10 @@ namespace Portakal
 	{
 		return new DX12ResourceTable(desc,this);
 	}
+	Fence* DX12Device::CreateFenceCore()
+	{
+		return new DX12Fence(this);
+	}
 	void DX12Device::UpdateBufferCore(GraphicsBuffer* pBuffer, const GraphicsBufferUpdateDesc& desc)
 	{
 	}
@@ -147,6 +151,7 @@ namespace Portakal
 		{
 			mComputeCmdQueue->ExecuteCommandLists(computeList.GetCursor(), computeList.GetData());
 		}
+
 	}
 	void DX12Device::CreateDevice()
 	{

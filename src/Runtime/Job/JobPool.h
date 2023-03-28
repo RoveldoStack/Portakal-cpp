@@ -44,18 +44,20 @@ namespace Portakal
 		/// <typeparam name="...TParameters"></typeparam>
 		/// <param name="...parameters"></param>
 		template<typename TClass,typename... TParameters>
-		void SubmitJob(TParameters... parameters)
+		TClass* SubmitJob(TParameters... parameters)
 		{
 			TClass* pJob = new TClass(parameters...);
 
 			SubmitTargetJob(pJob);
+
+			return pJob;
 		}
 
 		/// <summary>
 		/// Submits external jobs, but takes the ownership of the job
 		/// </summary>
 		/// <param name="pJob"></param>
-		void SubmitTargetJob(Job* pJob);
+		Job* SubmitTargetJob(Job* pJob);
 
 		/// <summary>
 		/// Submits anew fiber

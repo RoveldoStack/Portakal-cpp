@@ -56,13 +56,13 @@ namespace Portakal
 	
 		return value;
 	}
-	void JobPool::SubmitTargetJob(Job* pJob)
+	Job* JobPool::SubmitTargetJob(Job* pJob)
 	{
 		/*
 		* Validate for finished state
 		*/
 		if (pJob->IsFinished())
-			return;
+			return nullptr;
 
 		mCriticalSection->Lock();
 		if (mIdleThreads.GetCursor() == 0)
@@ -81,6 +81,8 @@ namespace Portakal
 			mBusyThreads.Add(pThread);
 		}
 		mCriticalSection->Release();
+
+		return pJob;
 	}
 
 	void JobPool::SubmitJobFiber(JobFiber* pFiber)

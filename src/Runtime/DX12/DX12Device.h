@@ -1,5 +1,6 @@
 #pragma once
 #include <Runtime/Graphics/GraphicsDevice.h>
+#include <Runtime/Platform/PlatformCriticalSection.h>
 #include <Runtime/Core/Core.h>
 #include <Runtime/DX12/Core.h>
 #include <d3d12.h>
@@ -22,7 +23,6 @@ namespace Portakal
 		FORCEINLINE ID3D12CommandQueue* GetDXComputeCmdQueue() const noexcept { return mComputeCmdQueue.Get(); }
 		FORCEINLINE ID3D12CommandAllocator* GetDXGraphicsCmdAllocator() const noexcept { return mGraphicsCmdAllocator.Get(); }
 		FORCEINLINE ID3D12CommandAllocator* GetDXComputeCmdAllocator() const noexcept { return mComputeCmdAllocator.Get(); }
-
 		Texture* CreateSwapchainTexture(const DXPTR<ID3D12Resource>& resource, const TextureCreateDesc& desc);
 		Framebuffer* CreateSwapchainFramebuffer(const FramebufferCreateDesc& desc, const DXPTR<ID3D12DescriptorHeap> colorHeap, const DXPTR<ID3D12DescriptorHeap> depthStencilHeap);
 
@@ -40,6 +40,7 @@ namespace Portakal
 		virtual Pipeline* CreateGraphicsPipelineCore(const GraphicsPipelineCreateDesc& desc) override;
 		virtual Pipeline* CreateComputePipelineCore(const ComputePipelineCreateDesc& desc) override;
 		virtual ResourceTable* CreateResourceTableCore(const ResourceTableCreateDesc& desc) override;
+		virtual Fence* CreateFenceCore() override;
 		virtual void UpdateBufferCore(GraphicsBuffer* pBuffer, const GraphicsBufferUpdateDesc& desc) override;
 		virtual void WaitForFinishCore() override;
 		virtual void SubmitCommandsCore(const Array<CommandList*>& cmdBuffers) override;

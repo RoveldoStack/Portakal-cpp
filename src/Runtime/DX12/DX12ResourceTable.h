@@ -15,13 +15,14 @@ namespace Portakal
 		FORCEINLINE ID3D12DescriptorHeap* GetDXSamplerHeap() const noexcept { return mSamplerHeap.Get(); }
 
 	private:
+		// Inherited via GraphicsResourceTable
+		virtual void OnDestroy() override;
+		// Inherited via ResourceTable
+		virtual void* GetHandle() const noexcept override;
+
+	private:
 		DXPTR<ID3D12DescriptorHeap> mCbvSrvUavHeap;
 		DXPTR<ID3D12DescriptorHeap> mSamplerHeap;
 
-		// Inherited via GraphicsResourceTable
-		virtual void OnDestroy() override;
-
-		// Inherited via ResourceTable
-		virtual void* GetHandle() const noexcept override;
 	};
 }

@@ -9,7 +9,7 @@ namespace Portakal
 	TextureResource* TextureAssetVisualizer::OnPaint(DomainFile* pFile)
 	{
 		if (!pFile->IsLoaded())
-			pFile->LoadSync();
+			pFile->LoadAsync();
 
 		TextureResource* pTexture = (TextureResource*)pFile->GetResource()->GetSubObject();
 

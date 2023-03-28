@@ -105,6 +105,8 @@ namespace Portakal
 		/// <returns></returns>
 		FORCEINLINE bool IsLoaded() const noexcept;
 
+		void LoadAsync();
+
 		/// <summary>
 		/// Loads sync
 		/// </summary>
