@@ -9,10 +9,10 @@
 #include <Runtime/Job/JobSystem.h>
 namespace Portakal
 {
-    ResourceSubObject* Resource::GetSubObject() const noexcept
+    SharedHeap<ResourceSubObject> Resource::GetSubObject() const noexcept
     {
         mCriticalSection->Lock();
-        ResourceSubObject* pObject = mSubObject;
+        SharedHeap<ResourceSubObject> pObject = mSubObject;
         mCriticalSection->Release();
 
         return pObject;
@@ -34,23 +34,73 @@ namespace Portakal
     }
     void Resource::LoadAsync()
     {
+        /*
+        * Return if already loaded
+        */
         if (IsLoaded())
             return;
-        if (mSerializer == nullptr)
-            return;
+
+        /*
+        * Validate and return if there's an alread working job
+        */
         mCriticalSection->Lock();
-        const bool bHasJob = mJob != nullptr;
-        mCriticalSection->Release();
-        if (bHasJob)
+        if (mLoadJob != nullptr && mLoadJob->IsFinished())
+        {
+            delete mLoadJob;
+            mLoadJob = nullptr;
+        }
+        if (mLoadJob != nullptr)
+        {
+            mCriticalSection->Release();
             return;
+        }
 
-        mJob = new ResourceLoadJob(mSerializer, mAbsolutePath, mByteOffset, mSize, GENERATE_MEMBER_DELEGATE1(this, Resource::OnResourceLoadedAsync, void, ResourceSubObject*));
+        /*
+        * Validate if this resource has a serializer
+        */
+        if (mSerializer == nullptr)
+        {
+            mCriticalSection->Release();
+            return;
+        }
 
-        JobSystem::Schedule(mJob);
+        mLoadJob = new ResourceLoadJob(mSerializer, mAbsolutePath, mByteOffset, mSize, GENERATE_MEMBER_DELEGATE1(this, Resource::OnResourceLoadedAsync, void, ResourceSubObject*));
+
+        JobSystem::Schedule(mLoadJob);
+
+        mCriticalSection->Release();
     }
     void Resource::UnloadAsync()
     {
+        /*
+        * Validate if loaded
+        */
+        if (!IsLoaded())
+            return;
 
+        /*
+        * Validate if there is an ungoing job
+        */
+        mCriticalSection->Lock();
+        if (mLoadJob != nullptr && mLoadJob->IsFinished())
+        {
+            delete mLoadJob;
+            mLoadJob = nullptr;
+        }
+        if (mLoadJob != nullptr)
+        {
+            mCriticalSection->Release();
+            return;
+        }
+
+        /*
+        * Create job
+        */
+        mUnloadJob = nullptr;
+
+        JobSystem::Schedule(mUnloadJob);
+
+        mCriticalSection->Release();
     }
     void Resource::LoadSync()
     {
@@ -103,7 +153,7 @@ namespace Portakal
         /*
         * Delete the resource
         */
-        delete mSubObject;
+        mSubObject.Reset();
         mSubObject = nullptr;
         mLoaded = false;
     }
@@ -126,7 +176,7 @@ namespace Portakal
         mCached = false;
     }
     Resource::Resource(const String& path,const ResourceDescriptor& descriptor,const bool bCompressed)
-        : mSubObject(nullptr),mLoaded(false),mCompressed(bCompressed),mSerializer(nullptr),mCached(false),mJob(nullptr)
+        : mSubObject(nullptr),mLoaded(false),mCompressed(bCompressed),mSerializer(nullptr),mCached(false), mLoadJob(nullptr),mUnloadJob(nullptr)
     {
         /*
         * Get custom resource serializer
@@ -197,9 +247,9 @@ namespace Portakal
         */
         mSubObject->Destroy();
 
-        delete mSubObject;
-
+        mSubObject.Reset();
         mSubObject = nullptr;
+
         mLoaded = false;
     }
     void Resource::OnResourceLoadedAsync(ResourceSubObject* pObject)
@@ -212,9 +262,6 @@ namespace Portakal
 
         mSubObject = pObject;
         mLoaded = pObject != nullptr;
-
-        //delete mJob;
-        mJob = nullptr;
 
         mCriticalSection->Release();
     }

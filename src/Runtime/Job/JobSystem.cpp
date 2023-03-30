@@ -62,6 +62,7 @@ namespace Portakal
 	void JobSystem::_Schedule(Job* pJob)
 	{
 		mBarrier->Lock();
+
 		/*
 		* If queue is not empty then simply register job to the queue
 		*/

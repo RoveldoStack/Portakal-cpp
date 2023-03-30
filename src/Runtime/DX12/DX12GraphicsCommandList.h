@@ -27,6 +27,7 @@ namespace Portakal
 		virtual void SetIndexBufferCore(GraphicsBuffer* pBuffer) override;
 		virtual void CommitResourceTableCore(const unsigned int slotIndex, const ResourceTable* pTable) override;
 		virtual void DrawIndexedCore(const unsigned int indexCount) override;
+		virtual void DispatchCore(const unsigned int sizeX, const unsigned int sizeY, const unsigned int sizeZ) override;
 		virtual void UpdateBufferCore(const GraphicsBufferUpdateDesc& desc, GraphicsBuffer* pBuffer) override;
 		virtual void UpdateTextureCore(const TextureUpdateDesc& desc, Texture* pTexture) override;
 		virtual void ClearCachedStateCore() override;
@@ -40,6 +41,5 @@ namespace Portakal
 
 		// Inherited via CommandList
 		virtual void OnDestroy() override;
-
 	};
 }

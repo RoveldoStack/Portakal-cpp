@@ -22,8 +22,8 @@ namespace Portakal
 		if (!pFile->IsLoaded())
 			pFile->LoadSync();
 
-		TextureResource* pTexture = (TextureResource*)pFile->GetResource()->GetSubObject();
-		if (pTexture == nullptr)
+		SharedHeap<TextureResource> pTexture = pFile->GetResource()->GetSubObject();
+		if (pTexture.GetHeap() == nullptr)
 		{
 			return;
 		}
@@ -34,7 +34,7 @@ namespace Portakal
 		const Vector2F dimension = { pTexture->GetWidth() * multiplier,pTexture->GetHeight() * multiplier };
 
 		ImGui::Text("Texture auth tool");
-		ImGuiTextureBinding* pBinding = ImGuiAPI::GetDefaultRenderer()->GetOrCreateTextureBinding(pTexture);
+		ImGuiTextureBinding* pBinding = ImGuiAPI::GetDefaultRenderer()->GetOrCreateTextureBinding(pTexture.GetHeap());
 		ImGui::Image(pBinding->GetTable()->GetHandle(), {dimension.X,dimension.Y});
 
 	}

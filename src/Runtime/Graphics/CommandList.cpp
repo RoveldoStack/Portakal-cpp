@@ -130,7 +130,11 @@ namespace Portakal
 
 		DrawIndexedCore(indexCount);
 	}
-	CommandList::CommandList(const CommandListCreateDesc& desc, const CommandQueueType queueType) : mBoundPipeline(nullptr), mBoundFramebuffer(nullptr), mBoundVertexBuffer(nullptr), mBoundIndexBuffer(nullptr), mQueueType(queueType), mLock(false) 
+	void CommandList::Dispatch(const unsigned int sizeX, const unsigned int sizeY, const unsigned int sizeZ)
+	{
+		DispatchCore(sizeX, sizeY, sizeZ);
+	}
+	CommandList::CommandList(const CommandListCreateDesc& desc, const CommandQueueType queueType) : mBoundPipeline(nullptr), mBoundFramebuffer(nullptr), mBoundVertexBuffer(nullptr), mBoundIndexBuffer(nullptr), mQueueType(queueType), mLock(false)
 	{
 		mCriticalSection = PlatformCriticalSection::Create();
 	}

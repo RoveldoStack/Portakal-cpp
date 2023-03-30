@@ -356,6 +356,10 @@ namespace Portakal
     {
         mContext->DrawIndexed(indexCount, 0, 0);
     }
+    void DX11CommandList::DispatchCore(const unsigned int sizeX, const unsigned int sizeY, const unsigned int sizeZ)
+    {
+        mContext->Dispatch(sizeX, sizeY, sizeZ);
+    }
     void DX11CommandList::UpdateBufferCore(const GraphicsBufferUpdateDesc& desc, GraphicsBuffer* pBuffer)
     {
         DX11Buffer* pDX11Buffer = (DX11Buffer*)pBuffer;
@@ -390,4 +394,5 @@ namespace Portakal
     {
 
     }
+  
 }

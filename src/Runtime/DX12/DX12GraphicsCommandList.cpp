@@ -306,6 +306,10 @@ namespace Portakal
     {
         mCmdList->DrawIndexedInstanced(indexCount, 1, 0, 0, 0);
     }
+    void DX12GraphicsCommandList::DispatchCore(const unsigned int sizeX, const unsigned int sizeY, const unsigned int sizeZ)
+    {
+        mCmdList->Dispatch(sizeX, sizeY, sizeZ);
+    }
     void DX12GraphicsCommandList::UpdateBufferCore(const GraphicsBufferUpdateDesc& desc, GraphicsBuffer* pBuffer)
     {
 
@@ -502,4 +506,5 @@ namespace Portakal
         mCmdList.Reset();
         mAllocator = nullptr;
     }
+   
 }

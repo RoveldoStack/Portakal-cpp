@@ -150,6 +150,14 @@ namespace Portakal
 		/// </summary>
 		/// <param name="indexCount"></param>
 		FORCEINLINE void DrawIndexed(const unsigned int indexCount);
+
+		/// <summary>
+		/// Dispatches compute shader
+		/// </summary>
+		/// <param name="sizeX"></param>
+		/// <param name="sizeY"></param>
+		/// <param name="sizeZ"></param>
+		void Dispatch(const unsigned int sizeX, const unsigned int sizeY, const unsigned int sizeZ);
 	protected:
 		CommandList(const CommandListCreateDesc& desc, const CommandQueueType queueType);
 		virtual ~CommandList();
@@ -210,7 +218,7 @@ namespace Portakal
 		FORCEINLINE virtual void CommitResourceTableCore(const unsigned int slotIndex, const ResourceTable* pTable) = 0;
 
 		FORCEINLINE virtual void DrawIndexedCore(const unsigned int indexCount) = 0;
-
+		FORCEINLINE virtual void DispatchCore(const unsigned int sizeX, const unsigned int sizeY, const unsigned int sizeZ) = 0;
 		FORCEINLINE virtual void UpdateBufferCore(const GraphicsBufferUpdateDesc& desc, GraphicsBuffer* pBuffer) = 0;
 		FORCEINLINE virtual void UpdateTextureCore(const TextureUpdateDesc& desc, Texture* pTexture) = 0;
 

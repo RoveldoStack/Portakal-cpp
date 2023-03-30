@@ -1,8 +1,10 @@
 #pragma once
 #include <Runtime/Core/Core.h>
+#include <Runtime/Platform/PlatformCriticalSection.h>
 
 namespace Portakal
 {
+	class ResourceSubObject;
 	/// <summary>
 	/// Simple smart shader ptr implementation
 	/// </summary>
@@ -13,18 +15,44 @@ namespace Portakal
 	public:
 		SharedHeap(TType* pHeap)
 		{
-			CreateNew(pHeap);
+			mHeap = pHeap;
+			mRefCount = new unsigned int(1);
 		}
-		SharedHeap(const SharedHeap<TType>& target)
+		SharedHeap(const SharedHeap& target)
 		{
+			if (target.mHeap == nullptr)
+			{
+				mHeap = nullptr;
+				mRefCount = nullptr;
+				return;
+			}
+
 			mHeap = target.mHeap;
-			mCount = target.mCount;
-			*mCount++;
+			mRefCount = target.mRefCount;
+			*mRefCount++;
 		}
+
+		template<typename TOther>
+		SharedHeap(const SharedHeap<TOther>& target)
+		{
+			const SharedHeap<TType>* pTemp = (const SharedHeap<TType>*)&target;
+
+			if (pTemp->mHeap == nullptr)
+			{
+				mHeap = nullptr;
+				mRefCount = nullptr;
+				return;
+			}
+
+			mHeap = pTemp->mHeap;
+			mRefCount = pTemp->mRefCount;
+			*mRefCount++;
+		}
+		
 		SharedHeap()
 		{
 			mHeap = nullptr;
-			mCount = nullptr;
+			mRefCount = nullptr;
 		}
 		~SharedHeap()
 		{
@@ -35,29 +63,37 @@ namespace Portakal
 		{
 			return mHeap;
 		}
+
 		void Reset()
 		{
-			if (mCount == nullptr)
-				return;
-
-			*mCount--;
-
-			if (mCount == 0)
+			if (mRefCount == nullptr)
 			{
-				delete mCount;
-				delete mHeap;
-				mHeap = nullptr;
-				mCount = nullptr;
+				return;
 			}
 
+			if (mRefCount == 0)
+			{
+				delete mRefCount;
+				delete mHeap;
+				mHeap = nullptr;
+				mRefCount = nullptr;
+				return;
+			}
 		}
 
 		void operator==(TType* pHeap)
 		{
+			if (pHeap == nullptr)
+			{
+				Reset();
+				return;
+			}
+
 			if (pHeap != mHeap)
 				Reset();
 
-			CreateNew(pHeap);
+			mHeap = pHeap;
+			mRefCount = new unsigned int(1);
 		}
 
 		TType* operator->() noexcept
@@ -65,15 +101,8 @@ namespace Portakal
 			return mHeap;
 		}
 
-		
-	private:
-		void CreateNew(TType* pHeap)
-		{
-			mHeap = pHeap;
-			mCount = new unsigned int(1);
-		}
 	private:
 		TType* mHeap;
-		unsigned int* mCount;
+		unsigned int* mRefCount;
 	};
 }
