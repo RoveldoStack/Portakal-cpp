@@ -31,7 +31,7 @@ namespace Portakal
 		FORCEINLINE virtual GraphicsDeviceObjectType GetDeviceObjectType() const noexcept override final { return GraphicsDeviceObjectType::Shader; }
 	protected:
 		Shader(const ShaderCreateDesc& desc) : mStage(desc.Stage), mEntryPointMethod(desc.EntryPointMethod), mSource(desc.Source) {}
-		virtual ~Shader() {}
+		~Shader() = default;
 	private:
 		const ShaderStage mStage;
 		const String mEntryPointMethod;

@@ -8,12 +8,12 @@ namespace Portakal
 	/// </summary>
 	enum class PORTAKAL_API TextureUsage : unsigned int
 	{
-		ReadOnly = 1,
-		ReadWrite = 2,
-		RenderTarget = 4,
-		DepthStencil = 8,
-		Cubemap = 16,
-		Copy = 32,
+        Sampled = 1 << 0,
+        Storage = 1 << 1,
+        RenderTarget = 1 << 2,
+        DepthStencil = 1 << 3,
+        Cubemap = 1 << 4,
+        Staging = 1 << 5,
 	};
 
 	FORCEINLINE static TextureUsage operator |(const TextureUsage a, const TextureUsage b)

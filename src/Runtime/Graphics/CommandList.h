@@ -16,7 +16,7 @@ namespace Portakal
 	class Texture;
 	class GraphicsBuffer;
 
-	class GraphicsResourceTable;
+	class ResourceTable;
 
 	/// <summary>
 	/// Represents a command buffer for recording graphics or compute commands for the gpu
@@ -129,7 +129,7 @@ namespace Portakal
 		/// </summary>
 		/// <param name="slotIndex"></param>
 		/// <param name="pTable"></param>
-		FORCEINLINE void CommitResourceTable(const unsigned int slotIndex, const GraphicsResourceTable* pTable);
+		FORCEINLINE void CommitResourceTable(const unsigned int slotIndex, const ResourceTable* pTable);
 
 		/// <summary>
 		/// Sumbits a buffer update command
@@ -207,7 +207,7 @@ namespace Portakal
 		FORCEINLINE virtual void SetVertexBufferCore(GraphicsBuffer* pBuffer) = 0;
 		FORCEINLINE virtual void SetIndexBufferCore(GraphicsBuffer* pBuffer) = 0;
 
-		FORCEINLINE virtual void CommitResourceTableCore(const unsigned int slotIndex, const GraphicsResourceTable* pTable) = 0;
+		FORCEINLINE virtual void CommitResourceTableCore(const unsigned int slotIndex, const ResourceTable* pTable) = 0;
 
 		FORCEINLINE virtual void DrawIndexedCore(const unsigned int indexCount) = 0;
 

@@ -280,7 +280,7 @@ namespace Portakal
 
         mCmdList->IASetIndexBuffer(&bufferView);
     }
-    void DX12GraphicsCommandList::CommitResourceTableCore(const unsigned int slotIndex, const GraphicsResourceTable* pTable)
+    void DX12GraphicsCommandList::CommitResourceTableCore(const unsigned int slotIndex, const ResourceTable* pTable)
     {
         const DX12ResourceTable* pDXTable = (const DX12ResourceTable*)pTable;
         ID3D12DescriptorHeap* pCbvSrvUavHeap = pDXTable->GetDXCbvSrvUavHeap();

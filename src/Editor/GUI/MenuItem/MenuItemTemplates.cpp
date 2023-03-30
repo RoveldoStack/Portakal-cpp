@@ -14,7 +14,7 @@ namespace Portakal
 	}
 	void CreateDisplayButton::OnClick()
 	{
-		RenderTarget* pRt = new RenderTarget(1024, 1024, { TextureFormat::R8_G8_B8_A8_UNorm }, TextureFormat::None, { "Test color layer" });
+		RenderTarget* pRt = new RenderTarget(256, 256, { TextureFormat::R8_G8_B8_A8_UNorm,TextureFormat::R8_G8_B8_A8_UNorm }, TextureFormat::None, { "Color0","Color1"});
 
 		Scene* pPrimalScene = SceneAPI::GetPrimalScene();
 		if (pPrimalScene == nullptr)

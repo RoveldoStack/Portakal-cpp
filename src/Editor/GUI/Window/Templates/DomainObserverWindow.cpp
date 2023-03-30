@@ -112,7 +112,7 @@ namespace Portakal
 		/*
 		* Set defaults
 		*/
-		mItemSize = { 64,64 };
+		mItemSize = { 96,96 };
 		mItemGap = { 12,12 };
 	}
 

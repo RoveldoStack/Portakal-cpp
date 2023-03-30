@@ -10,6 +10,8 @@ namespace Portakal
 	public:
 		DX11CommandList(const CommandListCreateDesc& desc, DX11Device* pDevice);
 		virtual ~DX11CommandList() override;
+
+		FORCEINLINE ID3D11CommandList* GetDXCmdList() const noexcept { return mCmdList.Get(); }
 	private:
 		virtual void OnDestroy() override;
 		virtual void LockCore() override;
@@ -24,13 +26,14 @@ namespace Portakal
 		virtual void ClearStencilCore(const int stencil) override;
 		virtual void SetVertexBufferCore(GraphicsBuffer* pBuffer) override;
 		virtual void SetIndexBufferCore(GraphicsBuffer* pBuffer) override;
-		virtual void CommitResourceTableCore(const unsigned int slotIndex, const GraphicsResourceTable* pTable) override;
+		virtual void CommitResourceTableCore(const unsigned int slotIndex, const ResourceTable* pTable) override;
 		virtual void DrawIndexedCore(const unsigned int indexCount) override;
 		virtual void UpdateBufferCore(const GraphicsBufferUpdateDesc& desc, GraphicsBuffer* pBuffer) override;
 		virtual void UpdateTextureCore(const TextureUpdateDesc& desc, Texture* pTexture) override;
 		virtual void ClearCachedStateCore() override;
 	private:
+		ComPtr<ID3D11CommandList> mCmdList;
 		ID3D11Device* mDevice;
-		ID3D11DeviceContext* mContext;
+		ComPtr<ID3D11DeviceContext> mContext;
 	};
 }

@@ -71,6 +71,7 @@ namespace Portakal
             mCmdList->BindFramebuffer(pTarget->GetFramebuffer());
 
             mCmdList->ClearColor(0,pCamera->GetClearColor());
+            mCmdList->ClearColor(1, ColorRgbaF::DarkBlue());
         }
         mCmdList->Unlock();
 

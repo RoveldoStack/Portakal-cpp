@@ -74,12 +74,14 @@ namespace Portakal
 		_ownerWindow = pOwnerWindow;
 		_standalone = false;
 		mSwapchain = nullptr;
+		mCriticalSection = PlatformCriticalSection::Create();
 	}
 	GraphicsDevice::GraphicsDevice()
 	{
 		_ownerWindow = nullptr;
 		_standalone = true;
 		mSwapchain = nullptr;
+		mCriticalSection = PlatformCriticalSection::Create();
 	}
 	
 	GraphicsDevice::~GraphicsDevice()
@@ -212,22 +214,32 @@ namespace Portakal
 	}
 	void GraphicsDevice::DeleteChildObject(GraphicsDeviceObject* pObject)
 	{
+		mCriticalSection->Lock();
 		const int index = _childObjects.FindIndex(pObject);
 
 		if (index == -1)
+		{
+			mCriticalSection->Release();
 			return;
+		}
 
 		_childObjects.RemoveIndex(index);
 
 		pObject->OnDestroy();
 
 		delete pObject;
+
+		mCriticalSection->Release();
 	}
 	void GraphicsDevice::RegisterChildObject(GraphicsDeviceObject* pObject)
 	{
+		mCriticalSection->Lock();
+
 		pObject->_SetOwnerDevice(this);
 
 		_childObjects.Add(pObject);
+
+		mCriticalSection->Release();
 	}
 	void GraphicsDevice::CreateSwapchain(const SwapchainCreateDesc& desc)
 	{
@@ -235,6 +247,8 @@ namespace Portakal
 
 		RegisterChildObject(pSwapchain);
 
+		mCriticalSection->Lock();
 		mSwapchain = pSwapchain;
+		mCriticalSection->Release();
 	}
 }

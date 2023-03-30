@@ -192,7 +192,7 @@ namespace Portakal
 	{
 		ImGuiIO& io = ImGui::GetIO();
 		io.DeltaTime = deltaTime / 1000.0f;
-
+		io.DisplaySize = { (float)mDevice->GetOwnerWindow()->GetWidth(),(float)mDevice->GetOwnerWindow()->GetHeight() };
 		StartRenderingCore();
 		ImGui::NewFrame();
 	}

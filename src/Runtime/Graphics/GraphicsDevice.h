@@ -2,6 +2,7 @@
 #include <Runtime/Core/Core.h>
 #include <Runtime/Containers/Array.h>
 #include <Runtime/Graphics/GraphicsBackend.h>
+#include <Runtime/Platform/PlatformCriticalSection.h>
 
 namespace Portakal
 {
@@ -231,6 +232,7 @@ namespace Portakal
 		void CreateSwapchain(const SwapchainCreateDesc& desc);
 	private:
 		Array<GraphicsDeviceObject*> _childObjects;
+		PlatformCriticalSection* mCriticalSection;
 		Window* _ownerWindow;
 		Swapchain* mSwapchain;
 		bool _standalone;

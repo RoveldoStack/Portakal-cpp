@@ -8,15 +8,19 @@ namespace Portakal
 	class PORTAKAL_API DX11Framebuffer : public Framebuffer
 	{
 	public:
-		DX11Framebuffer(const FramebufferCreateDesc& desc,DX11Device* pDevice);
-		DX11Framebuffer(const FramebufferCreateDesc& desc,const Array<ID3D11RenderTargetView*>& rtvs);
+		/// <summary>
+		/// Used for external framebuffer
+		/// </summary>
+		/// <param name="desc"></param>
+		/// <param name="pDevice"></param>
+		DX11Framebuffer(const FramebufferCreateDesc& desc,const bool bSwapchain,DX11Device* pDevice);
 		~DX11Framebuffer();
 
-		FORCEINLINE ID3D11RenderTargetView* GetDXSwapchainRTV() const noexcept { return mRtvs[0]; }
-
-		void SetDXRenderTargetViews(const Array<ID3D11RenderTargetView*>& rtvs);
+		FORCEINLINE Array<ID3D11RenderTargetView*> GetDXRtvs() const noexcept;
+		FORCEINLINE ID3D11DepthStencilView* GetDXDsv() const noexcept { return mDsv.Get(); }
 		virtual void OnDestroy() override;
 	private:
-		Array<ID3D11RenderTargetView*> mRtvs;
+		Array<DXPTR<ID3D11RenderTargetView>> mRtvs;
+		DXPTR<ID3D11DepthStencilView> mDsv;
 	};
 }

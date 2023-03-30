@@ -19,11 +19,12 @@ namespace Portakal
 		FORCEINLINE IDXGIFactory4* GetDXFactory() const noexcept { return mFactory.Get(); }
 		FORCEINLINE IDXGIAdapter1* GetDXAdapter() const noexcept { return mAdapter.Get(); }
 		FORCEINLINE ID3D11Device* GetDXDevice() const noexcept { return mDevice.Get(); }
-		FORCEINLINE ID3D11DeviceContext* GetDXContext() const noexcept { return mContext.Get(); }
+		FORCEINLINE ID3D11DeviceContext* GetDXImmediateContext() const noexcept { return mImmediateContext.Get(); }
 
-		Framebuffer* CreateSwapchainFramebuffer(const FramebufferCreateDesc& desc, const Array<ID3D11RenderTargetView*>& rtvs);
-		void LockContext();
-		void UnlockContext();
+		Texture* CreateSwapchainTexture(const TextureCreateDesc& desc, const DXPTR<ID3D11Resource>& texture);
+		Framebuffer* CreateSwapchainFramebuffer(const FramebufferCreateDesc& desc);
+		void LockImmediateContext();
+		void UnlockImmediateContext();
 	private:
 		virtual GraphicsBackend GetBackend() const noexcept override { return GraphicsBackend::Directx11; }
 		virtual void SwapbuffersCore() override;
@@ -42,11 +43,10 @@ namespace Portakal
 		virtual void WaitForFinishCore() override;
 		virtual void SubmitCommandsCore(const Array<CommandList*>& cmdBuffers) override;
 	private:
-		PlatformCriticalSection* mCriticalSection;
+		PlatformCriticalSection* mContextBarrier;
 		ComPtr<IDXGIFactory4> mFactory;
 		ComPtr<IDXGIAdapter1> mAdapter;
 		ComPtr<ID3D11Device> mDevice;
-		ComPtr<ID3D11DeviceContext> mContext;
-
+		ComPtr<ID3D11DeviceContext> mImmediateContext;
 	};
 }

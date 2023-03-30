@@ -6,6 +6,8 @@
 #include <Libs/ImGui/backends/imgui_impl_win32.h>
 #include <Runtime/Graphics/CommandList.h>
 #include <Runtime/Graphics/Swapchain.h>
+#include <Runtime/DX11/DX11Swapchain.h>
+#include <Runtime/DX11/DX11Framebuffer.h>
 
 namespace Portakal
 {
@@ -14,7 +16,7 @@ namespace Portakal
         DX11Device* pDX11Device = (DX11Device*)pDevice;
 
         ImGui_ImplWin32_Init(((Win32Window*)pDevice->GetOwnerWindow())->GetWin32WindowHandle());
-        ImGui_ImplDX11_Init(pDX11Device->GetDXDevice(), pDX11Device->GetDXContext());
+        ImGui_ImplDX11_Init(pDX11Device->GetDXDevice(), pDX11Device->GetDXImmediateContext());
     }
     DX11ImGuiRenderer::~DX11ImGuiRenderer()
     {
@@ -27,12 +29,19 @@ namespace Portakal
     }
     void DX11ImGuiRenderer::FinalizeRenderingCore(CommandList* pCmdBuffer)
     {
-        Swapchain* pSwapchain = pCmdBuffer->GetOwnerDevice()->GetSwapchain();
+        DX11Swapchain* pSwapchain = (DX11Swapchain*)pCmdBuffer->GetOwnerDevice()->GetSwapchain();
 
-        pCmdBuffer->BindFramebuffer(pSwapchain->GetFramebuffer());
-        pCmdBuffer->ClearColor(0, ColorRgba::DarkGreen());
+        DX11Device* pDevice = (DX11Device*)GetTargetDevice();
+        ID3D11RenderTargetView* pRtv = ((DX11Framebuffer*)pSwapchain->GetFramebuffer())->GetDXRtvs()[0];
+
+        pDevice->LockImmediateContext();
+        pDevice->GetDXImmediateContext()->OMSetRenderTargets(1,&pRtv,nullptr);
+
+        ColorRgbaF color = ColorRgbaF::CornflowerBlue();
+        pDevice->GetDXImmediateContext()->ClearRenderTargetView(pRtv, &color.R);
 
         ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+        pDevice->UnlockImmediateContext();
     }
     ImGuiTextureBinding* DX11ImGuiRenderer::CreateTextureBinding(TextureResource* pTexture)
     {

@@ -103,7 +103,7 @@ namespace Portakal
 
 		mBoundIndexBuffer = pBuffer;
 	}
-	void CommandList::CommitResourceTable(const unsigned int slotIndex, const GraphicsResourceTable* pTable)
+	void CommandList::CommitResourceTable(const unsigned int slotIndex, const ResourceTable* pTable)
 	{
 		CheckBoundPipeline();
 
@@ -136,6 +136,7 @@ namespace Portakal
 	}
 	CommandList::~CommandList()
 	{
+
 	}
 	void CommandList::CheckBoundFramebuffer()
 	{

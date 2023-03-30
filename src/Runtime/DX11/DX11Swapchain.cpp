@@ -5,6 +5,9 @@
 #include <Runtime/DX11/DX11Device.h>
 #include <Runtime/DXGI/DXGIUtils.h>
 #include <Runtime/Graphics/FramebufferCreateDesc.h>
+#include <Runtime/Graphics/Texture.h>
+#include "DX11Framebuffer.h"
+
 namespace Portakal
 {
 	DX11Swapchain::DX11Swapchain(const SwapchainCreateDesc& desc,DX11Device* pDevice) : Swapchain(desc)
@@ -39,29 +42,65 @@ namespace Portakal
 		/*
 		* Create color buffers
 		*/
-		Array<ID3D11RenderTargetView*> rtvs;
-		for (unsigned int i = 0; i < desc.ColorBufferCount; i++)
+		TextureCreateDesc colorTextureDesc = {};
+		colorTextureDesc.Width = desc.Width;
+		colorTextureDesc.Height = desc.Height;
+		colorTextureDesc.Depth = 1;
+		colorTextureDesc.ArrayLevels = 0;
+		colorTextureDesc.MipLevels = 1;
+		colorTextureDesc.Format = desc.ColorFormat;
+		colorTextureDesc.SampleCount = 1;
+		colorTextureDesc.Type = TextureType::Texture2D;
+		colorTextureDesc.Usage = TextureUsage::RenderTarget;
+
+		Array<Texture*> colorTargets;
 		{
 			/*
 			* Get backbuffer
 			*/
-			ID3D11Texture2D* pBackBuffer = nullptr;
-			mSwapchain->GetBuffer(i, IID_PPV_ARGS(&pBackBuffer));
+			DXPTR<ID3D11Texture2D> pBackBuffer;
+			
+			mSwapchain->GetBuffer(0, IID_PPV_ARGS(pBackBuffer.GetAddressOf()));
+			DXPTR<ID3D11Resource> resource;
+			pBackBuffer.As<ID3D11Resource>(&resource);
 
-			/*
-			* Create render target view
-			*/
-			ComPtr<ID3D11RenderTargetView> rtv;
-			pDX11Device->CreateRenderTargetView(pBackBuffer, nullptr, rtv.GetAddressOf());
-			mRenderTargetViews.Add(rtv);
-
-			/*
-			* Release buffer
-			*/
-			pBackBuffer->Release();
+			colorTargets.Add(pDevice->CreateSwapchainTexture(colorTextureDesc, resource));
 		}
 
-		Framebuffer* pFramebuffer = pDevice->CreateSwapchainFramebuffer({}, rtvs);
+		/*
+		* Create depth stencil view
+		*/
+		Texture* pDsv = nullptr;
+		if (desc.DepthStencilFormat != TextureFormat::None)
+		{
+			TextureCreateDesc dsvDesc = {};
+			dsvDesc.Width = desc.Width;
+			dsvDesc.Height = desc.Height;
+			dsvDesc.Depth = 1;
+			dsvDesc.ArrayLevels = 1;
+			dsvDesc.Format = desc.DepthStencilFormat;
+			dsvDesc.MipLevels = 1;
+			dsvDesc.SampleCount = 1;
+			dsvDesc.Type = TextureType::Texture2D;
+			dsvDesc.Usage = TextureUsage::DepthStencil | TextureUsage::Sampled;
+
+			pDsv = pDevice->CreateTexture(dsvDesc);
+		}
+
+		/*
+		* Set swapchain framebuffer
+		*/
+		FramebufferCreateDesc framebufferDesc = {};
+		framebufferDesc.DepthStencilTarget.ArrayLayer = 0;
+		framebufferDesc.DepthStencilTarget.MipLevel = 0;
+		framebufferDesc.DepthStencilTarget.pTexture = pDsv;
+		FramebufferAttachmentDesc colorAttachment = {};
+		colorAttachment.ArrayLayer = 0;
+		colorAttachment.MipLevel = 0;
+		colorAttachment.pTexture = colorTargets[0];
+		framebufferDesc.ColorTargets.Add(colorAttachment);
+
+		Framebuffer* pFramebuffer = pDevice->CreateSwapchainFramebuffer(framebufferDesc);
 		SetFramebuffer(pFramebuffer);
 	}
 	DX11Swapchain::~DX11Swapchain()
@@ -70,6 +109,7 @@ namespace Portakal
 	}
 	void DX11Swapchain::OnDestroy()
 	{
+
 	}
 	unsigned int DX11Swapchain::GetCurrentImageIndex() const noexcept
 	{
@@ -84,31 +124,101 @@ namespace Portakal
 	}
 	void DX11Swapchain::ResizeCore(const unsigned int width, const unsigned int height)
 	{
-		ID3D11Device* pDevice = (ID3D11Device*)((DX11Device*)GetOwnerDevice())->GetDXDevice();
 
-		mRenderTargetViews.Clear();
+		DX11Device* pDevice = ((DX11Device*)GetOwnerDevice());
+		pDevice->LockImmediateContext();
 
-		mSwapchain->ResizeBuffers(0, width, height, DXGIUtils::GetTextureFormat(GetColorFormat()), 0);
+		/*
+		* Delete framebuffer and its textures
+		*/
+		{
+			DX11Framebuffer* pFramebuffer = (DX11Framebuffer*)GetFramebuffer();
 
-		for (unsigned int i = 0; i < GetColorBufferCount(); i++)
+			const Array<FramebufferAttachmentDesc> colorAttachments = pFramebuffer->GetColorTargets();
+			const FramebufferAttachmentDesc depthStencilAttachment = pFramebuffer->GetDepthStencilTarget();
+
+			pFramebuffer->DeleteDeviceObject();
+
+			for (unsigned int i = 0; i < colorAttachments.GetCursor(); i++)
+			{
+				colorAttachments[i].pTexture->DeleteDeviceObject();
+				colorAttachments[i].pTexture = nullptr;
+			}
+
+			if (depthStencilAttachment.pTexture != nullptr)
+			{
+				depthStencilAttachment.pTexture->DeleteDeviceObject();
+			}
+		}
+
+		/*
+		* Resize swapchain buffers
+		*/
+		mSwapchain->ResizeBuffers(GetColorBufferCount(), width, height, DXGI_FORMAT_UNKNOWN, 0);
+
+		/*
+		* Create color buffers
+		*/
+		TextureCreateDesc colorTextureDesc = {};
+		colorTextureDesc.Width = width;
+		colorTextureDesc.Height = height;
+		colorTextureDesc.Depth = 1;
+		colorTextureDesc.ArrayLevels = 0;
+		colorTextureDesc.MipLevels = 1;
+		colorTextureDesc.Format = GetColorFormat();
+		colorTextureDesc.SampleCount = 1;
+		colorTextureDesc.Type = TextureType::Texture2D;
+		colorTextureDesc.Usage = TextureUsage::RenderTarget;
+
+		Array<Texture*> colorTargets;
 		{
 			/*
 			* Get backbuffer
 			*/
-			ID3D11Texture2D* pBackBuffer = nullptr;
-			mSwapchain->GetBuffer(i, IID_PPV_ARGS(&pBackBuffer));
+			DXPTR<ID3D11Texture2D> pBackBuffer = nullptr;
+			mSwapchain->GetBuffer(0, IID_PPV_ARGS(pBackBuffer.GetAddressOf()));
 
-			/*
-			* Create render target view
-			*/
-			ComPtr<ID3D11RenderTargetView> rtv;
-			pDevice->CreateRenderTargetView(pBackBuffer, nullptr, rtv.GetAddressOf());
-			mRenderTargetViews.Add(rtv);
+			DXPTR<ID3D11Resource> resource;
+			pBackBuffer.As<ID3D11Resource>(&resource);
 
-			/*
-			* Release buffer
-			*/
-			pBackBuffer->Release();
+			colorTargets.Add(pDevice->CreateSwapchainTexture(colorTextureDesc, resource));
 		}
+
+		/*
+		* Create depth stencil view
+		*/
+		Texture* pDsv = nullptr;
+		if (GetDepthStencilFormat()!= TextureFormat::None)
+		{
+			TextureCreateDesc dsvDesc = {};
+			dsvDesc.Width = width;
+			dsvDesc.Height = height;
+			dsvDesc.Depth = 1;
+			dsvDesc.ArrayLevels = 1;
+			dsvDesc.Format = GetDepthStencilFormat();
+			dsvDesc.MipLevels = 1;
+			dsvDesc.SampleCount = 1;
+			dsvDesc.Type = TextureType::Texture2D;
+			dsvDesc.Usage = TextureUsage::DepthStencil | TextureUsage::Sampled;
+
+			pDsv = pDevice->CreateTexture(dsvDesc);
+		}
+
+		/*
+		* Set swapchain framebuffer
+		*/
+		FramebufferCreateDesc framebufferDesc = {};
+		framebufferDesc.DepthStencilTarget.ArrayLayer = 0;
+		framebufferDesc.DepthStencilTarget.MipLevel = 0;
+		framebufferDesc.DepthStencilTarget.pTexture = pDsv;
+		FramebufferAttachmentDesc colorAttachment = {};
+		colorAttachment.ArrayLayer = 0;
+		colorAttachment.MipLevel = 0;
+		colorAttachment.pTexture = colorTargets[0];
+		framebufferDesc.ColorTargets.Add(colorAttachment);
+
+		SetFramebuffer(pDevice->CreateSwapchainFramebuffer(framebufferDesc));
+
+		pDevice->UnlockImmediateContext();
 	}
 }

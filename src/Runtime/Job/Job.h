@@ -11,7 +11,7 @@ namespace Portakal
 	class PORTAKAL_API Job
 	{
 		friend class PlatformThread;
-		friend class JobPool;
+		friend class JobSystem;
 	public:
 		Job();
 		virtual ~Job() = default;

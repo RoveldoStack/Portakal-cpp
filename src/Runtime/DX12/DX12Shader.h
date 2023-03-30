@@ -9,7 +9,7 @@ namespace Portakal
 	{
 	public:
 		DX12Shader(const ShaderCreateDesc& desc);
-		virtual ~DX12Shader() override;
+		~DX12Shader() = default;
 
 		FORCEINLINE ID3DBlob* GetDXShaderBlob() const noexcept { return mShaderBlob.Get(); }
 		FORCEINLINE ID3DBlob* GetDXErrorBlob() const noexcept { return mErrorBlob.Get(); }

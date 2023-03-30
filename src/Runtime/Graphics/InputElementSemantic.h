@@ -11,6 +11,7 @@ namespace Portakal
 		Position,
 		Normal,
 		TextureCoordinate,
-		Color
+		Color,
+		COUNT
 	};
 }

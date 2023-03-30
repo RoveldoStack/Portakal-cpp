@@ -82,7 +82,7 @@ namespace Portakal
 			colorTargetDesc.Height = GetHeight();
 			colorTargetDesc.Depth = 1;
 			colorTargetDesc.Type = TextureType::Texture2D;
-			colorTargetDesc.Usage = TextureUsage::ReadOnly | TextureUsage::RenderTarget;
+			colorTargetDesc.Usage = TextureUsage::Sampled | TextureUsage::RenderTarget;
 			colorTargetDesc.Format = GetColorFormat();
 
 			Texture* pColorTarget = pDevice->CreateSwapchainTexture(backBuffer, colorTargetDesc);

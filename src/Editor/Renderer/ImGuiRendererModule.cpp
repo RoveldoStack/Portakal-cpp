@@ -45,12 +45,12 @@ namespace Portakal
     {
         ImGuiRenderer* pRenderer = ImGuiAPI::GetDefaultRenderer();
 
-        mCmdList->Lock();
+        //mCmdList->Lock();
         pRenderer->FinalizeRendering(mCmdList);
-        mCmdList->Unlock();
+       // mCmdList->Unlock();
 
-        mDevice->SubmitCommands({ mCmdList });
-        mDevice->WaitForFinish();
+       // mDevice->SubmitCommands({ mCmdList });
+       // mDevice->WaitForFinish();
     }
     void ImGuiRendererModule::OnPostTick()
     {

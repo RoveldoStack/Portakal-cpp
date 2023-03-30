@@ -25,14 +25,8 @@ namespace Portakal
 
 		ASSERT(mErrorBlob == nullptr, "DX12Shader", "Shader compilation failed with logs: %s", mErrorBlob->GetBufferPointer());
 	}
-	DX12Shader::~DX12Shader()
-	{
-		mShaderBlob.Reset();
-		mErrorBlob.Reset();
-	}
 	void DX12Shader::OnDestroy()
 	{
-		mShaderBlob.Reset();
-		mErrorBlob.Reset();
+		;
 	}
 }

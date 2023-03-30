@@ -46,7 +46,7 @@ namespace Portakal
 		mTexture = nullptr;
 		mCmdList = nullptr;
 		mType = TextureType::Texture2D;
-		mUsage = TextureUsage::ReadOnly;
+		mUsage = TextureUsage::Sampled;
 		mFormat = TextureFormat::None;
 		mWidth = 0;
 		mHeight = 0;
@@ -68,7 +68,7 @@ namespace Portakal
 		*/
 		TextureCreateDesc desc = {};
 		desc.Type = TextureType::Texture2D;
-		desc.Usage = TextureUsage::ReadOnly;
+		desc.Usage = TextureUsage::Sampled;
 		desc.Format = result.Format;
 		desc.Width = result.Width;
 		desc.Height = result.Height;
@@ -88,7 +88,7 @@ namespace Portakal
 		* Initialize
 		*/
 		mType = TextureType::Texture2D;
-		mUsage = TextureUsage::ReadOnly;
+		mUsage = TextureUsage::Sampled;
 		mFormat = result.Format;
 		mWidth = result.Width;
 		mHeight = result.Height;

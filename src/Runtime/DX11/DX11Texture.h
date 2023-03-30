@@ -8,8 +8,20 @@ namespace Portakal
 	class PORTAKAL_API DX11Texture : public Texture
 	{
 	public:
+		/// <summary>
+		/// Used for normal texture creation
+		/// </summary>
+		/// <param name="desc"></param>
+		/// <param name="pDevice"></param>
 		DX11Texture(const TextureCreateDesc& desc,DX11Device* pDevice);
-		virtual ~DX11Texture() override;
+
+		/// <summary>
+		/// Used for swapchain texture creation
+		/// </summary>
+		/// <param name="desc"></param>
+		/// <param name="texture"></param>
+		/// <param name="pDevice"></param>
+		DX11Texture(const TextureCreateDesc& desc,const DXPTR<ID3D11Resource>& texture, DX11Device* pDevice);
 
 		FORCEINLINE ID3D11Resource* GetDXTexture() const noexcept { return mTexture.Get(); }
 	private:

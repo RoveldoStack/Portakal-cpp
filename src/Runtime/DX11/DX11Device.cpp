@@ -28,11 +28,10 @@ namespace Portakal
             }
 
 #if PORTAKAL_DEBUG
-            D3D11CreateDevice(mAdapter.Get(), D3D_DRIVER_TYPE_UNKNOWN, NULL, D3D11_CREATE_DEVICE_DEBUG, NULL, NULL, D3D11_SDK_VERSION, mDevice.GetAddressOf(), NULL, mContext.GetAddressOf());
+            D3D11CreateDevice(mAdapter.Get(), D3D_DRIVER_TYPE_UNKNOWN, NULL, D3D11_CREATE_DEVICE_DEBUG, NULL, NULL, D3D11_SDK_VERSION, mDevice.GetAddressOf(), NULL, mImmediateContext.GetAddressOf());
 #else
             D3D11CreateDevice(mAdapter.Get(), D3D_DRIVER_TYPE_UNKNOWN, NULL, NULL, NULL, NULL, D3D11_SDK_VERSION, mDevice.GetAddressOf(), NULL, mContext.GetAddressOf());
 #endif
-
             bAdapterFound = true;
             adapterIndex++;
             break;
@@ -40,31 +39,39 @@ namespace Portakal
 
         ASSERT(bAdapterFound, "DX11Device", "Failed to find any suitable device");
 
-        mCriticalSection = PlatformCriticalSection::Create();
+        mContextBarrier = PlatformCriticalSection::Create();
     }
     DX11Device::DX11Device()
     {
-        mCriticalSection = PlatformCriticalSection::Create();
+        mContextBarrier = PlatformCriticalSection::Create();
     }
     DX11Device::~DX11Device()
     {
 
     }
-    Framebuffer* DX11Device::CreateSwapchainFramebuffer(const FramebufferCreateDesc& desc, const Array<ID3D11RenderTargetView*>& rtvs)
+    Texture* DX11Device::CreateSwapchainTexture(const TextureCreateDesc& desc, const DXPTR<ID3D11Resource>& texture)
     {
-        DX11Framebuffer* framebuffer = new DX11Framebuffer(desc, rtvs);
+        Texture* pTexture = new DX11Texture(desc, texture, this);
 
-        RegisterChildObject(framebuffer);
+        RegisterChildObject(pTexture);
 
-        return framebuffer;
+        return pTexture;
     }
-    void DX11Device::LockContext()
+    Framebuffer* DX11Device::CreateSwapchainFramebuffer(const FramebufferCreateDesc& desc)
     {
-        mCriticalSection->Lock();
+        Framebuffer* pFramebuffer = new DX11Framebuffer(desc, true, this);
+
+        RegisterChildObject(pFramebuffer);
+
+        return pFramebuffer;
     }
-    void DX11Device::UnlockContext()
+    void DX11Device::LockImmediateContext()
     {
-        mCriticalSection->Release();
+        mContextBarrier->Lock();
+    }
+    void DX11Device::UnlockImmediateContext()
+    {
+        mContextBarrier->Release();
     }
     void DX11Device::SwapbuffersCore()
     {
@@ -76,11 +83,11 @@ namespace Portakal
     }
     GraphicsBuffer* DX11Device::CreateBufferCore(const GraphicsBufferCreateDesc& desc)
     {
-        return nullptr;
+        return new DX11Buffer(desc,this);
     }
     Shader* DX11Device::CreateShaderCore(const ShaderCreateDesc& desc)
     {
-        return nullptr;
+        return new DX11Shader(desc,this);
     }
     Texture* DX11Device::CreateTextureCore(const TextureCreateDesc& desc)
     {
@@ -92,7 +99,7 @@ namespace Portakal
     }
     Framebuffer* DX11Device::CreateFramebufferCore(const FramebufferCreateDesc& desc)
     {
-        return nullptr;
+        return new DX11Framebuffer(desc,false,this);
     }
     Swapchain* DX11Device::CreateSwapchainCore(const SwapchainCreateDesc& desc)
     {
@@ -124,6 +131,13 @@ namespace Portakal
     }
     void DX11Device::SubmitCommandsCore(const Array<CommandList*>& cmdBuffers)
     {
+        mContextBarrier->Lock();
+        for (unsigned int i = 0; i < cmdBuffers.GetCursor(); i++)
+        {
+            DX11CommandList* pCmdList = (DX11CommandList*)cmdBuffers[i];
 
+            mImmediateContext->ExecuteCommandList(pCmdList->GetDXCmdList(), TRUE);
+        }
+        mContextBarrier->Release();
     }
 }

@@ -18,12 +18,12 @@ namespace Portakal
 		* Validate dimensions
 		*/
 		if(width == 0 || height == 0 || channels == 0)
-			return new TextureResource(TextureType::Texture2D, TextureUsage::ReadOnly, TextureFormat::R8_G8_B8_A8_UNorm, 512, 512, 0);;
+			return new TextureResource(TextureType::Texture2D, TextureUsage::Sampled, TextureFormat::R8_G8_B8_A8_UNorm, 512, 512, 0);;
 
 		/*
 		* Create texture data
 		*/
-		TextureResource* pTexture = new TextureResource(TextureType::Texture2D, TextureUsage::ReadOnly, TextureFormat::R8_G8_B8_A8_UNorm, width, height, 0);
+		TextureResource* pTexture = new TextureResource(TextureType::Texture2D, TextureUsage::Sampled, TextureFormat::R8_G8_B8_A8_UNorm, width, height, 0);
 		pTexture->UpdateTexture(pData, 0, 0, 0);
 
 		/*

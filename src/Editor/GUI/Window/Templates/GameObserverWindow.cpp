@@ -25,6 +25,7 @@ namespace Portakal
 	void GameObserverWindow::OnInitialize()
 	{
 		mTargetScene = nullptr;
+		mCurrentSelectedTargetIndex = 0;
 	}
 	void GameObserverWindow::OnFinalize()
 	{
@@ -122,7 +123,7 @@ namespace Portakal
 		/*
 		* Draw the current render target
 		*/
-		ImGuiTextureBinding* pBinding = ImGuiAPI::GetDefaultRenderer()->GetOrCreateTextureBinding(pDefaultDisplay->GetColorTargets()[0]);
+		ImGuiTextureBinding* pBinding = ImGuiAPI::GetDefaultRenderer()->GetOrCreateTextureBinding(mCurrentTargets[mCurrentSelectedTargetIndex]);
 		const ImVec2 size = ImGui::GetContentRegionAvail();
 		ImGui::Image(pBinding->GetBinding(), size);
 	}

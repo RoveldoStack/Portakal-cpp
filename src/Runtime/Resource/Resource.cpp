@@ -6,6 +6,7 @@
 #include <Runtime/Assert/Assert.h>
 #include <Runtime/Resource/Scene/SceneSerializer.h>
 #include <Runtime/Resource/ResourceLoadJob.h>
+#include <Runtime/Job/JobSystem.h>
 namespace Portakal
 {
     ResourceSubObject* Resource::GetSubObject() const noexcept
@@ -37,12 +38,15 @@ namespace Portakal
             return;
         if (mSerializer == nullptr)
             return;
-        if (mJob != nullptr)
+        mCriticalSection->Lock();
+        const bool bHasJob = mJob != nullptr;
+        mCriticalSection->Release();
+        if (bHasJob)
             return;
 
         mJob = new ResourceLoadJob(mSerializer, mAbsolutePath, mByteOffset, mSize, GENERATE_MEMBER_DELEGATE1(this, Resource::OnResourceLoadedAsync, void, ResourceSubObject*));
 
-        PlatformThread::Create(mJob, 2);
+        JobSystem::Schedule(mJob);
     }
     void Resource::UnloadAsync()
     {
@@ -200,7 +204,6 @@ namespace Portakal
     }
     void Resource::OnResourceLoadedAsync(ResourceSubObject* pObject)
     {
-        LOG("Resource", "Loaded async resource");
         mCriticalSection->Lock();
 
         pObject->_SetOwnerResource(this);
@@ -209,7 +212,8 @@ namespace Portakal
 
         mSubObject = pObject;
         mLoaded = pObject != nullptr;
-        delete mJob;
+
+        //delete mJob;
         mJob = nullptr;
 
         mCriticalSection->Release();

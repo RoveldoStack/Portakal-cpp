@@ -12,8 +12,8 @@
 #include <Editor/Asset/AssetOpenOperations.h>
 #include <Editor/Asset/AssetVisualizers.h>
 #include <Runtime/Job/Job.h>
-#include <Runtime/Job/JobPool.h>
-#include <Runtime/Job/JobFiber.h>
+#include <Runtime/Platform/PlatformInfo.h>
+#include <Runtime/Job/JobSystem.h>
 namespace Portakal
 {
 	
@@ -75,7 +75,7 @@ namespace Portakal
 
 			Portakal::GraphicsModuleParams graphicsModuleParams = {};
 			Portakal::WindowedGraphicsDeviceCreateDesc gdDesc = {};
-			gdDesc.Backend = Portakal::GraphicsBackend::Directx11;
+			gdDesc.Backend = Portakal::GraphicsBackend::Directx12;
 			gdDesc.BufferCount = 3;
 			gdDesc.ColorFormat = Portakal::TextureFormat::R8_G8_B8_A8_UNorm;
 			gdDesc.DepthStencilFormat = Portakal::TextureFormat::None;
@@ -142,15 +142,19 @@ namespace Portakal
 
 int main(unsigned int argumentCount, const char** ppArguments)
 {
-	Portakal::JobPool* pPool = new Portakal::JobPool(2);
-	Portakal::MainLoopJob* pJob = pPool->SubmitJob<Portakal::MainLoopJob>();
-
-	while (!pJob->IsFinished())
-	{
-		
-	}
-
-	return 0;
+	Portakal::JobSystem::Initialize();
+//
+//	Portakal::MainLoopJob* pMainJob = new Portakal::MainLoopJob();
+//	Portakal::PlatformThread::Create(pMainJob,2);
+//
+//	//Portakal::JobSystem::Schedule(pMainJob);
+//
+//	while (!pMainJob->IsFinished())
+//	{
+//
+//	}
+//
+//	return 0;
 	/*
 	* Initialize application
 	*/

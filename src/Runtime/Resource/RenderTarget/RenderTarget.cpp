@@ -91,7 +91,7 @@ namespace Portakal
 		{
 			const TextureFormat format = colorTargetFormats[i];
 
-			TextureResource* pColorTarget = new TextureResource(TextureType::Texture2D, TextureUsage::RenderTarget, format, width, height, 1);
+			TextureResource* pColorTarget = new TextureResource(TextureType::Texture2D, TextureUsage::RenderTarget | TextureUsage::Sampled, format, width, height, 1);
 			pColorTarget->SetTagName(colorTargetNames[i]);
 
 			colorTextures.Add(pColorTarget);
@@ -103,7 +103,7 @@ namespace Portakal
 		TextureResource* pDepthStencilTexture = nullptr;
 		if (depthStencilFormat != TextureFormat::None)
 		{
-			pDepthStencilTexture = new TextureResource(TextureType::Texture2D, TextureUsage::DepthStencil, depthStencilFormat, width, height, 1);
+			pDepthStencilTexture = new TextureResource(TextureType::Texture2D, TextureUsage::DepthStencil | TextureUsage::Sampled, depthStencilFormat, width, height, 1);
 			pDepthStencilTexture->SetTagName("Depth stencil");
 		}
 
@@ -111,8 +111,6 @@ namespace Portakal
 		* Create framebuffer
 		*/
 		FramebufferCreateDesc framebufferDesc = {};
-		ResourceTableCreateDesc tableCreateDesc = {};
-		Array<FramebufferAttachmentDesc> colorAttachments;
 		for (unsigned int i = 0; i < colorTextures.GetCursor(); i++)
 		{
 			FramebufferAttachmentDesc desc = {};
@@ -121,7 +119,6 @@ namespace Portakal
 			desc.pTexture = colorTextures[i]->GetTexture();
 
 			framebufferDesc.ColorTargets.Add(desc);
-			tableCreateDesc.Resources.Add(desc.pTexture);
 		}
 
 		if (pDepthStencilTexture != nullptr)

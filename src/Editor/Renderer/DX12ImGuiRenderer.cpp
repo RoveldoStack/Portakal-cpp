@@ -65,6 +65,8 @@ namespace Portakal
 		pCmdBuffer->ClearColor(0,ColorRgba::DarkGreen());
 
 		ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), (ID3D12GraphicsCommandList*)pList);
+
+		
     }
 	ImGuiTextureBinding* DX12ImGuiRenderer::CreateTextureBinding(TextureResource* pTexture)
 	{

@@ -33,6 +33,7 @@ namespace Portakal
 	{
 		mCriticalSection->Lock();
 		mFinished = true;
+		mWorking = false;
 		mCriticalSection->Release();
 	}
 }

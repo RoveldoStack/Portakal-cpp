@@ -23,22 +23,11 @@ namespace Portakal
 
         mColorTargets = desc.ColorTargets;
         mDepthStencilTarget = desc.DepthStencilTarget;
-
     }
 
     void Framebuffer::OnDestroy()
     {
-        if (mSwapchain)
-        {
-            for (unsigned int i = 0; i < mColorTargets.GetCursor(); i++)
-            {
-                if (mColorTargets[i].pTexture != nullptr)
-                    mColorTargets[i].pTexture->DeleteDeviceObject();
-            }
 
-            if (mDepthStencilTarget.pTexture != nullptr)
-                mDepthStencilTarget.pTexture->DeleteDeviceObject();
-        }
     }
 
 }

@@ -34,5 +34,9 @@ namespace Portakal
 		/// Whether the scissor test is enabled or not
 		/// </summary>
 		bool bScissorTestEnabled;
+
+		int DepthBias;
+		float DepthBiasClamp;
+		float DepthBiasSlope;
 	};
 }

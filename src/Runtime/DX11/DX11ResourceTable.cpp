@@ -3,6 +3,8 @@
 #include <Runtime/DX11/DX11DeviceObjects.h>
 #include <Runtime/Assert/Assert.h>
 #include <Runtime/DX11/DX11Device.h>
+#include <Runtime/DX11/DX11Sampler.h>
+#include "DX11Sampler.h"
 
 namespace Portakal
 {
@@ -12,35 +14,45 @@ namespace Portakal
 		{
 			const GraphicsDeviceObject* pObject = desc.Resources[i];
 
-			ComPtr<ID3D11ShaderResourceView> srv;
-
 			switch (pObject->GetDeviceObjectType())
 			{
-			case Portakal::GraphicsDeviceObjectType::Buffer:
-				break;
-			case Portakal::GraphicsDeviceObjectType::Texture:
-			{
-				Texture* pTexture = (Texture*)pObject;
+				case Portakal::GraphicsDeviceObjectType::Buffer:
+				{
+					DX11Buffer* pBuffer = (DX11Buffer*)pObject;
 
-				D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
-				srvDesc.Format = DXGIUtils::GetTextureFormat(pTexture->GetTextureFormat());
-				srvDesc.Texture2D.MipLevels = 1;
-				srvDesc.Texture2D.MostDetailedMip = 0;
-				srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
+					ASSERT(pBuffer->GetBufferType() == GraphicsBufferType::ConstantBuffer, "DX11ResourceTable", "Invalid buffer resource type!");
 
-				ASSERT(SUCCEEDED(pDevice->GetDXDevice()->CreateShaderResourceView(((DX11Texture*)pTexture)->GetDXTexture(), &srvDesc, srv.GetAddressOf())), "DX11ResourceTable", "Failed to create texture resource view");
+					mBuffers.Add(pBuffer->GetDXBuffer());
+					break;
+				}
+				case Portakal::GraphicsDeviceObjectType::Texture:
+				{
+					DXPTR<ID3D11ShaderResourceView> srv;
+					Texture* pTexture = (Texture*)pObject;
 
+					D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
+					srvDesc.Format = DXGIUtils::GetTextureFormat(pTexture->GetTextureFormat());
+					srvDesc.Texture2D.MipLevels = 1;
+					srvDesc.Texture2D.MostDetailedMip = 0;
+					srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
 
-				break;
-			}
-			case Portakal::GraphicsDeviceObjectType::Sampler:
-				break;
-			default:
-				ASSERT(false, "DX12ResourceTable", "Invalid resource!");
-				break;
-			}
+					ASSERT(SUCCEEDED(pDevice->GetDXDevice()->CreateShaderResourceView(((DX11Texture*)pTexture)->GetDXTexture(), &srvDesc, srv.GetAddressOf())), "DX11ResourceTable", "Failed to create texture resource view");
 
-			mSrvs.Add(srv);
+					mSrvs.Add(srv);
+					mSrvsRaw.Add(srv.Get());
+					break;
+				}
+				case Portakal::GraphicsDeviceObjectType::Sampler:
+				{
+					DX11Sampler* pSampler = (DX11Sampler*)pObject;
+
+					mSamplers.Add(pSampler->GetDXSampler());
+					break;
+				}
+				default:
+					ASSERT(false, "DX12ResourceTable", "Invalid resource!");
+					break;
+				}
 		}
 
     }

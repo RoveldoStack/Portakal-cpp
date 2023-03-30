@@ -25,7 +25,7 @@ namespace Portakal
 		virtual void ClearStencilCore(const int stencil) override;
 		virtual void SetVertexBufferCore(GraphicsBuffer* pBuffer) override;
 		virtual void SetIndexBufferCore(GraphicsBuffer* pBuffer) override;
-		virtual void CommitResourceTableCore(const unsigned int slotIndex, const GraphicsResourceTable* pTable) override;
+		virtual void CommitResourceTableCore(const unsigned int slotIndex, const ResourceTable* pTable) override;
 		virtual void DrawIndexedCore(const unsigned int indexCount) override;
 		virtual void UpdateBufferCore(const GraphicsBufferUpdateDesc& desc, GraphicsBuffer* pBuffer) override;
 		virtual void UpdateTextureCore(const TextureUpdateDesc& desc, Texture* pTexture) override;
