@@ -22,15 +22,13 @@ namespace Portakal
 	}
 	bool WorkerThreadJob::HasWork()
 	{
-
-		const bool bHasWork = mHasWork;
-
-		return bHasWork;
+		return mHasWork;
 	}
 	void WorkerThreadJob::SubmitJob(Job* pJob)
 	{
 		ASSERT(mCurrentJob == nullptr, "WorkerThreadJob", "Illegal operation, you cannot assing job to a WorkerThread which already has a job");
 		mCurrentJob = pJob;
+		mHasWork = true;
 	}
 	void WorkerThreadJob::Terminate()
 	{
@@ -55,7 +53,6 @@ namespace Portakal
 			*/
 			if (mCurrentJob == nullptr)
 			{
-				mHasWork = false;
 				mCriticalSection->Release();
 				continue;
 			}
@@ -63,7 +60,6 @@ namespace Portakal
 			/*
 			* There is some job, execute it
 			*/
-			mHasWork = true;
 			mCriticalSection->Release();
 			mCurrentJob->Run();
 			mCriticalSection->Lock();
@@ -71,8 +67,6 @@ namespace Portakal
 
 			Job* pJob = mCurrentJob;
 			mCurrentJob = nullptr;
-
-			mCriticalSection->Release();
 
 			mJobFinishedSignal.Invoke(pJob, mIndex);
 		}

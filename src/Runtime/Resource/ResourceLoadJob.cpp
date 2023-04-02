@@ -20,11 +20,6 @@ namespace Portakal
 	}
 	void ResourceLoadJob::Run()
 	{
-		LOG("Filepath", ":%s", *PlatformFile::GetNameWithoutExtension(mFilePath));
-		if (PlatformFile::GetNameWithoutExtension(mFilePath) == "smiley")
-		{
-			LOG("hey", "hey");
-		}
 		ByteBlock tempBlock = {};
 		ASSERT(PlatformFile::Read(mFilePath, tempBlock, mOffset, mOffset + mSize), "Resource", "Failed to load the file");
 		ResourceSubObject* pObject = mSerializer->Deserialize(tempBlock);

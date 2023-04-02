@@ -108,6 +108,7 @@ namespace Portakal
 		*/
 		ImGui::Text("Targets:");
 		ImGui::SameLine();
+		ImGui::SetNextItemWidth(150);
 		if (ImGui::BeginCombo("##comboTargets",*mCurrentTargets[mCurrentSelectedTargetIndex]->GetTagName()))
 		{
 			for (unsigned int i = 0; i < mCurrentTargets.GetCursor(); i++)

@@ -17,7 +17,7 @@ namespace Portakal
     }
     void ResourceModule::OnFinalize()
     {
-
+        ResourceAPI::ClearResources();
     }
     void ResourceModule::OnPreTick()
     {

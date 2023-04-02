@@ -227,8 +227,6 @@ namespace Portakal
 
 		pObject->OnDestroy();
 
-		delete pObject;
-
 		mCriticalSection->Release();
 	}
 	void GraphicsDevice::RegisterChildObject(GraphicsDeviceObject* pObject)

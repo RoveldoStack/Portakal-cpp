@@ -30,6 +30,7 @@ add_compile_definitions(QUAX_DEBUG)
 endif()
 
 add_compile_definitions(PORTAKAL_SAFE)
+add_compile_definitions(PORTAKAL_SIMD_256)
 #includes
 include_directories(${CMAKE_SOURCE_DIR}/src)
 

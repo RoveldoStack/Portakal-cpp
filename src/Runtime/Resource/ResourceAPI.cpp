@@ -18,6 +18,15 @@ namespace Portakal
         }
         return nullptr;
     }
+    void ResourceAPI::ClearResources()
+    {
+        for (unsigned int i = 0; i < sResources.GetCursor(); i++)
+        {
+            Resource* pResource = sResources[i];
+            delete pResource;
+        }
+        sResources.Clear();
+    }
     Resource* ResourceAPI::RegisterResource(const String& path, const ResourceDescriptor& descriptor)
     {
         /*

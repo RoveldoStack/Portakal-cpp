@@ -14,6 +14,10 @@
 #include <Runtime/Job/Job.h>
 #include <Runtime/Platform/PlatformInfo.h>
 #include <Runtime/Job/JobSystem.h>
+#include <Runtime/Memory/SharedHeap.h>
+#include <Runtime/Math/Matrix4x4.h>
+#include <Runtime/Platform/PlatformTime.h>
+
 namespace Portakal
 {
 	
@@ -138,23 +142,20 @@ namespace Portakal
 		}
 	};
 	
+	void Test()
+	{
+
+	}
+
 }
 
 int main(unsigned int argumentCount, const char** ppArguments)
 {
+	Portakal::Test();
+
+
 	Portakal::JobSystem::Initialize();
-//
-//	Portakal::MainLoopJob* pMainJob = new Portakal::MainLoopJob();
-//	Portakal::PlatformThread::Create(pMainJob,2);
-//
-//	//Portakal::JobSystem::Schedule(pMainJob);
-//
-//	while (!pMainJob->IsFinished())
-//	{
-//
-//	}
-//
-//	return 0;
+
 	/*
 	* Initialize application
 	*/

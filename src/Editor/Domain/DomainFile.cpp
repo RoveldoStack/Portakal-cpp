@@ -88,7 +88,7 @@ namespace Portakal
         * Deserialize into editor
         */
         ByteBlock block;
-        mSerializer->SerializeToEditor(mResource->GetSubObject().GetHeap(), block);
+        mSerializer->SerializeToEditor(mResource->PeekSubObject(), block);
 
         /*
         * Write

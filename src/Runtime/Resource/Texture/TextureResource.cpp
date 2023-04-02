@@ -96,6 +96,18 @@ namespace Portakal
 		mArrayLevel = 1;
 		mMipLevels = 0;
 	}
+	TextureResource::TextureResource()
+	{
+		mType = TextureType::Texture2D;
+		mUsage = TextureUsage::Sampled;
+		mFormat = TextureFormat::None;
+		mWidth = 0;
+		mHeight = 0;
+		mDepth = 0;
+		mArrayLevel = 0;
+		mMipLevels = 0;
+		mTexture = nullptr;
+	}
 	TextureResource::~TextureResource()
 	{
 		LOG("Texture Resource", "Delete");
@@ -140,7 +152,7 @@ namespace Portakal
 	}
 	void TextureResource::DestroyCore()
 	{
-		LOG("TextureResource", "Destroy core");
+		LOG("TextureResource", "Destroy core: %s",*GetTagName());
 		DeleteTexture();
 	}
 }

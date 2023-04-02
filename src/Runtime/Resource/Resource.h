@@ -21,6 +21,7 @@ namespace Portakal
 		friend class ResourceAPI;
 	public:
 		FORCEINLINE SharedHeap<ResourceSubObject> GetSubObject() const noexcept;
+		FORCEINLINE ResourceSubObject* PeekSubObject() const noexcept;
 		FORCEINLINE Guid GetID() const noexcept { return mID; }
 		FORCEINLINE String GetName() const noexcept { return mName; }
 		FORCEINLINE String GetAbsolutePath() const noexcept { return mAbsolutePath; }

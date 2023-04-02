@@ -12,7 +12,7 @@ namespace Portakal
 	/// <summary>
 	/// A resource which is specialized in textures
 	/// </summary>
-	class PORTAKAL_API TextureResource : public ResourceSubObject
+	class PORTAKAL_API TextureResource final : public ResourceSubObject
 	{
 		GENERATE_CLASS(TextureResource);
 	public:
@@ -32,7 +32,7 @@ namespace Portakal
 		/// </summary>
 		/// <param name="path"></param>
 		TextureResource(const String& path);
-		TextureResource() = default;
+		TextureResource();
 		~TextureResource();
 
 		/// <summary>
@@ -85,7 +85,7 @@ namespace Portakal
 		/// </summary>
 		void CreateCmdList();
 
-		virtual void DestroyCore() override;
+		virtual void DestroyCore() override final;
 	private:
 		GraphicsDevice* mDevice;
 		CommandList* mCmdList;

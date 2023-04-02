@@ -13,6 +13,7 @@ namespace Portakal
 		friend class Resource;
 		GENERATE_CLASS(ResourceSubObject);
 	public:
+
 		/// <summary>
 		/// Returns the resource owner 
 		/// </summary>

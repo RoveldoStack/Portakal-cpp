@@ -24,8 +24,7 @@ namespace Portakal
 		/*
 		* Create worker threads
 		*/
-		const unsigned int workerThreadCount = PlatformInfo::GetCpuThreadCount() / 2;
-		const unsigned int other = std::thread::hardware_concurrency();
+		const unsigned int workerThreadCount = PlatformInfo::GetCpuThreadCount() - 2;
 		for (unsigned int i = 0; i < workerThreadCount; i++)
 		{
 			WorkerThreadData data = {};
@@ -41,6 +40,8 @@ namespace Portakal
 	}
 	void JobSystem::OnSignalJobFinished(Job* pJob, const unsigned int workerID)
 	{
+		WorkerThreadData& worker = mWorkers[workerID];
+
 		pJob->_MarkFinished();
 
 		/*
@@ -49,8 +50,6 @@ namespace Portakal
 		mBarrier->Lock();
 		if (mJobQueue.GetCursor() > 0)
 		{
-			WorkerThreadData& worker = mWorkers[workerID];
-
 			Job* pNextJob = mJobQueue[0];
 			pNextJob->_SetWorkingState(true);
 
@@ -58,6 +57,8 @@ namespace Portakal
 			mJobQueue.RemoveIndex(0);
 		}
 		mBarrier->Release();
+
+		worker.mWorkerJob->Release();
 	}
 	void JobSystem::_Schedule(Job* pJob)
 	{

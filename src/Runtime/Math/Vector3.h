@@ -18,7 +18,7 @@ namespace Portakal
 			return a.X * b.X + a.Y * b.Y + a.Z *b.Z; 
 		}
 
-		Vector3(const TValue x, const TValue y,const Tvalue z) : X(x), Y(y),Z(z) {}
+		Vector3(const TValue x, const TValue y,const TValue z) : X(x), Y(y),Z(z) {}
 		Vector3(const TValue value = 0) : X(value), Y(value),Z(value) {}
 		~Vector3() = default;
 
@@ -68,19 +68,19 @@ namespace Portakal
 		{
 			return { X / other.X,Y / other.Y ,other.X / other.Z };
 		}
-		FORCEINLINE Vector2 operator+(const TValue value)
+		FORCEINLINE Vector3 operator+(const TValue value)
 		{
 			return { X + value, Y + value,Z + value };
 		}
-		FORCEINLINE Vector2 operator-(const TValue value)
+		FORCEINLINE Vector3 operator-(const TValue value)
 		{
 			return { X - value, Y - value,Z - value };
 		}
-		FORCEINLINE Vector2 operator*(const TValue value)
+		FORCEINLINE Vector3 operator*(const TValue value)
 		{
 			return { X * value, Y * value,Z * value };
 		}
-		FORCEINLINE Vector2 operator/(const TValue value)
+		FORCEINLINE Vector3 operator/(const TValue value)
 		{
 			return { X / value, Y / value,Z / value };
 		}

@@ -8,8 +8,7 @@ namespace Portakal
 	{
 		pFile->LoadSync();
 
-		//SharedHeap<Scene> pScene = pFile->GetResource()->GetSubObject();
-		SharedHeap<Scene> pScene = pFile->GetResource()->GetSubObject();
+		Scene* pScene = (Scene*)pFile->GetResource()->PeekSubObject();
 
 		pScene->MarkPrimal();
 	}

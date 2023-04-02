@@ -12,7 +12,15 @@ namespace Portakal
     SharedHeap<ResourceSubObject> Resource::GetSubObject() const noexcept
     {
         mCriticalSection->Lock();
-        SharedHeap<ResourceSubObject> pObject = mSubObject;
+        SharedHeap<ResourceSubObject> object = mSubObject;
+        mCriticalSection->Release();
+
+        return object;
+    }
+    ResourceSubObject* Resource::PeekSubObject() const noexcept
+    {
+        mCriticalSection->Lock();
+        ResourceSubObject* pObject = mSubObject.GetHeap();
         mCriticalSection->Release();
 
         return pObject;
@@ -154,7 +162,6 @@ namespace Portakal
         * Delete the resource
         */
         mSubObject.Reset();
-        mSubObject = nullptr;
         mLoaded = false;
     }
     void Resource::CacheSync()
@@ -245,10 +252,7 @@ namespace Portakal
         /*
         * Delete the resource
         */
-        mSubObject->Destroy();
-
         mSubObject.Reset();
-        mSubObject = nullptr;
 
         mLoaded = false;
     }

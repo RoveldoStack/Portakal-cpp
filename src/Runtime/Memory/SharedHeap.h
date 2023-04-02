@@ -1,108 +1,181 @@
 #pragma once
 #include <Runtime/Core/Core.h>
 #include <Runtime/Platform/PlatformCriticalSection.h>
-
+#include <Runtime/Object/TaggedObject.h>
+#include <Runtime/Resource/ResourceSubObject.h>
+#include <Runtime/Log/Log.h>
 namespace Portakal
 {
 	class ResourceSubObject;
+
 	/// <summary>
-	/// Simple smart shader ptr implementation
+	/// Smart point implementation for TaggedObjects
 	/// </summary>
 	/// <typeparam name="TType"></typeparam>
 	template<typename TType>
 	class SharedHeap
 	{
 	public:
-		SharedHeap(TType* pHeap)
+		SharedHeap(const SharedHeap& other)
 		{
-			mHeap = pHeap;
-			mRefCount = new unsigned int(1);
-		}
-		SharedHeap(const SharedHeap& target)
-		{
-			if (target.mHeap == nullptr)
+			mHeap = other.mHeap;
+			mRefCount = other.mRefCount;
+			mBarrier = other.mBarrier;
+			if (mBarrier != nullptr)
 			{
-				mHeap = nullptr;
-				mRefCount = nullptr;
-				return;
+				mBarrier->Lock();
+				*mRefCount = *mRefCount + 1;
+				mBarrier->Release();
 			}
-
-			mHeap = target.mHeap;
-			mRefCount = target.mRefCount;
-			*mRefCount++;
 		}
 
 		template<typename TOther>
-		SharedHeap(const SharedHeap<TOther>& target)
+		SharedHeap(const SharedHeap<TOther>& other)
 		{
-			const SharedHeap<TType>* pTemp = (const SharedHeap<TType>*)&target;
+			const SharedHeap<TType>* temp = (const SharedHeap<TType>*)&other;
 
-			if (pTemp->mHeap == nullptr)
+			mHeap = temp->mHeap;
+			mRefCount = temp->mRefCount;
+			mBarrier = temp->mBarrier;
+			if (mBarrier != nullptr)
+			{
+				mBarrier->Lock();
+				*mRefCount = *mRefCount + 1;
+				mBarrier->Release();
+			}
+		}
+
+		SharedHeap(TType* pData)
+		{
+			if (pData == nullptr)
 			{
 				mHeap = nullptr;
 				mRefCount = nullptr;
+				mBarrier = nullptr;
 				return;
 			}
 
-			mHeap = pTemp->mHeap;
-			mRefCount = pTemp->mRefCount;
-			*mRefCount++;
+			pData->GetTagName();
+
+			mHeap = pData;
+			mRefCount = new unsigned int(1);
+			mBarrier = PlatformCriticalSection::Create();
+		}
+
+		SharedHeap(const TType& data)
+		{
+			mHeap = new TType();
+			*mHeap = data;
+			mRefCount = new unsigned int(1);
+			mBarrier = PlatformCriticalSection::Create();
 		}
 		
 		SharedHeap()
 		{
 			mHeap = nullptr;
 			mRefCount = nullptr;
+			mBarrier = nullptr;
 		}
+
 		~SharedHeap()
 		{
 			Reset();
 		}
 
-		FORCEINLINE TType* GetHeap()
+		FORCEINLINE TType* GetHeap() const noexcept
 		{
-			return mHeap;
+			if (mBarrier == nullptr)
+				return nullptr;
+
+			mBarrier->Lock();
+			TType* pTemp = mHeap;
+			mBarrier->Release();
+
+			return pTemp;
 		}
 
 		void Reset()
 		{
-			if (mRefCount == nullptr)
-			{
+			if (mHeap == nullptr)
 				return;
-			}
 
-			if (mRefCount == 0)
+			mBarrier->Lock();
+
+			*mRefCount = *mRefCount - 1;
+
+			if (*mRefCount == 0)
 			{
-				delete mRefCount;
+				mHeap->Destroy();
 				delete mHeap;
+				delete mRefCount;
+				mBarrier->Release();
+				delete mBarrier;
 				mHeap = nullptr;
 				mRefCount = nullptr;
+				mBarrier = nullptr;
 				return;
 			}
+
+			mBarrier->Release();
 		}
 
-		void operator==(TType* pHeap)
+		FORCEINLINE TType* operator->() const
 		{
-			if (pHeap == nullptr)
+			if (mBarrier == nullptr)
+				return nullptr;
+
+			mBarrier->Lock();
+			TType* pTemp = mHeap;
+			mBarrier->Release();
+
+			return pTemp;
+		}
+
+		void operator ==(const SharedHeap& other)
+		{
+			return mHeap == other.mHeap;
+		}
+		void operator !=(const SharedHeap& other)
+		{
+			return mHeap != other.mHeap;
+		}
+		void operator ==(const TType* pOther)
+		{
+			return mHeap == pOther;
+		}
+		void operator !=(const TType* pOther)
+		{
+			return mHeap != pOther;
+		}
+		void operator =(const SharedHeap& other)
+		{
+			Reset();
+
+			mHeap = other.mHeap;
+			mRefCount = other.mRefCount;
+			mBarrier = other.mBarrier;
+			if (mBarrier != nullptr)
 			{
-				Reset();
-				return;
+				*mRefCount = *mRefCount + 1;
 			}
-
-			if (pHeap != mHeap)
-				Reset();
-
-			mHeap = pHeap;
-			mRefCount = new unsigned int(1);
 		}
-
-		TType* operator->() noexcept
+		template<typename TOther>
+		void operator =(const SharedHeap<TOther>& other)
 		{
-			return mHeap;
-		}
+			const SharedHeap<TType>* pTemp = (const SharedHeap<TType*>) & other;
+			Reset();
 
+			mHeap = pTemp->mHeap;
+			mRefCount = pTemp->mRefCount;
+			mBarrier = pTemp->mBarrier;
+			if (mBarrier != nullptr)
+			{
+				*mRefCount = *mRefCount + 1;
+			}
+		}
 	private:
 		TType* mHeap;
+		PlatformCriticalSection* mBarrier;
 		unsigned int* mRefCount;
 	};
 }

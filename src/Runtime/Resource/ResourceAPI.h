@@ -13,6 +13,7 @@ namespace Portakal
 	public:
 		static Resource* RegisterResource(const String& path,const ResourceDescriptor& descriptor);
 		static Resource* GetResourceViaID(const Guid& id);
+		static void ClearResources();
 	private:
 		static Array<Resource*> sResources;
 	private:

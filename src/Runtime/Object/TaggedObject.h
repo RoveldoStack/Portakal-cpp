@@ -46,8 +46,20 @@ namespace Portakal
 		/// </summary>
 		void Destroy()
 		{
+			if (mDestroyed)
+				return;
+
 			DestroyCore();
 			mDestroyed = true;
+		}
+
+		FORCEINLINE bool operator ==(const TaggedObject& other)
+		{
+			return mID == other.mID;
+		}
+		FORCEINLINE bool operator !=(const TaggedObject& other)
+		{
+			return mID != other.mID;
 		}
 	protected:
 		TaggedObject(const String& name,const Guid& id) : mName(name), mID(id),mDestroyed(false) {}
@@ -57,10 +69,7 @@ namespace Portakal
 
 		~TaggedObject()
 		{
-			if (mDestroyed)
-				return;
 
-			Destroy();
 		}
 
 		virtual void DestroyCore() = 0;
@@ -75,13 +84,4 @@ namespace Portakal
 	END_TYPE_PROPERTIES;
 	NO_DEFAULT_CONSTRUCTOR;
 	END_GENERATE_TYPE(TaggedObject);
-
-	/*FORCEINLINE bool operator ==(const TaggedObject& a, const TaggedObject& b)
-	{
-		return a.GetID() == b.GetID();
-	}
-	FORCEINLINE bool operator !=(const TaggedObject& a, const TaggedObject& b)
-	{
-		return a.GetID() != b.GetID();
-	}*/
 }
