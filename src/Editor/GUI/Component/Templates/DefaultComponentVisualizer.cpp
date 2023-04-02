@@ -2,6 +2,9 @@
 #include <Runtime/World/Component.h>
 #include <Libs/ImGui/imgui.h>
 #include <Runtime/Memory/Memory.h>
+#include <Runtime/Math/Color4.h>
+#include <Editor/GUI/Window/Templates/WorldObserverWindow.h>
+#include <Runtime/World/Entity.h>
 
 namespace Portakal
 {
@@ -26,12 +29,26 @@ namespace Portakal
 			if (pField->GetAccessSpecifier() != AccessSpecifier::Public)
 				continue;
 
+			bool bFieldChanged = false;
+
 			const Type* pFieldType = pField->GetFieldType();
 			if (pFieldType == typeof(int))
 			{
-				int value = pField->GetValue<int>(pComponent);
+				int formerValue = pField->GetValue<int>(pComponent);
+				int value = formerValue;
 				ImGui::InputInt(*pField->GetFieldName(), &value);
 				pField->SetValue<int>(pComponent, value);
+
+				bFieldChanged = formerValue != value;
+			}
+			else if (pFieldType == typeof(float))
+			{
+				float formerValue = pField->GetValue<float>(pComponent);
+				float value = formerValue;
+				ImGui::InputFloat(*pField->GetFieldName(), &value);
+				pField->SetValue<float>(pComponent, value);
+
+				bFieldChanged = formerValue != value;
 			}
 			else if (pFieldType == typeof(String))
 			{
@@ -44,6 +61,20 @@ namespace Portakal
 				pField->SetValue<String>(pComponent, value);
 
 				delete[] pBuffer;
+			}
+			else if (pFieldType == typeof(ColorRgbaF))
+			{
+				ColorRgbaF formerValue = pField->GetValue<ColorRgbaF>(pComponent);
+				ColorRgbaF value = formerValue;
+				ImGui::ColorPicker4("ClearColor", &value.R);
+				pField->SetValue(pComponent, value);
+
+				bFieldChanged = formerValue != value;
+			}
+
+			if (bFieldChanged)
+			{
+				WorldObserverWindow::SignalSceneChanged(pComponent->GetOwnerEntity()->GetOwnerScene());
 			}
 		}
 	}

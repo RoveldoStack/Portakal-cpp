@@ -70,6 +70,8 @@ namespace Portakal
 			ASSERT(false, "DX11Shader", "Invalid shader stage!");
 			break;
 		}
+
+		SetError((char*)mErrorBlob->GetBufferPointer());
 	}
 
 	void DX11Shader::OnDestroy()

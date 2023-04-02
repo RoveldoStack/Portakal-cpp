@@ -177,6 +177,10 @@ namespace Portakal
                     SceneComponentFieldEntry fieldEntry = {};
                     const YAML::Node& fieldNode = *fieldIt;
 
+                    fieldEntry.Type = (SceneComponentFieldType)fieldNode["Type"].as<unsigned int>();
+                    fieldEntry.FieldName = fieldNode["Name"].as<std::string>().c_str();
+                    fieldEntry.Content = fieldNode["Content"].as<std::string>().c_str();
+
                     componentEntry.Fields.Add(fieldEntry);
                 }
 

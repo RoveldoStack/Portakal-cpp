@@ -25,7 +25,7 @@ namespace Portakal
 	START_GENERATE_TYPE(SpriteCameraComponentVisualizer);
 	START_TYPE_PROPERTIES(SpriteCameraComponentVisualizer);
 	REGISTER_BASE_TYPE(EditorComponentVisualizer);
-	REGISTER_TYPE_ATTRIBUTE(CustomEditorComponentAttribute, typeof(SpriteCamera));
+	//REGISTER_TYPE_ATTRIBUTE(CustomEditorComponentAttribute, typeof(SpriteCamera));
 	END_TYPE_PROPERTIES;
 	HAS_DEFAULT_CONSTRUCTOR(SpriteCameraComponentVisualizer);
 	END_GENERATE_TYPE(SpriteCameraComponentVisualizer);

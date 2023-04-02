@@ -1,4 +1,4 @@
-#include "TextureAuthorizationTool.h"
+#include "TextureAuthoringTool.h"
 #include <Libs/ImGui/imgui.h>
 #include <Editor/Resource/EditorImageResource.h>
 #include <Runtime/Resource/Texture/TextureResource.h>
@@ -13,11 +13,11 @@
 
 namespace Portakal
 {
-	void TextureAuthorizationTool::OnInitialize()
+	void TextureAuthoringTool::OnInitialize()
 	{
 
 	}
-	void TextureAuthorizationTool::OnPaint(DomainFile* pFile)
+	void TextureAuthoringTool::OnPaint(DomainFile* pFile)
 	{
 		if (!pFile->IsLoaded())
 			pFile->LoadSync();
@@ -38,7 +38,7 @@ namespace Portakal
 		ImGui::Image(pBinding->GetTable()->GetHandle(), {dimension.X,dimension.Y});
 
 	}
-	void TextureAuthorizationTool::OnFinalize()
+	void TextureAuthoringTool::OnFinalize()
 	{
 	}
 }

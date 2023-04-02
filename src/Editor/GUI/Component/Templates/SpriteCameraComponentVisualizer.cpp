@@ -9,9 +9,7 @@ namespace Portakal
 	}
 	void SpriteCameraComponentVisualizer::OnPaint()
 	{
-		ColorRgbaF clearColor = mCamera->GetClearColor();
-		ImGui::ColorPicker4("ClearColor", &clearColor.R);
-		mCamera->SetClearColor(clearColor);
+		
 	}
 	void SpriteCameraComponentVisualizer::OnFinalize()
 	{

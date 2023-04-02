@@ -4,13 +4,13 @@ namespace Portakal
 {
 
 	class DomainFile;
-	class IAssetAuthorizationTool;
-	class PORTAKAL_API AuthorizationToolWindow : public EditorWindow
+	class IAssetAuthoringTool;
+	class PORTAKAL_API AuthoringToolWindow : public EditorWindow
 	{
-		GENERATE_CLASS(AuthorizationToolWindow);
+		GENERATE_CLASS(AuthoringToolWindow);
 	public:
-		AuthorizationToolWindow() = default;
-		~AuthorizationToolWindow() = default;
+		AuthoringToolWindow() = default;
+		~AuthoringToolWindow() = default;
 
 		void SetToolData(DomainFile* pTargetFile);
 
@@ -23,13 +23,13 @@ namespace Portakal
 
 	private:
 		DomainFile* mTargetFile;
-		IAssetAuthorizationTool* mAuthorizationTool;
+		IAssetAuthoringTool* mAuthoringTool;
 	};
 
-	START_GENERATE_TYPE(AuthorizationToolWindow);
-	START_TYPE_PROPERTIES(AuthorizationToolWindow);
+	START_GENERATE_TYPE(AuthoringToolWindow);
+	START_TYPE_PROPERTIES(AuthoringToolWindow);
 	REGISTER_BASE_TYPE(EditorWindow);
 	END_TYPE_PROPERTIES;
-	HAS_DEFAULT_CONSTRUCTOR(AuthorizationToolWindow);
-	END_GENERATE_TYPE(AuthorizationToolWindow);
+	HAS_DEFAULT_CONSTRUCTOR(AuthoringToolWindow);
+	END_GENERATE_TYPE(AuthoringToolWindow);
 }

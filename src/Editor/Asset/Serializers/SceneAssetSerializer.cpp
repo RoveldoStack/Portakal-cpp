@@ -1,10 +1,9 @@
 #include "SceneAssetSerializer.h"
 #include <Runtime/World/Scene.h>
-#include <Runtime/World/SceneDescriptorYamlSerializer.h>
+#include <Editor/Asset/Yaml/SceneDescriptorYamlSerializer.h>
 #include <Runtime/World/SceneDescriptor.h>
 #include <Runtime/Yaml/Yaml.h>
 #include <Runtime/Log/Log.h>
-#include <Runtime/World/SceneDescriptorYamlSerializer.h>
 
 namespace Portakal
 {

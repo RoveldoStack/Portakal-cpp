@@ -58,7 +58,7 @@ namespace Portakal
 						continue;
 
 					const Type* pFieldType = pField->GetFieldType();
-					if (pFieldType == typeof(ResourceSubObject)) // its an entity
+					if (pFieldType->IsSubClassOf(typeof(ResourceSubObject))) // its an resource
 					{
 						ResourceSubObject* pResource = pField->GetValue<ResourceSubObject*>((void*)pComponent);
 						if (pResource == nullptr)
@@ -143,6 +143,18 @@ namespace Portakal
 					else
 					{
 						fieldEntry.Type = SceneComponentFieldType::Raw;
+						
+						if (pFieldType == typeof(float))
+						{
+							float value = pField->GetValue<float>((void*)pComponent);
+							fieldEntry.Content = String::GetFromFloat(value);
+						}
+						else if (pFieldType == typeof(ColorRgbaF))
+						{
+							const ColorRgbaF value = pField->GetValue<ColorRgbaF>((void*)pComponent);
+							String str((char*)& value, sizeof(value));
+							fieldEntry.Content = str;
+						}
 					}
 
 					componentEntry.Fields.Add(fieldEntry);
@@ -274,17 +286,17 @@ namespace Portakal
 			{
 				const SceneComponentEntry& componentEntry = entityEntry.Components[componentIndex];
 
-				Type* pType = GetTypeFromArray(componentTypes, componentEntry.TypeName);
-				if (pType == nullptr)
+				Type* pComponentType = GetTypeFromArray(componentTypes, componentEntry.TypeName);
+				if (pComponentType == nullptr)
 				{
-					pType = typeof(InvalidComponent);
+					pComponentType = typeof(InvalidComponent);
 				}
 
 				/*
 				* Create component
 				*/
-				Component* pComponent = pEntity->CreateComponent(pType);
-				if (pType == typeof(InvalidComponent))
+				Component* pComponent = pEntity->CreateComponent(pComponentType);
+				if (pComponentType == typeof(InvalidComponent))
 				{
 					InvalidComponent* pInvalidComponent = (InvalidComponent*)pComponent;
 					pInvalidComponent->SetIntendedType(componentEntry.TypeName);
@@ -298,6 +310,34 @@ namespace Portakal
 				{
 					const SceneComponentFieldEntry& fieldEntry = componentEntry.Fields[fieldIndex];
 
+					Field* pField = pComponentType->GetField(fieldEntry.FieldName);
+
+					if (pField == nullptr)
+						continue;
+
+					Type* pFieldType = pField->GetFieldType();
+
+					if (pFieldType == nullptr)
+						continue;
+
+					/*
+					* Hardcoded transformations
+					*/
+					if (pFieldType == typeof(float))
+					{
+						const float value = String::ToFloat(fieldEntry.Content);
+						pField->SetValue<float>(pComponent,value);
+					}
+					else if (pFieldType == typeof(int))
+					{
+						const int value = String::ToInteger(fieldEntry.Content);
+						pField->SetValue<float>(pComponent, value);
+					}
+					else if (pFieldType == typeof(ColorRgbaF))
+					{
+						const ColorRgbaF value = *((ColorRgbaF*)fieldEntry.Content.GetSource());
+						pField->SetValue<ColorRgbaF>(pComponent, value);
+					}
 
 				}
 			}

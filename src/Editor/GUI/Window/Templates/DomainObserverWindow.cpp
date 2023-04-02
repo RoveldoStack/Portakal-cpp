@@ -25,9 +25,9 @@
 #include <Editor/Asset/IAssetSerializer.h>
 #include <Editor/Asset/Visualizers/TextureAssetVisualizer.h>
 #include <Editor/Asset/Serializers/TextureAssetSerializer.h>
-#include <Editor/GUI/Window/Templates/AuthorizationToolWindow.h>
+#include <Editor/GUI/Window/Templates/AuthoringToolWindow.h>
 #include <Editor/GUI/Window/EditorWindowAPI.h>
-#include <Editor/Asset/AuthorizationTools/TextureAuthorizationTool.h>
+#include <Editor/Asset/AuthorizationTools/TextureAuthoringTool.h>
 #include <Editor/Renderer/ImGuiAPI.h>
 #include <Editor/Renderer/ImGuiRenderer.h>
 #include <Editor/Renderer/ImGuiTextureBinding.h>
@@ -326,7 +326,9 @@ namespace Portakal
 			}
 			else if (ImGui::Selectable("Shader"))
 			{
-
+				ImGui::CloseCurrentPopup();
+				ImGui::EndPopup();
+				ImGui::OpenPopup("ShaderCreatePopup");
 			}
 			else if (ImGui::Selectable("Sampler"))
 			{
@@ -346,11 +348,11 @@ namespace Portakal
 
 			ImGui::Text("Name: ");
 			ImGui::SameLine();
-			ImGui::InputText("##folderNameInput",mFolderNameCache, PLATFORM_FOLDER_NAME_SIZE);
+			ImGui::InputText("##folderNameInput", mNameCache, PLATFORM_FOLDER_NAME_SIZE);
 
 			if (ImGui::Button("Create"))
 			{
-				CreateFolder(mFolderNameCache);
+				CreateFolder(mNameCache);
 				ImGui::CloseCurrentPopup();
 			}
 
@@ -364,21 +366,43 @@ namespace Portakal
 
 			ImGui::Text("Name: ");
 			ImGui::SameLine();
-			ImGui::InputText("##sceneNameInput", mSceneNameCache, PLATFORM_FOLDER_NAME_SIZE);
+			ImGui::InputText("##sceneNameInput", mNameCache, PLATFORM_FOLDER_NAME_SIZE);
 
 			if (ImGui::Button("Create"))
 			{
-				String name = mSceneNameCache;
+				String name = mNameCache;
 				name += ".pscene";
 
 				CreateResourceFile(name, "scene");
 				ImGui::CloseCurrentPopup();
 
-				Memory::Set(mSceneNameCache, 0, PLATFORM_FILE_NAME_SIZE);
+				Memory::Set(mNameCache, 0, PLATFORM_FILE_NAME_SIZE);
 			}
 			ImGui::EndPopup();
 		}
+		if (ImGui::BeginPopup("ShaderCreatePopup"))
+		{
+			ImGui::Text("Create Shader");
+			ImGui::Separator();
+			ImGui::Spacing();
 
+			ImGui::Text("Name: ");
+			ImGui::SameLine();
+			ImGui::InputText("##shaderNameInput", mNameCache, PLATFORM_FOLDER_NAME_SIZE);
+
+			if (ImGui::Button("Create"))
+			{
+				String name = mNameCache;
+				name += ".pshader";
+
+				CreateResourceFile(name, "shader");
+				ImGui::CloseCurrentPopup();
+
+				Memory::Set(mNameCache, 0, PLATFORM_FILE_NAME_SIZE);
+			}
+
+			ImGui::EndPopup();
+		}
 	}
 	void DomainObserverWindow::OnFileDrop(const String& path)
 	{
@@ -474,7 +498,7 @@ namespace Portakal
 	{
 		mCurrentFolder->CreateFolder(folderName);
 
-		Memory::Set(mFolderNameCache, 0, PLATFORM_FOLDER_NAME_SIZE);
+		Memory::Set(mNameCache, 0, PLATFORM_FOLDER_NAME_SIZE);
 	}
 
 	void DomainObserverWindow::CreateResourceFile(const String& name, const String& type)
@@ -488,6 +512,10 @@ namespace Portakal
 			ClearSelectedItems();
 
 		mSelectedFiles.Add(pFile);
+
+		/*
+		* TODO: Invoke ObjectVisualizer
+		*/
 	}
 
 	void DomainObserverWindow::OpenFile(DomainFile* pFile)
@@ -498,13 +526,12 @@ namespace Portakal
 		pFile->OpenSync();
 
 		/*
-		* Validate if given domain file has a target authorization tool
+		* Validate if given domain file has a target authoring tool
 		*/
-		if (pFile->GetAuthorizationTool() == nullptr)
+		if (pFile->GetAuthoringTool() == nullptr)
 			return;
 
-		
-		AuthorizationToolWindow* pWindow = EditorWindowAPI::Create<AuthorizationToolWindow>();
+		AuthoringToolWindow* pWindow = EditorWindowAPI::Create<AuthoringToolWindow>();
 		pWindow->SetToolData(pFile);
 	}
 

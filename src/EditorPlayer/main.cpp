@@ -7,7 +7,7 @@
 #include <Editor/GUI/Object/EditorObjectVisualizerTemplates.h>
 #include <Editor/GUI/Window/GUIWindowTemplates.h>
 #include <Editor/Asset/AsserSerializers.h>
-#include <Editor/Asset/AssetAuthorizationTools.h>
+#include <Editor/Asset/AssetAuthoringTools.h>
 #include <Editor/Asset/AssetImporters.h>
 #include <Editor/Asset/AssetOpenOperations.h>
 #include <Editor/Asset/AssetVisualizers.h>
@@ -17,6 +17,7 @@
 #include <Runtime/Memory/SharedHeap.h>
 #include <Runtime/Math/Matrix4x4.h>
 #include <Runtime/Platform/PlatformTime.h>
+#include <Editor/Asset/YamlSerializers.h>
 
 namespace Portakal
 {

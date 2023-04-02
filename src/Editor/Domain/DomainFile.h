@@ -11,7 +11,7 @@ namespace Portakal
 	class IAssetVisualizer;
 	class IAssetImporter;
 	class IAssetProcessor;
-	class IAssetAuthorizationTool;
+	class IAssetAuthoringTool;
 	class IAssetOpenOperation;
 
 	/// <summary>
@@ -31,7 +31,7 @@ namespace Portakal
 		/// Returns the assinged authorization tool
 		/// </summary>
 		/// <returns></returns>
-		FORCEINLINE IAssetAuthorizationTool* GetAuthorizationTool() const noexcept { return mAuthorizationTool; }
+		FORCEINLINE IAssetAuthoringTool* GetAuthoringTool() const noexcept { return mAuthoringTool; }
 
 		/// <summary>
 		/// Returns the assigned serializer
@@ -137,7 +137,7 @@ namespace Portakal
 
 	private:
 		DomainFolder* mOwnerFolder;
-		IAssetAuthorizationTool* mAuthorizationTool;
+		IAssetAuthoringTool* mAuthoringTool;
 		IAssetSerializer* mSerializer;
 		IAssetVisualizer* mVisualizer;
 		Array<IAssetImporter*> mImporters;

@@ -13,6 +13,7 @@ project ("Stbi")
 project ("ImGui")
 project ("ImGuizmo")
 project ("Yaml-cpp")
+#project("glm")
 
 # Include sub-projects.
 add_subdirectory ("src/Runtime")
@@ -25,11 +26,13 @@ add_subdirectory("src/Libs/Stbi")
 add_subdirectory("src/Libs/ImGui")
 add_subdirectory("src/Libs/ImGuizmo")
 add_subdirectory("src/Libs/Yaml")
+#add_subdirectory("src/Libs/Glm")
 
 target_compile_features(Runtime PUBLIC cxx_std_17)
 target_compile_features(Editor PUBLIC cxx_std_17)
 target_compile_features(EditorLauncher PUBLIC cxx_std_17)
 target_compile_features(EditorPlayer PUBLIC cxx_std_17)
 target_compile_features(Player PUBLIC cxx_std_17)
+
 
 

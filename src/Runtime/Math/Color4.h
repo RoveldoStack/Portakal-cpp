@@ -3,8 +3,6 @@
 
 namespace Portakal
 {
-	
-
 	/// <summary>
 	/// Basic color structure and utilities
 	/// </summary>
@@ -24,6 +22,16 @@ namespace Portakal
 		Color4(const TData r,const TData g,const TData b,const TData a) : R(r),G(g),B(b),A(a) {}
 		Color4(const TData value) : R(value),G(value),B(value),A(value) {}
 		Color4() : R(0),G(0),B(0),A(0) {}
+
+
+		FORCEINLINE bool operator==(const Color4& other)
+		{
+			return R == other.R && G == other.G && B == other.B && A == other.A;
+		}
+		FORCEINLINE bool operator!=(const Color4& other)
+		{
+			return R != other.R || G != other.G || B != other.B || A != other.A;
+		}
 
 		TData R;
 		TData G;

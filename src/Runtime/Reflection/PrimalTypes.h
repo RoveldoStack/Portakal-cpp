@@ -1,5 +1,6 @@
 #pragma once
 #include <Runtime/Reflection/Type.h>
+#include <Runtime/Math/Color4.h>
 
 namespace Portakal
 {
@@ -30,5 +31,6 @@ namespace Portakal
 
 	GENERATE_PRIMAL_TYPE(int);
 	GENERATE_PRIMAL_TYPE(String);
-
+	GENERATE_PRIMAL_TYPE(ColorRgbaF);
+	GENERATE_PRIMAL_TYPE(float);
 }

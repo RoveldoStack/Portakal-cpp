@@ -48,8 +48,8 @@ namespace Portakal
 		Vector2F mItemSize;
 		Vector2F mItemGap;
 
-		char mFolderNameCache[PLATFORM_FOLDER_NAME_SIZE];
-		char mSceneNameCache[PLATFORM_FILE_NAME_SIZE];
+
+		char mNameCache[PLATFORM_FILE_NAME_SIZE];
 	};
 
 	START_GENERATE_TYPE(DomainObserverWindow);

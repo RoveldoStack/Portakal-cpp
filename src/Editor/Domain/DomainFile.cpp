@@ -13,8 +13,8 @@
 #include <Editor/Asset/CustomAssetProcessorAttribute.h>
 #include <Editor/Asset/IAssetProcessor.h>
 #include <Runtime/Resource/ResourceSubObject.h>
-#include <Editor/Asset/CustomAssetAuthorizationToolAttribute.h>
-#include <Editor/Asset/IAssetAuthorizationTool.h>
+#include <Editor/Asset/CustomAssetAuthoringToolAttribute.h>
+#include <Editor/Asset/IAssetAuthoringTool.h>
 #include <Editor/Domain/DomainFolder.h>
 #include <Runtime/Resource/Resource.h>
 #include <Runtime/Resource/ResourceAPI.h>
@@ -213,22 +213,22 @@ namespace Portakal
         /*
         * Find authorization tool
         */
-        IAssetAuthorizationTool* pAuthorizationTool = nullptr;
+        IAssetAuthoringTool* pAuthoringTool = nullptr;
         for (unsigned int i = 0; i < types.GetCursor(); i++)
         {
             const Type* pType = types[i];
 
-            if (!pType->IsSubClassOf(typeof(IAssetAuthorizationTool)))
+            if (!pType->IsSubClassOf(typeof(IAssetAuthoringTool)))
                 continue;
 
-            CustomAssetAuthorizationToolAttribute* pAttribute = pType->GetAttribute<CustomAssetAuthorizationToolAttribute>();
+            CustomAssetAuthoringToolAttribute* pAttribute = pType->GetAttribute<CustomAssetAuthoringToolAttribute>();
             if (pAttribute == nullptr)
                 continue;
 
             if (pAttribute->GetResourceType() != fileDescriptor.ResourceType)
                 continue;
 
-            pAuthorizationTool = (IAssetAuthorizationTool*)pType->CreateDefaultHeapObject();
+            pAuthoringTool = (IAssetAuthoringTool*)pType->CreateDefaultHeapObject();
             break;
         }
 
@@ -261,7 +261,7 @@ namespace Portakal
         mSourceFilePath = sourceFilePath;
         mFileDescriptorPath = fileDescriptorPath;
         mOwnerFolder = pOwnerFolder;
-        mAuthorizationTool = pAuthorizationTool;
+        mAuthoringTool = pAuthoringTool;
         mSerializer = pSerializer;
         mVisualizer = pVisualizer;
         mImporters = importers;

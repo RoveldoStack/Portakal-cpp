@@ -27,11 +27,18 @@ namespace Portakal
 	private:
 		RenderTarget* mTarget;
 		ColorRgbaF mClearColor;
+		float mNearPlane;
+		float mFarPlane;
+		float mOrthoSize;
 	};
 
 	START_GENERATE_TYPE(SpriteCamera);
 	START_TYPE_PROPERTIES(SpriteCamera);
 	REGISTER_BASE_TYPE(Component);
+	REGISTER_FIELD(SpriteCamera, mClearColor, ColorRgbaF, AccessSpecifier::Public);
+	REGISTER_FIELD(SpriteCamera, mNearPlane, float, AccessSpecifier::Public);
+	REGISTER_FIELD(SpriteCamera, mFarPlane, float, AccessSpecifier::Public);
+	REGISTER_FIELD(SpriteCamera, mOrthoSize, float, AccessSpecifier::Public);
 	END_TYPE_PROPERTIES;
 	HAS_DEFAULT_CONSTRUCTOR(SpriteCamera);
 	END_GENERATE_TYPE(SpriteCamera);

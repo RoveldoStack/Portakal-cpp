@@ -28,13 +28,17 @@ namespace Portakal
 		/// <returns></returns>
 		FORCEINLINE String GetSource() const noexcept { return mSource; }
 
+		FORCEINLINE String GetError() const noexcept { return mError; }
 		FORCEINLINE virtual GraphicsDeviceObjectType GetDeviceObjectType() const noexcept override final { return GraphicsDeviceObjectType::Shader; }
 	protected:
 		Shader(const ShaderCreateDesc& desc) : mStage(desc.Stage), mEntryPointMethod(desc.EntryPointMethod), mSource(desc.Source) {}
 		~Shader() = default;
+
+		void SetError(const String& error) { mError = error; }
 	private:
 		const ShaderStage mStage;
 		const String mEntryPointMethod;
 		const String mSource;
+		String mError;
 	};
 }

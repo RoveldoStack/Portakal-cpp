@@ -100,6 +100,30 @@ namespace Portakal
 
 			return result;
 		}
+		static Matrix4x4 Orthographic(const TType size, const TType near, const TType far)
+		{
+			Matrix4x4 result =
+			{
+				1/size,0,0,1,
+				0,1/size,0,1,
+				0,0,-2/(far-near),-(far + near)/(far-near),
+				0,0,0,1
+			};
+
+			return result;
+		}
+		static Matrix4x4 Perspective(const TType fov,const TType aspect,const TType near,const TType far)
+		{
+			Matrix4x4 result =
+			{
+				0,0,0,0,
+				0,0,0,0,
+				0,0,0,0,
+				0,0,0,1
+			};
+
+			return result;
+		}
 		static Matrix4x4 Identity()
 		{
 			Matrix4x4 result =
