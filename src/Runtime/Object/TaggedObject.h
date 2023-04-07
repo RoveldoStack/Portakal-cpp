@@ -9,7 +9,7 @@ namespace Portakal
 	/// </summary>
 	class PORTAKAL_API TaggedObject : public Class
 	{
-		GENERATE_CLASS(TaggedObject);
+		GENERATE_CLASS(TaggedObject,Virtual);
 	public:
 		/// <summary>
 		/// Returns the object name
@@ -79,9 +79,10 @@ namespace Portakal
 		bool mDestroyed;
 
 	};
-	START_GENERATE_TYPE(TaggedObject);
-	START_TYPE_PROPERTIES(TaggedObject);
-	END_TYPE_PROPERTIES;
-	NO_DEFAULT_CONSTRUCTOR;
-	END_GENERATE_TYPE(TaggedObject);
+	//START_GENERATE_TYPE(TaggedObject);
+	//START_TYPE_PROPERTIES(TaggedObject);
+	//END_TYPE_PROPERTIES;
+	//NO_DEFAULT_CONSTRUCTOR;
+	//END_GENERATE_TYPE(TaggedObject);
+#include "TaggedObject.reflect.h"
 }

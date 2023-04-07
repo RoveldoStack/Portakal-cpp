@@ -1,0 +1,7 @@
+#include "IAssetImporter.h" 
+START_GENERATE_TYPE(IAssetImporter);
+START_TYPE_PROPERTIES(IAssetImporter)
+
+END_TYPE_PROPERTIES;
+NO_DEFAULT_CONSTRUCTOR;
+END_GENERATE_TYPE(IAssetImporter);

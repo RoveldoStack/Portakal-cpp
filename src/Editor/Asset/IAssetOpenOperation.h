@@ -10,7 +10,7 @@ namespace Portakal
 	/// </summary>
 	class PORTAKAL_API IAssetOpenOperation : public Class
 	{
-		GENERATE_CLASS(IAssetOpenOperation);
+		GENERATE_CLASS(IAssetOpenOperation,Virtual);
 	public:
 		IAssetOpenOperation() = default;
 		~IAssetOpenOperation() = default;
@@ -21,9 +21,11 @@ namespace Portakal
 		virtual void OnOpen(DomainFile* pFile) = 0;
 	};
 
-	START_GENERATE_TYPE(IAssetOpenOperation);
-	START_TYPE_PROPERTIES(IAssetOpenOperation);
-	END_TYPE_PROPERTIES;
-	NO_DEFAULT_CONSTRUCTOR;
-	END_GENERATE_TYPE(IAssetOpenOperation);
+	//START_GENERATE_TYPE(IAssetOpenOperation);
+	//START_TYPE_PROPERTIES(IAssetOpenOperation);
+	//END_TYPE_PROPERTIES;
+	//NO_DEFAULT_CONSTRUCTOR;
+	//END_GENERATE_TYPE(IAssetOpenOperation);
+
+#include "IAssetOpenOperation.reflect.h"
 }

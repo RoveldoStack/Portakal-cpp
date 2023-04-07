@@ -8,6 +8,7 @@ namespace Portakal
 	/// <summary>
 	/// Editor window settings file yaml serializer implementation
 	/// </summary>
+	CLASS_ATTRIBUTE(YamlSerializerAttribute, typeof(EditorWindowSettings));
 	class PORTAKAL_API EditorWindowSettingsYamlSerializer : public IYamlSerializer
 	{
 		GENERATE_CLASS(EditorWindowSettingsYamlSerializer);
@@ -19,11 +20,13 @@ namespace Portakal
 		virtual void Deserialize(const YAML::Node& node, Class* pObject) override;
 	};
 
-	START_GENERATE_TYPE(EditorWindowSettingsYamlSerializer);
-	START_TYPE_PROPERTIES(EditorWindowSettingsYamlSerializer);
-	REGISTER_BASE_TYPE(IYamlSerializer);
-	REGISTER_TYPE_ATTRIBUTE(YamlSerializerAttribute, typeof(EditorWindowSettings));
-	END_TYPE_PROPERTIES;
-	HAS_DEFAULT_CONSTRUCTOR(EditorWindowSettingsYamlSerializer);
-	END_GENERATE_TYPE(EditorWindowSettingsYamlSerializer);
+	//START_GENERATE_TYPE(EditorWindowSettingsYamlSerializer);
+	//START_TYPE_PROPERTIES(EditorWindowSettingsYamlSerializer);
+	//REGISTER_BASE_TYPE(IYamlSerializer);
+	//REGISTER_TYPE_ATTRIBUTE(YamlSerializerAttribute, typeof(EditorWindowSettings));
+	//END_TYPE_PROPERTIES;
+	//HAS_DEFAULT_CONSTRUCTOR(EditorWindowSettingsYamlSerializer);
+	//END_GENERATE_TYPE(EditorWindowSettingsYamlSerializer);
+
+#include "EditorWindowSettingsYamlSerializer.reflect.h"
 }

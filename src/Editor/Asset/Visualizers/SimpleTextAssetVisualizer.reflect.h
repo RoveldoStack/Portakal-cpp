@@ -1,0 +1,8 @@
+#include "SimpleTextAssetVisualizer.h" 
+START_GENERATE_TYPE(SimpleTextAssetVisualizer);
+START_TYPE_PROPERTIES(SimpleTextAssetVisualizer)
+REGISTER_BASE_TYPE(IAssetVisualizer);
+REGISTER_TYPE_ATTRIBUTE(CustomAssetVisualizerAttribute, "simple-text")
+END_TYPE_PROPERTIES;
+HAS_DEFAULT_CONSTRUCTOR(SimpleTextAssetVisualizer);
+END_GENERATE_TYPE(SimpleTextAssetVisualizer);

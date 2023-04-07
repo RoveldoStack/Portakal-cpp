@@ -1,0 +1,8 @@
+#include "SceneDescriptorYamlSerializer.h" 
+START_GENERATE_TYPE(SceneDescriptorYamlSerializer);
+START_TYPE_PROPERTIES(SceneDescriptorYamlSerializer)
+REGISTER_BASE_TYPE(IYamlSerializer);
+REGISTER_TYPE_ATTRIBUTE(YamlSerializerAttribute, typeof(SceneDescriptor))
+END_TYPE_PROPERTIES;
+HAS_DEFAULT_CONSTRUCTOR(SceneDescriptorYamlSerializer);
+END_GENERATE_TYPE(SceneDescriptorYamlSerializer);

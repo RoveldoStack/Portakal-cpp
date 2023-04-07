@@ -23,9 +23,11 @@ namespace Portakal
 		const String mLocation;
 	};
 
-	START_GENERATE_TYPE(GUICustomMenuItem);
+	/*START_GENERATE_TYPE(GUICustomMenuItem);
 	START_TYPE_PROPERTIES(GUICustomMenuItem);
 	END_TYPE_PROPERTIES;
 	HAS_DEFAULT_CONSTRUCTOR(GUICustomMenuItem);
-	END_GENERATE_TYPE(GUICustomMenuItem);
+	END_GENERATE_TYPE(GUICustomMenuItem);*/
+
+#include "GUICustomMenuItem.reflect.h"
 }

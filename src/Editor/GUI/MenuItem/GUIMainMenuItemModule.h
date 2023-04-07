@@ -30,9 +30,11 @@ namespace Portakal
 		MenuItemTree* mTree;
 	};
 
-	START_GENERATE_TYPE(GUIMainMenuItemModule);
-	START_TYPE_PROPERTIES(GUIMainMenuItemModule);
-	END_TYPE_PROPERTIES;
-	HAS_DEFAULT_CONSTRUCTOR(GUIMainMenuItemModule);
-	END_GENERATE_TYPE(GUIMainMenuItemModule);
+	//START_GENERATE_TYPE(GUIMainMenuItemModule);
+	//START_TYPE_PROPERTIES(GUIMainMenuItemModule);
+	//END_TYPE_PROPERTIES;
+	//HAS_DEFAULT_CONSTRUCTOR(GUIMainMenuItemModule);
+	//END_GENERATE_TYPE(GUIMainMenuItemModule);
+
+#include "GUIMainMenuItemModule.reflect.h"
 }

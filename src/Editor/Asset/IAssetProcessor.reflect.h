@@ -1,0 +1,7 @@
+#include "IAssetProcessor.h" 
+START_GENERATE_TYPE(IAssetProcessor);
+START_TYPE_PROPERTIES(IAssetProcessor)
+
+END_TYPE_PROPERTIES;
+NO_DEFAULT_CONSTRUCTOR;
+END_GENERATE_TYPE(IAssetProcessor);

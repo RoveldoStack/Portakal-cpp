@@ -5,6 +5,7 @@
 
 namespace Portakal
 {
+	CLASS_ATTRIBUTE(CustomAssetSerializerAttribute, "scene");
 	class PORTAKAL_API SceneAssetSerializer : public IAssetSerializer
 	{
 		GENERATE_CLASS(SceneAssetSerializer);
@@ -18,11 +19,5 @@ namespace Portakal
 
 	};
 
-	START_GENERATE_TYPE(SceneAssetSerializer);
-	START_TYPE_PROPERTIES(SceneAssetSerializer);
-	REGISTER_BASE_TYPE(IAssetSerializer);
-	REGISTER_TYPE_ATTRIBUTE(CustomAssetSerializerAttribute, "scene");
-	END_TYPE_PROPERTIES;
-	HAS_DEFAULT_CONSTRUCTOR(SceneAssetSerializer);
-	END_GENERATE_TYPE(SceneAssetSerializer);
+#include "SceneAssetSerializer.reflect.h"
 }

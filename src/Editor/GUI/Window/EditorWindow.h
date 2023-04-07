@@ -12,7 +12,7 @@ namespace Portakal
 	class PORTAKAL_API EditorWindow : public Class
 	{
 		friend class EditorWindowAPI;
-		GENERATE_CLASS(EditorWindow);
+		GENERATE_CLASS(EditorWindow,Virtual);
 	public:
 		EditorWindow() : mVisible(false),mCloseRequest(false),mParentWindow(nullptr),mID(Guid::Create()) {}
 		virtual ~EditorWindow() = default;
@@ -117,9 +117,11 @@ namespace Portakal
 		bool mCloseRequest;
 	};
 
-	START_GENERATE_TYPE(EditorWindow);
-	START_TYPE_PROPERTIES(EditorWindow);
-	END_TYPE_PROPERTIES;
-	NO_DEFAULT_CONSTRUCTOR;
-	END_GENERATE_TYPE(EditorWindow);
+	//START_GENERATE_TYPE(EditorWindow);
+	//START_TYPE_PROPERTIES(EditorWindow);
+	//END_TYPE_PROPERTIES;
+	//NO_DEFAULT_CONSTRUCTOR;
+	//END_GENERATE_TYPE(EditorWindow);
+
+#include "EditorWindow.reflect.h"
 }

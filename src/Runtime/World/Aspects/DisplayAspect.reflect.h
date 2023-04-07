@@ -1,0 +1,8 @@
+#include "DisplayAspect.h" 
+START_GENERATE_TYPE(DisplayAspect);
+START_TYPE_PROPERTIES(DisplayAspect)
+REGISTER_BASE_TYPE(SceneAspect);
+
+END_TYPE_PROPERTIES;
+HAS_DEFAULT_CONSTRUCTOR(DisplayAspect);
+END_GENERATE_TYPE(DisplayAspect);

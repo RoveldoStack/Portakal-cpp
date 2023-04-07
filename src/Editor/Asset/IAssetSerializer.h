@@ -14,7 +14,7 @@ namespace Portakal
 	/// </summary>
 	class PORTAKAL_API IAssetSerializer : public Class
 	{
-		GENERATE_CLASS(IAssetSerializer);
+		GENERATE_CLASS(IAssetSerializer,Virtual);
 	public:
 		IAssetSerializer() = default;
 		~IAssetSerializer() = default;
@@ -32,9 +32,11 @@ namespace Portakal
 		virtual void SerializeToPackage(const ResourceSubObject* pObject, ByteBlock& outBlock) = 0;
 	};
 
-	START_GENERATE_TYPE(IAssetSerializer);
-	START_TYPE_PROPERTIES(IAssetSerializer);
-	END_TYPE_PROPERTIES;
-	NO_DEFAULT_CONSTRUCTOR;
-	END_GENERATE_TYPE(IAssetSerializer)
+	//START_GENERATE_TYPE(IAssetSerializer);
+	//START_TYPE_PROPERTIES(IAssetSerializer);
+	//END_TYPE_PROPERTIES;
+	//NO_DEFAULT_CONSTRUCTOR;
+	//END_GENERATE_TYPE(IAssetSerializer)
+		
+#include "IAssetSerializer.reflect.h"
 }

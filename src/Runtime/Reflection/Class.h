@@ -19,7 +19,7 @@ namespace Portakal
 		FORCEINLINE virtual Type* GetType() const noexcept = 0;
 	};
 
-#define GENERATE_CLASS(type) private:\
+#define GENERATE_CLASS(type,isVirtual) private:\
 									friend class EMPTY(type)_Type;\
 									static inline Type* sType = nullptr;\
 									static void SetType(Type* pType) { sType = pType;}\

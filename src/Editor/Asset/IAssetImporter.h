@@ -7,7 +7,7 @@ namespace Portakal
 	class DomainFile;
 	class PORTAKAL_API IAssetImporter : public Class
 	{
-		GENERATE_CLASS(IAssetImporter);
+		GENERATE_CLASS(IAssetImporter,Virtual);
 	public:
 		IAssetImporter() = default;
 		~IAssetImporter() = default;
@@ -15,9 +15,11 @@ namespace Portakal
 		virtual void OnImport(DomainFolder* pTargetFolder,const String& sourcePath) = 0;
 	};
 
-	START_GENERATE_TYPE(IAssetImporter);
-	START_TYPE_PROPERTIES(IAssetImporter);
-	END_TYPE_PROPERTIES;
-	NO_DEFAULT_CONSTRUCTOR;
-	END_GENERATE_TYPE(IAssetImporter);
+	//START_GENERATE_TYPE(IAssetImporter);
+	//START_TYPE_PROPERTIES(IAssetImporter);
+	//END_TYPE_PROPERTIES;
+	//NO_DEFAULT_CONSTRUCTOR;
+	//END_GENERATE_TYPE(IAssetImporter);
+
+#include "IAssetImporter.reflect.h"
 }

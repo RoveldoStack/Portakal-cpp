@@ -1,0 +1,7 @@
+#include "IAssetVisualizer.h" 
+START_GENERATE_TYPE(IAssetVisualizer);
+START_TYPE_PROPERTIES(IAssetVisualizer)
+
+END_TYPE_PROPERTIES;
+NO_DEFAULT_CONSTRUCTOR;
+END_GENERATE_TYPE(IAssetVisualizer);

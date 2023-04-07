@@ -27,8 +27,8 @@ namespace Portakal
 
 		virtual void OnFinalize() override;
 
+		FIELD();
 		int mTestValue;
-		Transform2DComponent* mTestComp;
 	private:
 		Vector2F mPosition;
 		Vector2F mScale;
@@ -39,8 +39,6 @@ namespace Portakal
 	START_GENERATE_TYPE(Transform2DComponent);
 	START_TYPE_PROPERTIES(Transform2DComponent);
 	REGISTER_BASE_TYPE(Component);
-	REGISTER_FIELD(Transform2DComponent,mTestValue, int, AccessSpecifier::Public);
-	REGISTER_FIELD_SELF(Transform2DComponent, mTestComp, AccessSpecifier::Public);
 	END_TYPE_PROPERTIES;
 	HAS_DEFAULT_CONSTRUCTOR(Transform2DComponent);
 	END_GENERATE_TYPE(Transform2DComponent);

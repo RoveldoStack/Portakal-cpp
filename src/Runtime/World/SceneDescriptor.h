@@ -80,9 +80,10 @@ namespace Portakal
 		Array<SceneEntityEntry> Entities;
 	};
 
-	START_GENERATE_TYPE(SceneDescriptor);
-	START_TYPE_PROPERTIES(SceneDescriptor);
-	END_TYPE_PROPERTIES;
-	HAS_DEFAULT_CONSTRUCTOR(SceneDescriptor);
-	END_GENERATE_TYPE(SceneDescriptor);
+#include "SceneDescriptor.reflect.h"
+	//START_GENERATE_TYPE(SceneDescriptor);
+	//START_TYPE_PROPERTIES(SceneDescriptor);
+	//END_TYPE_PROPERTIES;
+	//HAS_DEFAULT_CONSTRUCTOR(SceneDescriptor);
+	//END_GENERATE_TYPE(SceneDescriptor);
 }

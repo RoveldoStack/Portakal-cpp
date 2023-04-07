@@ -9,7 +9,7 @@ namespace Portakal
 	/// </summary>
 	class PORTAKAL_API IYamlSerializer : public Class
 	{
-		GENERATE_CLASS(IYamlSerializer);
+		GENERATE_CLASS(IYamlSerializer,Virtual);
 	public:
 		IYamlSerializer() = default;
 		~IYamlSerializer() = default;
@@ -29,9 +29,12 @@ namespace Portakal
 		virtual void Deserialize(const YAML::Node& node, Class* pObject) = 0;
 	};
 
-	START_GENERATE_TYPE(IYamlSerializer);
-		START_TYPE_PROPERTIES(IYamlSerializer);
-		END_TYPE_PROPERTIES;
-	NO_DEFAULT_CONSTRUCTOR;
-	END_GENERATE_TYPE(IYamlSerializer);
+	//START_GENERATE_TYPE(IYamlSerializer);
+	//	START_TYPE_PROPERTIES(IYamlSerializer);
+	//	END_TYPE_PROPERTIES;
+	//NO_DEFAULT_CONSTRUCTOR;
+	//END_GENERATE_TYPE(IYamlSerializer);
+
+
+#include "IYamlSerializer.reflect.h"
 }

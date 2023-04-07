@@ -1,4 +1,4 @@
-#include "DomainFileDescriptorYamlSerialize.h"
+#include "DomainFileDescriptorYamlSerializer.h"
 
 namespace Portakal
 {

@@ -1,0 +1,8 @@
+#include "InvalidAspect.h" 
+START_GENERATE_TYPE(InvalidAspect);
+START_TYPE_PROPERTIES(InvalidAspect)
+REGISTER_BASE_TYPE(SceneAspect);
+
+END_TYPE_PROPERTIES;
+HAS_DEFAULT_CONSTRUCTOR(InvalidAspect);
+END_GENERATE_TYPE(InvalidAspect);

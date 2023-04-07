@@ -11,7 +11,7 @@ namespace Portakal
 	/// </summary>
 	class PORTAKAL_API IAssetVisualizer : public Class
 	{
-		GENERATE_CLASS(IAssetVisualizer);
+		GENERATE_CLASS(IAssetVisualizer,Virtual);
 	public:
 		IAssetVisualizer() = default;
 		~IAssetVisualizer() = default;
@@ -24,9 +24,11 @@ namespace Portakal
 		virtual TextureResource* OnPaint(DomainFile* pFile) = 0;
 	};
 
-	START_GENERATE_TYPE(IAssetVisualizer);
-	START_TYPE_PROPERTIES(IAssetVisualizer);
-	END_TYPE_PROPERTIES;
-	NO_DEFAULT_CONSTRUCTOR;
-	END_GENERATE_TYPE(IAssetVisualizer);
+	//START_GENERATE_TYPE(IAssetVisualizer);
+	//START_TYPE_PROPERTIES(IAssetVisualizer);
+	//END_TYPE_PROPERTIES;
+	//NO_DEFAULT_CONSTRUCTOR;
+	//END_GENERATE_TYPE(IAssetVisualizer);
+
+#include "IAssetVisualizer.reflect.h"
 }

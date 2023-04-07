@@ -13,7 +13,7 @@ namespace Portakal
 	/// </summary>
 	class PORTAKAL_API ApplicationModule : public Class
 	{
-		GENERATE_CLASS(ApplicationModule);
+		GENERATE_CLASS(ApplicationModule,Virtual);
 		friend class Application;
 	public:
 		/// <summary>
@@ -106,12 +106,13 @@ namespace Portakal
 		Application* mOwnerApplication;
 	};
 
-	START_GENERATE_TYPE(ApplicationModule);
-	START_TYPE_PROPERTIES(ApplicationModule)
-	END_TYPE_PROPERTIES;
-	NO_DEFAULT_CONSTRUCTOR;
-	END_GENERATE_TYPE(ApplicationModule);
+	//START_GENERATE_TYPE(ApplicationModule);
+	//START_TYPE_PROPERTIES(ApplicationModule)
+	//END_TYPE_PROPERTIES;
+	//NO_DEFAULT_CONSTRUCTOR;
+	//END_GENERATE_TYPE(ApplicationModule);
 
+#include "ApplicationModule.reflect.h"
 
 #define GENERATE_APPLICATION_MODULE(tickEnabled,eventsEnabled,validationEnabled) public: \
 																	FORCEINLINE virtual bool IsTickEnabled() const noexcept override { return tickEnabled;} \

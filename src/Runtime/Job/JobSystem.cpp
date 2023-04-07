@@ -24,7 +24,8 @@ namespace Portakal
 		/*
 		* Create worker threads
 		*/
-		const unsigned int workerThreadCount = PlatformInfo::GetCpuThreadCount() - 2;
+		const unsigned int workerThreadCount = PlatformInfo::GetCpuThreadCount() - 3;
+
 		for (unsigned int i = 0; i < workerThreadCount; i++)
 		{
 			WorkerThreadData data = {};

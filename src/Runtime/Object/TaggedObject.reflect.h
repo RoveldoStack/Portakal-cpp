@@ -1,0 +1,7 @@
+#include "TaggedObject.h" 
+START_GENERATE_TYPE(TaggedObject);
+START_TYPE_PROPERTIES(TaggedObject)
+
+END_TYPE_PROPERTIES;
+NO_DEFAULT_CONSTRUCTOR;
+END_GENERATE_TYPE(TaggedObject);

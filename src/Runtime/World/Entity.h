@@ -157,10 +157,11 @@ namespace Portakal
 		Scene* mOwnerScene;
 	};
 
-	START_GENERATE_TYPE(Entity);
-	START_TYPE_PROPERTIES(Entity);
-	REGISTER_BASE_TYPE(TaggedObject);
-	END_TYPE_PROPERTIES;
-	HAS_DEFAULT_CONSTRUCTOR(Entity);
-	END_GENERATE_TYPE(Entity);
+	//START_GENERATE_TYPE(Entity);
+	//START_TYPE_PROPERTIES(Entity);
+	//REGISTER_BASE_TYPE(TaggedObject);
+	//END_TYPE_PROPERTIES;
+	//HAS_DEFAULT_CONSTRUCTOR(Entity);
+	//END_GENERATE_TYPE(Entity);
+#include "Entity.reflect.h"
 }

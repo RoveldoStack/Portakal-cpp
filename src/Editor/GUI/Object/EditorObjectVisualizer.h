@@ -9,7 +9,7 @@ namespace Portakal
 	class PORTAKAL_API EditorObjectVisualizer : Class
 	{
 		friend class ObjectObserverWindow;
-		GENERATE_CLASS(EditorObjectVisualizer);
+		GENERATE_CLASS(EditorObjectVisualizer,Virtual);
 	public:
 		EditorObjectVisualizer() = default;
 		~EditorObjectVisualizer() = default;
@@ -25,9 +25,11 @@ namespace Portakal
 		Class* mTargetObject;
 	};
 
-	START_GENERATE_TYPE(EditorObjectVisualizer);
-	START_TYPE_PROPERTIES(EditorObjectVisualizer);
-	END_TYPE_PROPERTIES;
-	NO_DEFAULT_CONSTRUCTOR;
-	END_GENERATE_TYPE(EditorObjectVisualizer);
+	//START_GENERATE_TYPE(EditorObjectVisualizer);
+	//START_TYPE_PROPERTIES(EditorObjectVisualizer);
+	//END_TYPE_PROPERTIES;
+	//NO_DEFAULT_CONSTRUCTOR;
+	//END_GENERATE_TYPE(EditorObjectVisualizer);
+
+#include "EditorObjectVisualizer.reflect.h"
 }

@@ -127,7 +127,21 @@ namespace Portakal
     }
     void DX11Device::WaitForFinishCore()
     {
+        mContextBarrier->Lock();
 
+        DXPTR<ID3D11Query> query = 0;
+        D3D11_QUERY_DESC desc = { D3D11_QUERY_EVENT,0 };
+        mDevice->CreateQuery(&desc, query.GetAddressOf());
+
+        mImmediateContext->Flush();
+        mImmediateContext->End(query.Get());
+
+        while (mImmediateContext->GetData(query.Get(), nullptr, 0, 0) == S_FALSE)
+        {
+
+        }
+
+        mContextBarrier->Release();
     }
     void DX11Device::SubmitCommandsCore(const Array<CommandList*>& cmdBuffers)
     {
@@ -136,7 +150,7 @@ namespace Portakal
         {
             DX11CommandList* pCmdList = (DX11CommandList*)cmdBuffers[i];
 
-            mImmediateContext->ExecuteCommandList(pCmdList->GetDXCmdList(), TRUE);
+            mImmediateContext->ExecuteCommandList(pCmdList->GetDXCmdList(), FALSE);
         }
         mContextBarrier->Release();
     }

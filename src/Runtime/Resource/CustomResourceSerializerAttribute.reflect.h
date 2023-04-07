@@ -1,0 +1,7 @@
+#include "CustomResourceSerializerAttribute.h" 
+START_GENERATE_TYPE(CustomResourceSerializerAttribute);
+START_TYPE_PROPERTIES(CustomResourceSerializerAttribute)
+
+END_TYPE_PROPERTIES;
+HAS_DEFAULT_CONSTRUCTOR(CustomResourceSerializerAttribute);
+END_GENERATE_TYPE(CustomResourceSerializerAttribute);

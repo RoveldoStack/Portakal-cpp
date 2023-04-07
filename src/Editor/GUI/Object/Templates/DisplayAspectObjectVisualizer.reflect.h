@@ -1,0 +1,8 @@
+#include "DisplayAspectObjectVisualizer.h" 
+START_GENERATE_TYPE(DisplayAspectObjectVisualizer);
+START_TYPE_PROPERTIES(DisplayAspectObjectVisualizer)
+REGISTER_BASE_TYPE(EditorObjectVisualizer);
+REGISTER_TYPE_ATTRIBUTE(CustomEditorObjectAttribute, typeof(DisplayAspect))
+END_TYPE_PROPERTIES;
+HAS_DEFAULT_CONSTRUCTOR(DisplayAspectObjectVisualizer);
+END_GENERATE_TYPE(DisplayAspectObjectVisualizer);

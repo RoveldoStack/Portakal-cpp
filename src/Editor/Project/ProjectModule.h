@@ -42,9 +42,11 @@ namespace Portakal
 		ProjectAPI* mAPI;
 	};
 
-	START_GENERATE_TYPE(ProjectModule);
-	START_TYPE_PROPERTIES(ProjectModule);
-	END_TYPE_PROPERTIES;
-	HAS_DEFAULT_CONSTRUCTOR(ProjectModule);
-	END_GENERATE_TYPE(ProjectModule);
+	//START_GENERATE_TYPE(ProjectModule);
+	//START_TYPE_PROPERTIES(ProjectModule);
+	//END_TYPE_PROPERTIES;
+	//HAS_DEFAULT_CONSTRUCTOR(ProjectModule);
+	//END_GENERATE_TYPE(ProjectModule);
+
+#include "ProjectModule.reflect.h"
 }

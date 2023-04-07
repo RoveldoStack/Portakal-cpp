@@ -27,10 +27,11 @@ namespace Portakal
 	private:
 	};
 
-	START_GENERATE_TYPE(SceneModule);
-	START_TYPE_PROPERTIES(SceneModule);
-	REGISTER_BASE_TYPE(ApplicationModule);
-	END_TYPE_PROPERTIES;
-	HAS_DEFAULT_CONSTRUCTOR(SceneModule);
-	END_GENERATE_TYPE(SceneModule);
+	//START_GENERATE_TYPE(SceneModule);
+	//START_TYPE_PROPERTIES(SceneModule);
+	//REGISTER_BASE_TYPE(ApplicationModule);
+	//END_TYPE_PROPERTIES;
+	//HAS_DEFAULT_CONSTRUCTOR(SceneModule);
+	//END_GENERATE_TYPE(SceneModule);
+#include "SceneModule.reflect.h"
 }

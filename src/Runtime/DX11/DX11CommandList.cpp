@@ -18,7 +18,7 @@ namespace Portakal
     DX11CommandList::DX11CommandList(const CommandListCreateDesc& desc, DX11Device* pDevice) : CommandList(desc,CommandQueueType::Graphics)
     {
         mDevice = pDevice->GetDXDevice();
-        pDevice->GetDXDevice()->CreateDeferredContext(0,mContext.GetAddressOf());
+        ASSERT(SUCCEEDED(pDevice->GetDXDevice()->CreateDeferredContext(0, mContext.GetAddressOf())),"DX11CommandList","Failed to create a deferred context");
     }
     DX11CommandList::~DX11CommandList()
     {

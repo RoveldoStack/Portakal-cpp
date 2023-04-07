@@ -1,0 +1,7 @@
+#include "EditorWindow.h" 
+START_GENERATE_TYPE(EditorWindow);
+START_TYPE_PROPERTIES(EditorWindow)
+
+END_TYPE_PROPERTIES;
+NO_DEFAULT_CONSTRUCTOR;
+END_GENERATE_TYPE(EditorWindow);

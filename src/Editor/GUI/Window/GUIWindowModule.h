@@ -48,9 +48,11 @@ namespace Portakal
 		bool mDockState;
 	};
 
-	START_GENERATE_TYPE(GUIWindowModule);
-	START_TYPE_PROPERTIES(GUIWindowModule);
-	END_TYPE_PROPERTIES;
-	HAS_DEFAULT_CONSTRUCTOR(GUIWindowModule);
-	END_GENERATE_TYPE(GUIWindowModule);
+	//START_GENERATE_TYPE(GUIWindowModule);
+	//START_TYPE_PROPERTIES(GUIWindowModule);
+	//END_TYPE_PROPERTIES;
+	//HAS_DEFAULT_CONSTRUCTOR(GUIWindowModule);
+	//END_GENERATE_TYPE(GUIWindowModule);
+
+#include "GUIWindowModule.reflect.h"
 }

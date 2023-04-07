@@ -1,0 +1,8 @@
+#include "GUIMainMenuItemModule.h" 
+START_GENERATE_TYPE(GUIMainMenuItemModule);
+START_TYPE_PROPERTIES(GUIMainMenuItemModule)
+REGISTER_BASE_TYPE(ApplicationModule);
+
+END_TYPE_PROPERTIES;
+HAS_DEFAULT_CONSTRUCTOR(GUIMainMenuItemModule);
+END_GENERATE_TYPE(GUIMainMenuItemModule);

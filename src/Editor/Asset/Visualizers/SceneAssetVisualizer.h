@@ -4,6 +4,7 @@
 
 namespace Portakal
 {
+	CLASS_ATTRIBUTE(CustomAssetVisualizerAttribute, "scene");
 	class PORTAKAL_API SceneAssetVisualizer : public IAssetVisualizer
 	{
 		GENERATE_CLASS(SceneAssetVisualizer);
@@ -12,11 +13,6 @@ namespace Portakal
 		virtual TextureResource* OnPaint(DomainFile* pFile) override;
 	};
 
-	START_GENERATE_TYPE(SceneAssetVisualizer);
-	START_TYPE_PROPERTIES(SceneAssetVisualizer);
-	REGISTER_BASE_TYPE(IAssetVisualizer);
-	REGISTER_TYPE_ATTRIBUTE(CustomAssetVisualizerAttribute,"scene");
-	END_TYPE_PROPERTIES;
-	HAS_DEFAULT_CONSTRUCTOR(SceneAssetVisualizer);
-	END_GENERATE_TYPE(SceneAssetVisualizer);
+
+#include "SceneAssetVisualizer.reflect.h"
 }

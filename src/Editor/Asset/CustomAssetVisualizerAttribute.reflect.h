@@ -1,0 +1,7 @@
+#include "CustomAssetVisualizerAttribute.h" 
+START_GENERATE_TYPE(CustomAssetVisualizerAttribute);
+START_TYPE_PROPERTIES(CustomAssetVisualizerAttribute)
+
+END_TYPE_PROPERTIES;
+HAS_DEFAULT_CONSTRUCTOR(CustomAssetVisualizerAttribute);
+END_GENERATE_TYPE(CustomAssetVisualizerAttribute);

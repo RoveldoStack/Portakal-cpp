@@ -10,7 +10,7 @@ namespace Portakal
 	/// </summary>
 	class PORTAKAL_API IAssetProcessor : public Class
 	{
-		GENERATE_CLASS(IAssetProcessor);
+		GENERATE_CLASS(IAssetProcessor,Virtual);
 	public:
 		IAssetProcessor() = default;
 		~IAssetProcessor() = default;
@@ -22,9 +22,11 @@ namespace Portakal
 		virtual void OnProcess(DomainFile* pFile) = 0;
 	};
 
-	START_GENERATE_TYPE(IAssetProcessor);
-	START_TYPE_PROPERTIES(IAssetProcessor);
-	END_TYPE_PROPERTIES;
-	NO_DEFAULT_CONSTRUCTOR;
-	END_GENERATE_TYPE(IAssetProcessor);
+	//START_GENERATE_TYPE(IAssetProcessor);
+	//START_TYPE_PROPERTIES(IAssetProcessor);
+	//END_TYPE_PROPERTIES;
+	//NO_DEFAULT_CONSTRUCTOR;
+	//END_GENERATE_TYPE(IAssetProcessor);
+
+#include "IAssetProcessor.reflect.h"
 }

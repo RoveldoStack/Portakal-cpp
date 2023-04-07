@@ -8,6 +8,7 @@ namespace Portakal
 	/// <summary>
 	/// Yaml serializer for the scene descriptor
 	/// </summary>
+	CLASS_ATTRIBUTE(YamlSerializerAttribute, typeof(SceneDescriptor));
 	class PORTAKAL_API SceneDescriptorYamlSerializer : public IYamlSerializer
 	{
 		GENERATE_CLASS(SceneDescriptorYamlSerializer);
@@ -22,11 +23,13 @@ namespace Portakal
 
 	};
 
-	START_GENERATE_TYPE(SceneDescriptorYamlSerializer);
-	START_TYPE_PROPERTIES(SceneDescriptorYamlSerializer);
-	REGISTER_BASE_TYPE(IYamlSerializer);
-	REGISTER_TYPE_ATTRIBUTE(YamlSerializerAttribute, typeof(SceneDescriptor));
-	END_TYPE_PROPERTIES;
-	HAS_DEFAULT_CONSTRUCTOR(SceneDescriptorYamlSerializer);
-	END_GENERATE_TYPE(SceneDescriptorYamlSerializer);
+	//START_GENERATE_TYPE(SceneDescriptorYamlSerializer);
+	//START_TYPE_PROPERTIES(SceneDescriptorYamlSerializer);
+	//REGISTER_BASE_TYPE(IYamlSerializer);
+	//REGISTER_TYPE_ATTRIBUTE(YamlSerializerAttribute, typeof(SceneDescriptor));
+	//END_TYPE_PROPERTIES;
+	//HAS_DEFAULT_CONSTRUCTOR(SceneDescriptorYamlSerializer);
+	//END_GENERATE_TYPE(SceneDescriptorYamlSerializer);
+
+#include "SceneDescriptorYamlSerializer.reflect.h"
 }

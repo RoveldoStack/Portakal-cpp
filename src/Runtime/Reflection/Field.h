@@ -83,4 +83,5 @@ namespace Portakal
 #define REGISTER_FIELD(cls,member,type,accessSpecifier) pType->_RegisterField(new Field(TypeAccessor<type>::GetAccessorType(),#member,offsetof(cls,member),accessSpecifier));
 
 #define REGISTER_FIELD_SELF(cls,member,accessSpecifier) pType->_RegisterField(new Field(pType,#member,offsetof(cls,member),accessSpecifier));
+#define FIELD()
 }

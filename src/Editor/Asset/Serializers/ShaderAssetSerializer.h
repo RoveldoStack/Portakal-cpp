@@ -5,6 +5,7 @@
 
 namespace Portakal
 {
+	CLASS_ATTRIBUTE(CustomAssetSerializerAttribute, "shader");
 	class PORTAKAL_API ShaderAssetSerializer : public IAssetSerializer
 	{
 		GENERATE_CLASS(ShaderAssetSerializer);
@@ -18,11 +19,13 @@ namespace Portakal
 
 	};
 
-	START_GENERATE_TYPE(ShaderAssetSerializer);
-	START_TYPE_PROPERTIES(ShaderAssetSerializer);
-	REGISTER_BASE_TYPE(IAssetSerializer);
-	REGISTER_TYPE_ATTRIBUTE(CustomAssetSerializerAttribute, "scene");
-	END_TYPE_PROPERTIES;
-	HAS_DEFAULT_CONSTRUCTOR(ShaderAssetSerializer);
-	END_GENERATE_TYPE(ShaderAssetSerializer);
+	//START_GENERATE_TYPE(ShaderAssetSerializer);
+	//START_TYPE_PROPERTIES(ShaderAssetSerializer);
+	//REGISTER_BASE_TYPE(IAssetSerializer);
+	//REGISTER_TYPE_ATTRIBUTE(CustomAssetSerializerAttribute, "shader");
+	//END_TYPE_PROPERTIES;
+	//HAS_DEFAULT_CONSTRUCTOR(ShaderAssetSerializer);
+	//END_GENERATE_TYPE(ShaderAssetSerializer);
+
+#include "ShaderAssetSerializer.reflect.h"
 }

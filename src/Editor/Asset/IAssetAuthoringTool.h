@@ -10,7 +10,7 @@ namespace Portakal
 	/// </summary>
 	class PORTAKAL_API IAssetAuthoringTool : public Class
 	{
-		GENERATE_CLASS(IAssetAuthoringTool);
+		GENERATE_CLASS(IAssetAuthoringTool,Virtual);
 	public:
 		IAssetAuthoringTool() = default;
 		~IAssetAuthoringTool() = default;
@@ -33,9 +33,11 @@ namespace Portakal
 
 	};
 
-	START_GENERATE_TYPE(IAssetAuthoringTool);
-	START_TYPE_PROPERTIES(IAssetAuthoringTool);
-	END_TYPE_PROPERTIES;
-	NO_DEFAULT_CONSTRUCTOR;
-	END_GENERATE_TYPE(IAssetAuthoringTool);
+	//START_GENERATE_TYPE(IAssetAuthoringTool);
+	//START_TYPE_PROPERTIES(IAssetAuthoringTool);
+	//END_TYPE_PROPERTIES;
+	//NO_DEFAULT_CONSTRUCTOR;
+	//END_GENERATE_TYPE(IAssetAuthoringTool);
+
+#include "IAssetAuthoringTool.reflect.h"
 }
