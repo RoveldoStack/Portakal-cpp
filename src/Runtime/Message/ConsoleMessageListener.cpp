@@ -3,8 +3,16 @@
 
 namespace Portakal
 {
-    void ConsoleMessageListener::OnMessageReceived(const String& message, const MessageType type)
+    void ConsoleMessageListener::OnInfoRecieved(const String& message)
     {
         LOG("ConsoleMessage", *message);
+    }
+    void ConsoleMessageListener::OnWarningRecieved(const String& message)
+    {
+
+    }
+    void ConsoleMessageListener::OnErrorRecieved(const String& message)
+    {
+
     }
 }

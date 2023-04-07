@@ -27,8 +27,6 @@ namespace Portakal
 
 		virtual void OnFinalize() override;
 
-		FIELD();
-		int mTestValue;
 	private:
 		Vector2F mPosition;
 		Vector2F mScale;

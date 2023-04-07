@@ -149,6 +149,11 @@ namespace Portakal
 							float value = pField->GetValue<float>((void*)pComponent);
 							fieldEntry.Content = String::GetFromFloat(value);
 						}
+						else if (pFieldType == typeof(int))
+						{
+							int value = pField->GetValue<int>((void*)pComponent);
+							fieldEntry.Content = String::GetFromInteger(value);
+						}
 						else if (pFieldType == typeof(ColorRgbaF))
 						{
 							const ColorRgbaF value = pField->GetValue<ColorRgbaF>((void*)pComponent);
@@ -331,7 +336,7 @@ namespace Portakal
 					else if (pFieldType == typeof(int))
 					{
 						const int value = String::ToInteger(fieldEntry.Content);
-						pField->SetValue<float>(pComponent, value);
+						pField->SetValue<int>(pComponent, value);
 					}
 					else if (pFieldType == typeof(ColorRgbaF))
 					{

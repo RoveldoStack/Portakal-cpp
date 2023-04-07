@@ -4,3 +4,4 @@
 #include <Runtime/Resource/ResourceModule.h>
 #include <Runtime/Window/WindowModule.h>
 #include <Runtime/World/SceneModule.h>
+#include <Runtime/Reflection/ReflectionModule.h>

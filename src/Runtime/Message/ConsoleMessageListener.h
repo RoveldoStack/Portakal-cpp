@@ -9,6 +9,14 @@ namespace Portakal
 	class PORTAKAL_API ConsoleMessageListener : public IMessageListener
 	{
 	public:
-		virtual void OnMessageReceived(const String& message, const MessageType type) override;
+
+
+		// Inherited via IMessageListener
+		virtual void OnInfoRecieved(const String& message) override;
+
+		virtual void OnWarningRecieved(const String& message) override;
+
+		virtual void OnErrorRecieved(const String& message) override;
+
 	};
 }

@@ -18,6 +18,7 @@
 #include <Runtime/Math/Matrix4x4.h>
 #include <Runtime/Platform/PlatformTime.h>
 #include <Editor/Asset/YamlSerializers.h>
+#include <Runtime/World/Components/TestComponent.h>
 
 namespace Portakal
 {
@@ -63,6 +64,7 @@ namespace Portakal
 			/*
 			* Create modules
 			*/
+			pApplication->CreateModule<Portakal::ReflectionModule>();
 			pApplication->CreateModule<Portakal::MessageModule>();
 
 			Portakal::WindowModuleParams windowModuleParams = {};

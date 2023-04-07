@@ -16,6 +16,6 @@ namespace Portakal
 	void MessageAPI::BroadcastMessage(const String& message)
 	{
 		for (unsigned int i = 0; i < sListeners.GetCursor(); i++)
-			sListeners[i]->OnMessageReceived(message, MessageType::Information);
+			sListeners[i]->OnInfoRecieved(message);
 	}
 }

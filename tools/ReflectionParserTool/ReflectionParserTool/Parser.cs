@@ -191,7 +191,7 @@ namespace ReflectionParserTool
                 }
                 foreach(FieldEntry field in entry.Fields)
                 {
-                    registerContent += $"REGISTER_FIELD({entry.Name},{field.Type},AccessSpecifier::Public);";
+                    registerContent += $"REGISTER_FIELD({entry.Name},{field.Name},{field.Type},AccessSpecifier::Public);{System.Environment.NewLine}";
                 }
                 string constructorType = entry.IsVirtual ? $"HAS_DEFAULT_CONSTRUCTOR({entry.Name});" : "NO_DEFAULT_CONSTRUCTOR;";
                 string fileContent = $"""

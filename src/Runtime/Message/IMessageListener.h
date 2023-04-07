@@ -10,11 +10,8 @@ namespace Portakal
 	class PORTAKAL_API IMessageListener
 	{
 	public:
-		/// <summary>
-		/// Called on when a message is broadcasted
-		/// </summary>
-		/// <param name="message"></param>
-		/// <param name="type"></param>
-		FORCEINLINE virtual void OnMessageReceived(const String& message, const MessageType type) = 0;
+		FORCEINLINE virtual void OnInfoRecieved(const String& message) = 0;
+		FORCEINLINE virtual void OnWarningRecieved(const String& message) = 0;
+		FORCEINLINE virtual void OnErrorRecieved(const String& message) = 0;
 	};
 }
