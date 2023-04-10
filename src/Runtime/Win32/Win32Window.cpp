@@ -237,6 +237,9 @@ namespace Portakal
     }
     void Win32Window::PollEventsCore()
     {
+        /*
+        * Collect system events
+        */
         MSG msg = { 0 };
         while (PeekMessage(&msg, mWindowHandle, 0, 0, PM_REMOVE) > 0)
         {

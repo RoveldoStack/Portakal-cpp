@@ -130,6 +130,7 @@ namespace Portakal
 			pApplication->CreateModule<Portakal::GUIMainMenuItemModule>();
 
 			pApplication->CreateModule<Portakal::ImGuiRendererModule>();
+			pApplication->CreateModule<Portakal::InputModule>();
 
 			/*
 			* Run
@@ -232,6 +233,7 @@ int main(unsigned int argumentCount, const char** ppArguments)
 	pApplication->CreateModule<Portakal::GUIMainMenuItemModule>();
 
 	pApplication->CreateModule<Portakal::ImGuiRendererModule>();
+	pApplication->CreateModule<Portakal::InputModule>();
 
 	/*
 	* Run

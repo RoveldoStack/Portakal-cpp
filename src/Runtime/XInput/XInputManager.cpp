@@ -9,6 +9,8 @@
 #include <Runtime/Window/GamepadTriggerMoveEvent.h>
 #include <Runtime/Window/GamepadThumbMoveEvent.h>
 #include <Runtime/Memory/Memory.h>
+#include <Runtime/Input/InputAPI.h>
+#include "XInputGamepad.h"
 
 namespace Portakal
 {
@@ -35,8 +37,55 @@ namespace Portakal
 			XINPUT_STATE state = {};
 			if (XInputGetState(i, &state) != ERROR_SUCCESS)
 			{
+				/*
+				* Check if there is a gamepad with this index
+				*/
+				{
+					const Array<Gamepad*> gamepads = InputAPI::GetGamepads();
+					Gamepad* pFoundGamepad = nullptr;
+					for (unsigned int gamepadIndex = 0; gamepadIndex < gamepads.GetCursor(); gamepadIndex++)
+					{
+						Gamepad* pGamepad = gamepads[gamepadIndex];
+						if (pGamepad->GetIndex() == i)
+						{
+							pFoundGamepad = pGamepad;
+							break;
+						}
+					}
+
+					if (pFoundGamepad != nullptr)
+					{
+						InputAPI::RemoveGamepad(pFoundGamepad);
+						LOG("XInputManager", "Removed gamepad");
+					}
+				}
 				continue;
 			}
+
+			/*
+			* Register new device 
+			*/
+			{
+				const Array<Gamepad*> gamepads = InputAPI::GetGamepads();
+				bool bHasIndex = false;
+				for (unsigned int gamepadIndex = 0; gamepadIndex < gamepads.GetCursor(); gamepadIndex++)
+				{
+					Gamepad* pGamepad = gamepads[gamepadIndex];
+					if (pGamepad->GetIndex() == i)
+					{
+						bHasIndex = true;
+						break;
+					}
+				}
+
+				if (!bHasIndex)
+				{
+					XInputGamepad* pGamepad = new XInputGamepad(i);
+					InputAPI::RegisterGamepad(pGamepad);
+					LOG("XInputManager", "Registered gamepad");
+				}
+			}
+			
 
 			/*
 			* Collect buttons

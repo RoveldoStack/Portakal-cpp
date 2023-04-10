@@ -5,3 +5,4 @@
 #include <Runtime/Window/WindowModule.h>
 #include <Runtime/World/SceneModule.h>
 #include <Runtime/Reflection/ReflectionModule.h>
+#include <Runtime/Input/InputModule.h>
