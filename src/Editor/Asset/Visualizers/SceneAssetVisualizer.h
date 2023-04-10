@@ -13,6 +13,5 @@ namespace Portakal
 		virtual TextureResource* OnPaint(DomainFile* pFile) override;
 	};
 
-
 #include "SceneAssetVisualizer.reflect.h"
 }

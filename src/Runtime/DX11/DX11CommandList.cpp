@@ -174,10 +174,8 @@ namespace Portakal
         if (pRtv == nullptr)
             return;
 
-
         const float clearColor[] = { color.R / 255.0f,color.G / 255.0f,color.B / 255.0f,color.A / 255.0f };
         mContext->ClearRenderTargetView(pRtv, clearColor);
-
     }
     void DX11CommandList::ClearColorCore(const unsigned int index, const ColorRgbaF& color)
     {

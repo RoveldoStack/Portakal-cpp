@@ -128,6 +128,11 @@ namespace Portakal
 		/// </summary>
 		void Clear();
 
+		void Reset()
+		{
+			mCursor = 0;
+		}
+
 		/// <summary>
 		/// Removes the target index
 		/// </summary>
@@ -566,6 +571,8 @@ namespace Portakal
 		mCapacity = 0;
 		mCursor = 0;
 	}
+
+
 
 	template<typename TValue>
 	void Array<TValue>::RemoveIndex(unsigned int index)

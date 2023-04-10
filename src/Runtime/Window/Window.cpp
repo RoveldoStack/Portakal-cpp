@@ -124,6 +124,8 @@ namespace Portakal
 				break;
 		}
 
+		LOG("Window", "Event message:[%s]", *pEvent->GetEventMessage());
+
 		mPolledEvents.Add(pEvent);
 
 		mEventFeed.Invoke(pEvent);

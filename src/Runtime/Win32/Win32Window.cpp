@@ -4,6 +4,7 @@
 #include <ShlObj_core.h>
 #include <Runtime/Input/Keys.h>
 #include "Win32Keys.h"
+#include <Runtime/XInput/XInputManager.h>
 
 namespace Portakal
 {
@@ -243,5 +244,10 @@ namespace Portakal
             DispatchMessage(&msg);
 
         }
+
+        /*
+        * Collect gamepad inputs
+        */
+        XInputManager::CollectGamepadInputStates(this);
     }
 }

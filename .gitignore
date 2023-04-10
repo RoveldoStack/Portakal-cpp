@@ -33,3 +33,7 @@
 
 out
 .vs
+bin\
+obj\
+tools\ReflectionParserTool\ReflectionParserTool\bin
+tools\ReflectionParserTool\ReflectionParserTool\obj

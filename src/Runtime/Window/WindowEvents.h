@@ -13,3 +13,8 @@
 #include <Runtime/Window/KeyboardKeyDownEvent.h>
 #include <Runtime/Window/KeyboardKeyUpEvent.h>
 #include <Runtime/Window/KeyboardCharEvent.h>
+
+#include <Runtime/Window/GamepadButtonDownEvent.h>
+#include <Runtime/Window/GamepadButtonUpEvent.h>
+#include <Runtime/Window/GamepadTriggerMoveEvent.h>
+#include <Runtime/Window/GamepadThumbMoveEvent.h>

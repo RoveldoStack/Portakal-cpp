@@ -21,6 +21,11 @@ namespace Portakal
 		MouseButtonDown,
 		MouseButtonUp,
 		MouseMoved,
-		MouseScrolled
+		MouseScrolled,
+
+		GamepadButtonDown,
+		GamepadButtonUp,
+		GamepadTriggerMove,
+		GamepadThumbMove
 	};
 }
