@@ -2,6 +2,7 @@
 #include <Libs/ImGui/imgui.h>
 #include <Runtime/Input/InputAPI.h>
 #include <Runtime/Input/Gamepad.h>
+#include <Runtime/World/Components/TestEnum.h>
 
 namespace Portakal
 {
@@ -11,6 +12,7 @@ namespace Portakal
 	{
 		mCamera = (SpriteCamera*)GetComponent();
 	}
+	String selectedEnum = "";
 	void SpriteCameraComponentVisualizer::OnPaint()
 	{
 		SharedSafeHeap<Gamepad> pGamepad = InputAPI::GetDefaultGamepad();

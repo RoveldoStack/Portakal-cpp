@@ -27,9 +27,9 @@ namespace ReflectionParserTool
             string[] headerFiles = Directory.GetFiles(targetDirectory, "*.h", SearchOption.AllDirectories);
 
             /*
-             * Eliminate files that does not have any reflection markings
+             * Collect classes
              */
-            List<string> reflectionEnabledFiles = new List<string>();
+            List<string> reflectionEnabledClasses = new List<string>();
             foreach (string headerFile in headerFiles)
             {
                 string fileContent = File.ReadAllText(headerFile);
@@ -39,13 +39,30 @@ namespace ReflectionParserTool
                 if (index == -1)
                     continue;
 
-                reflectionEnabledFiles.Add(headerFile);
+                reflectionEnabledClasses.Add(headerFile);
             }
+
+            /*
+             * Collect enums
+             */
+            List<string> reflectionEnabledEnums = new List<string>();
+            foreach(string headerFile in headerFiles)
+            {
+                string fileContent = File.ReadAllText(headerFile, Encoding.UTF8);
+
+                int index = fileContent.IndexOf("ENUM()");
+
+                if (index == -1)
+                    continue;
+
+                reflectionEnabledEnums.Add(headerFile);
+            }
+
 
             /*
              * First collect all the reflected classes and their local properties
              */
-            foreach(string headerFilePath in reflectionEnabledFiles)
+            foreach(string headerFilePath in reflectionEnabledClasses)
             {
                 string className = Path.GetFileNameWithoutExtension(headerFilePath);
                 string fileContent = File.ReadAllText(headerFilePath);
@@ -60,18 +77,59 @@ namespace ReflectionParserTool
                     continue;
 
                 bool bVirtual = !fileContent.Contains("Virtual");
-                objectEntries.Add(new ObjectEntry(className,headerFilePath,fileContent, ObjectType.Class,bVirtual));  
+                objectEntries.Add(new ObjectEntry(className,headerFilePath,fileContent, ObjectType.Class,bVirtual,false));  
             }
 
+            /*
+             * Collect all reflected enums and their local properties
+             */
+            foreach(string headerFilePath in reflectionEnabledEnums)
+            {
+                string enumName = Path.GetFileNameWithoutExtension(headerFilePath);
+                string fileContent = File.ReadAllText(headerFilePath);
+
+                /*
+                 * Try find enum name
+                 */
+                int enumNameCursor = fileContent.IndexOf(enumName);
+                if (enumNameCursor == -1)
+                    continue;
+
+                /*
+                 * Collect enums
+                 */
+                int enumStartIndex = fileContent.IndexOf("{", enumNameCursor);
+                if (enumStartIndex == -1)
+                    continue;
+
+                int enumEndIndex = fileContent.IndexOf("}", enumStartIndex);
+                if (enumEndIndex == -1)
+                    continue;
+
+                string subStr = fileContent.Substring(enumStartIndex+1,(enumEndIndex-enumStartIndex)-1);
+                subStr = subStr.Replace(Environment.NewLine, "");
+                subStr = subStr.Replace("\t", "");
+                string[] fragments = subStr.Split(",");
+
+                ObjectEntry entry = new ObjectEntry(enumName, headerFilePath, fileContent, ObjectType.Class, false, true);
+                objectEntries.Add(entry);
+
+                int value = 0;
+                foreach(string fragment in fragments)
+                {
+                    entry.RegisterEnum(fragment, value);
+                    value++;
+                }
+
+            }
             /*
              * Generate class hierarchies
              */
             foreach(ObjectEntry entry in objectEntries)
             {
-                if (entry.Name == "Transform2DComponent")
-                {
-                    Console.WriteLine("Found");
-                }
+                if (entry.IsEnum)
+                    continue;
+
                 /*
                  * Try find class name
                  */
@@ -171,10 +229,13 @@ namespace ReflectionParserTool
              */
 
             /*
-             * Write to file
+             * Write classes
              */
             foreach(ObjectEntry entry in objectEntries)
             {
+                if (entry.IsEnum)
+                    continue;
+
                 string registerContent = "";
                 foreach (ObjectEntry baseClass in entry.BaseObjects)
                 {
@@ -193,6 +254,7 @@ namespace ReflectionParserTool
                 {
                     registerContent += $"REGISTER_FIELD({entry.Name},{field.Name},{field.Type},AccessSpecifier::Public);{System.Environment.NewLine}";
                 }
+               
                 string constructorType = entry.IsVirtual ? $"HAS_DEFAULT_CONSTRUCTOR({entry.Name});" : "NO_DEFAULT_CONSTRUCTOR;";
                 string fileContent = $"""
 #include "{entry.Name}.h" 
@@ -202,8 +264,29 @@ START_TYPE_PROPERTIES({entry.Name})
 END_TYPE_PROPERTIES;
 {constructorType}
 END_GENERATE_TYPE({entry.Name});
-
 """;
+                string fileName = entry.Folder + $@"\{entry.Name}.reflect.h";
+                File.WriteAllText(fileName, fileContent);
+            }
+
+            foreach (ObjectEntry entry in objectEntries)
+            {
+                if (!entry.IsEnum)
+                    continue;
+
+                string registerContent = "";
+                foreach (EnumEntry enumEntry in entry.Enums)
+                {
+                    registerContent += $"REGISTER_ENUM({enumEntry.Name},{enumEntry.Value});{Environment.NewLine}";
+                }
+
+                string fileContent = $"""
+                    #include "{entry.Name}.h"
+                    START_GENERATE_ENUM({entry.Name});
+                    {registerContent}
+                    END_GENERATE_ENUM({entry.Name});
+                    """;
+
                 string fileName = entry.Folder + $@"\{entry.Name}.reflect.h";
                 File.WriteAllText(fileName, fileContent);
             }

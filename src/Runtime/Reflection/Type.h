@@ -86,6 +86,42 @@ namespace Portakal
 		}
 
 		/// <summary>
+		/// Returns the enum array
+		/// </summary>
+		/// <typeparam name="TEnum"></typeparam>
+		/// <returns></returns>
+		template<typename TEnum>
+		Array<TEnum> GetEnums() const noexcept
+		{
+			Array<TEnum> enums;
+			for (unsigned int i = 0; i < mEnums.GetCursor(); i++)
+			{
+				enums.Add((TEnum)mEnums[i].Value);
+			}
+
+			return enums;
+		}
+
+		/// <summary>
+		/// Returns whether the specified enum name exists
+		/// </summary>
+		/// <param name="name"></param>
+		/// <returns></returns>
+		FORCEINLINE bool HasEnum(const String& name) const noexcept;
+
+		/// <summary>
+		/// Returns all the enum names
+		/// </summary>
+		/// <returns></returns>
+		FORCEINLINE Array<String> GetEnumNames() const noexcept;
+
+		/// <summary>
+		/// Returns all the enum values
+		/// </summary>
+		/// <returns></returns>
+		FORCEINLINE Array<long long> GetEnumValues() const noexcept;
+
+		/// <summary>
 		/// Returns the size of this type
 		/// </summary>
 		/// <returns></returns>
@@ -102,6 +138,12 @@ namespace Portakal
 		/// </summary>
 		/// <returns></returns>
 		FORCEINLINE virtual void* CreateDefaultHeapObject() const noexcept = 0;
+
+		/// <summary>
+		/// Returns whether this type is a enum or not
+		/// </summary>
+		/// <returns></returns>
+		FORCEINLINE virtual bool IsEnum() const noexcept { return false; }
 	protected:
 
 		/// <summary>
@@ -121,10 +163,24 @@ namespace Portakal
 		/// </summary>
 		/// <param name="pAttribute"></param>
 		FORCEINLINE void _RegisterAttribute(Attribute* pAttribute);
+
+		/// <summary>
+		/// Internal enum register method
+		/// </summary>
+		/// <param name="name"></param>
+		/// <param name="value"></param>
+		FORCEINLINE void _RegisterEnum(const String& name, const long long value);
+	private:
+		struct EnumEntry
+		{
+			String Name;
+			long long Value;
+		};
 	private:
 		Array<Field*> mFields;
 		Array<Attribute*> mAttributes;
 		Array<Type*> mBaseTypes;
+		Array<EnumEntry> mEnums;
 	};
 
 	class PORTAKAL_API BaseTypeDispatcher

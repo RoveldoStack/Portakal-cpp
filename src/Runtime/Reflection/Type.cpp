@@ -56,6 +56,40 @@ namespace Portakal
     {
         mAttributes.Add(pAttribute);
     }
+    void Type::_RegisterEnum(const String& name, const long long value)
+    {
+        mEnums.Add({ name,value });
+    }
+    bool Type::HasEnum(const String& name) const noexcept
+    {
+        for (unsigned int i = 0; i < mEnums.GetCursor(); i++)
+        {
+            const EnumEntry& entry = mEnums[i];
+            if (entry.Name == name)
+                return true;
+        }
+        return false;
+    }
+    Array<String> Type::GetEnumNames() const noexcept
+    {
+        Array<String> names;
+        for (unsigned int i = 0; i < mEnums.GetCursor(); i++)
+        {
+            const EnumEntry& entry = mEnums[i];
+            names.Add(entry.Name);
+        }
+        return names;
+    }
+    Array<long long> Type::GetEnumValues() const noexcept
+    {
+        Array<long long> names;
+        for (unsigned int i = 0; i < mEnums.GetCursor(); i++)
+        {
+            const EnumEntry& entry = mEnums[i];
+            names.Add(entry.Value);
+        }
+        return names;
+    }
     void Type::_RegisterBaseType(Type* pType)
     {
         mBaseTypes.Add(pType);

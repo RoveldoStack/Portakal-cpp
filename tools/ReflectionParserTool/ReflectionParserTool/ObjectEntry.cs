@@ -8,7 +8,7 @@ namespace ReflectionParserTool
 {
     public class ObjectEntry
     {
-        public ObjectEntry(string name,string headerFilePath, string fileContent, ObjectType type, bool ısVirtual)
+        public ObjectEntry(string name,string headerFilePath, string fileContent, ObjectType type, bool ısVirtual, bool isEnum)
         {
             Name = name;
             Type = type;
@@ -17,8 +17,10 @@ namespace ReflectionParserTool
             _baseObjects = new List<ObjectEntry>();
             _classAttributes = new List<AttributeEntry>();
             _fields = new List<FieldEntry>();
+            _enums = new List<EnumEntry>();
             FileContent = fileContent;
             IsVirtual = ısVirtual;
+            IsEnum = isEnum;
         }
 
         public string Name { get; private init; }
@@ -29,7 +31,9 @@ namespace ReflectionParserTool
         public IReadOnlyCollection<ObjectEntry> BaseObjects { get => _baseObjects; }
         public IReadOnlyCollection<AttributeEntry> ClassAttributes { get => _classAttributes; }
         public IReadOnlyCollection<FieldEntry> Fields { get => _fields; }
+        public IReadOnlyCollection<EnumEntry> Enums { get => _enums; }  
         public bool IsVirtual { get; private init; }
+        public bool IsEnum { get; private init; }
 
         public void RegisterClassAttribute(string name,string parameters)
         {
@@ -43,9 +47,13 @@ namespace ReflectionParserTool
         {
             _fields.Add(new FieldEntry() { Name = name, Type = type });
         }
-
+        public void RegisterEnum(string name,long value)
+        {
+            _enums.Add(new EnumEntry() {  Name = name, Value = value });
+        }
         private List<ObjectEntry> _baseObjects;
         private List<AttributeEntry> _classAttributes;
         private List<FieldEntry> _fields;
+        private List<EnumEntry> _enums;
     }
 }
