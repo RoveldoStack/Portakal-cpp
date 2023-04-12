@@ -155,9 +155,6 @@ namespace Portakal
 
 int main(unsigned int argumentCount, const char** ppArguments)
 {
-	Portakal::Test();
-
-
 	Portakal::JobSystem::Initialize();
 
 	/*

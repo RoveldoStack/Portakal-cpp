@@ -3,6 +3,9 @@
 
 namespace Portakal
 {
+	/// <summary>
+	/// Existing gamepad thumbs
+	/// </summary>
 	enum class PORTAKAL_API GamepadThumbs
 	{
 		Right,

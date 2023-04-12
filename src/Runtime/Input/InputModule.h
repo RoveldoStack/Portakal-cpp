@@ -4,6 +4,10 @@
 namespace Portakal
 {
 	class InputAPI;
+
+	/// <summary>
+	/// The module which authors the ownership of the InputAPI
+	/// </summary>
 	class PORTAKAL_API InputModule : public ApplicationModule
 	{
 		GENERATE_CLASS(InputModule);
@@ -26,5 +30,6 @@ namespace Portakal
 
 		
 	};
+
 #include "InputModule.reflect.h"
 }

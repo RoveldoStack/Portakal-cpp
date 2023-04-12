@@ -14,6 +14,7 @@ namespace Portakal
 	void SpriteCameraComponentVisualizer::OnPaint()
 	{
 		SharedSafeHeap<Gamepad> pGamepad = InputAPI::GetDefaultGamepad();
+		//Array<SharedSafeHeap<Gamepad>> gamepads = InputAPI::GetGamepads();
 
 		if (pGamepad == nullptr)
 			return;

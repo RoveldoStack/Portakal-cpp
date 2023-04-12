@@ -3,6 +3,9 @@
 
 namespace Portakal
 {
+	/// <summary>
+	/// Existing gamepad buttons
+	/// </summary>
 	enum class PORTAKAL_API GamepadButtons : unsigned int
 	{
 		A,
