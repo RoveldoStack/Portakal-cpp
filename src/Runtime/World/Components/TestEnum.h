@@ -3,7 +3,7 @@
 namespace Portakal
 {
 	ENUM();
-	enum class PORTAKAL_API TestEnum
+	enum class PORTAKAL_API TestEnum : long long
 	{
 		A,
 		B,

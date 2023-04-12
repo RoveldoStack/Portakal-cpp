@@ -1,5 +1,7 @@
 #pragma once
 #include <Runtime/World/Component.h>
+#include <Runtime/World/Components/TestEnum.h>
+#include <Runtime/World/Components/TestStruct.h>
 
 namespace Portakal
 {
@@ -14,6 +16,12 @@ namespace Portakal
 		int int1;
 		FIELD();
 		int int3;
+
+		FIELD();
+		TestEnum myEnum;
+
+		FIELD();
+		TestStruct someTestStruct;
 	private:
 
 

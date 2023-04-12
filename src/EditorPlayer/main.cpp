@@ -19,6 +19,7 @@
 #include <Runtime/Platform/PlatformTime.h>
 #include <Editor/Asset/YamlSerializers.h>
 #include <Runtime/World/Components/TestComponent.h>
+#include <Runtime/Yaml/YamlDefaultSerializer.h>
 
 namespace Portakal
 {
@@ -148,7 +149,7 @@ namespace Portakal
 	
 	void Test()
 	{
-
+		
 	}
 
 }

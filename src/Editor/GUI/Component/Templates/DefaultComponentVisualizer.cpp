@@ -5,6 +5,7 @@
 #include <Runtime/Math/Color4.h>
 #include <Editor/GUI/Window/Templates/WorldObserverWindow.h>
 #include <Runtime/World/Entity.h>
+#include <Editor/Renderer/GUICommands.h>
 
 namespace Portakal
 {
@@ -16,66 +17,61 @@ namespace Portakal
 	{
 
 	}
-	void DefaultComponentVisualizer::OnPaint()
+
+	void DrawField(Class* pObject,const Field* pField)
 	{
-		ImGui::Text("DEFAULT COMPONENT VISUALIZER");
+		const Type* pFieldType = pField->GetFieldType();
 
-		Component* pComponent = GetComponent();
 
-		const Array<Field*> fields = pComponent->GetType()->GetFields();
-		for (unsigned int i = 0; i < fields.GetCursor(); i++)
+		if (pFieldType->IsEnum())
 		{
-			const Field* pField = fields[i];
-			if (pField->GetAccessSpecifier() != AccessSpecifier::Public)
-				continue;
-
-			bool bFieldChanged = false;
-
-			const Type* pFieldType = pField->GetFieldType();
+			const long long value = pField->GetValue<long long>(pObject);
+			pField->SetValue<long long>(pObject, GUICommands::EnumField(pField->GetFieldName(), pField->GetFieldType(), value));
+		}
+		else
+		{
 			if (pFieldType == typeof(int))
 			{
-				int formerValue = pField->GetValue<int>(pComponent);
-				int value = formerValue;
-				ImGui::InputInt(*pField->GetFieldName(), &value);
-				pField->SetValue<int>(pComponent, value);
-
-				bFieldChanged = formerValue != value;
+				const int value = pField->GetValue<int>(pObject);
+				pField->SetValue<int>(pObject, GUICommands::IntField(pField->GetFieldName(), value));
 			}
 			else if (pFieldType == typeof(float))
 			{
-				float formerValue = pField->GetValue<float>(pComponent);
-				float value = formerValue;
-				ImGui::InputFloat(*pField->GetFieldName(), &value);
-				pField->SetValue<float>(pComponent, value);
-
-				bFieldChanged = formerValue != value;
+				const float value = pField->GetValue<float>(pObject);
+				pField->SetValue<float>(pObject, GUICommands::FloatField(pField->GetFieldName(), value));
 			}
 			else if (pFieldType == typeof(String))
 			{
-				char* pBuffer = new char[512];
-				String value = pField->GetValue<String>(pComponent);
-				Memory::Copy(value.GetSource(), pBuffer, value.GetCursor());
-				pBuffer[value.GetCursor()] = '\0';
-				ImGui::InputText(*pField->GetFieldName(), pBuffer,512);
-				value = pBuffer;
-				pField->SetValue<String>(pComponent, value);
-
-				delete[] pBuffer;
+				const String value = pField->GetValue<String>(pObject);
+				pField->SetValue<String>(pObject, GUICommands::TextField(pField->GetFieldName(), value));
 			}
-			else if (pFieldType == typeof(ColorRgbaF))
+			else // custom class
 			{
-				ColorRgbaF formerValue = pField->GetValue<ColorRgbaF>(pComponent);
-				ColorRgbaF value = formerValue;
-				ImGui::ColorPicker4("ClearColor", &value.R);
-				pField->SetValue(pComponent, value);
-
-				bFieldChanged = formerValue != value;
+				const Array<Field*> fields = pFieldType->GetFields();
+				Class* pOtherObject = pField->GetAddress<Class>(pObject);
+				if (ImGui::TreeNode(*pField->GetFieldName()))
+				{
+					for (unsigned int i = 0; i < fields.GetCursor(); i++)
+					{
+						DrawField(pOtherObject, fields[i]);
+					}
+					ImGui::TreePop();
+				}
 			}
+		}
 
-			if (bFieldChanged)
-			{
-				WorldObserverWindow::SignalSceneChanged(pComponent->GetOwnerEntity()->GetOwnerScene());
-			}
+	}
+	void DefaultComponentVisualizer::OnPaint()
+	{
+		Component* pComponent = GetComponent();
+
+		const Array<Field*> fields = pComponent->GetType()->GetFields();
+
+		for (unsigned int i = 0; i < fields.GetCursor(); i++)
+		{
+			const Field* pField = fields[i];
+
+			DrawField(pComponent, pField);
 		}
 	}
 }

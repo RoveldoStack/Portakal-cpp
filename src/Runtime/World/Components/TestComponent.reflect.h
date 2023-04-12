@@ -5,6 +5,8 @@ REGISTER_BASE_TYPE(Component);
 REGISTER_FIELD(TestComponent,int0,int,AccessSpecifier::Public);
 REGISTER_FIELD(TestComponent,int1,int,AccessSpecifier::Public);
 REGISTER_FIELD(TestComponent,int3,int,AccessSpecifier::Public);
+REGISTER_FIELD(TestComponent,myEnum,TestEnum,AccessSpecifier::Public);
+REGISTER_FIELD(TestComponent,someTestStruct,TestStruct,AccessSpecifier::Public);
 
 END_TYPE_PROPERTIES;
 HAS_DEFAULT_CONSTRUCTOR(TestComponent);

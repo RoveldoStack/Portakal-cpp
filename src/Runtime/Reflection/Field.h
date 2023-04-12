@@ -66,6 +66,12 @@ namespace Portakal
 
 			return *(TValue*)pObjectByte;
 		}
+		template<typename TAddress>
+		TAddress* GetAddress(void* pObject) const noexcept
+		{
+			unsigned char* pObjectByte = (unsigned char*)pObject + mOffset;
+			return (TAddress*)pObjectByte;
+		}
 	private:
 		Type* mType;
 		String mName;
