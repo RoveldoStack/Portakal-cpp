@@ -1,15 +1,15 @@
 #pragma once
 #include <Runtime/Core/Core.h>
-#include <Runtime/Platform/PlatformCriticalSection.h>
 #include <Runtime/Object/TaggedObject.h>
 #include <Runtime/Resource/ResourceSubObject.h>
 #include <Runtime/Log/Log.h>
+
 namespace Portakal
 {
 	class ResourceSubObject;
 
 	/// <summary>
-	/// Smart point implementation for TaggedObjects
+	/// Non-thread safe shared pointer implementation
 	/// </summary>
 	/// <typeparam name="TType"></typeparam>
 	template<typename TType>
@@ -20,28 +20,22 @@ namespace Portakal
 		{
 			mHeap = other.mHeap;
 			mRefCount = other.mRefCount;
-			mBarrier = other.mBarrier;
-			if (mBarrier != nullptr)
+			if (mRefCount != nullptr)
 			{
-				mBarrier->Lock();
 				*mRefCount = *mRefCount + 1;
-				mBarrier->Release();
 			}
 		}
 
 		template<typename TOther>
 		SharedHeap(const SharedHeap<TOther>& other)
 		{
-			const SharedHeap<TType>* temp = (const SharedHeap<TType>*)&other;
+			const SharedHeap<TType>* temp = (const SharedHeap<TType>*) & other;
 
 			mHeap = temp->mHeap;
 			mRefCount = temp->mRefCount;
-			mBarrier = temp->mBarrier;
-			if (mBarrier != nullptr)
+			if (mRefCount != nullptr)
 			{
-				mBarrier->Lock();
-				*mRefCount = *mRefCount + 1;
-				mBarrier->Release();
+				*mRefCount = *mRefCount + 1;;
 			}
 		}
 
@@ -51,7 +45,6 @@ namespace Portakal
 			{
 				mHeap = nullptr;
 				mRefCount = nullptr;
-				mBarrier = nullptr;
 				return;
 			}
 
@@ -59,7 +52,6 @@ namespace Portakal
 
 			mHeap = pData;
 			mRefCount = new unsigned int(1);
-			mBarrier = PlatformCriticalSection::Create();
 		}
 
 		SharedHeap(const TType& data)
@@ -67,14 +59,12 @@ namespace Portakal
 			mHeap = new TType();
 			*mHeap = data;
 			mRefCount = new unsigned int(1);
-			mBarrier = PlatformCriticalSection::Create();
 		}
-		
+
 		SharedHeap()
 		{
 			mHeap = nullptr;
 			mRefCount = nullptr;
-			mBarrier = nullptr;
 		}
 
 		~SharedHeap()
@@ -84,22 +74,13 @@ namespace Portakal
 
 		FORCEINLINE TType* GetHeap() const noexcept
 		{
-			if (mBarrier == nullptr)
-				return nullptr;
-
-			mBarrier->Lock();
-			TType* pTemp = mHeap;
-			mBarrier->Release();
-
-			return pTemp;
+			return mHeap;
 		}
 
 		void Reset()
 		{
 			if (mHeap == nullptr)
 				return;
-
-			mBarrier->Lock();
 
 			*mRefCount = *mRefCount - 1;
 
@@ -108,27 +89,15 @@ namespace Portakal
 				mHeap->Destroy();
 				delete mHeap;
 				delete mRefCount;
-				mBarrier->Release();
-				delete mBarrier;
 				mHeap = nullptr;
 				mRefCount = nullptr;
-				mBarrier = nullptr;
 				return;
 			}
-
-			mBarrier->Release();
 		}
 
 		FORCEINLINE TType* operator->() const
 		{
-			if (mBarrier == nullptr)
-				return nullptr;
-
-			mBarrier->Lock();
-			TType* pTemp = mHeap;
-			mBarrier->Release();
-
-			return pTemp;
+			return mHeap;
 		}
 
 		void operator ==(const SharedHeap& other)
@@ -153,8 +122,7 @@ namespace Portakal
 
 			mHeap = other.mHeap;
 			mRefCount = other.mRefCount;
-			mBarrier = other.mBarrier;
-			if (mBarrier != nullptr)
+			if (mRefCount != nullptr)
 			{
 				*mRefCount = *mRefCount + 1;
 			}
@@ -167,15 +135,13 @@ namespace Portakal
 
 			mHeap = pTemp->mHeap;
 			mRefCount = pTemp->mRefCount;
-			mBarrier = pTemp->mBarrier;
-			if (mBarrier != nullptr)
+			if (mRefCount != nullptr)
 			{
 				*mRefCount = *mRefCount + 1;
 			}
 		}
 	private:
 		TType* mHeap;
-		PlatformCriticalSection* mBarrier;
 		unsigned int* mRefCount;
 	};
 }

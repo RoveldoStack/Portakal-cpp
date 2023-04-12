@@ -2,6 +2,7 @@
 #include <Runtime/Core/Core.h>
 #include <Runtime/Containers/Array.h>
 #include <Runtime/Input/Gamepad.h>
+#include <Runtime/Memory/SharedSafeHeap.h>
 
 namespace Portakal
 {
@@ -12,11 +13,11 @@ namespace Portakal
 	private:
 		static InputAPI* sAPI;
 	private:
-		static void RegisterGamepad(Gamepad* pGamepad);
-		static void RemoveGamepad(Gamepad* pGamepad);
+		static void RegisterGamepad(const SharedSafeHeap<Gamepad>& pGamepad);
+		static void RemoveGamepad(const SharedSafeHeap<Gamepad>& pGamepad);
 	public:
-		static Array<Gamepad*> GetGamepads();
-		static Gamepad* GetDefaultGamepad();
+		static Array<SharedSafeHeap<Gamepad>> GetGamepads();
+		static SharedSafeHeap<Gamepad> GetDefaultGamepad();
 		
 	public:
 
@@ -24,11 +25,11 @@ namespace Portakal
 		InputAPI();
 		~InputAPI();
 
-		Array<Gamepad*> _GetGamepads() const noexcept { return mGamepads; }
-		Gamepad* _GetDefaultGamepad() const noexcept { if (mGamepads.GetCursor() > 0) { return mGamepads[0]; } return nullptr; }
-		void _RegisterGamepad(Gamepad* pGamepad) { mGamepads.Add(pGamepad); }
-		void _RemoveGamepad(Gamepad* pGamepad) { mGamepads.Remove(pGamepad); }
+		Array<SharedSafeHeap<Gamepad>> _GetGamepads() const noexcept { return mGamepads; }
+		SharedSafeHeap<Gamepad> _GetDefaultGamepad() const noexcept;
+		void _RegisterGamepad(const SharedSafeHeap<Gamepad>& pGamepad);
+		void _RemoveGamepad(const SharedSafeHeap<Gamepad>& pGamepad);
 	private:
-		Array<Gamepad*> mGamepads;
+		Array<SharedSafeHeap<Gamepad>> mGamepads;
 	};
 }

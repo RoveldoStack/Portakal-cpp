@@ -65,7 +65,7 @@ namespace Portakal
 		TaggedObject(const String& name,const Guid& id) : mName(name), mID(id),mDestroyed(false) {}
 		TaggedObject(const String& name) : mName(name), mID(Guid::Create()),mDestroyed(false) {}
 		TaggedObject(const Guid& id) : mID(id),mDestroyed(false) {}
-		TaggedObject() : mDestroyed(false),mID(Guid::Create()) {}
+		TaggedObject() : mDestroyed(false),mID(Guid::Create()),mName("Default") {}
 
 		~TaggedObject()
 		{

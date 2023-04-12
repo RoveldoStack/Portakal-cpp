@@ -29,24 +29,24 @@ namespace Portakal
 		/*
 		* Iterate connections
 		*/
-		for (DWORD i = 0; i < XUSER_MAX_COUNT; i++)
+		for (DWORD userIndex = 0; userIndex < XUSER_MAX_COUNT; userIndex++)
 		{
 			/*
 			* Get state
 			*/
 			XINPUT_STATE state = {};
-			if (XInputGetState(i, &state) != ERROR_SUCCESS)
+			if (XInputGetState(userIndex, &state) != ERROR_SUCCESS) // failed to get this user index's gamepad
 			{
 				/*
 				* Check if there is a gamepad with this index
 				*/
 				{
-					const Array<Gamepad*> gamepads = InputAPI::GetGamepads();
-					Gamepad* pFoundGamepad = nullptr;
+					const Array<SharedSafeHeap<Gamepad>> gamepads = InputAPI::GetGamepads();
+					SharedSafeHeap<XInputGamepad> pFoundGamepad = nullptr;
 					for (unsigned int gamepadIndex = 0; gamepadIndex < gamepads.GetCursor(); gamepadIndex++)
 					{
-						Gamepad* pGamepad = gamepads[gamepadIndex];
-						if (pGamepad->GetIndex() == i)
+						const SharedSafeHeap<Gamepad> pGamepad = gamepads[gamepadIndex];
+						if (pGamepad->GetIndex() == userIndex)
 						{
 							pFoundGamepad = pGamepad;
 							break;
@@ -55,7 +55,9 @@ namespace Portakal
 
 					if (pFoundGamepad != nullptr)
 					{
+						pressedButtons[userIndex].Clear();
 						InputAPI::RemoveGamepad(pFoundGamepad);
+
 						LOG("XInputManager", "Removed gamepad");
 					}
 				}
@@ -65,27 +67,40 @@ namespace Portakal
 			/*
 			* Register new device 
 			*/
+			SharedSafeHeap<XInputGamepad> pCurrentGamepad = nullptr;
+
 			{
-				const Array<Gamepad*> gamepads = InputAPI::GetGamepads();
+				const Array<SharedSafeHeap<Gamepad>> gamepads = InputAPI::GetGamepads();
 				bool bHasIndex = false;
 				for (unsigned int gamepadIndex = 0; gamepadIndex < gamepads.GetCursor(); gamepadIndex++)
 				{
-					Gamepad* pGamepad = gamepads[gamepadIndex];
-					if (pGamepad->GetIndex() == i)
+					SharedSafeHeap<Gamepad> pGamepad = gamepads[gamepadIndex];
+					if (pGamepad->GetIndex() == userIndex)
 					{
 						bHasIndex = true;
+						pCurrentGamepad = pGamepad;
 						break;
 					}
 				}
 
 				if (!bHasIndex)
 				{
-					XInputGamepad* pGamepad = new XInputGamepad(i);
-					InputAPI::RegisterGamepad(pGamepad);
+
+					/*
+					* Get the device capabilities
+					*/
+					XINPUT_CAPABILITIES capabilities = {};
+					XInputGetCapabilities(userIndex, XINPUT_FLAG_GAMEPAD, &capabilities);
+
+					/*
+					* Create device
+					*/
+					pCurrentGamepad = new XInputGamepad(userIndex);
+					
+					InputAPI::RegisterGamepad(pCurrentGamepad);
 					LOG("XInputManager", "Registered gamepad");
 				}
 			}
-			
 
 			/*
 			* Collect buttons
@@ -168,26 +183,26 @@ namespace Portakal
 			{
 				const GamepadButtons button = currentButtons[buttonIndex];
 
-				if (!pressedButtons[i].Has(button))
+				if (!pressedButtons[userIndex].Has(button))
 				{
-					pressedButtons[i].Add(button);
+					pressedButtons[userIndex].Add(button);
 
-					pWin32Window->DispatchWin32Event(new GamepadButtonDownEvent(button,i));
+					pWin32Window->DispatchWin32Event(new GamepadButtonDownEvent(button, userIndex));
 				}
 			}
 			
 			/*
 			* Check for released buttons
 			*/
-			for (unsigned int buttonIndex = 0; buttonIndex < pressedButtons[i].GetCursor(); buttonIndex++)
+			for (unsigned int buttonIndex = 0; buttonIndex < pressedButtons[userIndex].GetCursor(); buttonIndex++)
 			{
-				const GamepadButtons button = pressedButtons[i][buttonIndex];
+				const GamepadButtons button = pressedButtons[userIndex][buttonIndex];
 
 				if (!currentButtons.Has(button))
 				{
-					pressedButtons[i].Remove(button);
+					pressedButtons[userIndex].Remove(button);
 
-					pWin32Window->DispatchWin32Event(new GamepadButtonUpEvent(button, i));
+					pWin32Window->DispatchWin32Event(new GamepadButtonUpEvent(button, userIndex));
 
 					buttonIndex--;
 				}
@@ -213,6 +228,9 @@ namespace Portakal
 				pWin32Window->DispatchWin32Event(new GamepadTriggerMoveEvent(GamepadTriggers::Right, rightTriggerAmount));
 			}
 			
+			pCurrentGamepad->SetLeftTrigger(leftTriggerAmount);
+			pCurrentGamepad->SetRightTrigger(rightTriggerAmount);
+
 			/*
 			* Collect thumbs
 			*/
@@ -223,12 +241,15 @@ namespace Portakal
 
 			if (thumbLeftX != 0 || thumbLeftY != 0) // validate left thumb
 			{
-				pWin32Window->DispatchWin32Event(new GamepadThumbMoveEvent(GamepadThumbs::Left, thumbLeftX, thumbLeftY, i));
+				pWin32Window->DispatchWin32Event(new GamepadThumbMoveEvent(GamepadThumbs::Left, thumbLeftX, thumbLeftY, userIndex));
 			}
 			if (thumbRightX != 0 || thumbRightY != 0)
 			{
-				pWin32Window->DispatchWin32Event(new GamepadThumbMoveEvent(GamepadThumbs::Right, thumbRightX, thumbRightY, i));
+				pWin32Window->DispatchWin32Event(new GamepadThumbMoveEvent(GamepadThumbs::Right, thumbRightX, thumbRightY, userIndex));
 			}
+
+			pCurrentGamepad->SetLeftThumb({ thumbLeftX,thumbLeftY });
+			pCurrentGamepad->SetRightThumb({ thumbRightX,thumbRightY });
 		}
 	}
 }

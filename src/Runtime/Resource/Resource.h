@@ -6,7 +6,7 @@
 #include "ResourceDescriptor.h"
 #include <Runtime/Platform/PlatformCriticalSection.h>
 #include <Runtime/Job/Job.h>
-#include <Runtime/Memory/SharedHeap.h>
+#include <Runtime/Memory/SharedSafeHeap.h>
 
 namespace Portakal
 {
@@ -20,7 +20,7 @@ namespace Portakal
 	{
 		friend class ResourceAPI;
 	public:
-		FORCEINLINE SharedHeap<ResourceSubObject> GetSubObject() const noexcept;
+		FORCEINLINE SharedSafeHeap<ResourceSubObject> GetSubObject() const noexcept;
 		FORCEINLINE ResourceSubObject* PeekSubObject() const noexcept;
 		FORCEINLINE Guid GetID() const noexcept { return mID; }
 		FORCEINLINE String GetName() const noexcept { return mName; }
@@ -67,7 +67,7 @@ namespace Portakal
 		void OnResourceLoadedAsync(ResourceSubObject* pObject);
 	private:
 		IResourceSerializer* mSerializer;
-		SharedHeap<ResourceSubObject> mSubObject;
+		SharedSafeHeap<ResourceSubObject> mSubObject;
 		PlatformCriticalSection* mCriticalSection;
 		Job* mLoadJob;
 		Job* mUnloadJob;

@@ -12,7 +12,7 @@ namespace Portakal
 		if (!pFile->IsLoaded())
 			pFile->LoadAsync();
 
-		SharedHeap<TextureResource> pTexture = pFile->GetResource()->GetSubObject();
+		SharedSafeHeap<TextureResource> pTexture = pFile->GetResource()->GetSubObject();
 
 		return pTexture.GetHeap() != nullptr ? pTexture.GetHeap() : ((EditorImageResource*)EditorResourceAPI::GetResource("TextIcon.png"))->GetTexture();
 	}

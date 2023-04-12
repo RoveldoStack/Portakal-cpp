@@ -8,7 +8,7 @@
 #include <Runtime/Graphics/CommandList.h>
 #include <Runtime/Platform/PlatformTime.h>
 #include <Runtime/Time/Stopwatch.h>
-#include <Runtime/Memory/SharedHeap.h>
+#include <Runtime/Memory/SharedSafeHeap.h>
 #include <Runtime/Memory/OwnedHeap.h>
 #include <Editor/Project/ProjectGenerator.h>
 

@@ -72,14 +72,14 @@ namespace Portakal
 	GraphicsDevice::GraphicsDevice(Window* pOwnerWindow)
 	{
 		_ownerWindow = pOwnerWindow;
-		_standalone = false;
+		mStandalone = false;
 		mSwapchain = nullptr;
 		mCriticalSection = PlatformCriticalSection::Create();
 	}
 	GraphicsDevice::GraphicsDevice()
 	{
 		_ownerWindow = nullptr;
-		_standalone = true;
+		mStandalone = true;
 		mSwapchain = nullptr;
 		mCriticalSection = PlatformCriticalSection::Create();
 	}
@@ -96,7 +96,7 @@ namespace Portakal
 	}
 	void GraphicsDevice::Swapbuffers()
 	{
-		ASSERT(!_standalone, "GraphicsDevice", "This is a standalone device, you cannot use the swapbuffers on it");
+		ASSERT(!mStandalone, "GraphicsDevice", "This is a standalone device, you cannot use the swapbuffers on it");
 
 		SwapbuffersCore();
 	}

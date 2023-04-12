@@ -32,6 +32,9 @@ namespace Portakal
 #else
             D3D11CreateDevice(mAdapter.Get(), D3D_DRIVER_TYPE_UNKNOWN, NULL, NULL, NULL, NULL, D3D11_SDK_VERSION, mDevice.GetAddressOf(), NULL, mImmediateContext.GetAddressOf());
 #endif
+
+            SetMemory(adapterDesc.DedicatedVideoMemory);
+
             bAdapterFound = true;
             adapterIndex++;
             break;

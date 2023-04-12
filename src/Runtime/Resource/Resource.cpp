@@ -9,10 +9,10 @@
 #include <Runtime/Job/JobSystem.h>
 namespace Portakal
 {
-    SharedHeap<ResourceSubObject> Resource::GetSubObject() const noexcept
+    SharedSafeHeap<ResourceSubObject> Resource::GetSubObject() const noexcept
     {
         mCriticalSection->Lock();
-        SharedHeap<ResourceSubObject> object = mSubObject;
+        SharedSafeHeap<ResourceSubObject> object = mSubObject;
         mCriticalSection->Release();
 
         return object;

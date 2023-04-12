@@ -67,6 +67,12 @@ namespace Portakal
 		virtual ~GraphicsDevice();
 
 		/// <summary>
+		/// Returns the gpu total memory in bytes
+		/// </summary>
+		/// <returns></returns>
+		FORCEINLINE unsigned long long GetMemory() const noexcept { return mMemory; }
+
+		/// <summary>
 		/// Swaps the swapchain buffers
 		/// </summary>
 		void Swapbuffers();
@@ -182,7 +188,7 @@ namespace Portakal
 		/// Returns whether it's a standalone device or not
 		/// </summary>
 		/// <returns></returns>
-		FORCEINLINE bool IsStandalone() const noexcept { return _standalone; }
+		FORCEINLINE bool IsStandalone() const noexcept { return mStandalone; }
 
 		/// <summary>
 		/// Returns the swapchain (if any)
@@ -204,7 +210,7 @@ namespace Portakal
 		/// </summary>
 		/// <param name="pObject"></param>
 		void RegisterChildObject(GraphicsDeviceObject* pObject);
-
+		void SetMemory(const unsigned long long amount) { mMemory = amount; }
 		virtual void SwapbuffersCore() = 0;
 
 		virtual CommandList* CreateGraphicsCommandListCore(const CommandListCreateDesc& desc) = 0;
@@ -235,6 +241,7 @@ namespace Portakal
 		PlatformCriticalSection* mCriticalSection;
 		Window* _ownerWindow;
 		Swapchain* mSwapchain;
-		bool _standalone;
+		bool mStandalone;
+		unsigned long long mMemory;
 	};
 }

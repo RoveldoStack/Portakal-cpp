@@ -72,7 +72,8 @@ namespace Portakal
 	String::~String()
 	{
 		mCursor = 0;
-		delete[] mSource;
+		if(mSource != nullptr)
+			delete[] mSource;
 		mSource = nullptr;
 	}
 	String String::GetSubset(const unsigned int start, const unsigned  int length) const

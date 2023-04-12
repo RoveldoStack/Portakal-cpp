@@ -13,15 +13,18 @@ namespace Portakal
 	}
 	void SpriteCameraComponentVisualizer::OnPaint()
 	{
-		Gamepad* pGamepad = InputAPI::GetDefaultGamepad();
+		SharedSafeHeap<Gamepad> pGamepad = InputAPI::GetDefaultGamepad();
 
 		if (pGamepad == nullptr)
 			return;
+		if (pGamepad->IsDestroyed())
+			return;
 
-		ImGui::InputInt("Right",&right,1);
-		ImGui::InputInt("Left", &left, 1);
-		
-		pGamepad->SetVibration(right, left);
+		Vector2F rightThumb = pGamepad->GetRightThumb();
+		Vector2F leftThumb = pGamepad->GetLeftThumb();
+
+		ImGui::InputFloat2("Right thumb", &rightThumb.X,"%.3f", ImGuiInputTextFlags_ReadOnly);
+		ImGui::InputFloat2("Left thumb", &leftThumb.X, "%.3f", ImGuiInputTextFlags_ReadOnly);
 
 	}
 	void SpriteCameraComponentVisualizer::OnFinalize()

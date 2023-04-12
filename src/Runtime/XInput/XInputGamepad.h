@@ -5,6 +5,7 @@ namespace Portakal
 {
 	class PORTAKAL_API XInputGamepad : public Gamepad
 	{
+		friend class XInputManager;
 	public:
 		XInputGamepad(const unsigned int index) : Gamepad(index)
 		{
@@ -16,6 +17,8 @@ namespace Portakal
 	private:
 
 		// Inherited via Gamepad
-		virtual void SetVibrationCore(const short rightMotorPower, const short leftMotorPower) override;
+		virtual void SetVibration(const short rightMotorPower, const short leftMotorPower) override;
+		// Inherited via Gamepad
+		virtual void DestroyCore() override;
 	};
 }

@@ -14,7 +14,7 @@
 #include <Runtime/Job/Job.h>
 #include <Runtime/Platform/PlatformInfo.h>
 #include <Runtime/Job/JobSystem.h>
-#include <Runtime/Memory/SharedHeap.h>
+#include <Runtime/Memory/SharedSafeHeap.h>
 #include <Runtime/Math/Matrix4x4.h>
 #include <Runtime/Platform/PlatformTime.h>
 #include <Editor/Asset/YamlSerializers.h>

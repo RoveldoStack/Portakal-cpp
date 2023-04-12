@@ -6,7 +6,7 @@
 #include <Editor/Renderer/ImGuiRenderer.h>
 #include <Editor/Renderer/ImGuiAPI.h>
 #include <Runtime/Resource/Texture/TextureResource.h>
-#include <Runtime/Memory/SharedHeap.h>
+#include <Runtime/Memory/SharedSafeHeap.h>
 
 namespace Portakal
 {
@@ -20,7 +20,7 @@ namespace Portakal
     }
     void ImGuiRendererModule::OnInitialize()
     {
-        SharedHeap<TextureResource> texture(new TextureResource());
+        SharedSafeHeap<TextureResource> texture(new TextureResource());
 
         GraphicsDevice* pDevice = GraphicsDeviceAPI::GetDefaultDevice();
 
