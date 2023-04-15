@@ -22,9 +22,23 @@ namespace Portakal
 	String ShaderObject::GetSource() const noexcept
 	{
 		if (mShader == nullptr)
-			return "";
+			return String();
 
 		return mShader->GetSource();
+	}
+	String ShaderObject::GetError() const noexcept
+	{
+		if (mShader == nullptr)
+			return String();
+
+		return mShader->GetError();
+	}
+	String ShaderObject::GetEntryPoint() const noexcept
+	{
+		if (mShader == nullptr)
+			return String();
+
+		return mShader->GetEntryPointMethod();
 	}
 	ShaderStage ShaderObject::GetStage() const noexcept
 	{
@@ -52,7 +66,6 @@ namespace Portakal
 
 		mShader->DeleteDeviceObject();
 		mShader = nullptr;
-		mDevice = nullptr;
 	}
 	void ShaderObject::DestroyCore()
 	{

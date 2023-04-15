@@ -23,6 +23,7 @@ namespace Portakal
 		/// <returns></returns>
 		static String GetFromInteger(const int value);
 
+		static String GetFromLongLong(const long long value);
 		/// <summary>
 		/// Returns the float representation of a string
 		/// </summary>
@@ -36,6 +37,8 @@ namespace Portakal
 		/// <param name="value"></param>
 		/// <returns></returns>
 		static int ToInteger(const String& value);
+
+		static long long ToLongLong(const String& str);
 	public:
 		String();
 		String(const String& other);

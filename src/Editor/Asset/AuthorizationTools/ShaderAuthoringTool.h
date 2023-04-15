@@ -1,6 +1,7 @@
 #pragma once
 #include <Editor/Asset/IAssetAuthoringTool.h>
 #include <Editor/Asset/CustomAssetAuthoringToolAttribute.h>
+#include <Runtime/Graphics/ShaderStage.h>
 
 namespace Portakal
 {
@@ -9,7 +10,7 @@ namespace Portakal
 	{
 		GENERATE_CLASS(ShaderAuthoringTool);
 	public:
-		ShaderAuthoringTool() = default;
+		ShaderAuthoringTool() : mInitialized(false),mStage(ShaderStage::None) {}
 		~ShaderAuthoringTool() = default;
 
 	private:
@@ -18,23 +19,14 @@ namespace Portakal
 		virtual void OnInitialize() override;
 		virtual void OnPaint(DomainFile* pFile) override;
 		virtual void OnFinalize() override;
+	private:
+		String mSourceBuffer;
+		String mEntryPointBuffer;
+		ShaderStage mStage;
+		bool mInitialized;
 	};
 
-	/*START_GENERATE_TYPE(ShaderAuthoringTool);
-	START_TYPE_PROPERTIES(ShaderAuthoringTool);
-	REGISTER_BASE_TYPE(IAssetAuthoringTool);
-	REGISTER_TYPE_ATTRIBUTE(CustomAssetAuthoringToolAttribute, "shader")
-	END_TYPE_PROPERTIES;
-	HAS_DEFAULT_CONSTRUCTOR(ShaderAuthoringTool);
-	END_GENERATE_TYPE(ShaderAuthoringTool);*/
 
-	//START_GENERATE_TYPE(ShaderAuthoringTool);
-	//START_TYPE_PROPERTIES(ShaderAuthoringTool);
-	//REGISTER_BASE_TYPE(ShaderAuthoringTool);
-	//REGISTER_TYPE_ATTRIBUTE(CustomAssetAuthoringToolAttribute, "shader");
-	//END_TYPE_PROPERTIES;
-	//HAS_DEFAULT_CONSTRUCTOR(ShaderAuthoringTool);
-	//END_GENERATE_TYPE(ShaderAuthoringTool);
 #include "ShaderAuthoringTool.reflect.h"
 
 }

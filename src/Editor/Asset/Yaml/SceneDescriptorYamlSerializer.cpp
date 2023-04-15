@@ -63,6 +63,7 @@ namespace Portakal
             emitter << YAML::BeginSeq;
 
             emitter << YAML::Value;
+
             for (unsigned int componentIndex = 0; componentIndex < entityEntry.Components.GetCursor(); componentIndex++)
             {
                 const SceneComponentEntry& componentEntry = entityEntry.Components[componentIndex];
@@ -82,6 +83,7 @@ namespace Portakal
 
                 emitter << YAML::BeginSeq;
                 emitter << YAML::Value;
+
                 for (unsigned int fieldIndex = 0; fieldIndex < componentEntry.Fields.GetCursor(); fieldIndex++)
                 {
                     const SceneComponentFieldEntry& fieldEntry = componentEntry.Fields[fieldIndex];
@@ -99,6 +101,7 @@ namespace Portakal
 
                     emitter << YAML::EndMap;
                 }
+
                 emitter << YAML::EndSeq;
 
                 emitter << YAML::EndMap;

@@ -1,12 +1,14 @@
 #pragma once
 #include <Runtime/Core/Core.h>
+#include <Runtime/Reflection/Reflection.h>
 
 namespace Portakal
 {
 	/// <summary>
 	/// Available shader stages
 	/// </summary>
-	enum class PORTAKAL_API ShaderStage
+	ENUM();
+	enum class PORTAKAL_API ShaderStage : long long
 	{
 		None,
 		Vertex,
@@ -15,4 +17,6 @@ namespace Portakal
 		TesellationControl,
 		Compute
 	};
+
+#include "ShaderStage.reflect.h"
 }

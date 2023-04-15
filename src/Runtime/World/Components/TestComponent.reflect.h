@@ -7,6 +7,7 @@ REGISTER_FIELD(TestComponent,int1,int,AccessSpecifier::Public);
 REGISTER_FIELD(TestComponent,int3,int,AccessSpecifier::Public);
 REGISTER_FIELD(TestComponent,myEnum,TestEnum,AccessSpecifier::Public);
 REGISTER_FIELD(TestComponent,someTestStruct,TestStruct,AccessSpecifier::Public);
+REGISTER_FIELD(TestComponent,myColor,ColorRgbaF,AccessSpecifier::Public);
 
 END_TYPE_PROPERTIES;
 HAS_DEFAULT_CONSTRUCTOR(TestComponent);

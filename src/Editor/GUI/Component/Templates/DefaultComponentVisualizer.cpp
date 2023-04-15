@@ -18,7 +18,7 @@ namespace Portakal
 
 	}
 
-	void DrawField(Class* pObject,const Field* pField)
+	void DrawField(Class* pObject, const Field* pField, Component* pComponent)
 	{
 		const Type* pFieldType = pField->GetFieldType();
 
@@ -26,34 +26,61 @@ namespace Portakal
 		if (pFieldType->IsEnum())
 		{
 			const long long value = pField->GetValue<long long>(pObject);
-			pField->SetValue<long long>(pObject, GUICommands::EnumField(pField->GetFieldName(), pField->GetFieldType(), value));
+			bool bChanged = false;
+			pField->SetValue<long long>(pObject, GUICommands::EnumField(pField->GetFieldName(), pField->GetFieldType(), value,bChanged));
+
+			if(bChanged)
+				WorldObserverWindow::SignalSceneChanged(pComponent->GetOwnerEntity()->GetOwnerScene());
 		}
 		else
 		{
 			if (pFieldType == typeof(int))
 			{
 				const int value = pField->GetValue<int>(pObject);
-				pField->SetValue<int>(pObject, GUICommands::IntField(pField->GetFieldName(), value));
+				bool bChanged = false;
+				pField->SetValue<int>(pObject, GUICommands::IntField(pField->GetFieldName(), value, bChanged));
+
+				if (bChanged)
+					WorldObserverWindow::SignalSceneChanged(pComponent->GetOwnerEntity()->GetOwnerScene());
 			}
 			else if (pFieldType == typeof(float))
 			{
 				const float value = pField->GetValue<float>(pObject);
-				pField->SetValue<float>(pObject, GUICommands::FloatField(pField->GetFieldName(), value));
+				bool bChanged = false;
+				pField->SetValue<float>(pObject, GUICommands::FloatField(pField->GetFieldName(), value, bChanged));
+
+				if (bChanged)
+					WorldObserverWindow::SignalSceneChanged(pComponent->GetOwnerEntity()->GetOwnerScene());
 			}
 			else if (pFieldType == typeof(String))
 			{
 				const String value = pField->GetValue<String>(pObject);
-				pField->SetValue<String>(pObject, GUICommands::TextField(pField->GetFieldName(), value));
+				bool bChanged = false;
+				pField->SetValue<String>(pObject, GUICommands::TextField(pField->GetFieldName(), value, bChanged));
+
+				if (bChanged)
+					WorldObserverWindow::SignalSceneChanged(pComponent->GetOwnerEntity()->GetOwnerScene());
+			}
+			else if (pFieldType == typeof(ColorRgbaF))
+			{
+				const ColorRgbaF value = pField->GetValue<ColorRgbaF>(pObject);
+				bool bChanged = false;
+				pField->SetValue<ColorRgbaF>(pObject, GUICommands::RgbaFField(pField->GetFieldName(), value, bChanged));
+				
+				if (bChanged)
+					WorldObserverWindow::SignalSceneChanged(pComponent->GetOwnerEntity()->GetOwnerScene());
 			}
 			else // custom class
 			{
 				const Array<Field*> fields = pFieldType->GetFields();
+
 				Class* pOtherObject = pField->GetAddress<Class>(pObject);
+
 				if (ImGui::TreeNode(*pField->GetFieldName()))
 				{
 					for (unsigned int i = 0; i < fields.GetCursor(); i++)
 					{
-						DrawField(pOtherObject, fields[i]);
+						DrawField(pOtherObject, fields[i], pComponent);
 					}
 					ImGui::TreePop();
 				}
@@ -71,7 +98,7 @@ namespace Portakal
 		{
 			const Field* pField = fields[i];
 
-			DrawField(pComponent, pField);
+			DrawField(pComponent, pField, pComponent);
 		}
 	}
 }

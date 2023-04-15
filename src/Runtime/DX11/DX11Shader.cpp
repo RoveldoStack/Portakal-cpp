@@ -27,51 +27,58 @@ namespace Portakal
 		/*
 		* Create shader
 		*/
-		switch (desc.Stage)
+		if (mShaderBlob)
 		{
-		case Portakal::ShaderStage::None:
-			break;
-		case Portakal::ShaderStage::Vertex:
-		{
-			ASSERT(
-				SUCCEEDED(pDevice->GetDXDevice()->CreateVertexShader(mShaderBlob->GetBufferPointer(), mShaderBlob->GetBufferSize(), 0, mVertexShader.GetAddressOf()))
-				, "DX11Shader", "Failed to create vertex shader");
-			break;
-		}
-		case Portakal::ShaderStage::Fragment:
-		{
-			ASSERT(
-				SUCCEEDED(pDevice->GetDXDevice()->CreatePixelShader(mShaderBlob->GetBufferPointer(), mShaderBlob->GetBufferSize(), 0, mPixelShader.GetAddressOf()))
-				, "DX11Shader", "Failed to create pixel shader");
-			break;
-		}
-		case Portakal::ShaderStage::TesellationEval:
-		{
-			ASSERT(
-				SUCCEEDED(pDevice->GetDXDevice()->CreateDomainShader(mShaderBlob->GetBufferPointer(), mShaderBlob->GetBufferSize(), 0, mDomainShader.GetAddressOf()))
-				, "DX11Shader", "Failed to create domain shader");
-			break;
-		}
-		case Portakal::ShaderStage::TesellationControl:
-		{
-			ASSERT(
-				SUCCEEDED(pDevice->GetDXDevice()->CreateHullShader(mShaderBlob->GetBufferPointer(), mShaderBlob->GetBufferSize(), 0, mHullShader.GetAddressOf()))
-				, "DX11Shader", "Failed to create hull shader");
-			break;
-		}
-		case Portakal::ShaderStage::Compute:
-		{
-			ASSERT(
-				SUCCEEDED(pDevice->GetDXDevice()->CreateComputeShader(mShaderBlob->GetBufferPointer(), mShaderBlob->GetBufferSize(), 0, mComputeShader.GetAddressOf()))
-				, "DX11Shader", "Failed to create compute shader");
-			break;
-		}
-		default:
-			ASSERT(false, "DX11Shader", "Invalid shader stage!");
-			break;
+			switch (desc.Stage)
+			{
+			case Portakal::ShaderStage::None:
+				break;
+			case Portakal::ShaderStage::Vertex:
+			{
+				ASSERT(
+					SUCCEEDED(pDevice->GetDXDevice()->CreateVertexShader(mShaderBlob->GetBufferPointer(), mShaderBlob->GetBufferSize(), 0, mVertexShader.GetAddressOf()))
+					, "DX11Shader", "Failed to create vertex shader");
+				break;
+			}
+			case Portakal::ShaderStage::Fragment:
+			{
+				ASSERT(
+					SUCCEEDED(pDevice->GetDXDevice()->CreatePixelShader(mShaderBlob->GetBufferPointer(), mShaderBlob->GetBufferSize(), 0, mPixelShader.GetAddressOf()))
+					, "DX11Shader", "Failed to create pixel shader");
+				break;
+			}
+			case Portakal::ShaderStage::TesellationEval:
+			{
+				ASSERT(
+					SUCCEEDED(pDevice->GetDXDevice()->CreateDomainShader(mShaderBlob->GetBufferPointer(), mShaderBlob->GetBufferSize(), 0, mDomainShader.GetAddressOf()))
+					, "DX11Shader", "Failed to create domain shader");
+				break;
+			}
+			case Portakal::ShaderStage::TesellationControl:
+			{
+				ASSERT(
+					SUCCEEDED(pDevice->GetDXDevice()->CreateHullShader(mShaderBlob->GetBufferPointer(), mShaderBlob->GetBufferSize(), 0, mHullShader.GetAddressOf()))
+					, "DX11Shader", "Failed to create hull shader");
+				break;
+			}
+			case Portakal::ShaderStage::Compute:
+			{
+				ASSERT(
+					SUCCEEDED(pDevice->GetDXDevice()->CreateComputeShader(mShaderBlob->GetBufferPointer(), mShaderBlob->GetBufferSize(), 0, mComputeShader.GetAddressOf()))
+					, "DX11Shader", "Failed to create compute shader");
+				break;
+			}
+			default:
+				ASSERT(false, "DX11Shader", "Invalid shader stage!");
+				break;
+			}
 		}
 
-		SetError((char*)mErrorBlob->GetBufferPointer());
+		/*
+		* Validate and send error data
+		*/
+		if(mErrorBlob)
+			SetError((char*)mErrorBlob->GetBufferPointer());
 	}
 
 	void DX11Shader::OnDestroy()

@@ -1,6 +1,7 @@
 #pragma once
 #include <Runtime/Core/Core.h>
 #include <Runtime/Input/Keys.h>
+#include <Runtime/Input/KeyboardKeys.h>
 
 namespace Portakal
 {
@@ -10,6 +11,6 @@ namespace Portakal
 		Win32Keys() = delete;
 		~Win32Keys() = delete;
 
-		FORCEINLINE static unsigned int GetKey(const unsigned int vk_key);
+		FORCEINLINE static KeyboardKeys GetKey(const unsigned int vk_key);
 	};
 }

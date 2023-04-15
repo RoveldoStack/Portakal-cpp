@@ -7,6 +7,8 @@
 #include <Runtime/Input/Keys.h>
 #include <Runtime/Log/Log.h>
 #include <Runtime/Window/WindowEvents.h>
+#include <Runtime/Platform/PlatformClipboard.h>
+#include <Editor/Renderer/ImGuiKeys.h>
 
 namespace Portakal
 {
@@ -33,6 +35,14 @@ namespace Portakal
 		}
 
 		return pRenderer;
+	}
+	void SetClipboardTextCallback(void* pUserData,const char* pText)
+	{
+		PlatformClipboard::SetClipboard(pText);
+	}
+	const char* GetClipboardTextCallback(void* pUserData)
+	{
+		return PlatformClipboard::GetClipboard().GetSourceCopy();
 	}
 	ImGuiRenderer::ImGuiRenderer(GraphicsDevice* pDevice)
 	{
@@ -61,44 +71,10 @@ namespace Portakal
 		io.DisplayFramebufferScale = ImVec2(1, 1);
 
 		/*
-		* Setup special keys
+		* Setup clipboard
 		*/
-		io.KeyMap[ImGuiKey_Tab] = PORTAKAL_KEY_TAB;
-		io.KeyMap[ImGuiKey_LeftArrow] = PORTAKAL_KEY_LEFT;
-		io.KeyMap[ImGuiKey_RightArrow] = PORTAKAL_KEY_RIGHT;
-		io.KeyMap[ImGuiKey_UpArrow] = PORTAKAL_KEY_UP;
-		io.KeyMap[ImGuiKey_DownArrow] = PORTAKAL_KEY_DOWN;
-		io.KeyMap[ImGuiKey_PageUp] = PORTAKAL_KEY_PAGE_UP;
-		io.KeyMap[ImGuiKey_PageDown] = PORTAKAL_KEY_PAGE_DOWN;
-		io.KeyMap[ImGuiKey_Home] = PORTAKAL_KEY_HOME;
-		io.KeyMap[ImGuiKey_End] = PORTAKAL_KEY_END;
-		io.KeyMap[ImGuiKey_Insert] = PORTAKAL_KEY_INSERT;
-		io.KeyMap[ImGuiKey_Delete] = PORTAKAL_KEY_DELETE;
-		io.KeyMap[ImGuiKey_Backspace] = PORTAKAL_KEY_BACKSPACE;
-		io.KeyMap[ImGuiKey_Space] = PORTAKAL_KEY_SPACE;
-		io.KeyMap[ImGuiKey_Enter] = PORTAKAL_KEY_ENTER;
-		io.KeyMap[ImGuiKey_Escape] = PORTAKAL_KEY_ESCAPE;
-		io.KeyMap[ImGuiKey_LeftShift] = PORTAKAL_KEY_LEFT_SHIFT;
-		io.KeyMap[ImGuiKey_RightShift] = PORTAKAL_KEY_RIGHT_SHIFT;
-		io.KeyMap[ImGuiKey_LeftCtrl] = PORTAKAL_KEY_LEFT_CONTROL;
-		io.KeyMap[ImGuiKey_RightCtrl] = PORTAKAL_KEY_RIGHT_CONTROL;
-		io.KeyMap[ImGuiKey_CapsLock] = PORTAKAL_KEY_CAPS_LOCK;
-
-		/*
-		* Setup ascii keyboard mapping
-		*/
-		for (unsigned int i = 0; i <= PORTAKAL_KEY_Z - PORTAKAL_KEY_A; i++)
-		{
-			io.KeyMap[ImGuiKey_A + i] = PORTAKAL_KEY_A + i;
-		}
-
-		/*
-		* Setup numerics
-		*/
-		for (unsigned int i = 0; i <= PORTAKAL_KEY_9 - PORTAKAL_KEY_0; i++)
-		{
-			io.KeyMap[ImGuiKey_0 + i] = PORTAKAL_KEY_0 + i;
-		}
+		io.SetClipboardTextFn = SetClipboardTextCallback;
+		io.GetClipboardTextFn = GetClipboardTextCallback;
 
 		/*
 		* Setup default theme
@@ -193,7 +169,9 @@ namespace Portakal
 		ImGuiIO& io = ImGui::GetIO();
 		io.DeltaTime = deltaTime / 1000.0f;
 		io.DisplaySize = { (float)mDevice->GetOwnerWindow()->GetWidth(),(float)mDevice->GetOwnerWindow()->GetHeight() };
+
 		StartRenderingCore();
+
 		ImGui::NewFrame();
 	}
 	void ImGuiRenderer::FinalizeRendering(CommandList* pCmdBuffer)
@@ -202,8 +180,6 @@ namespace Portakal
 		FinalizeRenderingCore(pCmdBuffer);
 
 		ImGuiIO& io = ImGui::GetIO();
-
-		io.ClearInputCharacters();
 	}
 	void ImGuiRenderer::OnEvent(const WindowEvent* pEvent)
 	{
@@ -253,41 +229,51 @@ namespace Portakal
 	void ImGuiRenderer::OnMouseMoved(const MouseMovedEvent* pEvent)
 	{
 		ImGuiIO& io = ImGui::GetIO();
-		io.MousePos = ImVec2(pEvent->GetX(), pEvent->GetY());
+		io.AddMousePosEvent(pEvent->GetX(), pEvent->GetY());
 	}
 	void ImGuiRenderer::OnMouseButtonDown(const MouseButtonDownEvent* pEvent)
 	{
 		ImGuiIO& io = ImGui::GetIO();
-		io.MouseDown[pEvent->GetButton()] = true;
-
-		LOG("Imgui", "Mouse down: %d", pEvent->GetButton());
+		io.AddMouseButtonEvent(pEvent->GetButton(), true);
 	}
 	void ImGuiRenderer::OnMouseButtonUp(const MouseButtonUpEvent* pEvent)
 	{
 		ImGuiIO& io = ImGui::GetIO();
-		io.MouseDown[pEvent->GetButton()] = false;
-		LOG("Imgui", "Mouse up: %d", pEvent->GetButton());
+		io.AddMouseButtonEvent(pEvent->GetButton(), false);
 	}
 	void ImGuiRenderer::OnMouseWheel(const MouseWheelEvent* pEvent)
 	{
 		ImGuiIO& io = ImGui::GetIO();
-		io.MouseWheel += pEvent->GetVertical();
+		io.AddMouseWheelEvent(pEvent->GetHorizontal(), pEvent->GetVertical());
 	}
 	void ImGuiRenderer::OnKeyboardDown(const KeyboardKeyDownEvent* pEvent)
 	{
 		ImGuiIO& io = ImGui::GetIO();
 
-		io.KeysDown[pEvent->GetKey()] = true;
-		io.KeyCtrl = io.KeysDown[PORTAKAL_KEY_LEFT_CONTROL] || io.KeysDown[PORTAKAL_KEY_RIGHT_CONTROL];
-		io.KeyShift = io.KeysDown[PORTAKAL_KEY_LEFT_SHIFT] || io.KeysDown[PORTAKAL_KEY_RIGHT_SHIFT];
-		io.KeyAlt = io.KeysDown[PORTAKAL_KEY_LEFT_ALT] || io.KeysDown[PORTAKAL_KEY_RIGHT_ALT];
-		io.KeySuper = io.KeysDown[PORTAKAL_KEY_LEFT_SUPER] || io.KeysDown[PORTAKAL_KEY_RIGHT_SUPER];
+		io.AddKeyEvent(ImGuiKeys::GetKey(pEvent->GetKey()), true);
+
+		if(pEvent->GetKey() == KeyboardKeys::LeftControl)
+			io.AddKeyEvent(ImGuiKey_ModCtrl, true);
+		if (pEvent->GetKey() == KeyboardKeys::LeftShift)
+			io.AddKeyEvent(ImGuiKey_ModShift,true);
+		if (pEvent->GetKey() == KeyboardKeys::LeftShift)
+			io.AddKeyEvent(ImGuiKey_ModAlt, true);
+		if (pEvent->GetKey() == KeyboardKeys::LeftShift)
+			io.AddKeyEvent(ImGuiKey_ModSuper, true);
 	}
 	void ImGuiRenderer::OnKeyboardUp(const KeyboardKeyUpEvent* pEvent)
 	{
 		ImGuiIO& io = ImGui::GetIO();
+		io.AddKeyEvent(ImGuiKeys::GetKey(pEvent->GetKey()),false);
 
-		io.KeysDown[pEvent->GetKey()] = false;
+		if (pEvent->GetKey() == KeyboardKeys::LeftControl)
+			io.AddKeyEvent(ImGuiKey_ModCtrl, false);
+		if (pEvent->GetKey() == KeyboardKeys::LeftShift)
+			io.AddKeyEvent(ImGuiKey_ModShift, false);
+		if (pEvent->GetKey() == KeyboardKeys::LeftShift)
+			io.AddKeyEvent(ImGuiKey_ModAlt, false);
+		if (pEvent->GetKey() == KeyboardKeys::LeftShift)
+			io.AddKeyEvent(ImGuiKey_ModSuper, false);
 	}
 	void ImGuiRenderer::OnKeyboardChar(const KeyboardCharEvent* pEvent)
 	{

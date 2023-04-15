@@ -35,6 +35,7 @@ namespace Portakal
 	{
 		mCursor = size;
 		mSource = new char[mCursor + 1];
+		Memory::Set(mSource, 0, mCursor);
 		mSource[mCursor] = '\0';
 	}
 	String::String(const char* target, const unsigned int size)
@@ -288,9 +289,9 @@ namespace Portakal
 	{
 		if (target.mCursor == 0)
 		{
-			mCursor = 1;
-			mSource = new char[1];
-			mSource[0] = '\0';
+			mCursor = 0;
+			mSource = nullptr;
+			//mSource[0] = '\0';
 			return;
 		}
 
@@ -513,6 +514,15 @@ namespace Portakal
 		return chars;
 	}
 
+	String String::GetFromLongLong(const long long value)
+	{
+		char* chars = new char[MAX_INT_DIGITS];
+
+		sprintf(chars, "%ld", value);
+
+		return chars;
+	}
+
 	float String::ToFloat(const String& str)
 	{
 		float value = -1;
@@ -524,6 +534,13 @@ namespace Portakal
 	int String::ToInteger(const String& str)
 	{
 		int value = -1;
+		std::stringstream stream(*str);
+		stream >> value;
+		return value;
+	}
+	long long String::ToLongLong(const String& str)
+	{
+		long long value = 0;
 		std::stringstream stream(*str);
 		stream >> value;
 		return value;

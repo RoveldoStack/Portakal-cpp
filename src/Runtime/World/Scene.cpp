@@ -6,6 +6,7 @@
 #include <Runtime/Message/MessageAPI.h>
 #include <Runtime/World/Components/InvalidComponent.h>
 #include <Runtime/World/Aspects/InvalidAspect.h>
+#include <Runtime/Yaml/YamlDefaultSerializer.h>
 
 namespace Portakal
 {
@@ -71,6 +72,7 @@ namespace Portakal
 			}
 
 		}
+
 		/*
 		* Record aspects
 		*/
@@ -143,23 +145,7 @@ namespace Portakal
 					else
 					{
 						fieldEntry.Type = SceneComponentFieldType::Raw;
-						
-						if (pFieldType == typeof(float))
-						{
-							float value = pField->GetValue<float>((void*)pComponent);
-							fieldEntry.Content = String::GetFromFloat(value);
-						}
-						else if (pFieldType == typeof(int))
-						{
-							int value = pField->GetValue<int>((void*)pComponent);
-							fieldEntry.Content = String::GetFromInteger(value);
-						}
-						else if (pFieldType == typeof(ColorRgbaF))
-						{
-							const ColorRgbaF value = pField->GetValue<ColorRgbaF>((void*)pComponent);
-							String str((char*)& value, sizeof(value));
-							fieldEntry.Content = str;
-						}
+						fieldEntry.Content = YamlDefaultSerializer::FieldToYaml(pComponent,pField);
 					}
 
 					componentEntry.Fields.Add(fieldEntry);
@@ -326,24 +312,9 @@ namespace Portakal
 						continue;
 
 					/*
-					* Hardcoded transformations
+					* Sets with default
 					*/
-					if (pFieldType == typeof(float))
-					{
-						const float value = String::ToFloat(fieldEntry.Content);
-						pField->SetValue<float>(pComponent,value);
-					}
-					else if (pFieldType == typeof(int))
-					{
-						const int value = String::ToInteger(fieldEntry.Content);
-						pField->SetValue<int>(pComponent, value);
-					}
-					else if (pFieldType == typeof(ColorRgbaF))
-					{
-						const ColorRgbaF value = *((ColorRgbaF*)fieldEntry.Content.GetSource());
-						pField->SetValue<ColorRgbaF>(pComponent, value);
-					}
-
+					YamlDefaultSerializer::SetField(pComponent, pField, fieldEntry.Content);
 				}
 			}
 		}

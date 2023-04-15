@@ -5,7 +5,7 @@
 #include <Runtime/Input/Keys.h>
 #include "Win32Keys.h"
 #include <Runtime/XInput/XInputManager.h>
-
+#include <Libs/ImGui/backends/imgui_impl_win32.h>
 namespace Portakal
 {
     Win32Window* GetUserWindowData(HWND windowHandle)
@@ -101,7 +101,7 @@ namespace Portakal
                 /*
                 * Map win32 vk keys to portakal keys
                 */
-                const unsigned int key = Win32Keys::GetKey(wParam);
+                const KeyboardKeys key = Win32Keys::GetKey(wParam);
 
 			    win32Window->DispatchWin32Event(new KeyboardKeyDownEvent(key));
 			    break;
@@ -113,7 +113,7 @@ namespace Portakal
                 /*
                 * Map win32 vk keys to portakal keys
                 */
-                const unsigned int key = Win32Keys::GetKey(wParam);
+                const KeyboardKeys key = Win32Keys::GetKey(wParam);
                
 			    win32Window->DispatchWin32Event(new KeyboardKeyUpEvent(key));
 
@@ -123,7 +123,11 @@ namespace Portakal
 		    {
 			    Win32Window* win32Window = GetUserWindowData(hwnd);
 
-			    win32Window->DispatchWin32Event(new KeyboardCharEvent(wParam));
+                WindowEvent* pEvent = new KeyboardCharEvent(wParam);
+
+			    win32Window->DispatchWin32Event(pEvent);
+
+                LOG("Event", "[%s]", *pEvent->GetEventMessage());
 			    break;
 		    }
             case WM_DROPFILES:
@@ -251,6 +255,6 @@ namespace Portakal
         /*
         * Collect gamepad inputs
         */
-        XInputManager::CollectGamepadInputStates(this);
+        //XInputManager::CollectGamepadInputStates(this);
     }
 }

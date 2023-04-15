@@ -2,6 +2,7 @@
 #include <Runtime/World/Component.h>
 #include <Runtime/World/Components/TestEnum.h>
 #include <Runtime/World/Components/TestStruct.h>
+#include <Runtime/Math/Color4.h>
 
 namespace Portakal
 {
@@ -22,6 +23,9 @@ namespace Portakal
 
 		FIELD();
 		TestStruct someTestStruct;
+
+		FIELD();
+		ColorRgbaF myColor;
 	private:
 
 

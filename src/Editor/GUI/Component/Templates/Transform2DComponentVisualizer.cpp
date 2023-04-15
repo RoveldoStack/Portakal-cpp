@@ -1,5 +1,6 @@
 #include "Transform2DComponentVisualizer.h"
 #include <Libs/ImGui/imgui.h>
+#include <Editor/Renderer/GUICommands.h>
 
 namespace Portakal
 {
@@ -16,22 +17,16 @@ namespace Portakal
         /*
         * Draw position
         */
-        Vector2F position = mTransform->GetPosition();
-        ImGui::InputFloat2("Position", &position.X);
-        mTransform->SetPosition(position);
+        mTransform->SetPosition(GUICommands::Vector2FField("Position", mTransform->GetPosition()));
 
         /*
         * Draw scale
         */
-        Vector2F scale = mTransform->GetScale();
-        ImGui::InputFloat2("Scale", &scale.X);
-        mTransform->SetScale(scale);
+        mTransform->SetScale(GUICommands::Vector2FField("Scale", mTransform->GetScale()));
 
         /*
         * Draw rotation
         */
-        float rotation = mTransform->GetRotation();
-        ImGui::InputFloat("RotationZ", &rotation);
-        mTransform->SetRotation(rotation);
+        mTransform->SetRotation(GUICommands::FloatField("RotationZ", mTransform->GetRotation()));
     }
 }

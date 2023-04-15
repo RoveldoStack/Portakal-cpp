@@ -73,6 +73,7 @@ namespace Portakal
         */
         if (!IsLoaded())
             return;
+
         if (mSerializer == nullptr)
         {
             LOG("DomainFile", "Couldnt not SaveSync, cannot found serializer interface for type: %s", *mResourceType);
@@ -89,6 +90,12 @@ namespace Portakal
         */
         ByteBlock block;
         mSerializer->SerializeToEditor(mResource->PeekSubObject(), block);
+
+        /*
+        * Clear file content
+        */
+        PlatformFile::Delete(mSourceFilePath);
+        PlatformFile::Create(mSourceFilePath);
 
         /*
         * Write

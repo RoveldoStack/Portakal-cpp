@@ -1,5 +1,6 @@
 #pragma once
 #include <Runtime/Window/WindowEvent.h>
+#include <Runtime/Input/KeyboardKeys.h>
 
 namespace Portakal
 {
@@ -13,11 +14,11 @@ namespace Portakal
 		/// Returns the related key
 		/// </summary>
 		/// <returns></returns>
-		FORCEINLINE unsigned int GetKey() const noexcept { return mKey; }
+		FORCEINLINE KeyboardKeys GetKey() const noexcept { return mKey; }
 	protected:
-		KeyboardKeyEvent(const unsigned int key) : mKey(key) {}
+		KeyboardKeyEvent(const KeyboardKeys key) : mKey(key) {}
 		~KeyboardKeyEvent() = default;
 	private:
-		unsigned int mKey;
+		const KeyboardKeys mKey;
 	};
 }

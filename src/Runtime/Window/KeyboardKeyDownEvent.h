@@ -9,10 +9,10 @@ namespace Portakal
 	class PORTAKAL_API KeyboardKeyDownEvent : public KeyboardKeyEvent
 	{
 	public:
-		KeyboardKeyDownEvent(const unsigned int key) : KeyboardKeyEvent(key) {}
+		KeyboardKeyDownEvent(const KeyboardKeys key) : KeyboardKeyEvent(key) {}
 		~KeyboardKeyDownEvent() = default;
 
 		FORCEINLINE virtual WindowEventType GetEventType() const noexcept override final { return WindowEventType::KeyboardDown; }
-		FORCEINLINE virtual String GetEventMessage() const noexcept override final { return "Keyboard key down " + String::GetFromInteger(GetKey()); }
+		FORCEINLINE virtual String GetEventMessage() const noexcept override final { return "Keyboard key down " + String::GetFromLongLong((long long)GetKey()); }
 	};
 }

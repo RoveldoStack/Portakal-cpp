@@ -98,6 +98,9 @@ namespace Portakal
 		TValue Z;
 	};
 
-	
+	typedef Vector3<float> Vector3F;
+	typedef Vector3<int> Vector3I;
+	typedef Vector3<unsigned int> Vector3UI;
+	typedef Vector3<double> Vector3D;
 
 }
