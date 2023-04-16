@@ -64,7 +64,7 @@ namespace Portakal
 		if (mShader == nullptr)
 			return;
 
-		mShader->DeleteDeviceObject();
+		mShader->Destroy();
 		mShader = nullptr;
 	}
 	void ShaderObject::DestroyCore()

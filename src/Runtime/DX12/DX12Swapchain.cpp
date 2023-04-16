@@ -139,7 +139,7 @@ namespace Portakal
 		Framebuffer* pFramebuffer = GetFramebuffer();
 		if (pFramebuffer != nullptr)
 		{
-			pFramebuffer->DeleteDeviceObject();
+			pFramebuffer->Destroy();
 		}
 
 		/*

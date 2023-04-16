@@ -20,7 +20,7 @@ namespace Portakal
 	ImGuiTextureBinding::~ImGuiTextureBinding()
 	{
 		if (mTable != nullptr)
-			mTable->DeleteDeviceObject();
+			mTable->Destroy();
 
 		mTable = nullptr;
 	}

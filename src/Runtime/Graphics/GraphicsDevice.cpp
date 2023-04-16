@@ -63,7 +63,7 @@ namespace Portakal
 		swapchainDesc.Width = desc.pOwnerWindow->GetWidth();
 		swapchainDesc.Height = desc.pOwnerWindow->GetHeight();
 
-		pDevice->CreateSwapchain(swapchainDesc);
+		pDevice->_CreateSwapchain(swapchainDesc);
 
 		GraphicsDeviceAPI::RegisterWindowedDevice(pDevice);
 
@@ -71,28 +71,38 @@ namespace Portakal
 	}
 	GraphicsDevice::GraphicsDevice(Window* pOwnerWindow)
 	{
-		_ownerWindow = pOwnerWindow;
+		mOwnerWindow = pOwnerWindow;
 		mStandalone = false;
 		mSwapchain = nullptr;
-		mCriticalSection = PlatformCriticalSection::Create();
+		mMemory = 0;
+		mChildObjectBarrier = PlatformCriticalSection::Create();
 	}
 	GraphicsDevice::GraphicsDevice()
 	{
-		_ownerWindow = nullptr;
+		mOwnerWindow = nullptr;
 		mStandalone = true;
 		mSwapchain = nullptr;
-		mCriticalSection = PlatformCriticalSection::Create();
+		mMemory = 0;
+		mChildObjectBarrier = PlatformCriticalSection::Create();
 	}
 	
 	GraphicsDevice::~GraphicsDevice()
 	{
-		for (unsigned int i = 0; i < _childObjects.GetCursor(); i++)
+		mChildObjectBarrier->Lock();
+
+		for (unsigned int i = 0; i < mChildObjects.GetCursor(); i++)
 		{
-			GraphicsDeviceObject* pDeviceObject = _childObjects[i];
+			GraphicsDeviceObject* pDeviceObject = mChildObjects[i];
+			pDeviceObject->Destroy();
 
 			delete pDeviceObject;
+
+			i--;
 		}
-		_childObjects.Clear();
+
+		mChildObjects.Clear();
+
+		mChildObjectBarrier->Release();
 	}
 	void GraphicsDevice::Swapbuffers()
 	{
@@ -212,41 +222,39 @@ namespace Portakal
 	{
 		SubmitCommandsCore(cmdBuffers);
 	}
-	void GraphicsDevice::DeleteChildObject(GraphicsDeviceObject* pObject)
-	{
-		mCriticalSection->Lock();
-		const int index = _childObjects.FindIndex(pObject);
-
-		if (index == -1)
-		{
-			mCriticalSection->Release();
-			return;
-		}
-
-		_childObjects.RemoveIndex(index);
-
-		pObject->OnDestroy();
-
-		mCriticalSection->Release();
-	}
 	void GraphicsDevice::RegisterChildObject(GraphicsDeviceObject* pObject)
 	{
-		mCriticalSection->Lock();
+		mChildObjectBarrier->Lock();
 
 		pObject->_SetOwnerDevice(this);
 
-		_childObjects.Add(pObject);
+		mChildObjects.Add(pObject);
 
-		mCriticalSection->Release();
+		mChildObjectBarrier->Release();
 	}
-	void GraphicsDevice::CreateSwapchain(const SwapchainCreateDesc& desc)
+	void GraphicsDevice::_CreateSwapchain(const SwapchainCreateDesc& desc)
 	{
 		Swapchain* pSwapchain = CreateSwapchainCore(desc);
 
 		RegisterChildObject(pSwapchain);
 
-		mCriticalSection->Lock();
+		mChildObjectBarrier->Lock();
 		mSwapchain = pSwapchain;
-		mCriticalSection->Release();
+		mChildObjectBarrier->Release();
+	}
+	void GraphicsDevice::_NotifyChildObjectDestroyed(GraphicsDeviceObject* pObject)
+	{
+		mChildObjectBarrier->Lock();
+		const int index = mChildObjects.FindIndex(pObject);
+
+		if (index == -1)
+		{
+			mChildObjectBarrier->Release();
+			return;
+		}
+
+		mChildObjects.RemoveIndex(index);
+
+		mChildObjectBarrier->Release();
 	}
 }

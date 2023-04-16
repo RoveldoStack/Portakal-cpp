@@ -137,17 +137,17 @@ namespace Portakal
 			const Array<FramebufferAttachmentDesc> colorAttachments = pFramebuffer->GetColorTargets();
 			const FramebufferAttachmentDesc depthStencilAttachment = pFramebuffer->GetDepthStencilTarget();
 
-			pFramebuffer->DeleteDeviceObject();
+			pFramebuffer->Destroy();
 
 			for (unsigned int i = 0; i < colorAttachments.GetCursor(); i++)
 			{
-				colorAttachments[i].pTexture->DeleteDeviceObject();
+				colorAttachments[i].pTexture->Destroy();
 				colorAttachments[i].pTexture = nullptr;
 			}
 
 			if (depthStencilAttachment.pTexture != nullptr)
 			{
-				depthStencilAttachment.pTexture->DeleteDeviceObject();
+				depthStencilAttachment.pTexture->Destroy();
 			}
 		}
 

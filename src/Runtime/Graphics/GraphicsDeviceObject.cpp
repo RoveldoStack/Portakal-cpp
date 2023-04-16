@@ -3,8 +3,19 @@
 
 namespace Portakal
 {
-    void GraphicsDeviceObject::DeleteDeviceObject()
+ 
+    void GraphicsDeviceObject::Destroy()
     {
-        mOwnerDevice->DeleteChildObject(this);
+        if (mDestroyed)
+            return;
+
+        if (mOwnerDevice != nullptr)
+        {
+            OnDestroy();
+            mOwnerDevice->_NotifyChildObjectDestroyed(this);
+        }
+
+
+        mDestroyed = true;
     }
 }

@@ -139,7 +139,7 @@ namespace Portakal
 	void TextureResource::DeleteTexture()
 	{
 		if (mTexture != nullptr)
-			mTexture->DeleteDeviceObject();
+			mTexture->Destroy();
 
 		mTexture = nullptr;
 	}

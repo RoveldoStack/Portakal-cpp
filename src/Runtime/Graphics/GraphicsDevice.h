@@ -49,6 +49,7 @@ namespace Portakal
 	/// </summary>
 	class PORTAKAL_API GraphicsDevice
 	{
+		friend GraphicsDeviceObject;
 	public:
 		/// <summary>
 		/// Creates a standalone graphics device without a window 
@@ -71,6 +72,30 @@ namespace Portakal
 		/// </summary>
 		/// <returns></returns>
 		FORCEINLINE unsigned long long GetMemory() const noexcept { return mMemory; }
+
+		/// <summary>
+		/// Returns the owner window (if any)
+		/// </summary>
+		/// <returns></returns>
+		FORCEINLINE Window* GetOwnerWindow() const noexcept { return mOwnerWindow; }
+
+		/// <summary>
+		/// Returns whether it's a standalone device or not
+		/// </summary>
+		/// <returns></returns>
+		FORCEINLINE bool IsStandalone() const noexcept { return mStandalone; }
+
+		/// <summary>
+		/// Returns the swapchain (if any)
+		/// </summary>
+		/// <returns></returns>
+		FORCEINLINE Swapchain* GetSwapchain() const noexcept { return mSwapchain; }
+
+		/// <summary>
+		/// Returns the backend type
+		/// </summary>
+		/// <returns></returns>
+		FORCEINLINE virtual GraphicsBackend GetBackend() const noexcept = 0;
 
 		/// <summary>
 		/// Swaps the swapchain buffers
@@ -171,36 +196,6 @@ namespace Portakal
 		/// </summary>
 		/// <param name="cmdBuffers"></param>
 		void SubmitCommands(const Array<CommandList*>& cmdBuffers);
-
-		/// <summary>
-		/// Deletes the target device object
-		/// </summary>
-		/// <param name="pObject"></param>
-		void DeleteChildObject(GraphicsDeviceObject* pObject);
-
-		/// <summary>
-		/// Returns the owner window (if any)
-		/// </summary>
-		/// <returns></returns>
-		FORCEINLINE Window* GetOwnerWindow() const noexcept { return _ownerWindow; }
-
-		/// <summary>
-		/// Returns whether it's a standalone device or not
-		/// </summary>
-		/// <returns></returns>
-		FORCEINLINE bool IsStandalone() const noexcept { return mStandalone; }
-
-		/// <summary>
-		/// Returns the swapchain (if any)
-		/// </summary>
-		/// <returns></returns>
-		FORCEINLINE Swapchain* GetSwapchain() const noexcept { return mSwapchain; }
-
-		/// <summary>
-		/// Returns the backend type
-		/// </summary>
-		/// <returns></returns>
-		FORCEINLINE virtual GraphicsBackend GetBackend() const noexcept = 0;
 	protected:
 		GraphicsDevice(Window* pOwnerWindow);
 		GraphicsDevice();
@@ -235,11 +230,17 @@ namespace Portakal
 		/// Internal swapchain creation method
 		/// </summary>
 		/// <param name="desc"></param>
-		void CreateSwapchain(const SwapchainCreateDesc& desc);
+		void _CreateSwapchain(const SwapchainCreateDesc& desc);
+
+		/// <summary>
+		/// Deletes the target device object
+		/// </summary>
+		/// <param name="pObject"></param>
+		void _NotifyChildObjectDestroyed(GraphicsDeviceObject* pObject);
 	private:
-		Array<GraphicsDeviceObject*> _childObjects;
-		PlatformCriticalSection* mCriticalSection;
-		Window* _ownerWindow;
+		Array<GraphicsDeviceObject*> mChildObjects;
+		PlatformCriticalSection* mChildObjectBarrier;
+		Window* mOwnerWindow;
 		Swapchain* mSwapchain;
 		bool mStandalone;
 		unsigned long long mMemory;

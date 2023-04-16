@@ -26,6 +26,12 @@ namespace Portakal
 		FORCEINLINE GraphicsDevice* GetOwnerDevice() const noexcept { return mOwnerDevice; }
 
 		/// <summary>
+		/// Returns whether this device object is destroyed or not
+		/// </summary>
+		/// <returns></returns>
+		FORCEINLINE bool IsDestroyed() const noexcept { return mDestroyed; }
+
+		/// <summary>
 		/// Returns the device debug name
 		/// </summary>
 		/// <returns></returns>
@@ -35,11 +41,12 @@ namespace Portakal
 		/// <summary>
 		/// Deletes the device object
 		/// </summary>
-		void DeleteDeviceObject();
+		void Destroy();
 	protected:
 		GraphicsDeviceObject()
 		{
 			mOwnerDevice = nullptr;
+			mDestroyed = false;
 		}
 		~GraphicsDeviceObject()
 		{
@@ -57,5 +64,6 @@ namespace Portakal
 	private:
 		GraphicsDevice* mOwnerDevice;
 		String mName;
+		bool mDestroyed;
 	};
 }
