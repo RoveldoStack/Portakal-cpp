@@ -15,3 +15,14 @@ add_library(ImGui
 
 include_directories(${CMAKE_SOURCE_DIR}/src/Libs/ImGui)
 include_directories(${CMAKE_SOURCE_DIR}/src/Libs/ImGui/backends)
+
+
+if(WIN32)
+target_link_libraries(ImGui d3d12.lib)
+target_link_libraries(ImGui d3d11.lib)
+target_link_libraries(ImGui dxgi.lib)
+target_link_libraries(ImGui d3dcompiler.lib)
+target_link_libraries(ImGui Shlwapi.lib)
+target_link_libraries(ImGui Comctl32.lib)
+endif()
+
