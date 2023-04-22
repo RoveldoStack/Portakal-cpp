@@ -1,11 +1,11 @@
 #include "TextureResource.h"
-#include <Runtime/Graphics/Texture.h>
+#include <Runtime/Graphics/Texture/Texture.h>
 #include <Runtime/Graphics/GraphicsDevice.h>
 #include <Runtime/Graphics/GraphicsDeviceAPI.h>
-#include <Runtime/Graphics/TextureUpdateDesc.h>
-#include <Runtime/Graphics/CommandList.h>
-#include <Runtime/Graphics/ResourceTable.h>
-#include <Runtime/Graphics/TextureLoader.h>
+#include <Runtime/Graphics/Texture/TextureUpdateDesc.h>
+#include <Runtime/Graphics/Command/CommandList.h>
+#include <Runtime/Graphics/Resource/ResourceTable.h>
+#include <Runtime/Graphics/Texture/TextureLoader.h>
 #include <Runtime/Log/Log.h>
 
 namespace Portakal

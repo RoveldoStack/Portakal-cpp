@@ -5,7 +5,7 @@
 #include <Runtime/Win32/Win32Window.h>
 #include <Runtime/Assert/Assert.h>
 #include <Runtime/DXGI/DXGIUtils.h>
-#include <Runtime/Graphics/CommandList.h>
+#include <Runtime/Graphics/Command/CommandList.h>
 
 namespace Portakal
 {

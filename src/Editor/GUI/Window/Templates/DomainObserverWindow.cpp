@@ -4,7 +4,6 @@
 #include <Editor/Domain/DomainFolder.h>
 #include <Runtime/Platform/PlatformMessage.h>
 #include <Runtime/Resource/Texture/TextureResource.h>
-#include <Runtime/DX12/DX12ResourceTable.h>
 #include <Editor/Resource/EditorImageResource.h>
 #include <Editor/Resource/EditorResourceAPI.h>
 #include <Runtime/Event/Event.h>
@@ -27,7 +26,7 @@
 #include <Editor/Asset/Serializers/TextureAssetSerializer.h>
 #include <Editor/GUI/Window/Templates/AuthoringToolWindow.h>
 #include <Editor/GUI/Window/EditorWindowAPI.h>
-#include <Editor/Asset/AuthorizationTools/TextureAuthoringTool.h>
+#include <Editor/Asset/AuthoringTools/TextureAuthoringTool.h>
 #include <Editor/Renderer/ImGuiAPI.h>
 #include <Editor/Renderer/ImGuiRenderer.h>
 #include <Editor/Renderer/ImGuiTextureBinding.h>

@@ -3,8 +3,8 @@
 #include <Runtime/World/Scene.h>
 #include <Runtime/World/Aspects/DisplayAspect.h>
 #include <Runtime/Resource/RenderTarget/RenderTarget.h>
-#include <Runtime/Graphics/Framebuffer.h>
-#include <Runtime/Graphics/ResourceTable.h>
+#include <Runtime/Graphics/Framebuffer/Framebuffer.h>
+#include <Runtime/Graphics/Resource/ResourceTable.h>
 #include <Libs/ImGui/imgui.h>
 #include <Runtime/Log/Log.h>
 #include <Editor/Resource/EditorImageResource.h>

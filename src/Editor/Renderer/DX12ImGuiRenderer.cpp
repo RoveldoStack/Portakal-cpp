@@ -1,8 +1,8 @@
 #include "DX12ImGuiRenderer.h"
-#include <Runtime/DX12/DX12Swapchain.h>
+#include <Runtime/DX12/Swapchain/DX12Swapchain.h>
 #include <Libs/ImGui/backends/imgui_impl_dx12.h>
 #include <Runtime/DXGI/DXGIUtils.h>
-#include <Runtime/DX12/DX12GraphicsCommandList.h>
+#include <Runtime/DX12/Command/DX12GraphicsCommandList.h>
 #include <Libs/ImGui/backends/imgui_impl_win32.h>
 #include <Runtime/Win32/Win32Window.h>
 #include <Runtime/DX12/DX12Device.h>

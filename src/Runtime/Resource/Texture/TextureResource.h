@@ -1,6 +1,6 @@
 #pragma once
 #include <Runtime/Resource/ResourceSubObject.h>
-#include <Runtime/Graphics/TextureCreateDesc.h>
+#include <Runtime/Graphics/Texture/TextureCreateDesc.h>
 
 namespace Portakal
 {

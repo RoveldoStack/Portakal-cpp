@@ -1,5 +1,5 @@
 #include "DX12ImGuiTextureBinding.h"
-#include <Runtime/DX12/DX12ResourceTable.h>
+#include <Runtime/DX12/Resource/DX12ResourceTable.h>
 
 namespace Portakal
 {

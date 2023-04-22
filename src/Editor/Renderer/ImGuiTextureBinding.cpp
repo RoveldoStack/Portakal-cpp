@@ -1,8 +1,8 @@
 #include "ImGuiTextureBinding.h"
 #include <Runtime/Graphics/GraphicsDevice.h>
-#include <Runtime/Graphics/ResourceTable.h>
+#include <Runtime/Graphics/Resource/ResourceTable.h>
 #include <Runtime/Resource/Texture/TextureResource.h>
-#include <Runtime/Graphics/Texture.h>
+#include <Runtime/Graphics/Texture/Texture.h>
 
 namespace Portakal
 {

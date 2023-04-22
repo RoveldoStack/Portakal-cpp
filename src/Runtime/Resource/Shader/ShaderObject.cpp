@@ -1,5 +1,6 @@
 #include "ShaderObject.h"
 #include <Runtime/Graphics/GraphicsDeviceAPI.h>
+#include <Runtime/HLSL/HLSLCompiler.h>
 
 namespace Portakal
 {
@@ -7,6 +8,7 @@ namespace Portakal
 	{
 		mDevice = GraphicsDeviceAPI::GetDefaultDevice();
 		mShader = nullptr;
+		mReflectionBlob = nullptr;
 	}
 	ShaderObject::~ShaderObject()
 	{
@@ -18,20 +20,6 @@ namespace Portakal
 			return false;
 
 		return true;
-	}
-	String ShaderObject::GetSource() const noexcept
-	{
-		if (mShader == nullptr)
-			return String();
-
-		return mShader->GetSource();
-	}
-	String ShaderObject::GetError() const noexcept
-	{
-		if (mShader == nullptr)
-			return String();
-
-		return mShader->GetError();
 	}
 	String ShaderObject::GetEntryPoint() const noexcept
 	{
@@ -50,14 +38,40 @@ namespace Portakal
 	
 	void ShaderObject::Compile(const String& entryPoint, const String& source, const ShaderStage stage)
 	{
+		/*
+		* Delete the former shader
+		*/
 		Delete();
 
+		/*
+		* Compile the source text
+		*/
+		Array<Byte> bytes;
+		HLSLCompiler::Compile(source, entryPoint, stage, 4, 0,bytes, mErrors);
+
+		/*
+		* Validate compilation
+		*/
+		if (mErrors.GetCursor() > 0)
+			return;
+
+		/*
+		* Create reflection blob
+		*/
+		mReflectionBlob = ShaderReflectionBlob::Create(source, ShadingLanguage::HLSL);
+
+		/*
+		* Create shader
+		*/
 		ShaderCreateDesc desc = {};
-		desc.Source = source;
 		desc.EntryPointMethod = entryPoint;
 		desc.Stage = stage;
+		desc.Bytes = bytes;
 
 		mShader = mDevice->CreateShader(desc);
+		mSource = source;
+		mCompiled = true;
+		
 	}
 	void ShaderObject::Delete()
 	{
@@ -66,6 +80,13 @@ namespace Portakal
 
 		mShader->Destroy();
 		mShader = nullptr;
+		mSource = String();
+
+		if (mReflectionBlob != nullptr)
+		{
+			delete mReflectionBlob;
+			mReflectionBlob = nullptr;
+		}
 	}
 	void ShaderObject::DestroyCore()
 	{

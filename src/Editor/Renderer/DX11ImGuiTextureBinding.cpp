@@ -1,5 +1,5 @@
 #include "DX11ImGuiTextureBinding.h"
-#include <Runtime/DX11/DX11ResourceTable.h>
+#include <Runtime/DX11/Resource/DX11ResourceTable.h>
 namespace Portakal
 {
     DX11ImGuiTextureBinding::DX11ImGuiTextureBinding(const TextureResource* pResource) : ImGuiTextureBinding(pResource)

@@ -3,6 +3,7 @@
 #include <string>
 #include <sstream>
 #include <Runtime/Memory/Memory.h>
+#include <Runtime/Log/Log.h>
 #define MAX_INT_DIGITS 10
 
 namespace Portakal
@@ -128,6 +129,28 @@ namespace Portakal
 		return output;
 	}
 
+	String String::Trim(const Array<char>& blackList) const
+	{
+		String output;
+
+		if (mCursor == 0 || mSource == nullptr)
+			return String();
+
+		if (blackList.GetCursor() == 0)
+			return String();
+
+		for (unsigned int i = 0; i < mCursor; i++)
+		{
+			const char c = mSource[i];
+			if (!blackList.Has(c))
+			{
+				output += c;
+			}
+		}
+
+		return output;
+	}
+
 	char* String::GetSource() const
 	{
 		return mSource;
@@ -208,8 +231,11 @@ namespace Portakal
 
 		return index;
 	}
-	unsigned int String::FindIndex(const char targetChar) const
+	int String::FindIndex(const char targetChar) const
 	{
+		if (mSource == nullptr)
+			return -1;
+
 		for (unsigned int i = 0; i < mCursor; i++)
 		{
 			if (mSource[i] == targetChar)
@@ -219,7 +245,30 @@ namespace Portakal
 
 		}
 
-		return 0;
+		return -1;
+	}
+
+	int String::FindIndex(const String& target) const
+	{
+		if (*target == nullptr || target.GetCursor() == 0)
+			return -1;
+
+		if (mSource == nullptr)
+			return -1;
+
+		const unsigned targetSize = target.GetCursor();
+		if (mCursor < targetSize)
+			return -1;
+
+		for (unsigned int i = 0; i < mCursor-targetSize; i++)
+		{
+			if (Memory::Check((*target), (mSource + i), targetSize))
+			{
+				return i;
+			}
+		}
+
+		return -1;
 	}
 
 	unsigned int String::GetCount(const char targetChar) const
@@ -267,9 +316,7 @@ namespace Portakal
 	{
 		delete[] mSource;
 
-		mSource = new char[1];
-		mSource[0] = '\0';
-
+		mSource = nullptr;
 		mCursor = 0;
 	}
 

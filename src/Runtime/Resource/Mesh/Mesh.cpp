@@ -1,7 +1,7 @@
 #include "Mesh.h"
 #include <Runtime/Graphics/GraphicsDeviceAPI.h>
 #include <Runtime/Resource/Mesh/MeshUtils.h>
-#include <Runtime/Graphics/GraphicsBufferUpdateDesc.h>
+#include <Runtime/Graphics/Buffer/GraphicsBufferUpdateDesc.h>
 namespace Portakal
 {
 	Mesh::Mesh(GraphicsDevice* pOwnerDevice)
@@ -28,7 +28,7 @@ namespace Portakal
 	{
 		mOwnerDevice = nullptr;
 	}
-	void Mesh::AllocateVertexes(const byte* pData, const unsigned long long subItemSize, const unsigned long long subItemCount)
+	void Mesh::AllocateVertexes(const Byte* pData, const unsigned long long subItemSize, const unsigned long long subItemCount, const Array<InputElementDesc>& inputElements)
 	{
 		DeleteVertexBuffer();
 		if (mOwnerDevice == nullptr)
@@ -43,8 +43,9 @@ namespace Portakal
 
 		mVertexSubItemCount = subItemCount;
 		mVertexSubItemSize = subItemSize;
+		mInputElements = inputElements;
 	}
-	void Mesh::AllocateIndexes(const byte* pData, const MeshIndexType indexType, const unsigned long long subItemCount)
+	void Mesh::AllocateIndexes(const Byte* pData, const MeshIndexType indexType, const unsigned long long subItemCount)
 	{
 		DeleteIndexBuffer();
 		if (mOwnerDevice == nullptr)
@@ -60,7 +61,7 @@ namespace Portakal
 		mIndexSubItemCount = subItemCount;
 		mIndexType = indexType;
 	}
-	void Mesh::UpdateVertexes(const byte* pData, const unsigned long long offset, const unsigned long long size)
+	void Mesh::UpdateVertexes(const Byte* pData, const unsigned long long offset, const unsigned long long size)
 	{
 		if (mOwnerDevice == nullptr || mVertexBuffer == nullptr)
 			return;
@@ -72,7 +73,7 @@ namespace Portakal
 
 		mOwnerDevice->UpdateBuffer(mVertexBuffer, desc);
 	}
-	void Mesh::UpdateIndexes(const byte* pData, const unsigned long long offset, const unsigned long long size)
+	void Mesh::UpdateIndexes(const Byte* pData, const unsigned long long offset, const unsigned long long size)
 	{
 		if (mOwnerDevice == nullptr || mIndexBuffer == nullptr)
 			return;
@@ -90,6 +91,7 @@ namespace Portakal
 		if (mVertexBuffer == nullptr || mOwnerDevice == nullptr)
 			return;
 
+		mInputElements.Clear();
 		mVertexBuffer->Destroy();
 		mVertexBuffer = nullptr;
 

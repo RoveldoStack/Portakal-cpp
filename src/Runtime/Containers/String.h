@@ -85,11 +85,18 @@ namespace Portakal
 		int FindLastIndex(const String& targetString, const unsigned int startIndex) const;
 
 		/// <summary>
-		/// 
+		/// Finds the index of the specified char
 		/// </summary>
 		/// <param name="targetChar"></param>
 		/// <returns></returns>
-		unsigned int FindIndex(const char targetChar) const;
+		int FindIndex(const char targetChar) const;
+		
+		/// <summary>
+		/// Finds the index of the specified string
+		/// </summary>
+		/// <param name="target"></param>
+		/// <returns></returns>
+		int FindIndex(const String& target) const;
 
 		/// <summary>
 		/// Returns the count of the given char
@@ -118,6 +125,13 @@ namespace Portakal
 		/// </summary>
 		/// <returns></returns>
 		String Trim() const;
+
+		/// <summary>
+		/// Trims the given blacklist
+		/// </summary>
+		/// <param name="blackList"></param>
+		/// <returns></returns>
+		String Trim(const Array<char>& blackList) const;
 
 		/// <summary>
 		/// Frees the string data

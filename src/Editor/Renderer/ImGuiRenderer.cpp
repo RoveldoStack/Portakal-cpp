@@ -244,7 +244,7 @@ namespace Portakal
 	void ImGuiRenderer::OnMouseWheel(const MouseWheelEvent* pEvent)
 	{
 		ImGuiIO& io = ImGui::GetIO();
-		io.AddMouseWheelEvent(pEvent->GetHorizontal(), pEvent->GetVertical());
+		io.AddMouseWheelEvent(0, pEvent->GetVertical() > 0 ? 1 : -1);
 	}
 	void ImGuiRenderer::OnKeyboardDown(const KeyboardKeyDownEvent* pEvent)
 	{

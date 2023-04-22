@@ -1,9 +1,9 @@
 #include "RenderTarget.h"
-#include <Runtime/Graphics/Texture.h>
+#include <Runtime/Graphics/Texture/Texture.h>
 #include <Runtime/Graphics/GraphicsDevice.h>
 #include <Runtime/Graphics/GraphicsDeviceAPI.h>
-#include <Runtime/Graphics/Framebuffer.h>
-#include <Runtime/Graphics/ResourceTable.h>
+#include <Runtime/Graphics/Framebuffer/Framebuffer.h>
+#include <Runtime/Graphics/Resource/ResourceTable.h>
 #include <Runtime/Assert/Assert.h>
 
 namespace Portakal

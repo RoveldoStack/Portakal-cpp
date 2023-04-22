@@ -3,7 +3,7 @@
 #include <Libs/ImGui/imgui.h>
 #include <Editor/Resource/EditorResourceAPI.h>
 #include <Runtime/Resource/Texture/TextureResource.h>
-#include <Runtime/Graphics/ResourceTable.h>
+#include <Runtime/Graphics/Resource/ResourceTable.h>
 
 namespace Portakal
 {

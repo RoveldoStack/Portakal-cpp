@@ -4,10 +4,10 @@
 #include <Editor/Renderer/DX11ImGuiTextureBinding.h>
 #include <Libs/ImGui/backends/imgui_impl_dx11.h>
 #include <Libs/ImGui/backends/imgui_impl_win32.h>
-#include <Runtime/Graphics/CommandList.h>
-#include <Runtime/Graphics/Swapchain.h>
-#include <Runtime/DX11/DX11Swapchain.h>
-#include <Runtime/DX11/DX11Framebuffer.h>
+#include <Runtime/Graphics/Command/CommandList.h>
+#include <Runtime/Graphics/Swapchain/Swapchain.h>
+#include <Runtime/DX11/Swapchain/DX11Swapchain.h>
+#include <Runtime/DX11/Framebuffer/DX11Framebuffer.h>
 
 namespace Portakal
 {

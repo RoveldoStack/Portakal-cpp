@@ -6,6 +6,7 @@
 #include "Win32Keys.h"
 #include <Runtime/XInput/XInputManager.h>
 #include <Libs/ImGui/backends/imgui_impl_win32.h>
+#include <windowsx.h>
 namespace Portakal
 {
     Win32Window* GetUserWindowData(HWND windowHandle)

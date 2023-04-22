@@ -5,7 +5,7 @@
 #include <Runtime/Message/MessageModule.h>
 #include <Runtime/Log/Log.h>
 #include <Runtime/Graphics/GraphicsDeviceAPI.h>
-#include <Runtime/Graphics/CommandList.h>
+#include <Runtime/Graphics/Command/CommandList.h>
 #include <Runtime/Platform/PlatformTime.h>
 #include <Runtime/Time/Stopwatch.h>
 #include <Runtime/Memory/SharedSafeHeap.h>

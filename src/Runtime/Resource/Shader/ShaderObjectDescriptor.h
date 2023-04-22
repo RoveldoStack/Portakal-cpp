@@ -1,6 +1,6 @@
 #pragma once
 #include <Runtime/Containers/String.h>
-#include <Runtime/Graphics/ShaderStage.h>
+#include <Runtime/Graphics/Shader/ShaderStage.h>
 #include <Runtime/Reflection/Type.h>
 
 namespace Portakal

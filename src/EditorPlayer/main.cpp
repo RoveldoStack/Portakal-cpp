@@ -21,6 +21,25 @@
 #include <Runtime/World/Components/TestComponent.h>
 #include <Runtime/Yaml/YamlDefaultSerializer.h>
 
+namespace internal
+{
+	static const unsigned int FRONT_SIZE = sizeof("internal::GetTypeNameHelper<") +17;
+	static const unsigned int BACK_SIZE = sizeof(">::GetTypeName") - 1u;
+
+	template <typename T>
+	struct GetTypeNameHelper
+	{
+		static const char* GetTypeName(void)
+		{
+			static const size_t size = sizeof(__FUNCTION__) - FRONT_SIZE - BACK_SIZE;
+			static char typeName[size] = {};
+			memcpy(typeName, __FUNCTION__ + FRONT_SIZE, size - 1u);
+
+			return typeName;
+		}
+	};
+}
+
 namespace Portakal
 {
 	
@@ -147,9 +166,46 @@ namespace Portakal
 		}
 	};
 	
+	template<typename TValue>
+	class MyTemplatedType
+	{
+	public:
+		TValue myValue = 0;
+		TValue myValue2 = 0;
+	};
+
+	template<typename TTarget>
+	class PORTAKAL_API MyTemplatedType_Type : public Type
+	{
+	private:
+		static MyTemplatedType_Type* GenerateTypeData()
+	{
+		MyTemplatedType_Type* pType = new MyTemplatedType_Type();
+		Assembly::GetProcessAssembly()->RegisterType(pType); 
+		return pType; 
+	}
+		static inline Type* sType = (Type*)GenerateTypeData(); 
+	public:
+		FORCEINLINE static Type* GetStaticType() { return sType; }
+		FORCEINLINE virtual unsigned int GetSize() const noexcept override { return sizeof(MyTemplatedType<TTarget>); }
+		FORCEINLINE virtual String GetTypeName() const noexcept override { return internal::GetTypeNameHelper<MyTemplatedType<TTarget>>().GetTypeName(); }
+		FORCEINLINE virtual void* CreateDefaultHeapObject() const noexcept override { return new MyTemplatedType<TTarget>(); }
+	}; 
+
+	template<typename TTarget>
+	class TypeAccessor<MyTemplatedType<TTarget>>
+	{
+	public:
+		FORCEINLINE static Type* GetAccessorType() { return MyTemplatedType_Type<TTarget>::GetStaticType(); }
+	};
+
+
 	void Test()
 	{
-		
+		MyTemplatedType<int> leType;
+		const Type* pType = typeof(MyTemplatedType<int>);
+		const String name = pType->GetTypeName();
+		const unsigned int size = pType->GetSize();
 	}
 
 }
@@ -228,7 +284,7 @@ int main(unsigned int argumentCount, const char** ppArguments)
 	pApplication->CreateModule<Portakal::EditorResourceModule>(resourceRequests);
 
 	pApplication->CreateModule<Portakal::GUIWindowModule>();
-	pApplication->CreateModule<Portakal::GUIMainMenuItemModule>();
+	//pApplication->CreateModule<Portakal::GUIMainMenuItemModule>();
 
 	pApplication->CreateModule<Portakal::ImGuiRendererModule>();
 	pApplication->CreateModule<Portakal::InputModule>();

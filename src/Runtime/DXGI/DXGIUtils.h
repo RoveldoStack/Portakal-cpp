@@ -1,7 +1,7 @@
 #pragma once
-#include <Runtime/Graphics/TextureFormat.h>
+#include <Runtime/Graphics/Texture/TextureFormat.h>
 #include <dxgi.h>
-#include <Runtime/Graphics/InputElementDataFormat.h>
+#include <Runtime/Graphics/Pipeline/Input/InputElementDataFormat.h>
 
 namespace Portakal
 {

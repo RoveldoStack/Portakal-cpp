@@ -2,10 +2,10 @@
 #include <Runtime/Graphics/WindowedGraphicsDeviceCreateDesc.h>
 #include <Runtime/Graphics/StandaloneGraphicsDeviceCreateDesc.h>
 #include <Runtime/Graphics/GraphicsDeviceObjects.h>
-#include <Runtime/Graphics/ResourceTableCreateDesc.h>
+#include <Runtime/Graphics/Resource/ResourceTableCreateDesc.h>
 #include <Runtime/Assert/Assert.h>
 #include <Runtime/Window/WindowChildDeviceAdapter.h>
-#include <Runtime/Graphics/Swapchain.h>
+#include <Runtime/Graphics/Swapchain/Swapchain.h>
 #include <Runtime/Window/Window.h>
 #include <Runtime/DX12/DX12Device.h>
 #include <Runtime/DX11/DX11Device.h>

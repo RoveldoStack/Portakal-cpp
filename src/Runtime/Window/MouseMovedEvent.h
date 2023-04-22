@@ -16,18 +16,18 @@ namespace Portakal
 		/// Returns pos-x
 		/// </summary>
 		/// <returns></returns>
-		FORCEINLINE unsigned int GetX() const noexcept { return mX; }
+		FORCEINLINE int GetX() const noexcept { return mX; }
 
 		/// <summary>
 		/// Returns pos-y
 		/// </summary>
 		/// <returns></returns>
-		FORCEINLINE unsigned int GetY() const noexcept { return mY; }
+		FORCEINLINE int GetY() const noexcept { return mY; }
 
 		FORCEINLINE virtual WindowEventType GetEventType() const noexcept override final { return WindowEventType::MouseMoved; }
 		FORCEINLINE virtual String GetEventMessage() const noexcept override final { return "Mouse moved: " + String::GetFromInteger(mX) + "," + String::GetFromInteger(mY); }
 	private:
-		unsigned int mX;
-		unsigned int mY;
+		const int mX;
+		const int mY;
 	};
 }

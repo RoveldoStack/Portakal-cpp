@@ -1,0 +1,8 @@
+#include "Material.h" 
+START_GENERATE_TYPE(Material);
+START_TYPE_PROPERTIES(Material)
+REGISTER_BASE_TYPE(ResourceSubObject);
+
+END_TYPE_PROPERTIES;
+HAS_DEFAULT_CONSTRUCTOR(Material);
+END_GENERATE_TYPE(Material);
