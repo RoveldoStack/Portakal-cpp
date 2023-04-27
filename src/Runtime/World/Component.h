@@ -20,11 +20,6 @@ namespace Portakal
 		FORCEINLINE Entity* GetOwnerEntity() const noexcept { return mOwnerEntity; }
 
 		/// <summary>
-		/// Destroys this component
-		/// </summary>
-		void DestroyComponent();
-
-		/// <summary>
 		/// Called upon first initialization
 		/// </summary>
 		virtual void OnInitialize() = 0;
@@ -35,7 +30,7 @@ namespace Portakal
 		virtual void OnFinalize() = 0;
 
 	protected:
-		Component() = default;
+		Component() : mOwnerEntity(nullptr){}
 		~Component() = default;
 
 		/// <summary>
@@ -44,15 +39,10 @@ namespace Portakal
 		/// <param name="pEntity"></param>
 		void _SetOwnerEntity(Entity* pEntity) { mOwnerEntity = pEntity; }
 	private:
+		virtual void DestroyCore() override;
+	private:
 		Entity* mOwnerEntity;
 	};
-
-	//START_GENERATE_TYPE(Component);
-	//START_TYPE_PROPERTIES(Component);
-	//REGISTER_BASE_TYPE(TaggedObject);
-	//END_TYPE_PROPERTIES;
-	//NO_DEFAULT_CONSTRUCTOR;
-	//END_GENERATE_TYPE(Component);
 
 #include "Component.reflect.h"
 }

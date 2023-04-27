@@ -15,10 +15,8 @@ namespace Portakal
 
 
 	private:
-
 		// Inherited via Gamepad
 		virtual void SetVibration(const short rightMotorPower, const short leftMotorPower) override;
-		// Inherited via Gamepad
 		virtual void DestroyCore() override;
 	};
 }

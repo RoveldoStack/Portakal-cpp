@@ -14,8 +14,8 @@ namespace Portakal
 	{
 		GENERATE_CLASS(Entity);
 		friend Scene;
+		friend Component;
 	public:
-
 		/// <summary>
 		/// Returns the owner scene
 		/// </summary>
@@ -33,19 +33,7 @@ namespace Portakal
 		/// </summary>
 		/// <param name="pType"></param>
 		/// <returns></returns>
-		Component* CreateComponent(Type* pType)
-		{
-			Component* pComponent = (Component*)pType->CreateDefaultHeapObject();
-			if (pComponent == nullptr)
-				return nullptr;
-
-			pComponent->_SetOwnerEntity(this);
-			pComponent->SetTagName(pType->GetTypeName());
-			pComponent->OnInitialize();
-
-			mComponents.Add(pComponent);
-			return pComponent;
-		}
+		Component* CreateComponent(Type* pType);
 
 		/// <summary>
 		/// Creates anew component via template
@@ -132,9 +120,9 @@ namespace Portakal
 
 				if (pComponent->GetType() == pType)
 				{
-					//TODO: destroy
-
-					//_components.RemoveAt(i);
+					pComponent->OnFinalize();
+					pComponent->Destroy();
+					pComponent->_SetOwnerEntity(nullptr);
 					return true;
 				}
 			}
@@ -142,26 +130,20 @@ namespace Portakal
 			return false;
 		}
 
-		/// <summary>
-		/// Destroys this entity
-		/// </summary>
-		void DestroyEntity();
-
-		virtual void DestroyCore() override;
+		bool DeleteComponent(Component* pComponent);
 	private:
 		Entity(Scene* pScene);
 		Entity();
 		~Entity();
+
+		void _NotifyComponentDeleted(Component* pComponent);
+		void _SetOwnerScene(Scene* pScene) { mOwnerScene = pScene; }
+		virtual void DestroyCore() override;
 	private:
 		Array<Component*> mComponents;
 		Scene* mOwnerScene;
 	};
 
-	//START_GENERATE_TYPE(Entity);
-	//START_TYPE_PROPERTIES(Entity);
-	//REGISTER_BASE_TYPE(TaggedObject);
-	//END_TYPE_PROPERTIES;
-	//HAS_DEFAULT_CONSTRUCTOR(Entity);
-	//END_GENERATE_TYPE(Entity);
 #include "Entity.reflect.h"
+
 }

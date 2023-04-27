@@ -17,6 +17,7 @@ namespace Portakal
 	class PORTAKAL_API Scene : public ResourceSubObject
 	{
 		friend class SceneAPI;
+		friend class Entity;
 	public:
 		Scene(const SceneDescriptor& descriptor);
 		Scene();
@@ -188,6 +189,7 @@ namespace Portakal
 	private:
 		void CreateFromDescriptor(const SceneDescriptor& descriptor);
 
+		void _NotifyEntityDeleted(Entity* pEntity);
 		/// <summary>
 		/// Internal primal state setter
 		/// </summary>

@@ -167,6 +167,13 @@ namespace Portakal
 	}
 	bool Scene::DeleteEntity(Entity* pEntity)
 	{
+		const int index = mEntities.FindIndex(pEntity);
+		if (index == -1)
+			return false;
+
+		pEntity->Destroy();
+		pEntity->_SetOwnerScene(nullptr);
+
 		return false;
 	}
 	void Scene::MarkPrimal()
@@ -180,6 +187,32 @@ namespace Portakal
 	}
 	void Scene::DestroyCore()
 	{
+		/*
+		* Remove aspects
+		*/
+		for (unsigned int i = 0; i < mAspects.GetCursor(); i++)
+		{
+			SceneAspect* pAspect = mAspects[i];
+
+			pAspect->OnFinalize();
+			pAspect->_SetOnwerScene(nullptr);
+
+			delete pAspect;
+		}
+		mAspects.Clear();
+
+		/*
+		* Remove entities
+		*/
+		for (unsigned int i = 0; i < mEntities.GetCursor(); i++)
+		{
+			Entity* pEntity = mEntities[i];
+
+			pEntity->Destroy();
+		}
+		/*
+		* Inform scene api to remove this scene
+		*/
 		SceneAPI::RemoveScene(this);
 	}
 	Type* GetTypeFromArray(const Array<Type*>& types, const String& targetTypeName)
@@ -318,5 +351,15 @@ namespace Portakal
 				}
 			}
 		}
+	}
+
+	void Scene::_NotifyEntityDeleted(Entity* pEntity)
+	{
+		const int index = mEntities.FindIndex(pEntity);
+
+		if (index == -1)
+			return;
+
+		mEntities.RemoveIndex(index);
 	}
 }
