@@ -6,14 +6,17 @@ namespace Portakal
 	Entity::Entity(Scene* pOwnerScene)
 	{
 		mOwnerScene = pOwnerScene;
+		mOwnerEntity = nullptr;
 	}
 	Entity::~Entity()
 	{
-
+		mOwnerScene = nullptr;
+		mOwnerEntity = nullptr;
 	}
-	Entity::Entity() : mOwnerScene(nullptr)
+	Entity::Entity()
 	{
-
+		mOwnerEntity = nullptr;
+		mOwnerScene = nullptr;
 	}
 	Component* Entity::CreateComponent(Type* pType)
 	{
@@ -42,6 +45,41 @@ namespace Portakal
 		return true;
 	}
 
+	void Entity::SetOwnerEntity(Entity* pEntity)
+	{
+		/*
+		* Check if we have a former owner entity
+		*/
+		if (mOwnerEntity != nullptr)
+		{
+			mOwnerEntity->OnChildEntityRemoved(this);
+		}
+
+		/*
+		* Check if we assing this entity to another entity or to empty(to scene)
+		*/
+		if (pEntity == nullptr)
+		{
+			mOwnerScene->_OnEntityOwned(this);
+		}
+		else
+		{
+			pEntity->OnChildEntityRegistered(this);
+		}
+
+		mOwnerEntity = pEntity;
+	}
+
+	void Entity::OnChildEntityRemoved(Entity* pEntity)
+	{
+		mChildEntities.Remove(pEntity);
+	}
+
+	void Entity::OnChildEntityRegistered(Entity* pEntity)
+	{
+		mChildEntities.Remove(pEntity);
+	}
+
 	void Entity::DestroyCore()
 	{
 		/*
@@ -57,6 +95,19 @@ namespace Portakal
 			delete pComponent;
 		}
 		mComponents.Clear();
+
+		/*
+		* Destroy child entities
+		*/
+		for (unsigned int i = 0; i < mChildEntities.GetCursor(); i++)
+		{
+			Entity* pEntity = mChildEntities[i];
+
+			pEntity->Destroy();
+			
+			delete pEntity;
+		}
+		mChildEntities.Clear();
 
 		/*
 		* Notify scene

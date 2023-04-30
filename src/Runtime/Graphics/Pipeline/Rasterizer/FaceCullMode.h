@@ -7,7 +7,7 @@ namespace Portakal
 	/// Available face culling modes
 	/// </summary>
 	ENUM();
-	enum class PORTAKAL_API FaceCullMode : unsigned char
+	enum class PORTAKAL_API FaceCullMode : long long
 	{
 		Back,
 		Front,

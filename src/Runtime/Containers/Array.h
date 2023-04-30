@@ -1,17 +1,46 @@
 #pragma once
 #include <initializer_list>
 #include <Runtime/Core/Core.h>
+#include <Runtime/Memory/Memory.h>
+#include <Runtime/Log/Log.h>
 
 namespace Portakal
 {
+
+	class ArrayBase
+	{
+	public:
+		ArrayBase() = default;
+		~ArrayBase() = default;
+
+		virtual void AddIndirect() = 0;
+		virtual void CreateIndirect(const unsigned int count) = 0;
+		virtual void ClearIndirect() = 0;
+	};
 	/// <summary>
 	/// Simple array implementation for dynamic heap allocation
 	/// </summary>
 	/// <typeparam name="TValue"></typeparam>
 	template <typename TValue>
-	class Array final
+	class Array : public ArrayBase
 	{
 	public:
+		virtual void ClearIndirect() override
+		{
+			Clear();
+		}
+		virtual void AddIndirect() override
+		{
+			Add({});
+		}
+		virtual void CreateIndirect(const unsigned int count) override
+		{
+			mCursor = count;
+			mCapacity = count;
+
+			mSource = new TValue[count];
+			Memory::Set(mSource, 0, count);
+		}
 		Array(unsigned int allocateMultiplier = 2)
 		{
 			mCapacity = 0;
@@ -341,6 +370,7 @@ namespace Portakal
 			mCursor++;
 		}
 
+	
 		/// <summary>
 		/// Adds the array
 		/// </summary>
@@ -646,4 +676,6 @@ namespace Portakal
 		unsigned int mCursor;
 		unsigned int mAllocateMultiplier;
 	};
+
+	
 }

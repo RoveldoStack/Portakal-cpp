@@ -10,7 +10,10 @@ namespace Portakal
 	{
 
 	}
-	Field::Field(Type* pType, const String& name, const unsigned int offset,const AccessSpecifier accessSpecifier) : mType(pType), mName(name), mOffset(offset),mAccessSpecifier(accessSpecifier)
+	Field::Field(Type* pType, const String& name, const unsigned int offset, const AccessSpecifier accessSpecifier, Type* pElementType) : mType(pType), mName(name), mOffset(offset), mAccessSpecifier(accessSpecifier),mElementType(pElementType)
+	{
+	}
+	Field::Field(Type* pType, const String& name, const unsigned int offset,const AccessSpecifier accessSpecifier) : mType(pType), mName(name), mOffset(offset),mAccessSpecifier(accessSpecifier),mElementType(nullptr)
 	{
 
 	}

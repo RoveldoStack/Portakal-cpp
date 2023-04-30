@@ -23,10 +23,22 @@ namespace Portakal
 		FORCEINLINE Scene* GetOwnerScene() const noexcept { return mOwnerScene; }
 
 		/// <summary>
+		/// Returns the owner entity
+		/// </summary>
+		/// <returns></returns>
+		FORCEINLINE Entity* GetOwnerEntity() const noexcept { return mOwnerEntity; }
+
+		/// <summary>
 		/// Returns the components
 		/// </summary>
 		/// <returns></returns>
 		FORCEINLINE Array<Component*> GetComponents() const noexcept { return mComponents; }
+
+		/// <summary>
+		/// Returns child entities
+		/// </summary>
+		/// <returns></returns>
+		FORCEINLINE Array<Entity*> GetChildEntities() const noexcept { return mChildEntities; }
 
 		/// <summary>
 		/// Creates anew component via type
@@ -131,6 +143,8 @@ namespace Portakal
 		}
 
 		bool DeleteComponent(Component* pComponent);
+
+		void SetOwnerEntity(Entity* pEntity);
 	private:
 		Entity(Scene* pScene);
 		Entity();
@@ -138,10 +152,16 @@ namespace Portakal
 
 		void _NotifyComponentDeleted(Component* pComponent);
 		void _SetOwnerScene(Scene* pScene) { mOwnerScene = pScene; }
+
+		void OnChildEntityRemoved(Entity* pEntity);
+		void OnChildEntityRegistered(Entity* pEntity);
+
 		virtual void DestroyCore() override;
 	private:
+		Array<Entity*> mChildEntities;
 		Array<Component*> mComponents;
 		Scene* mOwnerScene;
+		Entity* mOwnerEntity;
 	};
 
 #include "Entity.reflect.h"

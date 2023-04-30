@@ -4,6 +4,8 @@
 #include <Runtime/Reflection/Assembly.h>
 #include <Runtime/Reflection/Attribute.h>
 #include <Runtime/Reflection/AccessSpecifier.h>
+#include <Runtime/Reflection/TypeCodes.h>
+
 namespace Portakal
 {
 	class Field;
@@ -144,6 +146,24 @@ namespace Portakal
 		/// </summary>
 		/// <returns></returns>
 		FORCEINLINE virtual bool IsEnum() const noexcept { return false; }
+
+		/// <summary>
+		/// Returns whether this type is a primitive type or not
+		/// </summary>
+		/// <returns></returns>
+		FORCEINLINE virtual bool IsPrimitive() const noexcept { return false; }
+
+		/// <summary>
+		/// Returns whether this type is a primitive type or not
+		/// </summary>
+		/// <returns></returns>
+		FORCEINLINE virtual bool IsArray() const noexcept { return false; }
+
+		/// <summary>
+		/// Returns the type code of this type
+		/// </summary>
+		/// <returns></returns>
+		FORCEINLINE virtual TypeCodes GetTypeCode() const noexcept { return TypeCodes::Composed; }
 	protected:
 
 		/// <summary>

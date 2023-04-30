@@ -189,7 +189,12 @@ namespace Portakal
 	private:
 		void CreateFromDescriptor(const SceneDescriptor& descriptor);
 
+		/// <summary>
+		/// Notifies an entity is deleted
+		/// </summary>
+		/// <param name="pEntity"></param>
 		void _NotifyEntityDeleted(Entity* pEntity);
+
 		/// <summary>
 		/// Internal primal state setter
 		/// </summary>
@@ -199,6 +204,8 @@ namespace Portakal
 		/// Internal active state setter
 		/// </summary>
 		void _SetActiveState(const bool state) { mActive = state; }
+
+		void _OnEntityOwned(Entity* pEntity);
 
 		virtual void DestroyCore() override;
 	private:

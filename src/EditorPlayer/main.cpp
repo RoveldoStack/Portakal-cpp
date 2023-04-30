@@ -19,24 +19,21 @@
 #include <Runtime/Platform/PlatformTime.h>
 #include <Editor/Asset/YamlSerializers.h>
 #include <Runtime/World/Components/TestComponent.h>
-#include <Runtime/Yaml/YamlDefaultSerializer.h>
 #include <iostream>
+#include <Runtime/Yaml/YamlDefaultSerializer.h>
+#include <Runtime/Graphics/Pipeline/Rasterizer/FrontFaceDirection.h>
+#include <Runtime/Graphics/Pipeline/Rasterizer/FaceCullMode.h>
 
+namespace Portakal
+{
+	void Test()
+	{
+		
+	}
+}
 
 int main(unsigned int argumentCount, const char** ppArguments)
 {
-	const unsigned long long start = Portakal::PlatformTime::GetCurrentTimeAsNanoseconds();
-	long a, i;
-	a = 0;
-	for (i = 0; i <= 2000000000; i++) {
-		a += i;
-	}
-	std::cout << a << "\n";
-
-	const unsigned long long end = Portakal::PlatformTime::GetCurrentTimeAsNanoseconds();
-	std::cout << (end - start) / 10000;
-
-	return 0;
 	Portakal::JobSystem::Initialize();
 
 	/*

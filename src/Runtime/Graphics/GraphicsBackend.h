@@ -10,6 +10,7 @@ namespace Portakal
 	{
 		Directx11,
 		Directx12,
-		Vulkan
+		Vulkan,
+		Gnm
 	};
 }

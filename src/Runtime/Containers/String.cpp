@@ -544,6 +544,11 @@ namespace Portakal
 		return false;
 	}
 
+	String String::Empty()
+	{
+		return String(1);
+	}
+
 	String String::GetFromFloat(const float value)
 	{
 		char* chars = new char[MAX_INT_DIGITS];

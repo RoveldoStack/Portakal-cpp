@@ -9,6 +9,7 @@ namespace Portakal
 	class PORTAKAL_API String final
 	{
 	public:
+		static String Empty();
 		/// <summary>
 		/// Returns the string representation of a float
 		/// </summary>
@@ -23,7 +24,13 @@ namespace Portakal
 		/// <returns></returns>
 		static String GetFromInteger(const int value);
 
+		/// <summary>
+		/// Returns the string representation of a longlong
+		/// </summary>
+		/// <param name="value"></param>
+		/// <returns></returns>
 		static String GetFromLongLong(const long long value);
+
 		/// <summary>
 		/// Returns the float representation of a string
 		/// </summary>

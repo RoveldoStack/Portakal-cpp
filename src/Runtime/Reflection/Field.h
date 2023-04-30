@@ -10,6 +10,7 @@ namespace Portakal
 	class PORTAKAL_API Field
 	{
 	public:
+		Field(Type* pType, const String& name, const unsigned int offset, const AccessSpecifier accessSpecifier,Type* pElementType);
 		Field(Type* pType, const String& name, const unsigned int offset,const AccessSpecifier accessSpecifier);
 		~Field() = default;
 
@@ -18,6 +19,12 @@ namespace Portakal
 		/// </summary>
 		/// <returns></returns>
 		FORCEINLINE Type* GetFieldType() const noexcept { return mType; }
+
+		/// <summary>
+		/// Returns the array element type
+		/// </summary>
+		/// <returns></returns>
+		FORCEINLINE Type* GetArrayElementType() const noexcept { return mElementType; }
 
 		/// <summary>
 		/// Returns the field name
@@ -74,6 +81,7 @@ namespace Portakal
 		}
 	private:
 		Type* mType;
+		Type* mElementType;
 		String mName;
 		unsigned int mOffset;
 		AccessSpecifier mAccessSpecifier;
@@ -88,6 +96,9 @@ namespace Portakal
 
 #define REGISTER_FIELD(cls,member,type,accessSpecifier) pType->_RegisterField(new Field(TypeAccessor<type>::GetAccessorType(),#member,offsetof(cls,member),accessSpecifier));
 
+#define REGISTER_ARRAY_FIELD(cls,member,elementType) pType->_RegisterField(new Field(typeof(Array<char>),#member,offsetof(cls,member),AccessSpecifier::Public,typeof(elementType)));
+
 #define REGISTER_FIELD_SELF(cls,member,accessSpecifier) pType->_RegisterField(new Field(pType,#member,offsetof(cls,member),accessSpecifier));
+
 #define FIELD()
 }

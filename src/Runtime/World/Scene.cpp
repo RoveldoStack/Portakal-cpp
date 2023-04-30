@@ -6,7 +6,6 @@
 #include <Runtime/Message/MessageAPI.h>
 #include <Runtime/World/Components/InvalidComponent.h>
 #include <Runtime/World/Aspects/InvalidAspect.h>
-#include <Runtime/Yaml/YamlDefaultSerializer.h>
 
 namespace Portakal
 {
@@ -145,7 +144,7 @@ namespace Portakal
 					else
 					{
 						fieldEntry.Type = SceneComponentFieldType::Raw;
-						fieldEntry.Content = YamlDefaultSerializer::FieldToYaml(pComponent,pField);
+						//fieldEntry.Content = YamlDefaultSerializer::FieldToYaml(pComponent,pField);
 					}
 
 					componentEntry.Fields.Add(fieldEntry);
@@ -184,6 +183,10 @@ namespace Portakal
 	void Scene::SetActivationState(const bool bActive)
 	{
 		_SetActiveState(bActive);
+	}
+	void Scene::_OnEntityOwned(Entity* pEntity)
+	{
+		mEntities.Add(pEntity);
 	}
 	void Scene::DestroyCore()
 	{
@@ -343,11 +346,6 @@ namespace Portakal
 
 					if (pFieldType == nullptr)
 						continue;
-
-					/*
-					* Sets with default
-					*/
-					YamlDefaultSerializer::SetField(pComponent, pField, fieldEntry.Content);
 				}
 			}
 		}

@@ -1,6 +1,7 @@
 #pragma once
 #include <Runtime/Yaml/IYamlSerializer.h>
 #include <Runtime/Yaml/YamlSerializerAttribute.h>
+#include <Runtime/Yaml/YamlDefaultSerializer.h>
 #include <Libs/Yaml/include/yaml-cpp/yaml.h>
 
 namespace Portakal
@@ -111,6 +112,23 @@ namespace Portakal
 			return nullptr;
 		}
 
+		static String ToDefaultYaml(const Class* pObject)
+		{
+			if (pObject == nullptr)
+				return String();
 
+			return YamlDefaultSerializer::ToYaml(pObject);
+		}
+
+		template<typename TObject>
+		static void ToDefaultObject(const String& str, TObject* pObject)
+		{
+			if (pObject == nullptr)
+				return;
+			if (str.GetCursor() == 0)
+				return;
+
+			return YamlDefaultSerializer::ToObject(str,pObject);
+		}
 	};
 }

@@ -1,265 +1,296 @@
 #include "YamlDefaultSerializer.h"
+#include <Runtime/Log/Log.h>
+#include <Libs/Yaml/include/yaml-cpp/yaml.h>
 #include <Runtime/Reflection/Reflection.h>
-#include <Runtime/Resource/ResourceSubObject.h>
-#include <Runtime/Memory/Memory.h>
-
 namespace Portakal
 {
-	void EmitObject(YAML::Emitter& emitter, const Class* pObject)
-	{
-		const Type* pType = pObject->GetType();
-		const Array<Field*> fields = pType->GetFields();
+    void GenerateFieldYaml(YAML::Emitter& emitter, const void* pObject, const Field* pField);
+    void GenerateObjectYaml(YAML::Emitter& emitter, const void* pObject, const Type* pType);
+    void LoadAsObject(const YAML::Node& node, void* pObject, const Type* pType);
 
-		emitter << YAML::BeginMap;
+    void GeneratePrimitiveTypeYaml(YAML::Emitter& emitter, const void* pObject, const Type* pType)
+    {
+        switch (pType->GetTypeCode())
+        {
+        case Portakal::TypeCodes::String:
+        {
+            String* pStr = (String*)pObject;
+            if (pStr->GetSource() != nullptr)
+                emitter << YAML::Value << **((String*)pObject);
+            else
+                emitter << YAML::Value << '\0';
 
-		for (unsigned int i = 0; i < fields.GetCursor(); i++)
-		{
-			const Field* pField = fields[i];
-			const Type* pFieldType = pField->GetFieldType();
+            break;
+        }
+        case Portakal::TypeCodes::Char:
+            break;
+        case Portakal::TypeCodes::UChar:
+            break;
+        case Portakal::TypeCodes::Int:
+            break;
+        case Portakal::TypeCodes::UInt:
+            break;
+        case Portakal::TypeCodes::Short:
+            break;
+        case Portakal::TypeCodes::UShort:
+            break;
+        case Portakal::TypeCodes::Float:
+        {
+            emitter << YAML::Value << *String::GetFromFloat(*(float*)pObject);
+            break;
+        }
+        case Portakal::TypeCodes::Double:
+            break;
+        default:
+            break;
+        }
+    }
+    void GenerateEnumTypeYaml(YAML::Emitter& emitter, const void* pObject, const Type* pType)
+    {
+        const long long enumValue = *(long long*)pObject;
+        LOG("en", "Value: %ld,%s", enumValue,*pType->GetTypeName());
+        emitter << YAML::Value << (long long)enumValue;
+    }
 
-			emitter << YAML::Key << *pField->GetFieldName();
+    void GenerateArrayYaml(YAML::Emitter& emitter, const void* pObject, const Type* pType,const Type* pElementType)
+    {
+        const Array<String>* pArray = (const Array<String>*)pObject;
+        const unsigned int elementSize = pElementType->GetSize();
 
-			if (pFieldType->IsEnum())
-			{
-				const long long value = pField->GetValue<long long>((void*)pObject);
-				emitter << YAML::Value << value;
-			}
-			else
-			{
-				if (pFieldType == typeof(int))
-				{
-					const int value = pField->GetValue<int>((void*)pObject);
-					emitter << YAML::Value << *String::GetFromInteger(value);
-				}
-				else if (pFieldType == typeof(float))
-				{
-					const float value = pField->GetValue<float>((void*)pObject);
-					emitter << YAML::Value << *String::GetFromFloat(value);
-				}
-				else if (pFieldType == typeof(String))
-				{
-					const String value = pField->GetValue<String>((void*)pObject);
-					emitter << YAML::Value << *value;
-				}
-				else if (pFieldType == typeof(ColorRgbaF))
-				{
-					const ColorRgbaF value = pField->GetValue<ColorRgbaF>((void*)pObject);
+        /*
+        * Generate composed objects
+        */
+        for (unsigned int i = 0; i < pArray->GetCursor(); i++)
+        {
+            GenerateObjectYaml(emitter, (Byte*)pArray->GetData() + elementSize * i, pElementType);
+        }
+    }
 
-					char buffer[sizeof(ColorRgbaF)];
-					Memory::Set(buffer, 0, sizeof(buffer));
-					Memory::Copy(&value, buffer, sizeof(buffer));
 
-					emitter << YAML::Value << buffer;
-				}
-				else // other custom object
-				{
-					Class* pOther = pField->GetAddress<Class>((void*)pObject);
-					EmitObject(emitter, pOther);
-				}
-			}
-		}
+    void GenerateObjectYaml(YAML::Emitter& emitter,const void* pObject,const Type* pType)
+    {
+        emitter << YAML::BeginMap;
 
-		emitter << YAML::EndMap;
-	}
-	void EmitField(YAML::Emitter& emitter, const Class* pObject, const Field* pField,const bool bRoot)
-	{
-		const Type* pFieldType = pField->GetFieldType();
-		const bool bSimpleField = pFieldType->IsEnum() || pFieldType->GetFields().GetCursor() == 0;
+        /*
+        * Iterate fields
+        */
+        const Array<Field*> fields = pType->GetFields();
+        for (unsigned int fieldIndex = 0; fieldIndex < fields.GetCursor(); fieldIndex++)
+        {
+            const Field* pField = fields[fieldIndex];
+            const Type* pFieldType = pField->GetFieldType();
+            void* pLocation = (Byte*)pObject + pField->GetOffset();
 
-		if (bSimpleField && !bRoot)
-			emitter << YAML::Key << *pField->GetFieldName();
+            emitter << YAML::Key << *pField->GetFieldName();
 
-		emitter << YAML::BeginMap;
+            /*
+            * Check if primitive type
+            */
+            if (pFieldType->IsPrimitive())
+            {
+                GeneratePrimitiveTypeYaml(emitter,pLocation, pFieldType);
+                continue;
+            }
 
-		if (pFieldType->IsEnum())
-		{
-			const long long value = pField->GetValue<long long>((void*)pObject);
-			emitter << YAML::Value << value;
-		}
-		else
-		{
-			if (pFieldType == typeof(int))
-			{
-				const int value = pField->GetValue<int>((void*)pObject);
-				emitter << YAML::Value << *String::GetFromInteger(value);
-			}
-			else if (pFieldType == typeof(float))
-			{
-				const float value = pField->GetValue<float>((void*)pObject);
-				emitter << YAML::Value << *String::GetFromFloat(value);
-			}
-			else if (pFieldType == typeof(String))
-			{
-				const String value = pField->GetValue<String>((void*)pObject);
-				emitter << YAML::Value << *value;
-			}
-			else if (pFieldType == typeof(ColorRgbaF))
-			{
-				const ColorRgbaF value = pField->GetValue<ColorRgbaF>((void*)pObject);
+            /*
+            * Check if enum
+            */
+            if (pFieldType->IsEnum())
+            {
+                GenerateEnumTypeYaml(emitter, pLocation, pFieldType);
+                continue;
+            }
 
-				char buffer[sizeof(ColorRgbaF)];
-				Memory::Set(buffer, 0, sizeof(buffer));
-				Memory::Copy(&value, buffer, sizeof(buffer));
+            /*
+            * Check if array
+            */
+            if (pFieldType->IsArray())
+            {
+                emitter << YAML::BeginSeq;
+                GenerateArrayYaml(emitter, pLocation, pType, pField->GetArrayElementType());
+                emitter << YAML::EndSeq;
+                continue;
+            }
 
-				emitter << YAML::Value << buffer;
-			}
-			else // other custom object
-			{
-				const Array<Field*> fields = pFieldType->GetFields();
+            /*
+            * Then it's a composed type
+            */
+            GenerateObjectYaml(emitter, pLocation, pFieldType);
+        }
 
-				Class* pOther = pField->GetAddress<Class>((void*)pObject);
+        emitter << YAML::EndMap;
+    }
 
-				for (unsigned int i = 0; i < fields.GetCursor(); i++)
-				{
-					EmitField(emitter, pOther, fields[i],false);
-				}
-				
-			}
-		}
+    String YamlDefaultSerializer::ToYaml(const Class* pObject)
+    {
+        if (pObject == nullptr)
+            return String();
 
-		emitter << YAML::EndMap;
-	}
-	String YamlDefaultSerializer::ObjectToYaml(const Class* pObject)
-	{
-		const Type* pType = pObject->GetType();
-		
-		YAML::Emitter emitter;
+        const Type* pObjectType = pObject->GetType();
 
-		emitter << YAML::BeginDoc;
+        YAML::Emitter emitter;
 
-		EmitObject(emitter, pObject);
+        emitter << YAML::BeginDoc;
 
-		emitter << YAML::EndDoc;
+        GenerateObjectYaml(emitter,pObject,pObjectType);
 
-		return emitter.c_str();
-	}
+        emitter << YAML::EndDoc;
 
-	void YamlDefaultSerializer::YamlToObject(Class* pObject, const String& yaml)
-	{
-		YAML::Node node = YAML::Load(*yaml);
-	}
+        return emitter.c_str();
+    }
+    void LoadAsPrimitive(const YAML::Node& node, void* pObject, const Type* pType)
+    {
 
-	String YamlDefaultSerializer::FieldToYaml(const Class* pObject, const Field* pField)
-	{
-		const Type* pFieldType = pField->GetFieldType();
+        switch (pType->GetTypeCode())
+        {
+            case Portakal::TypeCodes::Composed:
+                break;
+            case Portakal::TypeCodes::String:
+            {
+                const std::string nodeStr = node.as<std::string>();
+                const String value = nodeStr.c_str();
+                *(String*)pObject = value;
+            }
+            case Portakal::TypeCodes::Char:
+                break;
+            case Portakal::TypeCodes::UChar:
+                break;
+            case Portakal::TypeCodes::Int:
+                break;
+            case Portakal::TypeCodes::UInt:
+                break;
+            case Portakal::TypeCodes::Short:
+                break;
+            case Portakal::TypeCodes::UShort:
+                break;
+            case Portakal::TypeCodes::Float:
+            {
+                const float value = node.as<float>();
+                *(float*)pObject = value;
+                break;
+            }
+            case Portakal::TypeCodes::Double:
+                break;
+            case Portakal::TypeCodes::Long:
+                break;
+            case Portakal::TypeCodes::LongLong:
+                break;
+            case Portakal::TypeCodes::ULong:
+                break;
+            case Portakal::TypeCodes::ULongLong:
+                break;
+            default:
+                break;
+        }
+    }
 
-		YAML::Emitter emitter;
+    void LoadAsEnum(const YAML::Node& node, void* pObject, const Field* pField)
+    {
+        const long long value = node.as<long long>();
 
-		EmitField(emitter, pObject, pField,true);
+        pField->SetValue<long long>(pObject,value);
+    }
+    void LoadAsArray(const YAML::Node& node, void* pObject,const Type* pElementType)
+    {
+        const unsigned int elementSize = pElementType->GetSize();
+        const unsigned int elementCount = node.size();
 
-		return emitter.c_str();
-	}
+        /*
+        * Allocate array
+        */
+        Array<char>* pArray = (Array<char>*)pObject;
+        pArray->ClearIndirect();
+        pArray->CreateIndirect(elementCount);
 
-	void ConstructNestedField(const Class* pObject, const Field* pField, YAML::Node& node)
-	{
-		const Type* pFieldType = pField->GetFieldType();
-		const Array<Field*> fields = pFieldType->GetFields();
+        void* pArrayStart = pArray->GetData();
 
-		for (unsigned int i = 0; i < fields.GetCursor(); i++)
-		{
-			const Field* pSubField = fields[i];
-			const Type* pSubFieldType = pSubField->GetFieldType();
+        /*
+        * Iterate and fill data
+        */
+        unsigned int index = 0;
+        for (YAML::const_iterator it = node.begin(); it != node.end(); it++)
+        {
+            const YAML::Node elementNode = *it;
+            if (!elementNode.IsDefined())
+            {
+                index++;
+                continue;
+            }
 
-			YAML::Node subFieldNode = node[*pSubField->GetFieldName()];
+            void* pLocation = (Byte*)pArrayStart + elementSize * index;
+            LoadAsObject(elementNode, pLocation, pElementType);
 
-			if (subFieldNode.IsNull()) // its invalid
-				continue;
+            index++;
+        }
+    }
+    
+    void LoadAsObject(const YAML::Node& node, void* pObject, const Type* pType)
+    {
+        const Array<Field*> fields = pType->GetFields();
 
-			if (pSubFieldType->IsEnum())
-			{
-				const long long value = String::ToLongLong(subFieldNode.as<std::string>().c_str());
-				pSubField->SetValue<long long>((void*)pObject, value);
-			}
-			else
-			{
-				if (pSubFieldType == typeof(int))
-				{
-					const int value = String::ToInteger(subFieldNode.as<std::string>().c_str());
-					pSubField->SetValue<int>((void*)pObject, value);
-				}
-				else if (pSubFieldType == typeof(float))
-				{
-					const float value = String::ToFloat(subFieldNode.as<std::string>().c_str());
-					pSubField->SetValue<float>((void*)pObject, value);
-				}
-				else if (pSubFieldType == typeof(String))
-				{
-					const String value = subFieldNode.as<std::string>().c_str();
-					pSubField->SetValue<String>((void*)pObject, value);
-				}
-				else if (pFieldType == typeof(ColorRgbaF))
-				{
-					char buffer[sizeof(ColorRgbaF)];
-					const String content = node.as<std::string>().c_str();
-					const ColorRgbaF value = *((ColorRgbaF*)(*content));
+        for (unsigned int i = 0; i < fields.GetCursor(); i++)
+        {
+            const Field* pField = fields[i];
+            const Type* pFieldType = pField->GetFieldType();
+            const unsigned int offset = pField->GetOffset();
+            void* pLocation = (Byte*)pObject + pField->GetOffset();
 
-					pField->SetValue<ColorRgbaF>((void*)pObject, value);
-				}
-				else // create nested
-				{
-					/*
-					* Validate if nested
-					*/
-					const bool bNested = pSubFieldType->GetFields().GetCursor() > 0;
-					if (bNested)
-						ConstructNestedField(pSubField->GetAddress<Class>((void*)pObject), pSubField, subFieldNode);
-				}
-			}
+            /*
+            * Validate if this map has a valid field name
+            */
+            const YAML::Node fieldNode = node[*pField->GetFieldName()];
+            if (!fieldNode.IsDefined())
+                continue;
 
-		}
-	}
-	void ConstructSimpleField(const Class* pObject, const Field* pField,YAML::Node& node)
-	{
-		const Type* pFieldType = pField->GetFieldType();
+            /*
+             * Check if field is a primitive type
+             */
+            if (pFieldType->IsPrimitive())
+            {
+                LoadAsPrimitive(fieldNode, pLocation, pFieldType);
+                continue;
+            }
 
-		if (pFieldType->IsEnum())
-		{
-			const long long value = String::ToLongLong(node.as<std::string>().c_str());
-			pField->SetValue<long long>((void*)pObject, value);
-		}
-		else
-		{
-			if (pFieldType->IsSubClassOf(typeof(ResourceSubObject)))
-			{
-				const Guid value = Guid::FromString(node.as<std::string>().c_str());
-				pField->SetValue<Guid>((void*)pObject, value);
-			}
-			else if (pFieldType == typeof(float))
-			{
-				const float value = String::ToFloat(node.as<std::string>().c_str());
-				pField->SetValue<int>((void*)pObject, value);
-			}
-			else if (pFieldType == typeof(int))
-			{
-				const int value = String::ToInteger(node.as<std::string>().c_str());
-				pField->SetValue<int>((void*)pObject, value);
-			}
-			else if (pFieldType == typeof(ColorRgbaF))
-			{
-				char buffer[sizeof(ColorRgbaF)];
-				const String content = node.as<std::string>().c_str();
-				const ColorRgbaF value = *((ColorRgbaF*)(*content));
+            /*
+            * Check if enum
+            */
+            if (pFieldType->IsEnum())
+            {
+                LoadAsEnum(fieldNode, pLocation, pField);
+                continue;
+            }
 
-				pField->SetValue<ColorRgbaF>((void*)pObject, value);
-			}
-			else // custom class
-			{
-				if (pFieldType->GetFields().GetCursor() > 0)
-				{
-					ConstructNestedField(pField->GetAddress<Class>((void*)pObject), pField, node);
-				}
-			}
-			
-		}
-	}
-	void YamlDefaultSerializer::SetField(const Class* pObject, const Field* pField, const String& yamlString)
-	{
-		YAML::Node node = YAML::Load(*yamlString);
-		const bool bSimpleField = pField->GetFieldType()->IsEnum() || pField->GetFieldType()->GetFields().GetCursor() == 0;
+            /*
+            * Check if array
+            */
+            if (pFieldType->IsArray())
+            {
+                LoadAsArray(fieldNode, pLocation,pField->GetArrayElementType());
+                continue;
+            }
 
-		if (bSimpleField)
-			ConstructSimpleField(pObject, pField, node);
-		else
-			ConstructNestedField(pField->GetAddress<Class>((void*)pObject), pField, node);
-	}
+            /*
+            * Then load as object
+            */
+            LoadAsObject(fieldNode, pLocation, pFieldType);
+        }
+    }
+    void YamlDefaultSerializer::ToObject(const String& yamlString, Class* pObject)
+    {
+        if (pObject == nullptr)
+            return;
+
+        /*
+        * Load yaml node
+        */
+        YAML::Node rootNode = YAML::Load(*yamlString);
+
+        /*
+        * Validate if it starts with map node
+        */
+        if (!rootNode.IsMap())
+            return;
+
+        LoadAsObject(rootNode,pObject,pObject->GetType());
+    }
 }
