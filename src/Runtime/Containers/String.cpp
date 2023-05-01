@@ -30,7 +30,6 @@ namespace Portakal
 		Memory::Copy((void*)target, mSource, mCursor);
 
 		mSource[mCursor] = '\0';
-
 	}
 	String::String(const unsigned int size)
 	{
@@ -369,7 +368,8 @@ namespace Portakal
 
 		newSource[mCursor + 1] = '\0';
 
-		delete[] mSource;
+		if(mSource != nullptr)
+			delete[] mSource;
 
 		mSource = newSource;
 
@@ -392,7 +392,8 @@ namespace Portakal
 
 		newSource[newLength] = '\0';
 
-		delete[] mSource;
+		if(mSource != nullptr)
+			delete[] mSource;
 
 		mCursor = newLength;
 		mSource = newSource;
@@ -414,7 +415,8 @@ namespace Portakal
 
 		newSource[newLength] = '\0';
 
-		delete[] mSource;
+		if(mSource != nullptr)
+			delete[] mSource;
 
 		mCursor = newLength;
 		mSource = newSource;
@@ -442,7 +444,8 @@ namespace Portakal
 
 		newSource[newLength] = '\0';
 
-		delete[] mSource;
+		if(mSource != nullptr)
+			delete[] mSource;
 
 		mCursor = newLength;
 		mSource = newSource;
@@ -468,7 +471,8 @@ namespace Portakal
 
 		newSource[targetLength] = '\0';
 
-		delete[] mSource;
+		if(mSource != nullptr)
+			delete[] mSource;
 
 		mSource = newSource;
 
@@ -476,32 +480,21 @@ namespace Portakal
 	}
 	String operator+(const String& target0, const String& target1)
 	{
-		unsigned int newLength = target0.GetCursor() + target1.GetCursor() + 1;
+		const unsigned int newLength = target0.GetCursor() + target1.GetCursor() + 1;
 
-		char* newSource = new char[newLength + 1];
+		char* newSource = new char[newLength];
 
-		{
-			int targetIndex = 0;
-			for (unsigned int i = 0; i < target0.GetCursor(); i++)
-			{
-				newSource[i] = target0[targetIndex];
-				targetIndex++;
-			}
-		}
+		Memory::Set(newSource, 0, newLength);
+		Memory::Copy(*target0, newSource, target0.GetCursor());
+		Memory::Copy(*target1, newSource + target0.GetCursor(), target1.GetCursor());
+		
+		newSource[newLength-1] = '\0';
 
-		{
-			int targetIndex = 0;
-			for (unsigned int i = target0.GetCursor(); i < newLength; i++)
-			{
-				newSource[i] = target1[targetIndex];
-				targetIndex++;
-			}
-		}
+		String n = String(newSource);
 
-		newSource[newLength] = '\0';
+		delete[] newSource;
 
-		String newStr(newSource);
-		return newStr;
+		return n;
 	}
 	bool operator==(const String& target0, const String& target1)
 	{
@@ -555,6 +548,10 @@ namespace Portakal
 
 		sprintf(chars, "%f", value);
 
+		String str(chars, MAX_INT_DIGITS);
+
+		delete[] chars;
+
 		return chars;
 	}
 	String String::GetFromInteger(const int value)
@@ -562,6 +559,10 @@ namespace Portakal
 		char* chars = new char[MAX_INT_DIGITS];
 
 		sprintf(chars, "%d", value);
+
+		String str(chars, MAX_INT_DIGITS);
+
+		delete[] chars;
 
 		return chars;
 	}

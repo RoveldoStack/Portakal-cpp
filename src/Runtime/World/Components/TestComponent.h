@@ -24,8 +24,7 @@ namespace Portakal
 		FIELD();
 		TestStruct someTestStruct;
 
-		FIELD();
-		ColorRgbaF myColor;
+		Array<TestStruct> MyIntArray;
 	private:
 
 

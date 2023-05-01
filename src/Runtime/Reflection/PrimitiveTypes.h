@@ -66,6 +66,6 @@ namespace Portakal
 	GENERATE_PRIMITIVE_TYPE(ULong,TypeCodes::ULong);
 	GENERATE_PRIMITIVE_TYPE(int, TypeCodes::Int);
 	GENERATE_PRIMITIVE_TYPE(String, TypeCodes::String);
-	GENERATE_PRIMITIVE_TYPE(ColorRgbaF, TypeCodes::Char);
+	//GENERATE_PRIMITIVE_TYPE(ColorRgbaF, TypeCodes::Char);
 	GENERATE_PRIMITIVE_TYPE2(Array, TypeCodes::Composed);
 }

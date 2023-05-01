@@ -171,7 +171,6 @@ namespace Portakal
 		io.DisplaySize = { (float)mDevice->GetOwnerWindow()->GetWidth(),(float)mDevice->GetOwnerWindow()->GetHeight() };
 
 		StartRenderingCore();
-		LOG("imgui", "delta: {%f}", io.DeltaTime);
 
 		ImGui::NewFrame();
 	}

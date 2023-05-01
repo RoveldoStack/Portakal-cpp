@@ -17,6 +17,8 @@ namespace Portakal
 		virtual void OnFinalize() = 0;
 	protected:
 		FORCEINLINE Component* GetComponent() const noexcept { return mComponent; }
+
+		void DrawDefault();
 	private:
 		void _SetComponent(Component* pComponent) { mComponent = pComponent; }
 	private:

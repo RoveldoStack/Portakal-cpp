@@ -35,7 +35,6 @@ namespace Portakal
 	START_GENERATE_TYPE(SpriteCamera);
 	START_TYPE_PROPERTIES(SpriteCamera);
 	REGISTER_BASE_TYPE(Component);
-	REGISTER_FIELD(SpriteCamera, mClearColor, ColorRgbaF, AccessSpecifier::Public);
 	REGISTER_FIELD(SpriteCamera, mNearPlane, float, AccessSpecifier::Public);
 	REGISTER_FIELD(SpriteCamera, mFarPlane, float, AccessSpecifier::Public);
 	REGISTER_FIELD(SpriteCamera, mOrthoSize, float, AccessSpecifier::Public);
