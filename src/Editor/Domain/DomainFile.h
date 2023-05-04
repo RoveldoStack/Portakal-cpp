@@ -105,6 +105,15 @@ namespace Portakal
 		/// <returns></returns>
 		FORCEINLINE bool IsLoaded() const noexcept;
 
+		/// <summary>
+		/// Returns whether the created domain file is valid or not
+		/// </summary>
+		/// <returns></returns>
+		FORCEINLINE bool IsValid() const noexcept { return mValid; }
+
+		/// <summary>
+		/// Loads on another thread
+		/// </summary>
 		void LoadAsync();
 
 		/// <summary>
@@ -149,5 +158,6 @@ namespace Portakal
 		String mName;
 		String mResourceType;
 		Guid mID;
+		bool mValid;
 	};
 }

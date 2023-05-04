@@ -102,18 +102,27 @@ namespace Portakal
         */
         PlatformFile::Write(mSourceFilePath, block);
     }
-    DomainFile::DomainFile(const String& fileDescriptorPath, DomainFolder* pOwnerFolder)
+    DomainFile::DomainFile(const String& fileDescriptorPath, DomainFolder* pOwnerFolder) :
+        mValid(false),mAuthoringTool(nullptr),mSerializer(nullptr),mOwnerFolder(nullptr),mResource(nullptr),mVisualizer(nullptr)
     {
         /*
         * Load descriptor file
         */
-        ASSERT(PlatformFile::IsExist(fileDescriptorPath) , "DomainFile", "File descriptor couldnt be found!");
+        if (!PlatformFile::IsExist(fileDescriptorPath))
+        {
+            LOG("DomainFile", "Given domain file descriptor could not be found at %s", *fileDescriptorPath);
+            return;
+        }
 
         /*
         * Read descriptor
         */
         String fileContent;
-        ASSERT(PlatformFile::Read(fileDescriptorPath, fileContent), "DomainFile", "Failed to read the file descriptor");
+        if (!PlatformFile::Read(fileDescriptorPath, fileContent))
+        {
+            LOG("DomainFile", "Could not read from domain file descriptor at %s", *fileDescriptorPath);
+            return;
+        }
 
         DomainFileDescriptor fileDescriptor = {};
         Yaml::ToObject(fileContent, &fileDescriptor);
@@ -123,15 +132,29 @@ namespace Portakal
         */
         const String sourceFilePath = PlatformFile::GetFileDirectory(fileDescriptorPath) + "\\" + fileDescriptor.SourceFile;
         ASSERT(PlatformFile::IsExist(sourceFilePath), "DomainFile", "Source file couldnt be found!");
+        if (!PlatformFile::IsExist(sourceFilePath))
+        {
+            LOG("DomainFile", "Source file could not be found at %s", *sourceFilePath);
+            return;
+        }
 
         /*
-        * Create resource
+        * Try create resource
         */
         const ResourceDescriptor descriptor = { fileDescriptor.ResourceType,fileDescriptor.ID };
         mResource = ResourceAPI::RegisterResource(sourceFilePath, descriptor);
 
         /*
-        * Find serializer
+        * Check if the resource is valid
+        */
+        if (mResource == nullptr)
+        {
+            LOG("DomainFile", "Could not create a valid resource %s",*fileDescriptor.SourceFile);
+            return;
+        }
+
+        /*
+        * Try find serializer
         */
         IAssetSerializer* pSerializer = nullptr;
         const Array<Type*> types = Assembly::GetProcessAssembly()->GetTypes();
@@ -151,6 +174,15 @@ namespace Portakal
 
             pSerializer = (IAssetSerializer*)pType->CreateDefaultHeapObject();
             break;
+        }
+
+        /*
+        * Validate found serializer
+        */
+        if (pSerializer == nullptr)
+        {
+            LOG("DomainFile", "Failed to find a suitable serializer for this domain file");
+            return;
         }
 
         /*
@@ -274,7 +306,7 @@ namespace Portakal
         mImporters = importers;
         mProcessors = processors;
         mOpenOperations = openOperations;
-
+        mValid = true;
     }
     DomainFile::~DomainFile()
     {

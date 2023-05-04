@@ -36,10 +36,22 @@ namespace Portakal
             return nullptr;
 
         /*
-        * Create resource
+        * Try create resource
         */
         Resource* pResource = new Resource(path,descriptor);
 
+        /*
+        * Validate if resource is valid
+        */
+        if (!pResource->IsValid())
+        {
+            delete pResource;
+            return nullptr;
+        }
+
+        /*
+        * Register resources
+        */
         sResources.Add(pResource);
 
         return pResource;

@@ -183,13 +183,13 @@ namespace Portakal
         mCached = false;
     }
     Resource::Resource(const String& path,const ResourceDescriptor& descriptor,const bool bCompressed)
-        : mSubObject(nullptr),mLoaded(false),mCompressed(bCompressed),mSerializer(nullptr),mCached(false), mLoadJob(nullptr),mUnloadJob(nullptr)
+        : mSubObject(nullptr),mLoaded(false),mCompressed(bCompressed),mSerializer(nullptr),mCached(false), mLoadJob(nullptr),mUnloadJob(nullptr),mValid(false)
     {
         /*
         * Get custom resource serializer
         */
         const Array<Type*> types = Assembly::GetProcessAssembly()->GetTypes();
-        Type* pFoundType = nullptr;
+        Type* pFoundSerializerType = nullptr;
         for (unsigned int i = 0; i < types.GetCursor(); i++)
         {
             Type* pType = types[i];
@@ -212,14 +212,19 @@ namespace Portakal
                 continue;
             }
 
-            pFoundType = pType;
+            pFoundSerializerType = pType;
         }
+
+        /*
+        * Validate serializer
+        */
+        if (pFoundSerializerType == nullptr)
+            return;
 
         /*
         * Create serializer
         */
-        if (pFoundType != nullptr)
-            mSerializer = (IResourceSerializer*)pFoundType->CreateDefaultHeapObject();
+        mSerializer = (IResourceSerializer*)pFoundSerializerType->CreateDefaultHeapObject();
 
         /*
         * Setup
@@ -231,6 +236,7 @@ namespace Portakal
         mName = PlatformFile::GetNameWithoutExtension(path);
         mByteOffset = 0;
         mSize = PlatformFile::GetSize(path);
+        mValid = true;
     }
     Resource::~Resource()
     {

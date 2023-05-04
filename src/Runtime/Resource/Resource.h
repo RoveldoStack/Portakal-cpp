@@ -30,6 +30,7 @@ namespace Portakal
 		FORCEINLINE unsigned long long GetSize() const noexcept { return mSize; }
 		FORCEINLINE bool IsLoaded() const noexcept;
 		FORCEINLINE bool IsCached() const noexcept;
+		FORCEINLINE bool IsValid() const noexcept { return mValid; }
 
 		/// <summary>
 		/// Loads the resource on other thread
@@ -80,6 +81,7 @@ namespace Portakal
 		unsigned long long mSize;
 		bool mLoaded;
 		bool mCached;
+		bool mValid;
 		const bool mCompressed;
 	};
 }

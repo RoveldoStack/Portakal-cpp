@@ -14,7 +14,7 @@
 #include <Editor/Asset/Importers/SimpleTextAssetImporter2.h>
 namespace Portakal
 {
-	DomainFolder::DomainFolder(DomainFolder* pParentFolder, const String& path) : mParentFolder(nullptr)
+	DomainFolder::DomainFolder(DomainFolder* pParentFolder, const String& path) : mParentFolder(nullptr),mValid(false)
 	{
 		/*
 		* Validate the directory
@@ -49,6 +49,18 @@ namespace Portakal
 			*/
 			DomainFile* pFile = new DomainFile(filePath, this);
 
+			/*
+			* Validate if domain file is valid
+			*/
+			if (!pFile->IsValid())
+			{
+				delete pFile;
+				continue;
+			}
+
+			/*
+			* Register domain file
+			*/
 			mFiles.Add(pFile);
 		}
 
@@ -60,9 +72,27 @@ namespace Portakal
 		for (unsigned int i = 0; i < folders.GetCursor(); i++)
 		{
 			const String folderPath = folders[i];
+
+			/*
+			* Try create domain file
+			*/
 			DomainFolder* pFolder = new DomainFolder(this,folderPath);
+
+			/*
+			* Validate domain folder
+			*/
+			if (!pFolder->IsValid())
+			{
+				delete pFolder;
+				continue;
+			}
+			/*
+			* Register
+			*/
 			mSubFolders.Add(pFolder);
 		}
+
+		mValid = true;
 	}
 	DomainFolder::~DomainFolder()
 	{

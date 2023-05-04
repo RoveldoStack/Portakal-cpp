@@ -53,6 +53,12 @@ namespace Portakal
 		FORCEINLINE String GetFolderName() const noexcept { return mName; }
 
 		/// <summary>
+		/// Returns whether this domain folder is valid or not
+		/// </summary>
+		/// <returns></returns>
+		FORCEINLINE bool IsValid() const noexcept { return mValid; }
+
+		/// <summary>
 		/// Creates a file from the source path
 		/// </summary>
 		/// <param name="sourceFilePath"></param>
@@ -116,5 +122,6 @@ namespace Portakal
 		Array<DomainFolder*> mSubFolders;
 		String mName;
 		String mPath;
+		bool mValid;
 	};
 }
