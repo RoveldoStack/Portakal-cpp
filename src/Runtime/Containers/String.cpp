@@ -4,7 +4,9 @@
 #include <sstream>
 #include <Runtime/Memory/Memory.h>
 #include <Runtime/Log/Log.h>
-#define MAX_INT_DIGITS 10
+#define MAX_INT_DIGITS 20
+#define MAX_FLOAT_DIGITS 20
+#define MAX_LONGLONG_DIGITS 40
 
 namespace Portakal
 {
@@ -41,12 +43,11 @@ namespace Portakal
 	String::String(const char* target, const unsigned int size)
 	{
 		mCursor = size;
-		mSource = new char[(double)mCursor + 1];
+		mSource = new char[mCursor + 1];
 
 		Memory::Copy((void*)target,mSource, size);
 
 		mSource[mCursor] = '\0';
-
 	}
 	String::String(const unsigned char* target, const unsigned int size)
 	{
@@ -544,15 +545,15 @@ namespace Portakal
 
 	String String::GetFromFloat(const float value)
 	{
-		char* chars = new char[MAX_INT_DIGITS];
+		char* chars = new char[MAX_FLOAT_DIGITS];
 
 		sprintf(chars, "%f", value);
 
-		String str(chars, MAX_INT_DIGITS);
+		String str(chars, MAX_FLOAT_DIGITS);
 
 		delete[] chars;
 
-		return chars;
+		return str;
 	}
 	String String::GetFromInteger(const int value)
 	{
@@ -564,16 +565,20 @@ namespace Portakal
 
 		delete[] chars;
 
-		return chars;
+		return str;
 	}
 
 	String String::GetFromLongLong(const long long value)
 	{
-		char* chars = new char[MAX_INT_DIGITS];
+		char* chars = new char[MAX_LONGLONG_DIGITS];
 
 		sprintf(chars, "%ld", value);
 
-		return chars;
+		String str(chars, MAX_LONGLONG_DIGITS);
+
+		delete[] chars;
+
+		return str;
 	}
 
 	float String::ToFloat(const String& str)

@@ -1,5 +1,5 @@
 #pragma once
-#include <Runtime/Window/GamepadButtonEvent.h>
+#include <Runtime/Window/Events/GamepadButtonEvent.h>
 #include <Runtime/Input/GamepadButtons.h>
 
 namespace Portakal

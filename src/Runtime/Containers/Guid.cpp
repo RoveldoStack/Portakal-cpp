@@ -18,11 +18,15 @@ namespace Portakal
 	}
 	String Guid::ToString(const Guid& id)
 	{
-		char* pData = new char[32];
+		char* pData = new char[33];
 
-		pData += sprintf(pData, "%.8lX%.8lX%.8lX%.8lX%", id.A, id.B, id.C, id.D);
+		const unsigned int v = sprintf(pData, "%.8lX%.8lX%.8lX%.8lX%", id.A, id.B, id.C, id.D);
 
-		return pData - 32;
+		String str(pData, v);
+
+		delete[] pData;
+
+		return str;
 	}
 	Guid Guid::FromString(const String& text)
 	{

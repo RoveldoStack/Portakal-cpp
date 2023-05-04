@@ -1,20 +1,20 @@
 #pragma once
-#include <Runtime/Window/WindowClosedEvent.h>
-#include <Runtime/Window/WindowMovedEvent.h>
-#include <Runtime/Window/WindowResizedEvent.h>
+#include <Runtime/Window/Events/WindowClosedEvent.h>
+#include <Runtime/Window/Events/WindowMovedEvent.h>
+#include <Runtime/Window/Events/WindowResizedEvent.h>
 
-#include <Runtime/Window/DragDropEvent.h>
+#include <Runtime/Window/Events/DragDropEvent.h>
 
-#include <Runtime/Window/MouseButtonDownEvent.h>
-#include <Runtime/Window/MouseButtonUpEvent.h>
-#include <Runtime/Window/MouseMovedEvent.h>
-#include <Runtime/Window/MouseWheelEvent.h>
+#include <Runtime/Window/Events/MouseButtonDownEvent.h>
+#include <Runtime/Window/Events/MouseButtonUpEvent.h>
+#include <Runtime/Window/Events/MouseMovedEvent.h>
+#include <Runtime/Window/Events/MouseWheelEvent.h>
 
-#include <Runtime/Window/KeyboardKeyDownEvent.h>
-#include <Runtime/Window/KeyboardKeyUpEvent.h>
-#include <Runtime/Window/KeyboardCharEvent.h>
+#include <Runtime/Window/Events/KeyboardKeyDownEvent.h>
+#include <Runtime/Window/Events/KeyboardKeyUpEvent.h>
+#include <Runtime/Window/Events/KeyboardCharEvent.h>
 
-#include <Runtime/Window/GamepadButtonDownEvent.h>
-#include <Runtime/Window/GamepadButtonUpEvent.h>
-#include <Runtime/Window/GamepadTriggerMoveEvent.h>
-#include <Runtime/Window/GamepadThumbMoveEvent.h>
+#include <Runtime/Window/Events/GamepadButtonDownEvent.h>
+#include <Runtime/Window/Events/GamepadButtonUpEvent.h>
+#include <Runtime/Window/Events/GamepadTriggerMoveEvent.h>
+#include <Runtime/Window/Events/GamepadThumbMoveEvent.h>

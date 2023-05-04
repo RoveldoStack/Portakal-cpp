@@ -1,5 +1,5 @@
 #pragma once
-#include <Runtime/Window/MouseButtonEvent.h>
+#include <Runtime/Window/Events/MouseButtonEvent.h>
 
 namespace Portakal
 {

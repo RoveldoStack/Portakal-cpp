@@ -11,7 +11,6 @@
 #include <Runtime/Window/WindowAPI.h>
 #include <Runtime/Message/MessageAPI.h>
 #include <Runtime/Log/Log.h>
-#include <Runtime/Window/DragDropEvent.h>
 #include <Runtime/Platform/PlatformDirectory.h>
 #include <Runtime/Platform/PlatformFile.h>
 #include <Editor/Asset/Serializers/TextAssetSerializer.h>
@@ -36,6 +35,7 @@
 #include <Runtime/Resource/Resource.h>
 #include <Runtime/World/Scene.h>
 #include <Editor/Asset/IAssetOpenOperation.h>
+#include <Runtime/Window/WindowEvents.h>
 
 
 namespace Portakal

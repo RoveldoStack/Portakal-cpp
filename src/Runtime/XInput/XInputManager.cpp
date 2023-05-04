@@ -4,10 +4,7 @@
 #include <Runtime/Log/Log.h>
 #include <Runtime/Input/GamepadButtons.h>
 #include <Runtime/Win32/Win32Window.h>
-#include <Runtime/Window/GamepadButtonDownEvent.h>
-#include <Runtime/Window/GamepadButtonUpEvent.h>
-#include <Runtime/Window/GamepadTriggerMoveEvent.h>
-#include <Runtime/Window/GamepadThumbMoveEvent.h>
+#include <Runtime/Window/WindowEvents.h>
 #include <Runtime/Memory/Memory.h>
 #include <Runtime/Input/InputAPI.h>
 #include "XInputGamepad.h"

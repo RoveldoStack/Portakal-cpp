@@ -55,7 +55,11 @@ namespace Portakal
 				break;
 			}
 			case Portakal::TypeCodes::Double:
+			{
+				double* pValue = (double*)pObject;
+				ImGui::InputDouble(*label, pValue);
 				break;
+			}
 			case Portakal::TypeCodes::Long:
 				break;
 			case Portakal::TypeCodes::LongLong:
