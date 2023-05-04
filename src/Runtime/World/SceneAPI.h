@@ -1,5 +1,6 @@
 #pragma once
 #include <Runtime/Containers/Array.h>
+#include <Runtime/Object/API.h>
 
 namespace Portakal
 {
@@ -9,7 +10,7 @@ namespace Portakal
 	/// <summary>
 	/// API for enabling the scene operations across the application
 	/// </summary>
-	class PORTAKAL_API SceneAPI
+	class PORTAKAL_API SceneAPI : public API<SceneAPI>
 	{
 	public:
 		FORCEINLINE static Scene* GetPrimalScene();
@@ -17,11 +18,11 @@ namespace Portakal
 		static void RegisterScene(Scene* pScene);
 		static void RemoveScene(Scene* pScene);
 		static void ReportPrimal(Scene* pScene);
+	public:
+		SceneAPI();
+		virtual ~SceneAPI() override;
 	private:
-		static Array<Scene*> sScenes;
-		static Scene* sPrimalScene;
-	private:
-		SceneAPI() = delete;
-		~SceneAPI() = delete;
+		Array<Scene*> mScenes;
+		Scene* mPrimalScene;
 	};
 }

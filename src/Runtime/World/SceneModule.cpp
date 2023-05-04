@@ -2,15 +2,17 @@
 #include <Runtime/World/SceneAPI.h>
 #include <Runtime/World/SceneAspect.h>
 #include <Runtime/World/Scene.h>
+
 namespace Portakal
 {
     void SceneModule::OnInitialize()
     {
-
+        mAPI = new SceneAPI();
     }
     void SceneModule::OnFinalize()
     {
-
+        delete mAPI;
+        mAPI = nullptr;
     }
     void SceneModule::OnPreTick()
     {

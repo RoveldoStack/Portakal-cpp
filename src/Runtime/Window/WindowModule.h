@@ -40,15 +40,7 @@ namespace Portakal
 	private:
 		const WindowModuleParams mParams;
 		Array<Window*> mWindows;
+		WindowAPI* mAPI;
 	};
-	//START_GENERATE_TYPE(WindowModule);
-
-	//START_TYPE_PROPERTIES(WindowModule);
-	//	REGISTER_BASE_TYPE(ApplicationModule);
-	//END_TYPE_PROPERTIES;
-
-	//HAS_DEFAULT_CONSTRUCTOR(WindowModule);
-	//END_GENERATE_TYPE(WindowModule);
-
 #include "WindowModule.reflect.h"
 }

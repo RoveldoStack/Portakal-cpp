@@ -3,36 +3,58 @@
 
 namespace Portakal
 {
-	Array<Scene*> SceneAPI::sScenes;
-	Scene* SceneAPI::sPrimalScene = nullptr;
+	SceneAPI::SceneAPI() : mPrimalScene(nullptr)
+	{
 
+	}
+	SceneAPI::~SceneAPI()
+	{
+
+	}
 	Scene* SceneAPI::GetPrimalScene()
 	{
-		return sPrimalScene;
+		if (GetUnderlyingAPI() == nullptr)
+			return nullptr;
+
+		return GetUnderlyingAPI()->mPrimalScene;
 	}
 	Array<Scene*> SceneAPI::GetScenes()
 	{
-		return sScenes;
+		if (GetUnderlyingAPI() == nullptr)
+			return {};
+
+		return GetUnderlyingAPI()->mScenes;
 	}
 	void SceneAPI::RegisterScene(Scene* pScene)
 	{
-		sScenes.Add(pScene);
+		if (GetUnderlyingAPI() == nullptr)
+			return;
+
+		GetUnderlyingAPI()->mScenes.Add(pScene);
 	}
 	void SceneAPI::RemoveScene(Scene* pScene)
 	{
-		sScenes.Remove(pScene);
+		if (GetUnderlyingAPI() == nullptr)
+			return;
 
-		if (pScene == sPrimalScene)
+		GetUnderlyingAPI()->mScenes.Remove(pScene); 
+
+		if (pScene == GetUnderlyingAPI()->mPrimalScene)
 		{
-			sPrimalScene = nullptr;
+			GetUnderlyingAPI()->mPrimalScene = nullptr;
 		}
 	}
 	void SceneAPI::ReportPrimal(Scene* pScene)
 	{
-		if (sPrimalScene != nullptr)
+		if (GetUnderlyingAPI() == nullptr)
+			return;
+
+		if (GetUnderlyingAPI()->mPrimalScene != nullptr)
 		{
-			sPrimalScene->_SetPrimalState(false);
+			GetUnderlyingAPI()->mPrimalScene->_SetPrimalState(false);
 		}
-		sPrimalScene = pScene;
+
+		GetUnderlyingAPI()->mPrimalScene = pScene;
 	}
+	
 }

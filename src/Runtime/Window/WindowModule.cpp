@@ -4,11 +4,19 @@
 #include <Runtime/Application/Application.h>
 #include <Runtime/Platform/PlatformMonitor.h>
 #include <Runtime/Log/Log.h>
-
+#
 namespace Portakal
 {
     void WindowModule::OnInitialize()
     {
+        /*
+        * Create API
+        */
+        mAPI = new WindowAPI();
+
+        /*
+        * Create windows
+        */
         for (int i = 0; i < mParams.CreateDescs.GetCursor(); i++)
         {
             const WindowCreateDesc desc = mParams.CreateDescs[i];
@@ -36,6 +44,11 @@ namespace Portakal
         }
         mWindows.Clear();
 
+        /*
+        * Delete API
+        */
+        delete mAPI;
+        mAPI = nullptr;
     }
     void WindowModule::OnPreTick()
     {
