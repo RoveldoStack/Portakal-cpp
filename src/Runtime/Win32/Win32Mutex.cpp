@@ -18,21 +18,10 @@ namespace Portakal
 	{
 		ReleaseMutex(mHandle);
 	}
-	MutexLockResult Win32Mutex::Lock(const unsigned long long waitTime)
+	bool Win32Mutex::Lock(const unsigned long long waitTime)
 	{
 		const DWORD result = WaitForSingleObject(mHandle,waitTime == WAIT_INFINITE ? INFINITE :  waitTime);
 
-		switch (result)
-		{
-		case WAIT_OBJECT_0:
-			return MutexLockResult::Signaled;
-		case WAIT_TIMEOUT:
-			return MutexLockResult::Timeout;
-		case WAIT_FAILED:
-			return MutexLockResult::Invalid;
-		default:
-			return MutexLockResult::Invalid;
-			break;
-		}
+		return result != WAIT_FAILED;
 	}
 }

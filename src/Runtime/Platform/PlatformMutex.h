@@ -1,6 +1,5 @@
 #pragma once
 #include <Runtime/Core/Core.h>
-#include <Runtime/Thread/MutexLockResult.h>
 
 namespace Portakal
 {
@@ -33,7 +32,7 @@ namespace Portakal
 		/// </summary>
 		/// <param name="waitTime"></param>
 		/// <returns></returns>
-		FORCEINLINE virtual MutexLockResult Lock(const unsigned long long waitTime) = 0;
+		FORCEINLINE virtual bool Lock(const unsigned long long waitTime) = 0;
 
 		/// <summary>
 		/// Releases the mutex

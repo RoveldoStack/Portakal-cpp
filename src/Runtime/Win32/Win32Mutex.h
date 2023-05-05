@@ -12,7 +12,7 @@ namespace Portakal
 
 	private:
 		// Inherited via PlatformMutex
-		virtual MutexLockResult Lock(const unsigned long long waitTime) override;
+		virtual bool Lock(const unsigned long long waitTime) override;
 		virtual bool TryLock() override;
 		virtual void Release() override;
 
