@@ -89,6 +89,17 @@ namespace Portakal
 
 			return {};
 		}
+		FORCEINLINE TValue* GetEntry(const TKey& key) const noexcept
+		{
+			for (unsigned int i = 0; i < mCursor; i++)
+			{
+				RegistryEntry<TKey, TValue>& entry = mData[i];
+				if (entry.Key == key)
+					return &entry.Value;
+			}
+
+			return nullptr;
+		}
 		FORCEINLINE bool HasEntry(const TKey& key) const noexcept
 		{
 			for (unsigned int i = 0; i < mCursor; i++)

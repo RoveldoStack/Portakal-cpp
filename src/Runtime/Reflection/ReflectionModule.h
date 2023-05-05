@@ -4,12 +4,13 @@
 namespace Portakal
 {
 	class AppDomain;
+	class ReflectionAPI;
 	class PORTAKAL_API ReflectionModule : public ApplicationModule
 	{
 		GENERATE_CLASS(ReflectionModule);
 		GENERATE_APPLICATION_MODULE(false, false, true);
 	public:
-		ReflectionModule() : mTargetDomain(nullptr) {}
+		ReflectionModule() : mTargetDomain(nullptr),mAPI(nullptr) {}
 		~ReflectionModule() = default;
 
 	private:
@@ -23,6 +24,7 @@ namespace Portakal
 		virtual void OnEvent(WindowEvent* pEvent) override;
 	private:
 		AppDomain* mTargetDomain;
+		ReflectionAPI* mAPI;
 	};
 
 #include "ReflectionModule.reflect.h"

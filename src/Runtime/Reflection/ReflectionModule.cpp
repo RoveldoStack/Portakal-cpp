@@ -1,14 +1,16 @@
 #include "ReflectionModule.h"
+#include <Runtime/Reflection/ReflectionAPI.h>
 
 namespace Portakal
 {
 	void ReflectionModule::OnInitialize()
 	{
-
+		mAPI = new ReflectionAPI();
 	}
 	void ReflectionModule::OnFinalize()
 	{
-
+		delete mAPI;
+		mAPI = nullptr;
 	}
 	void ReflectionModule::OnPreTick()
 	{

@@ -57,7 +57,7 @@ namespace Portakal
 		/// Returns the inherited base types
 		/// </summary>
 		/// <returns></returns>
-		FORCEINLINE Array<Type*> GetBaseTypes() const noexcept { return mBaseTypes; }
+		FORCEINLINE const Array<Type*>& GetBaseTypes() const noexcept { return mBaseTypes; }
 
 		/// <summary>
 		/// Returns whether this is a sub class of the given type
@@ -65,6 +65,11 @@ namespace Portakal
 		/// <param name="pType"></param>
 		/// <returns></returns>
 		FORCEINLINE bool IsSubClassOf(const Type* pType) const noexcept;
+
+		/*
+		* Returns the attribute with the specified type
+		*/
+		FORCEINLINE Attribute* GetAttribute(const Type* pType) const noexcept;
 
 		/// <summary>
 		/// Returns a attribute which is attached to this type

@@ -48,6 +48,18 @@ namespace Portakal
 
         return false;
     }
+    Attribute* Type::GetAttribute(const Type* pType) const noexcept
+    {
+        for (unsigned int i = 0; i < mAttributes.GetCursor(); i++)
+        {
+            Attribute* pAttribute = mAttributes[i];
+
+            if (pAttribute->GetType()->IsSubClassOf(pType))
+                return pAttribute;
+        }
+
+        return nullptr;
+    }
     void Type::_RegisterField(Field* pField)
     {
         mFields.Add(pField);

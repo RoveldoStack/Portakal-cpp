@@ -36,7 +36,7 @@ namespace Portakal
 		/// Returns all the types
 		/// </summary>
 		/// <returns></returns>
-		FORCEINLINE Array<Type*> GetTypes() const noexcept { return mTypes; }
+		FORCEINLINE const Array<Type*>& GetTypes() const noexcept { return mTypes; }
 
 		/// <summary>
 		/// Registers a type
