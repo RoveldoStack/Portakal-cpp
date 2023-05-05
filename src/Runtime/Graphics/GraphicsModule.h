@@ -14,7 +14,7 @@ namespace Portakal
 		GENERATE_CLASS(GraphicsModule);
 		GENERATE_APPLICATION_MODULE(false, false, false);
 	public:
-		GraphicsModule(const GraphicsModuleParams& params) : _params(params),_api(nullptr) {}
+		GraphicsModule(const GraphicsModuleParams& params) : mParams(params),mAPI(nullptr) {}
 		~GraphicsModule() = default;
 
 		// Inherited via ApplicationModule
@@ -27,7 +27,7 @@ namespace Portakal
 		virtual void PostValidate() override;
 		virtual void OnEvent(WindowEvent* pEvent) override;
 	private:
-		const GraphicsModuleParams _params;
-		GraphicsDeviceAPI* _api;
+		const GraphicsModuleParams mParams;
+		GraphicsDeviceAPI* mAPI;
 	};
 }

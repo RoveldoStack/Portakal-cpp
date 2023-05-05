@@ -15,10 +15,12 @@ namespace Portakal
 		static Resource* RegisterResource(const String& path,const ResourceDescriptor& descriptor);
 		static Resource* GetResourceViaID(const Guid& id);
 		static void ClearResources();
+	public:
+		ResourceAPI();
+		virtual ~ResourceAPI() override;
 	private:
 		Array<Resource*> mResources;
 	private:
-		ResourceAPI();
-		virtual ~ResourceAPI() override;
+
 	};
 }

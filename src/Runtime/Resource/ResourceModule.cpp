@@ -3,7 +3,7 @@
 
 namespace Portakal
 {
-    ResourceModule::ResourceModule()
+    ResourceModule::ResourceModule() : mAPI(nullptr)
     {
 
     }
@@ -13,11 +13,12 @@ namespace Portakal
     }
     void ResourceModule::OnInitialize()
     {
-
+        mAPI = new ResourceAPI();
     }
     void ResourceModule::OnFinalize()
     {
-        ResourceAPI::ClearResources();
+        delete mAPI;
+        mAPI = nullptr;
     }
     void ResourceModule::OnPreTick()
     {

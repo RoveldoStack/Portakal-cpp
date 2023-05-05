@@ -35,9 +35,11 @@ namespace Portakal
     }
     ResourceAPI::ResourceAPI()
     {
+
     }
     ResourceAPI::~ResourceAPI()
     {
+        ResourceAPI::ClearResources();
     }
     Resource* ResourceAPI::RegisterResource(const String& path, const ResourceDescriptor& descriptor)
     {

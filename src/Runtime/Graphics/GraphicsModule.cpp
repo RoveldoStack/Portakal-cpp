@@ -8,29 +8,34 @@ namespace Portakal
     void GraphicsModule::OnInitialize()
     {
         /*
+        * Create API
+        */
+        mAPI = new GraphicsDeviceAPI();
+
+        /*
         * Create devices
         */
         Array<GraphicsDevice*> windowedDevices;
         Array<GraphicsDevice*> standaloneDevices;
 
-        for (unsigned int i = 0; i < _params.WindowedDescs.GetCursor(); i++)
+        for (unsigned int i = 0; i < mParams.WindowedDescs.GetCursor(); i++)
         {
-            WindowedGraphicsDeviceCreateDesc desc = _params.WindowedDescs[i];
+            WindowedGraphicsDeviceCreateDesc desc = mParams.WindowedDescs[i];
             desc.pOwnerWindow = desc.pOwnerWindow == nullptr ? WindowAPI::GetDefaultWindow() : desc.pOwnerWindow;
 
             GraphicsDevice* pDevice = GraphicsDevice::CreateWindowed(desc);
             windowedDevices.Add(pDevice);
         }
-        for (unsigned int i = 0; i < _params.StandaloneDescs.GetCursor(); i++)
+        for (unsigned int i = 0; i < mParams.StandaloneDescs.GetCursor(); i++)
         {
-            GraphicsDevice* pDevice = GraphicsDevice::CreateStandalone(_params.StandaloneDescs[i]);
+            GraphicsDevice* pDevice = GraphicsDevice::CreateStandalone(mParams.StandaloneDescs[i]);
             standaloneDevices.Add(pDevice);
         }
-
     }
     void GraphicsModule::OnFinalize()
     {
-
+        delete mAPI;
+        mAPI = nullptr;
     }
     void GraphicsModule::OnPreTick()
     {
