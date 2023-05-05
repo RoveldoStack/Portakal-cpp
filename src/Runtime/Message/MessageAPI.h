@@ -2,6 +2,7 @@
 #include <Runtime/Containers/Array.h>
 #include <Runtime/Containers/String.h>
 #include <Runtime/Message/MessageType.h>
+#include <Runtime/Object/API.h>
 
 namespace Portakal
 {
@@ -10,7 +11,7 @@ namespace Portakal
 	/// <summary>
 	/// API for handling the messages throught the application
 	/// </summary>
-	class PORTAKAL_API MessageAPI
+	class PORTAKAL_API MessageAPI : public API<MessageAPI>
 	{
 	public:
 		static void RegisterListener(IMessageListener* pListener);
@@ -18,10 +19,10 @@ namespace Portakal
 
 		static void BroadcastMessage(const String& message);
 	private:
-		static Array<IMessageListener*> sListeners;
+		Array<IMessageListener*> mListeners;
 	public:
-		MessageAPI() = delete;
-		~MessageAPI() = delete;
+		MessageAPI();
+		virtual ~MessageAPI() override;
 
 	};
 

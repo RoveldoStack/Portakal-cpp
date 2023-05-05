@@ -3,19 +3,37 @@
 
 namespace Portakal
 {
-	Array<IMessageListener*> MessageAPI::sListeners;
-
 	void MessageAPI::RegisterListener(IMessageListener* pListener)
 	{
-		sListeners.Add(pListener);
+		MessageAPI* pAPI = GetUnderlyingAPI();
+		if (pAPI == nullptr)
+			return;
+
+		pAPI->mListeners.Add(pListener);
 	}
 	void MessageAPI::RemoveListener(IMessageListener* pListener)
 	{
-		sListeners.Remove(pListener);
+		MessageAPI* pAPI = GetUnderlyingAPI();
+		if (pAPI == nullptr)
+			return;
+
+		pAPI->mListeners.Remove(pListener);
 	}
 	void MessageAPI::BroadcastMessage(const String& message)
 	{
-		for (unsigned int i = 0; i < sListeners.GetCursor(); i++)
-			sListeners[i]->OnInfoRecieved(message);
+		MessageAPI* pAPI = GetUnderlyingAPI();
+		if (pAPI == nullptr)
+			return;
+
+		for (unsigned int i = 0; i < pAPI->mListeners.GetCursor(); i++)
+			pAPI->mListeners[i]->OnInfoRecieved(message);
+	}
+	MessageAPI::MessageAPI()
+	{
+
+	}
+	MessageAPI::~MessageAPI()
+	{
+
 	}
 }
