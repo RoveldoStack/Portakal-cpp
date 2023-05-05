@@ -38,14 +38,14 @@ namespace Portakal
 				* Check if there is a gamepad with this index
 				*/
 				{
-					const Array<SharedSafeHeap<Gamepad>> gamepads = InputAPI::GetGamepads();
-					SharedSafeHeap<XInputGamepad> pFoundGamepad = nullptr;
+					const Array<Gamepad*> gamepads = InputAPI::GetGamepads();
+					XInputGamepad* pFoundGamepad = nullptr;
 					for (unsigned int gamepadIndex = 0; gamepadIndex < gamepads.GetCursor(); gamepadIndex++)
 					{
-						const SharedSafeHeap<Gamepad> pGamepad = gamepads[gamepadIndex];
+						Gamepad* pGamepad = gamepads[gamepadIndex];
 						if (pGamepad->GetIndex() == userIndex)
 						{
-							pFoundGamepad = pGamepad;
+							pFoundGamepad = (XInputGamepad*)pGamepad;
 							break;
 						}
 					}
@@ -64,18 +64,18 @@ namespace Portakal
 			/*
 			* Register new device 
 			*/
-			SharedSafeHeap<XInputGamepad> pCurrentGamepad = nullptr;
+			XInputGamepad* pCurrentGamepad = nullptr;
 
 			{
-				const Array<SharedSafeHeap<Gamepad>> gamepads = InputAPI::GetGamepads();
+				const Array<Gamepad*> gamepads = InputAPI::GetGamepads();
 				bool bHasIndex = false;
 				for (unsigned int gamepadIndex = 0; gamepadIndex < gamepads.GetCursor(); gamepadIndex++)
 				{
-					SharedSafeHeap<Gamepad> pGamepad = gamepads[gamepadIndex];
+					Gamepad* pGamepad = gamepads[gamepadIndex];
 					if (pGamepad->GetIndex() == userIndex)
 					{
 						bHasIndex = true;
-						pCurrentGamepad = pGamepad;
+						pCurrentGamepad = (XInputGamepad*)pGamepad;
 						break;
 					}
 				}

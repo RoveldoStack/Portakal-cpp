@@ -2,61 +2,51 @@
 
 namespace Portakal
 {
-    InputAPI* InputAPI::sAPI = nullptr;
-
-    Array<SharedSafeHeap<Gamepad>> InputAPI::GetGamepads()
+    Array<Gamepad*> InputAPI::GetGamepads()
     {
-        if (sAPI == nullptr)
+        InputAPI* pAPI = GetUnderlyingAPI();
+        if (pAPI == nullptr)
             return {};
 
-        return sAPI->_GetGamepads();
+        return pAPI->mGamepads;
     }
 
-    SharedSafeHeap<Gamepad> InputAPI::GetDefaultGamepad()
+    Gamepad* InputAPI::GetDefaultGamepad()
     {
-        if (sAPI == nullptr)
+        InputAPI* pAPI = GetUnderlyingAPI();
+        if (pAPI == nullptr)
             return nullptr;
 
-        return sAPI->_GetDefaultGamepad();
+        if (pAPI->mGamepads.GetCursor() > 0)
+            return pAPI->mGamepads[0];
+
+        return nullptr;
     }
 
-    void InputAPI::RegisterGamepad(const SharedSafeHeap<Gamepad>& pGamepad)
+    void InputAPI::RegisterGamepad(Gamepad* pGamepad)
     {
-        if (sAPI == nullptr)
+        InputAPI* pAPI = GetUnderlyingAPI();
+        if (pAPI == nullptr)
             return;
 
-        sAPI->_RegisterGamepad(pGamepad);
+        pAPI->mGamepads.Add(pGamepad);
     }
 
-    void InputAPI::RemoveGamepad(const SharedSafeHeap<Gamepad>& pGamepad)
+    void InputAPI::RemoveGamepad(Gamepad* pGamepad)
     {
-        if (sAPI == nullptr)
+        InputAPI* pAPI = GetUnderlyingAPI();
+        if (pAPI == nullptr)
             return;
 
-        sAPI->_RemoveGamepad(pGamepad);
+        pAPI->mGamepads.Remove(pGamepad);
     }
 
     InputAPI::InputAPI()
     {
-        sAPI = this;
+
     }
     InputAPI::~InputAPI()
     {
-        sAPI = nullptr;
-    }
-    SharedSafeHeap<Gamepad> InputAPI::_GetDefaultGamepad() const noexcept
-    {
-        if (mGamepads.GetCursor() > 0)
-            return mGamepads[0];
 
-        return nullptr;
-    }
-    void InputAPI::_RegisterGamepad(const SharedSafeHeap<Gamepad>& pGamepad)
-    {
-        mGamepads.Add(pGamepad);
-    }
-    void InputAPI::_RemoveGamepad(const SharedSafeHeap<Gamepad>& pGamepad)
-    {
-        mGamepads.Remove(pGamepad);
     }
 }
