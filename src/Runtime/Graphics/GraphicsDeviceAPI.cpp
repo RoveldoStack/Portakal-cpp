@@ -2,62 +2,107 @@
 
 namespace Portakal
 {
-	Array<GraphicsDevice*> GraphicsDeviceAPI::sDevices;
-	Array<GraphicsDevice*> GraphicsDeviceAPI::sStandaloneDevices;
-	Array<GraphicsDevice*> GraphicsDeviceAPI::sWindowedDevices;
-
 	GraphicsDevice* GraphicsDeviceAPI::GetDefaultDevice()
 	{
-		if (sWindowedDevices.GetCursor() > 0)
-			return sWindowedDevices[0];
-		if (sStandaloneDevices.GetCursor() > 0)
-			return sStandaloneDevices[0];
+		GraphicsDeviceAPI* pAPI = GetUnderlyingAPI();
+		if (pAPI == nullptr)
+			return nullptr;
+		
+
+
+		if (pAPI->mWindowedDevices.GetCursor() > 0)
+			return pAPI->mWindowedDevices[0];
+		if (pAPI->mStandaloneDevices.GetCursor() > 0)
+			return pAPI->mStandaloneDevices[0];
 
 		return nullptr;
 	}
 	GraphicsDevice* GraphicsDeviceAPI::GetDefaultWindowedDevice()
 	{
-		if (sWindowedDevices.GetCursor() > 0)
-			return sWindowedDevices[0];
+		GraphicsDeviceAPI* pAPI = GetUnderlyingAPI();
+		if (pAPI == nullptr)
+			return nullptr;
+
+		if (pAPI->mWindowedDevices.GetCursor() > 0)
+			return pAPI->mWindowedDevices[0];
+
 		return nullptr;
 	}
 	GraphicsDevice* GraphicsDeviceAPI::GetDefaultStandaloneDevice()
 	{
-		if (sStandaloneDevices.GetCursor() > 0)
-			return sStandaloneDevices[0];
+		GraphicsDeviceAPI* pAPI = GetUnderlyingAPI();
+
+		if (pAPI->mStandaloneDevices.GetCursor() > 0)
+			return pAPI->mStandaloneDevices[0];
 
 		return nullptr;
 	}
 	Array<GraphicsDevice*> GraphicsDeviceAPI::GetAllDevices()
 	{
-		return sDevices;
+		GraphicsDeviceAPI* pAPI = GetUnderlyingAPI();
+		if (pAPI == nullptr)
+			return {};
+
+		return pAPI->mDevices;
 	}
 	Array<GraphicsDevice*> GraphicsDeviceAPI::GetWindowedDevices()
 	{
-		return sWindowedDevices;
+		GraphicsDeviceAPI* pAPI = GetUnderlyingAPI();
+		if (pAPI == nullptr)
+			return {};
+
+		return pAPI->mWindowedDevices;
 	}
 	Array<GraphicsDevice*> GraphicsDeviceAPI::GetStandaloneDevices()
 	{
-		return sStandaloneDevices;
+		GraphicsDeviceAPI* pAPI = GetUnderlyingAPI();
+		if (pAPI == nullptr)
+			return {};
+
+		return pAPI->mStandaloneDevices;
 	}
 	void GraphicsDeviceAPI::RegisterStandaloneDevice(GraphicsDevice* pDevice)
 	{
-		sStandaloneDevices.Add(pDevice);
-		sDevices.Add(pDevice);
+		GraphicsDeviceAPI* pAPI = GetUnderlyingAPI();
+		if (pAPI == nullptr)
+			return;
+
+		pAPI->mStandaloneDevices.Add(pDevice);
+		pAPI->mDevices.Add(pDevice);
 	}
 	void GraphicsDeviceAPI::RemoveStandaloneDevice(GraphicsDevice* pDevice)
 	{
-		sStandaloneDevices.Remove(pDevice);
-		sDevices.Remove(pDevice);
+		GraphicsDeviceAPI* pAPI = GetUnderlyingAPI();
+		if (pAPI == nullptr)
+			return;
+
+		pAPI->mStandaloneDevices.Remove(pDevice);
+		pAPI->mDevices.Remove(pDevice);
 	}
 	void GraphicsDeviceAPI::RegisterWindowedDevice(GraphicsDevice* pDevice)
 	{
-		sWindowedDevices.Add(pDevice);
-		sDevices.Add(pDevice);
+		GraphicsDeviceAPI* pAPI = GetUnderlyingAPI();
+		if (pAPI == nullptr)
+			return;
+
+		pAPI->mWindowedDevices.Add(pDevice);
+		pAPI->mDevices.Add(pDevice);
 	}
 	void GraphicsDeviceAPI::RemoveWindowedDevice(GraphicsDevice* pDevice)
 	{
-		sWindowedDevices.Remove(pDevice);
-		sDevices.Remove(pDevice);
+		GraphicsDeviceAPI* pAPI = GetUnderlyingAPI();
+		if (pAPI == nullptr)
+			return;
+
+		pAPI->mWindowedDevices.Remove(pDevice);
+		pAPI->mDevices.Remove(pDevice);
+	}
+	GraphicsDeviceAPI::GraphicsDeviceAPI()
+	{
+
+	}
+	GraphicsDeviceAPI::~GraphicsDeviceAPI()
+	{
+
 	}
 }

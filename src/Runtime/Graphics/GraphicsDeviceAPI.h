@@ -3,6 +3,7 @@
 #include <Runtime/Graphics/WindowedGraphicsDeviceCreateDesc.h>
 #include <Runtime/Containers/Array.h>
 #include <Runtime/Graphics/GraphicsDevice.h>
+#include <Runtime/Object/API.h>
 
 namespace Portakal
 {
@@ -11,7 +12,7 @@ namespace Portakal
 	/// <summary>
 	/// API for graphics devices present in the application
 	/// </summary>
-	class PORTAKAL_API GraphicsDeviceAPI
+	class PORTAKAL_API GraphicsDeviceAPI : public API<GraphicsDeviceAPI>
 	{
 	public:
 		FORCEINLINE static GraphicsDevice* GetDefaultDevice();
@@ -26,12 +27,12 @@ namespace Portakal
 		static void RegisterWindowedDevice(GraphicsDevice* pDevice);
 		static void RemoveWindowedDevice(GraphicsDevice* pDevice);
 	private:
-		static Array<GraphicsDevice*> sDevices;
-		static Array<GraphicsDevice*> sStandaloneDevices;
-		static Array<GraphicsDevice*> sWindowedDevices;
+		Array<GraphicsDevice*> mDevices;
+		Array<GraphicsDevice*> mStandaloneDevices;
+		Array<GraphicsDevice*> mWindowedDevices;
 	public:
-		GraphicsDeviceAPI() = delete;
-		~GraphicsDeviceAPI() = delete;
+		GraphicsDeviceAPI();
+		virtual ~GraphicsDeviceAPI() override;
 	
 	};
 }
