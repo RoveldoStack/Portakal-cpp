@@ -5,13 +5,15 @@
 
 namespace Portakal
 {
-    Array<Resource*> ResourceAPI::sResources;
-
     Resource* ResourceAPI::GetResourceViaID(const Guid& id)
     {
-        for (unsigned int i = 0; i < sResources.GetCursor(); i++)
+        ResourceAPI* pAPI = GetUnderlyingAPI();
+        if (pAPI == nullptr)
+            return nullptr;
+
+        for (unsigned int i = 0; i < pAPI->mResources.GetCursor(); i++)
         {
-            Resource* pResource = sResources[i];
+            Resource* pResource = pAPI->mResources[i];
 
             if (pResource->GetID() == id)
                 return pResource;
@@ -20,15 +22,29 @@ namespace Portakal
     }
     void ResourceAPI::ClearResources()
     {
-        for (unsigned int i = 0; i < sResources.GetCursor(); i++)
+        ResourceAPI* pAPI = GetUnderlyingAPI();
+        if (pAPI == nullptr)
+            return;
+
+        for (unsigned int i = 0; i < pAPI->mResources.GetCursor(); i++)
         {
-            Resource* pResource = sResources[i];
+            Resource* pResource = pAPI->mResources[i];
             delete pResource;
         }
-        sResources.Clear();
+        pAPI->mResources.Clear();
+    }
+    ResourceAPI::ResourceAPI()
+    {
+    }
+    ResourceAPI::~ResourceAPI()
+    {
     }
     Resource* ResourceAPI::RegisterResource(const String& path, const ResourceDescriptor& descriptor)
     {
+        ResourceAPI* pAPI = GetUnderlyingAPI();
+        if (pAPI == nullptr)
+            return nullptr;
+
         /*
         * Validate if there is a valid resource on the given path
         */
@@ -52,7 +68,7 @@ namespace Portakal
         /*
         * Register resources
         */
-        sResources.Add(pResource);
+        pAPI->mResources.Add(pResource);
 
         return pResource;
     }
