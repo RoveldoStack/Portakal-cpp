@@ -9,6 +9,7 @@ namespace Portakal
 	/// </summary>
 	class PORTAKAL_API TaggedObject : public Class
 	{
+		friend class GarbageCollector;
 		GENERATE_CLASS(TaggedObject,Virtual);
 	public:
 		/// <summary>
@@ -44,14 +45,7 @@ namespace Portakal
 		/// <summary>
 		/// Destroys the object
 		/// </summary>
-		void Destroy()
-		{
-			if (mDestroyed)
-				return;
-
-			DestroyCore();
-			mDestroyed = true;
-		}
+		void Destroy();
 
 		FORCEINLINE bool operator ==(const TaggedObject& other)
 		{

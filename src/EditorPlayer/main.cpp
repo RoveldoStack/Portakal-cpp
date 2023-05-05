@@ -23,6 +23,7 @@
 #include <Runtime/Yaml/YamlDefaultSerializer.h>
 #include <Runtime/Graphics/Pipeline/Rasterizer/FrontFaceDirection.h>
 #include <Runtime/Graphics/Pipeline/Rasterizer/FaceCullMode.h>
+#include <Runtime/Object/GarbageCollector.h>
 
 namespace Portakal
 {
@@ -34,6 +35,7 @@ namespace Portakal
 
 int main(unsigned int argumentCount, const char** ppArguments)
 {
+	Portakal::GarbageCollector::Initialize();
 	Portakal::JobSystem::Initialize();
 
 	/*
@@ -121,6 +123,7 @@ int main(unsigned int argumentCount, const char** ppArguments)
 	* Finalize
 	*/
 	delete pApplication;
+
 
 	return 0;
 }
