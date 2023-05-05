@@ -14,14 +14,12 @@ namespace Portakal
 	{
 		return WaitForSingleObject(mHandle, 0) == WAIT_OBJECT_0;
 	}
-	void Win32Mutex::Release()
+	bool Win32Mutex::Release()
 	{
-		ReleaseMutex(mHandle);
+		return ReleaseMutex(mHandle);
 	}
 	bool Win32Mutex::Lock(const unsigned long long waitTime)
 	{
-		const DWORD result = WaitForSingleObject(mHandle,waitTime == WAIT_INFINITE ? INFINITE :  waitTime);
-
-		return result != WAIT_FAILED;
+		return WaitForSingleObject(mHandle, waitTime == WAIT_INFINITE ? INFINITE : waitTime) != WAIT_FAILED;
 	}
 }

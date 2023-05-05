@@ -37,6 +37,6 @@ namespace Portakal
 		/// <summary>
 		/// Releases the mutex
 		/// </summary>
-		FORCEINLINE virtual void Release() = 0;
+		FORCEINLINE virtual bool Release() = 0;
 	};
 }

@@ -14,7 +14,7 @@ namespace Portakal
 		// Inherited via PlatformMutex
 		virtual bool Lock(const unsigned long long waitTime) override;
 		virtual bool TryLock() override;
-		virtual void Release() override;
+		virtual bool Release() override;
 
 	private:
 		HANDLE mHandle;
