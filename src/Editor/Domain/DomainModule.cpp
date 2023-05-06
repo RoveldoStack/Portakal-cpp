@@ -17,6 +17,7 @@ namespace Portakal
 	void DomainModule::OnFinalize()
 	{
 		delete mAPI;
+		mAPI = nullptr;
 	}
 	void DomainModule::OnPreTick()
 	{

@@ -12,11 +12,17 @@
 #include <Runtime/Yaml/Yaml.h>
 #include <Runtime/Message/MessageAPI.h>
 #include <Runtime/Platform/PlatformMessage.h>
+#include <Editor/GUI/Window/EditorWindowAPI.h>
 
 namespace Portakal
 {
 	void GUIWindowModule::OnInitialize()
 	{
+		/*
+		* Create api
+		*/
+		mAPI = new EditorWindowAPI();
+
 		/*
 		* Check if settings exists
 		*/
@@ -32,6 +38,9 @@ namespace Portakal
 	{
 		SaveSettingsToFile();
 		EditorWindowAPI::ClearAllWindows();
+
+		delete mAPI;
+		mAPI = nullptr;
 	}
 	void GUIWindowModule::OnPreTick()
 	{
