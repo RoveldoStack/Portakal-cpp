@@ -28,13 +28,10 @@ namespace Portakal
 
 	private:
 		ImGuiRenderer* mRenderer;
+		ImGuiAPI* mAPI;
 	};
 
-	//START_GENERATE_TYPE(ImGuiExecutorModule);
-	//START_TYPE_PROPERTIES(ImGuiExecutorModule);
-	//END_TYPE_PROPERTIES;
-	//HAS_DEFAULT_CONSTRUCTOR(ImGuiExecutorModule);
-	//END_GENERATE_TYPE(ImGuiExecutorModule);
+
 
 #include "ImGuiExecutorModule.reflect.h"
 }

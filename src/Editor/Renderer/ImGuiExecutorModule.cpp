@@ -25,14 +25,22 @@ namespace Portakal
         ASSERT(pDefaultDevice != nullptr, "ImGuiExecutorFragment", "There is no default graphics device");
         ASSERT(!pDefaultDevice->IsStandalone(), "ImGuiExecutorFragment", "The default graphics device is not a windowed device!");
 
+        /*
+        * Create renderer
+        */
         mRenderer = ImGuiRenderer::Create(pDefaultDevice);
 
-        ImGuiAPI::sRenderer = mRenderer;
+        /*
+        * Create api
+        */
+        mAPI = new ImGuiAPI(mRenderer);
     }
     void ImGuiExecutorModule::OnFinalize()
     {
+        delete mAPI;
+        mAPI = nullptr;
         delete mRenderer;
-        ImGuiAPI::sRenderer = nullptr;
+        mRenderer = nullptr;
     }
     void ImGuiExecutorModule::OnPreTick()
     {

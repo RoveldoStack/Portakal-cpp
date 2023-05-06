@@ -9,5 +9,20 @@
 
 namespace Portakal
 {
-	ImGuiRenderer* ImGuiAPI::sRenderer = nullptr;
+	ImGuiRenderer* ImGuiAPI::GetDefaultRenderer()
+	{
+		ImGuiAPI* pAPI = GetUnderlyingAPI();
+		if (pAPI == nullptr)
+			return nullptr;
+
+		return pAPI->mRenderer;
+	}
+
+	ImGuiAPI::ImGuiAPI(ImGuiRenderer* pRenderer)
+	{
+		mRenderer = pRenderer;
+	}
+	ImGuiAPI::~ImGuiAPI()
+	{
+	}
 }

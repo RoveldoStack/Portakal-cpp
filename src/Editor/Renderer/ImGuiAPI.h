@@ -1,6 +1,7 @@
 #pragma once
 #include <Runtime/Core/Core.h>
 #include <Runtime/Graphics/GraphicsBackend.h>
+#include <Runtime/Object/API.h>
 
 namespace Portakal
 {
@@ -11,12 +12,15 @@ namespace Portakal
 	/// <summary>
 	/// API for enabling application using the ImGui operatio
 	/// </summary>
-	class PORTAKAL_API ImGuiAPI
+	class PORTAKAL_API ImGuiAPI : public API<ImGuiAPI>
 	{
 		friend class ImGuiExecutorModule;
 	public:
-		FORCEINLINE static ImGuiRenderer* GetDefaultRenderer() { return sRenderer; }
+		FORCEINLINE static ImGuiRenderer* GetDefaultRenderer();
 	private:
-		static ImGuiRenderer* sRenderer;
+		ImGuiAPI(ImGuiRenderer* pRenderer);
+		virtual ~ImGuiAPI() override;
+	private:
+		ImGuiRenderer* mRenderer;
 	};
 }
