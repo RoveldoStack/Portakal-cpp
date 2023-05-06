@@ -7,6 +7,7 @@ namespace Portakal
 	class ObjectObserverWindow;
 	class PORTAKAL_API EditorObjectAPI : public API<EditorObjectAPI>
 	{
+		friend class EditorObjectModule;
 	public:
 		static void RegisterWindow(ObjectObserverWindow* pWindow);
 		static void RemoveWindow(ObjectObserverWindow* pWindow);

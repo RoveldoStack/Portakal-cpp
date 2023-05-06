@@ -24,6 +24,7 @@
 #include <Runtime/Graphics/Pipeline/Rasterizer/FrontFaceDirection.h>
 #include <Runtime/Graphics/Pipeline/Rasterizer/FaceCullMode.h>
 #include <Runtime/Object/GarbageCollector.h>
+#include <Editor/GUI/Object/EditorObjectModule.h>
 
 namespace Portakal
 {
@@ -106,7 +107,7 @@ int main(unsigned int argumentCount, const char** ppArguments)
 	resourceRequests.Add({ "TextIcon.png",Portakal::EditorResourceType::Image });
 
 	pApplication->CreateModule<Portakal::EditorResourceModule>(resourceRequests);
-
+	pApplication->CreateModule<Portakal::EditorObjectModule>();
 
 	pApplication->CreateModule<Portakal::GUIWindowModule>();
 	//pApplication->CreateModule<Portakal::GUIMainMenuItemModule>();
