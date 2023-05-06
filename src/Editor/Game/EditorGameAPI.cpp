@@ -2,83 +2,63 @@
 #include <Runtime/World/SceneAPI.h>
 namespace Portakal
 {
-	EditorGameAPI* EditorGameAPI::sAPI = nullptr;
-
-
 	EditorGameState EditorGameAPI::GetCurrentState()
 	{
-		if (sAPI == nullptr)
+		EditorGameAPI* pAPI = GetUnderlyingAPI();
+		if (pAPI == nullptr)
 			return EditorGameState::Idle;
 
-		return sAPI->mCurrentState;
+		return pAPI->mCurrentState;
 	}
 	bool EditorGameAPI::StartGame()
 	{
-		if (sAPI == nullptr)
+		EditorGameAPI* pAPI = GetUnderlyingAPI();
+		if (pAPI == nullptr)
 			return false;
 
-		return sAPI->_StartGame();
-	}
-	bool EditorGameAPI::PauseGame()
-	{
-		if (sAPI == nullptr)
-			return false;
-
-		return sAPI->_PauseGame();
-	}
-	bool EditorGameAPI::Stop()
-	{
-		if (sAPI == nullptr)
-			return false;
-
-		return sAPI->_StopGame();
-	}
-	EditorGameAPI::EditorGameAPI() :
-		mCurrentState(EditorGameState::Idle)
-	{
-
-	}
-	EditorGameAPI::~EditorGameAPI()
-	{
-		sAPI = nullptr;
-	}
-	bool EditorGameAPI::_StartGame()
-	{
 		if (SceneAPI::GetPrimalScene() == nullptr) // validate if there is a primal scene
 			return false;
-		if (mCurrentState != EditorGameState::Idle)
+		if (pAPI->mCurrentState != EditorGameState::Idle)
 			return false;
 
 		/*
 		* Get scene descriptor from the current primal scene
 		*/
 		Scene* pPrimalScene = SceneAPI::GetPrimalScene();
-		pPrimalScene->GenerateDescriptor(sAPI->mStartSceneDescriptor);
+		pPrimalScene->GenerateDescriptor(pAPI->mStartSceneDescriptor);
 
 		/*
 		* Start the current game
 		*/
 		pPrimalScene->SetActivationState(true);
 
-		mCurrentState = EditorGameState::Running;
+		pAPI->mCurrentState = EditorGameState::Running;
 		return true;
 	}
-	bool EditorGameAPI::_PauseGame()
+	bool EditorGameAPI::PauseGame()
 	{
+		EditorGameAPI* pAPI = GetUnderlyingAPI();
+		if (pAPI == nullptr)
+			return false;
+
 		if (SceneAPI::GetPrimalScene() == nullptr) // validate if there is a primal scene
 			return false;
 
-		if (mCurrentState != EditorGameState::Running)
+		if (pAPI->mCurrentState != EditorGameState::Running)
 			return false;
 
 		return false;
 	}
-	bool EditorGameAPI::_StopGame()
+	bool EditorGameAPI::Stop()
 	{
+		EditorGameAPI* pAPI = GetUnderlyingAPI();
+		if (pAPI == nullptr)
+			return false;
+
 		if (SceneAPI::GetPrimalScene() == nullptr) // validate if there is a primal scene
 			return false;
 
-		if (mCurrentState != EditorGameState::Running)
+		if (pAPI->mCurrentState != EditorGameState::Running)
 			return false;
 
 		/*
@@ -90,8 +70,19 @@ namespace Portakal
 		/*
 		* Create and reload scene
 		*/
-		Scene* mStartupScene = new Scene(mStartSceneDescriptor);
+		Scene* mStartupScene = new Scene(pAPI->mStartSceneDescriptor);
 
 		return true;
 	}
+	EditorGameAPI::EditorGameAPI() :
+		mCurrentState(EditorGameState::Idle)
+	{
+
+	}
+	EditorGameAPI::~EditorGameAPI()
+	{
+
+	}
+	
+	
 }

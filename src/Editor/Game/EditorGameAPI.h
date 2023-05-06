@@ -2,6 +2,7 @@
 #include <Runtime/Core/Core.h>
 #include <Runtime/World/Scene.h>
 #include <Editor/Game/EditorGameState.h>
+#include <Runtime/Object/API.h>
 
 namespace Portakal
 {
@@ -10,11 +11,9 @@ namespace Portakal
 	/// <summary>
 	/// Represents the game state of the editor
 	/// </summary>
-	class PORTAKAL_API EditorGameAPI
+	class PORTAKAL_API EditorGameAPI : public API<EditorGameAPI>
 	{
 		friend class EditorGameModule;
-	private:
-		static EditorGameAPI* sAPI;
 	public:
 		/// <summary>
 		/// Returns the current state
@@ -41,12 +40,7 @@ namespace Portakal
 		static bool Stop();
 	private:
 		EditorGameAPI();
-		~EditorGameAPI();
-
-		bool _StartGame();
-		bool _PauseGame();
-		bool _StopGame();
-
+		virtual ~EditorGameAPI() override;
 	private:
 		EditorGameState mCurrentState;
 		SceneDescriptor mStartSceneDescriptor;
