@@ -5,21 +5,26 @@
 #include <Editor/GUI/Window/EditorWindowSettings.h>
 #include <Editor/GUI/Window/EditorWindow.h>
 #include <Runtime/Log/Log.h>
+#include <Runtime/Object/API.h>
 
 namespace Portakal
 {
 	/// <summary>
 	/// API for enabling application to use editor window operations
 	/// </summary>
-	class PORTAKAL_API EditorWindowAPI
+	class PORTAKAL_API EditorWindowAPI : public API<EditorWindowAPI>
 	{
 		friend class GUIWindowModule;
 	public:
-		FORCEINLINE static Array<EditorWindow*> GetWindows() { return sWindows; }
+		FORCEINLINE static Array<EditorWindow*> GetWindows();
 
 		template<typename TWindow,typename... TParams>
 		static TWindow* Create(TParams... params)
 		{
+			EditorWindowAPI* pAPI = GetUnderlyingAPI();
+			if (pAPI == nullptr)
+				return nullptr;
+
 			/*
 			* Validate if it's a sub class of EditorWindow class
 			*/
@@ -40,7 +45,7 @@ namespace Portakal
 			pWindow->OnInitialize();
 			pWindow->OnShow();
 
-			sWindows.Add(pWindow);
+			pAPI->mWindows.Add(pWindow);
 
 			return pWindow;
 		}
@@ -52,9 +57,9 @@ namespace Portakal
 		static void ClearAllWindows();
 		static void DeleteWindow(EditorWindow* pWindow);
 	private:
-		static Array<EditorWindow*> sWindows;
+		Array<EditorWindow*> mWindows;
 	private:
-		EditorWindowAPI() = delete;
-		~EditorWindowAPI() = delete;
+		EditorWindowAPI();
+		virtual ~EditorWindowAPI() override;
 	};
 }
