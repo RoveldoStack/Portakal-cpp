@@ -2,6 +2,7 @@
 #include <Runtime/Core/Core.h>
 #include <Runtime/Containers/String.h>
 #include <Runtime/Containers/Guid.h>
+#include <Runtime/Object/API.h>
 
 namespace Portakal
 {
@@ -10,13 +11,10 @@ namespace Portakal
 	/// <summary>
 	/// API for enabling the use of domain operations across the application
 	/// </summary>
-	class PORTAKAL_API DomainAPI
+	class PORTAKAL_API DomainAPI : public API<DomainAPI>
 	{
 		friend class DomainModule;
-	private:
-		static DomainAPI* sAPI;
 	public:
-
 		/// <summary>
 		/// Returns the root folder of the domain
 		/// </summary>
@@ -25,7 +23,7 @@ namespace Portakal
 		FORCEINLINE static DomainFile* GetFileViaID(const Guid& id);
 	private:
 		DomainAPI(const String& domainFolderPath);
-		~DomainAPI();
+		virtual ~DomainAPI() override;
 	private:
 		DomainFolder* mRootFolder;
 		const String mFolderPath;

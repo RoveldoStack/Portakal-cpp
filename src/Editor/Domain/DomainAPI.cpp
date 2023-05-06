@@ -5,14 +5,14 @@
 
 namespace Portakal
 {
-	DomainAPI* DomainAPI::sAPI = nullptr;
 
 	DomainFolder* DomainAPI::GetRootFolder()
 	{
-		if (sAPI == nullptr)
+		DomainAPI* pAPI = GetUnderlyingAPI();
+		if (pAPI == nullptr)
 			return nullptr;
 
-		return sAPI->mRootFolder;
+		return pAPI->mRootFolder;
 	}
 
 	DomainFile* GetFileViaIDRecursive(DomainFolder* pFolder, const Guid& id)
@@ -38,19 +38,19 @@ namespace Portakal
 	}
 	DomainFile* DomainAPI::GetFileViaID(const Guid& id)
 	{
-		if (sAPI == nullptr)
+		DomainAPI* pAPI = GetUnderlyingAPI();
+		if (pAPI == nullptr)
 			return nullptr;
 
-		return GetFileViaIDRecursive(sAPI->mRootFolder, id);
+		return GetFileViaIDRecursive(pAPI->mRootFolder, id);
 	}
 
 	DomainAPI::DomainAPI(const String& domainFolderPath) : mFolderPath(domainFolderPath)
 	{
 		mRootFolder = new DomainFolder(nullptr, domainFolderPath);
-		sAPI = this;
 	}
 	DomainAPI::~DomainAPI()
 	{
-		sAPI = nullptr;
+
 	}
 }
