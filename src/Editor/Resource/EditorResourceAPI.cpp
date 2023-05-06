@@ -3,13 +3,15 @@
 
 namespace Portakal
 {
-	Array<EditorResource*> EditorResourceAPI::sResources;
-
 	EditorResource* EditorResourceAPI::GetResource(const String& name)
 	{
-		for (unsigned int i = 0; i < sResources.GetCursor(); i++)
+		EditorResourceAPI* pAPI = GetUnderlyingAPI();
+		if (pAPI == nullptr)
+			return nullptr;
+
+		for (unsigned int i = 0; i < pAPI->mResources.GetCursor(); i++)
 		{
-			EditorResource* pResource = sResources[i];
+			EditorResource* pResource = pAPI->mResources[i];
 
 			if (pResource->GetName() == name)
 				return pResource;
@@ -19,11 +21,23 @@ namespace Portakal
 	}
 	void EditorResourceAPI::ClearResources()
 	{
-		for (unsigned int i = 0; i < sResources.GetCursor(); i++)
+		EditorResourceAPI* pAPI = GetUnderlyingAPI();
+		if (pAPI == nullptr)
+			return;
+
+		for (unsigned int i = 0; i < pAPI->mResources.GetCursor(); i++)
 		{
-			delete sResources[i];
+			delete pAPI->mResources[i];
 		}
 
-		sResources.Clear();
+		pAPI->mResources.Clear();
+	}
+
+	EditorResourceAPI::EditorResourceAPI(const Array<EditorResource*>& loadedResources)
+	{
+		mResources = loadedResources;
+	}
+	EditorResourceAPI::~EditorResourceAPI()
+	{
 	}
 }

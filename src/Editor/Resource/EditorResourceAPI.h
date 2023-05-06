@@ -2,6 +2,7 @@
 #include <Runtime/Core/Core.h>
 #include <Runtime/Containers/Array.h>
 #include <Runtime/Containers/String.h>
+#include <Runtime/Object/API.h>
 
 namespace Portakal
 {
@@ -10,7 +11,7 @@ namespace Portakal
 	/// <summary>
 	/// API for enabling application to use editor resources
 	/// </summary>
-	class PORTAKAL_API EditorResourceAPI
+	class PORTAKAL_API EditorResourceAPI : public API<EditorResourceAPI>
 	{
 		friend class EditorResourceModule;
 	public:
@@ -18,9 +19,9 @@ namespace Portakal
 	private:
 		static void ClearResources();
 	private:
-		static Array<EditorResource*> sResources;
+		EditorResourceAPI(const Array<EditorResource*>& loadedResources);
+		virtual ~EditorResourceAPI() override;
 	private:
-		EditorResourceAPI() = delete;
-		~EditorResourceAPI() = delete;
+		Array<EditorResource*> mResources;
 	};
 }

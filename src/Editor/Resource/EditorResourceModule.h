@@ -38,13 +38,10 @@ namespace Portakal
 		virtual void OnEvent(WindowEvent* pEvent) override;
 	private:
 		const EditorResourceModuleCreateParams mParams;
+	private:
+		EditorResourceAPI* mAPI;
 	};
 
-	//START_GENERATE_TYPE(EditorResourceModule);
-	//START_TYPE_PROPERTIES(EditorResourceModule);
-	//REGISTER_BASE_TYPE(ApplicationModule);
-	//END_TYPE_PROPERTIES;
-	//HAS_DEFAULT_CONSTRUCTOR(EditorResourceModule);
-	//END_GENERATE_TYPE(EditorResourceModule);
+
 #include "EditorResourceModule.reflect.h"
 }

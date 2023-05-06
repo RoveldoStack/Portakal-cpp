@@ -4,7 +4,6 @@
 #include <Editor/Resource/EditorImageResource.h>
 #include <Editor/Resource/EditorResourceAPI.h>
 #include <Runtime/Platform/PlatformPaths.h>
-
 namespace Portakal
 {
     EditorResourceModule::EditorResourceModule(const Array<EditorResourceRequest>& requests) : mParams({requests})
@@ -68,10 +67,13 @@ namespace Portakal
         /*
         * Create api
         */
-        EditorResourceAPI::sResources = loadedResources;
+        mAPI = new EditorResourceAPI(loadedResources);
     }
     void EditorResourceModule::OnFinalize()
     {
+        delete mAPI;
+        mAPI = nullptr;
+
         EditorResourceAPI::ClearResources();
     }
     void EditorResourceModule::OnPreTick()
