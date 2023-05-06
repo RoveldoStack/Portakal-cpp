@@ -1,21 +1,24 @@
 #pragma once
 #include <Runtime/Core/Core.h>
 #include <Editor/Project/Project.h>
+#include <Runtime/Object/API.h>
 
 namespace Portakal
 {
 	/// <summary>
 	/// API for enabling application to use the project related operation
 	/// </summary>
-	class PORTAKAL_API ProjectAPI
+	class PORTAKAL_API ProjectAPI : public API<ProjectAPI>
 	{
 		friend class ProjectModule;
 	public:
-		FORCEINLINE static Project GetProject() { return sProject; }
+		FORCEINLINE static Project* GetProject();
 	private:
-		static Project sProject;
+		ProjectAPI(const Project& project);
+		virtual ~ProjectAPI() override;
+
+		FORCEINLINE static void _SetProject(const Project& project);
 	private:
-		ProjectAPI() = delete;
-		~ProjectAPI() = delete;
+		Project* mProject;
 	};
 }

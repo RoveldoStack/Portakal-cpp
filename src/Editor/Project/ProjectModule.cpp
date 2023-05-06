@@ -57,9 +57,9 @@ namespace Portakal
         project.VersionPatch = projectYAML.VersionPatch;
 
         /*
-        * Set project
+        * Create project api and set project
         */
-        ProjectAPI::sProject = project;
+        mAPI = new ProjectAPI(project);
 
         /*
         * Setup project paths
@@ -70,7 +70,8 @@ namespace Portakal
     }
     void ProjectModule::OnFinalize()
     {
-        ProjectAPI::sProject = {};
+        delete mAPI;
+        mAPI = nullptr;
     }
     void ProjectModule::OnPreTick()
     {
