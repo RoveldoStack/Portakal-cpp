@@ -3,19 +3,37 @@
 
 namespace Portakal
 {
-	Array<ObjectObserverWindow*> EditorObjectAPI::sWindows;
-
 	void EditorObjectAPI::RegisterWindow(ObjectObserverWindow* pWindow)
 	{
-		sWindows.Add(pWindow);
+		EditorObjectAPI* pAPI = GetUnderlyingAPI();
+		if (pAPI == nullptr)
+			return;
+
+		pAPI->mWindows.Add(pWindow);
 	}
 	void EditorObjectAPI::RemoveWindow(ObjectObserverWindow* pWindow)
 	{
-		sWindows.Remove(pWindow);
+		EditorObjectAPI* pAPI = GetUnderlyingAPI();
+		if (pAPI == nullptr)
+			return;
+
+		pAPI->mWindows.Remove(pWindow);
 	}
 	void EditorObjectAPI::SignalNewObject(Class* pObject)
 	{
-		for (unsigned int i = 0; i < sWindows.GetCursor(); i++)
-			sWindows[i]->OnSignalNewObject(pObject);
+		EditorObjectAPI* pAPI = GetUnderlyingAPI();
+		if (pAPI == nullptr)
+			return;
+
+		for (unsigned int i = 0; i < pAPI->mWindows.GetCursor(); i++)
+			pAPI->mWindows[i]->OnSignalNewObject(pObject);
+	}
+	EditorObjectAPI::EditorObjectAPI()
+	{
+
+	}
+	EditorObjectAPI::~EditorObjectAPI()
+	{
+
 	}
 }
