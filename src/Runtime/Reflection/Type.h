@@ -215,12 +215,15 @@ namespace Portakal
 		~BaseTypeDispatcher() = default;
 	};
 
+
 #define START_GENERATE_TYPE(type) class PORTAKAL_API EMPTY(type)_Type : public Type\
 									{\
 									private:
 
 
 #define START_TYPE_PROPERTIES(type) static EMPTY(type)_Type* GenerateTypeData() { EMPTY(type)_Type* pType = new EMPTY(type)_Type; type::SetType(pType); Assembly::GetProcessAssembly()->RegisterType(pType); 
+
+#define START_PRIMITIVE_TYPE_PROPERTIES(type) static EMPTY(type)_Type* GenerateTypeData() { EMPTY(type)_Type* pType = new EMPTY(type)_Type; Assembly::GetProcessAssembly()->RegisterType(pType); 
 
 #define END_TYPE_PROPERTIES  return pType; } static inline Type* sType = (Type*)GenerateTypeData(); public:
 

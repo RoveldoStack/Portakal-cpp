@@ -34,4 +34,6 @@ namespace Portakal
 		unsigned long long mIndexSubItemCount;
 		MeshIndexType mIndexType;
 	};
+
+#include "Mesh.reflect.h"
 }

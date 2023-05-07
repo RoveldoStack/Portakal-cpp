@@ -1,8 +1,8 @@
 #include "ProjectGenerator.h"
-#include <Editor/Project/ProjectYaml.h>
-#include <Editor/Project/ProjectYamlSerializer.h>
+#include <Editor/Project/Project.h>
 #include <Runtime/Yaml/Yaml.h>
 #include <Runtime/Log/Log.h>
+
 
 namespace Portakal
 {
@@ -11,14 +11,14 @@ namespace Portakal
 		/*
 		* Create project header
 		*/
-		ProjectYaml project = { };
+		Project project = { };
 		project.Name = name;
 		project.ID = Guid::Create();
 		project.VersionMajor = 0;
 		project.VersionMinor = 0;
 		project.VersionPatch = 0;
 
-		const String projectYaml = Yaml::ToYaml<ProjectYaml>(&project);
+		const String projectYaml = Yaml::ToYaml<Project>(&project);
 		LOG("Yamlcontent", "->%s", *projectYaml);
 		if (!PlatformDirectory::IsDirectoryExist(folderPath))
 		{

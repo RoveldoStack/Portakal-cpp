@@ -10,5 +10,6 @@ namespace ReflectionParserTool
     {
         public string Type;
         public string Name;
+        public bool IsArray;
     }
 }

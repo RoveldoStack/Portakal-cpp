@@ -3,35 +3,10 @@
 #include <Editor/GUI/Window/EditorWindowDockState.h>
 #include <Runtime/Containers/Guid.h>
 #include <Runtime/Reflection/Type.h>
+#include <Editor/GUI/Window/EditorWindowSetting.h>
 
 namespace Portakal
 {
-	/// <summary>
-	/// Editor window settings
-	/// </summary>
-	struct PORTAKAL_API EditorWindowSetting
-	{
-		/// <summary>
-		/// Title of the window
-		/// </summary>
-		String Name;
-
-		/// <summary>
-		/// Unique id of the window
-		/// </summary>
-		Guid ID;
-
-		/// <summary>
-		/// Dock state of the window
-		/// </summary>
-		EditorWindowDockState DockState;
-
-		/// <summary>
-		/// Owner window id
-		/// </summary>
-		Guid OwnerID;
-	};
-
 	/// <summary>
 	/// Editor window settings file
 	/// </summary>
@@ -46,21 +21,45 @@ namespace Portakal
 		static EditorWindowSettings Default()
 		{
 			EditorWindowSettings settings = {};
-			settings.Windows.Add({ "DomainObserverWindow",Guid::Create(),EditorWindowDockState::Down,Guid::Create() });
-			settings.Windows.Add({ "WorldObserverWindow",Guid::Create(),EditorWindowDockState::Left,Guid::Create() });
-			settings.Windows.Add({ "ObjectObserverWindow",Guid::Create(),EditorWindowDockState::Right,Guid::Create() });
-			settings.Windows.Add({ "GameObserverWindow",Guid::Create(),EditorWindowDockState::Center,Guid::Create() });
+			{
+				EditorWindowSetting setting = {};
+				setting.Name = "DomainObserverWindow";
+				setting.ID = Guid::Create();
+				setting.DockState = EditorWindowDockState::Down;
+				setting.OwnerID = Guid::Zero();
+				settings.Windows.Add(setting);
+			}
+			{
+				EditorWindowSetting setting = {};
+				setting.Name = "WorldObserverWindow";
+				setting.ID = Guid::Create();
+				setting.DockState = EditorWindowDockState::Left;
+				setting.OwnerID = Guid::Zero();
+				settings.Windows.Add(setting);
+			}
+			{
+				EditorWindowSetting setting = {};
+				setting.Name = "ObjectObserverWindow";
+				setting.ID = Guid::Create();
+				setting.DockState = EditorWindowDockState::Right;
+				setting.OwnerID = Guid::Zero();
+				settings.Windows.Add(setting);
+			}
+			{
+				EditorWindowSetting setting = {};
+				setting.Name = "GameObserverWindow";
+				setting.ID = Guid::Create();
+				setting.DockState = EditorWindowDockState::Center;
+				setting.OwnerID = Guid::Zero();
+				settings.Windows.Add(setting);
+			}
 
 			return settings;
 		}
+
+		FIELD();
 		Array<EditorWindowSetting> Windows;
 	};
-
-	//START_GENERATE_TYPE(EditorWindowSettings);
-	//START_TYPE_PROPERTIES(EditorWindowSettings);
-	//END_TYPE_PROPERTIES;
-	//HAS_DEFAULT_CONSTRUCTOR(EditorWindowSettings);
-	//END_GENERATE_TYPE(EditorWindowSettings);
 
 #include "EditorWindowSettings.reflect.h"
 }

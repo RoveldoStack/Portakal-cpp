@@ -2,7 +2,6 @@
 #include <Runtime/Platform/PlatformDirectory.h>
 #include <Runtime/Log/Log.h>
 #include <Runtime/Platform/PlatformMessage.h>
-#include <Editor/Domain/DomainFileDescriptorYamlSerializer.h>
 #include <Runtime/Yaml/Yaml.h>
 #include <Runtime/Platform/PlatformFile.h>
 #include <Editor/Asset/IAssetSerializer.h>
@@ -12,6 +11,7 @@
 #include <Editor/Asset/IAssetImporter.h>
 #include <Editor/Asset/Importers/SimpleTextAssetImporter.h>
 #include <Editor/Asset/Importers/SimpleTextAssetImporter2.h>
+#include "DomainFileDescriptor.h"
 namespace Portakal
 {
 	DomainFolder::DomainFolder(DomainFolder* pParentFolder, const String& path) : mParentFolder(nullptr),mValid(false)

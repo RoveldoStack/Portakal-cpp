@@ -1,8 +1,0 @@
-#include "ShaderObjectDescriptorYamlSerializer.h" 
-START_GENERATE_TYPE(ShaderObjectDescriptorYamlSerializer);
-START_TYPE_PROPERTIES(ShaderObjectDescriptorYamlSerializer)
-REGISTER_BASE_TYPE(IYamlSerializer);
-REGISTER_TYPE_ATTRIBUTE(YamlSerializerAttribute,typeof(ShaderObjectDescriptor))
-END_TYPE_PROPERTIES;
-HAS_DEFAULT_CONSTRUCTOR(ShaderObjectDescriptorYamlSerializer);
-END_GENERATE_TYPE(ShaderObjectDescriptorYamlSerializer);

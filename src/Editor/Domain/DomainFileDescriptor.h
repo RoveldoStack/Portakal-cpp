@@ -16,24 +16,21 @@ namespace Portakal
 		/// <summary>
 		/// Resource type
 		/// </summary>
+		FIELD();
 		String ResourceType;
 
 		/// <summary>
 		/// Source file path
 		/// </summary>
+		FIELD();
 		String SourceFile;
 
 		/// <summary>
 		/// Unique id
 		/// </summary>
+		FIELD();
 		Guid ID;
 	};
-
-	//START_GENERATE_TYPE(DomainFileDescriptor);
-	//START_TYPE_PROPERTIES(DomainFileDescriptor);
-	//END_TYPE_PROPERTIES;
-	//HAS_DEFAULT_CONSTRUCTOR(DomainFileDescriptor);
-	//END_GENERATE_TYPE(DomainFileDescriptor);
 
 #include "DomainFileDescriptor.reflect.h"
 }

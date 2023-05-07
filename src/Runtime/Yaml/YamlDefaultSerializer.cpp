@@ -29,7 +29,12 @@ namespace Portakal
         case Portakal::TypeCodes::Int:
             break;
         case Portakal::TypeCodes::UInt:
+        {
+            UInt* pValue = (UInt*)pObject;
+            emitter << YAML::Value << *pValue;
+
             break;
+        }
         case Portakal::TypeCodes::Short:
             break;
         case Portakal::TypeCodes::UShort:
@@ -188,7 +193,9 @@ namespace Portakal
     {
         const long long value = node.as<long long>();
 
-        pField->SetValue<long long>(pObject,value);
+        *(long long*)pObject = value;
+
+        //pField->SetValue<long long>(pObject,value);
     }
     void LoadAsArray(const YAML::Node& node, void* pObject,const Type* pElementType)
     {

@@ -2,7 +2,7 @@
 
 namespace Portakal
 {
-	typedef unsigned int Uint;
+	typedef unsigned int UInt;
 	typedef unsigned char Byte;
 	typedef long Long;
 	typedef unsigned long ULong;

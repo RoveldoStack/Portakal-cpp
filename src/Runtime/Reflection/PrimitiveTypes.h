@@ -2,6 +2,8 @@
 #include <Runtime/Reflection/Type.h>
 #include <Runtime/Math/Color4.h>
 #include <Runtime/Containers/Array.h>
+
+
 namespace Portakal
 {
 
@@ -66,6 +68,8 @@ namespace Portakal
 	GENERATE_PRIMITIVE_TYPE(ULong,TypeCodes::ULong);
 	GENERATE_PRIMITIVE_TYPE(int, TypeCodes::Int);
 	GENERATE_PRIMITIVE_TYPE(String, TypeCodes::String);
+	GENERATE_PRIMITIVE_TYPE(UInt, TypeCodes::UInt);
+	//GENERATE_PRIMITIVE_TYPE(Guid, TypeCodes::Composed);
 	//GENERATE_PRIMITIVE_TYPE(ColorRgbaF, TypeCodes::Char);
 	GENERATE_PRIMITIVE_TYPE2(Array, TypeCodes::Composed);
 }

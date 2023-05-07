@@ -33,12 +33,5 @@ namespace Portakal
 
 	};
 
-
-	//START_GENERATE_TYPE(ImGuiRendererModule);
-	//START_TYPE_PROPERTIES(ImGuiRendererModule);
-	//END_TYPE_PROPERTIES;
-	//HAS_DEFAULT_CONSTRUCTOR(ImGuiRendererModule);
-	//END_GENERATE_TYPE(ImGuiRendererModule);
-
 #include "ImGuiRendererModule.reflect.h"
 }

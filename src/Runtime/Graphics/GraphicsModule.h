@@ -11,7 +11,7 @@ namespace Portakal
 	/// </summary>
 	class PORTAKAL_API GraphicsModule : public ApplicationModule
 	{
-		GENERATE_CLASS(GraphicsModule);
+		GENERATE_CLASS(GraphicsModule,Virtual);
 		GENERATE_APPLICATION_MODULE(false, false, false);
 	public:
 		GraphicsModule(const GraphicsModuleParams& params) : mParams(params),mAPI(nullptr) {}
@@ -30,4 +30,7 @@ namespace Portakal
 		const GraphicsModuleParams mParams;
 		GraphicsDeviceAPI* mAPI;
 	};
+
+
+#include "GraphicsModule.reflect.h"
 }

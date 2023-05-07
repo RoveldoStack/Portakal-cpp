@@ -1,7 +1,0 @@
-#include "ProjectYaml.h" 
-START_GENERATE_TYPE(ProjectYaml);
-START_TYPE_PROPERTIES(ProjectYaml)
-
-END_TYPE_PROPERTIES;
-HAS_DEFAULT_CONSTRUCTOR(ProjectYaml);
-END_GENERATE_TYPE(ProjectYaml);

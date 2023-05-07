@@ -1,6 +1,7 @@
 #pragma once
 #include <Runtime/Core/Core.h>
 #include <Runtime/Containers/String.h>
+#include <Runtime/Reflection/Reflection.h>
 
 namespace Portakal
 {
@@ -37,18 +38,28 @@ namespace Portakal
 		static Guid FromString(const String& text);
 
 	public:
-		Guid(unsigned int a, unsigned int b, unsigned int c, unsigned int d);
+		Guid(UInt a, UInt b, UInt c, UInt d);
 		Guid();
 		~Guid();
 
 		FORCEINLINE bool IsZero() const noexcept { return A == 0 && B == 0 && C == 0 && D == 0; }
 
-		unsigned int A;
-		unsigned int B;
-		unsigned int C;
-		unsigned int D;
+		UInt A;
+		UInt B;
+		UInt C;
+		UInt D;
 	};
 
 	PORTAKAL_API bool operator==(const Guid& a, const Guid& b);
 	PORTAKAL_API bool operator!=(const Guid& a, const Guid& b);
+
+	START_GENERATE_TYPE(Guid);
+	START_PRIMITIVE_TYPE_PROPERTIES(Guid);
+	REGISTER_FIELD(Guid, A, UInt, AccessSpecifier::Public);
+	REGISTER_FIELD(Guid, B, UInt, AccessSpecifier::Public);
+	REGISTER_FIELD(Guid, C, UInt, AccessSpecifier::Public);
+	REGISTER_FIELD(Guid, D, UInt, AccessSpecifier::Public);
+	END_TYPE_PROPERTIES;
+	HAS_DEFAULT_CONSTRUCTOR(Guid);
+	END_GENERATE_TYPE(Guid);
 }

@@ -43,9 +43,9 @@ namespace ReflectionParserTool
         {
             _baseObjects.Add(entry);
         }
-        public void RegisterField(string type,string name)
+        public void RegisterField(string type,string name,bool bArray)
         {
-            _fields.Add(new FieldEntry() { Name = name, Type = type });
+            _fields.Add(new FieldEntry() { Name = name, Type = type, IsArray = bArray });
         }
         public void RegisterEnum(string name,long value)
         {

@@ -29,12 +29,5 @@ namespace Portakal
 		virtual void Deserialize(const YAML::Node& node, Class* pObject) = 0;
 	};
 
-	//START_GENERATE_TYPE(IYamlSerializer);
-	//	START_TYPE_PROPERTIES(IYamlSerializer);
-	//	END_TYPE_PROPERTIES;
-	//NO_DEFAULT_CONSTRUCTOR;
-	//END_GENERATE_TYPE(IYamlSerializer);
-
-
 #include "IYamlSerializer.reflect.h"
 }

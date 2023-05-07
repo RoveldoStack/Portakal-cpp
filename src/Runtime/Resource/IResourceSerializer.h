@@ -17,12 +17,6 @@ namespace Portakal
 		virtual ResourceSubObject* DeserializeCompressed(const ByteBlock& block) = 0;
 	};
 
-	//START_GENERATE_TYPE(IResourceSerializer);
-	//START_TYPE_PROPERTIES(IResourceSerializer);
-	//END_TYPE_PROPERTIES;
-	//NO_DEFAULT_CONSTRUCTOR;
-	//END_GENERATE_TYPE(IResourceSerializer);
-
 #include "IResourceSerializer.reflect.h"
 
 }

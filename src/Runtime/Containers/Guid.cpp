@@ -48,7 +48,7 @@ namespace Portakal
 
 		return id;
 	}
-	Guid::Guid(unsigned int a, unsigned int b, unsigned int c, unsigned int d) : A(a), B(b), C(c), D(d)
+	Guid::Guid(UInt a, UInt b, UInt c, UInt d) : A(a), B(b), C(c), D(d)
 	{
 
 	}

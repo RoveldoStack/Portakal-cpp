@@ -1,6 +1,5 @@
 #include "SceneAssetSerializer.h"
 #include <Runtime/World/Scene.h>
-#include <Editor/Asset/Yaml/SceneDescriptorYamlSerializer.h>
 #include <Runtime/World/SceneDescriptor.h>
 #include <Runtime/Yaml/Yaml.h>
 #include <Runtime/Log/Log.h>

@@ -24,6 +24,9 @@ namespace Portakal
 		template<typename TObject>
 		static bool ToObject(const String& yaml, TObject* pObject)
 		{
+			YamlDefaultSerializer::ToObject(yaml, pObject);
+			return true;
+
 			/*
 			* Get serializer
 			*/
@@ -44,7 +47,6 @@ namespace Portakal
 			* Run deserialization
 			*/
 			pSerializer->Deserialize(node, pObject);
-
 			delete pSerializer;
 
 			return true;
@@ -59,6 +61,7 @@ namespace Portakal
 		template<typename TObject>
 		static String ToYaml(const TObject* pObject)
 		{
+			return YamlDefaultSerializer::ToYaml(pObject);
 			/*
 			* Get serializer
 			*/

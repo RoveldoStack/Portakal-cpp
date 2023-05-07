@@ -25,6 +25,7 @@
 #include <Runtime/Graphics/Pipeline/Rasterizer/FaceCullMode.h>
 #include <Runtime/Object/GarbageCollector.h>
 #include <Editor/GUI/Object/EditorObjectModule.h>
+#include <Editor/Project/ProjectGenerator.h>
 
 namespace Portakal
 {
@@ -36,6 +37,11 @@ namespace Portakal
 
 int main(unsigned int argumentCount, const char** ppArguments)
 {
+	/*Portakal::ProjectGenerator::GenerateSync("TestProject","C:\\Users\\Roveldo\\Documents\\Portakal\\Project0");
+	return 0;*/
+	/*
+	* Initialize systems
+	*/
 	Portakal::GarbageCollector::Initialize();
 	Portakal::JobSystem::Initialize();
 
@@ -78,7 +84,7 @@ int main(unsigned int argumentCount, const char** ppArguments)
 	/*
 	* Create project module
 	*/
-	const Portakal::String projectFolderPath = "C:\\Users\\Roveldo\\Documents\\Portakal\\TestProject";
+	const Portakal::String projectFolderPath = "C:\\Users\\Roveldo\\Documents\\Portakal\\Project0";
 	const Portakal::String projectName = "TestProject";
 	pApplication->CreateModule<Portakal::ProjectModule>(projectFolderPath, projectName);
 

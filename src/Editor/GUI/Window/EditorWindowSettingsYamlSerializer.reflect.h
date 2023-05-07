@@ -1,8 +1,0 @@
-#include "EditorWindowSettingsYamlSerializer.h" 
-START_GENERATE_TYPE(EditorWindowSettingsYamlSerializer);
-START_TYPE_PROPERTIES(EditorWindowSettingsYamlSerializer)
-REGISTER_BASE_TYPE(IYamlSerializer);
-REGISTER_TYPE_ATTRIBUTE(YamlSerializerAttribute, typeof(EditorWindowSettings))
-END_TYPE_PROPERTIES;
-HAS_DEFAULT_CONSTRUCTOR(EditorWindowSettingsYamlSerializer);
-END_GENERATE_TYPE(EditorWindowSettingsYamlSerializer);

@@ -44,11 +44,5 @@ namespace Portakal
 		Scene* mOwnerScene;
 	};
 
-	//START_GENERATE_TYPE(SceneAspect);
-	//START_TYPE_PROPERTIES(SceneAspect);
-	//END_TYPE_PROPERTIES;
-	//NO_DEFAULT_CONSTRUCTOR;
-	//END_GENERATE_TYPE(SceneAspect);
-
 #include "SceneAspect.reflect.h"
 }

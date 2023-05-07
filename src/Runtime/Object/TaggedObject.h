@@ -73,10 +73,6 @@ namespace Portakal
 		bool mDestroyed;
 
 	};
-	//START_GENERATE_TYPE(TaggedObject);
-	//START_TYPE_PROPERTIES(TaggedObject);
-	//END_TYPE_PROPERTIES;
-	//NO_DEFAULT_CONSTRUCTOR;
-	//END_GENERATE_TYPE(TaggedObject);
+
 #include "TaggedObject.reflect.h"
 }

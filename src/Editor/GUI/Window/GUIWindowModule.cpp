@@ -5,7 +5,6 @@
 #include <Editor/GUI/Window/EditorWindow.h>
 #include <Editor/GUI/Window/EditorWindowDockState.h>
 #include <Editor/GUI/Window/EditorWindowAPI.h>
-#include <Editor/GUI/Window/EditorWindowSettingsYamlSerializer.h>
 #include <Editor/Project/ProjectPaths.h>
 #include <Runtime/Platform/PlatformFile.h>
 #include <Runtime/Platform/PlatformDirectory.h>

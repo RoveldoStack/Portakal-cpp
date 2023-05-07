@@ -4,10 +4,10 @@
 #include <Runtime/Platform/PlatformDialog.h>
 #include <Runtime/Platform/PlatformMessage.h>
 #include <Runtime/Yaml/Yaml.h>
-#include <Editor/Project/ProjectYamlSerializer.h>
 #include <Runtime/Message/MessageAPI.h>
 #include <Editor/Project/ProjectAPI.h>
 #include <Editor/Project/ProjectPaths.h>
+#include <Editor/Project/Project.h>
 namespace Portakal
 {
     void ProjectModule::OnInitialize()
@@ -45,7 +45,7 @@ namespace Portakal
         }
 
         MessageAPI::BroadcastMessage(projectYamlContent);
-        ProjectYaml projectYAML = {};
+        Project projectYAML = {};
         Yaml::ToObject(projectYamlContent,&projectYAML);
 
         Project project = {};

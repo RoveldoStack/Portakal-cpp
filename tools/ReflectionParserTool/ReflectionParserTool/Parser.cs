@@ -217,8 +217,8 @@ namespace ReflectionParserTool
                     string[] fragments = subStr.Split(' ');
                     string fieldType = fragments[0];
                     string fieldName = fragments[1];
-
-                    entry.RegisterField(fieldType, fieldName);
+                    bool bArray = fieldType.Contains("Array");
+                    entry.RegisterField(fieldType, fieldName,bArray);
 
                     fieldStartCursor = entry.FileContent.IndexOf("FIELD()", fieldBodyEndCursor);
                 }

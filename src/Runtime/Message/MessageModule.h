@@ -28,14 +28,5 @@ namespace Portakal
 	private:
 	};
 
-	//START_GENERATE_TYPE(MessageModule);
-
-	//	START_TYPE_PROPERTIES(MessageModule)
-	//	END_TYPE_PROPERTIES;
-
-	//HAS_DEFAULT_CONSTRUCTOR(MessageModule);
-	//END_GENERATE_TYPE(MessageModule);
-	// 
-	//
 #include "MessageModule.reflect.h"
 }

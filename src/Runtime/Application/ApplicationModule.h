@@ -106,12 +106,6 @@ namespace Portakal
 		Application* mOwnerApplication;
 	};
 
-	//START_GENERATE_TYPE(ApplicationModule);
-	//START_TYPE_PROPERTIES(ApplicationModule)
-	//END_TYPE_PROPERTIES;
-	//NO_DEFAULT_CONSTRUCTOR;
-	//END_GENERATE_TYPE(ApplicationModule);
-
 #include "ApplicationModule.reflect.h"
 
 #define GENERATE_APPLICATION_MODULE(tickEnabled,eventsEnabled,validationEnabled) public: \
