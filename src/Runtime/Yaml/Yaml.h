@@ -22,10 +22,9 @@ namespace Portakal
 		/// <param name="yaml"></param>
 		/// <param name="pObject"></param>
 		template<typename TObject>
-		static bool ToObject(const String& yaml, TObject* pObject)
+		static void ToObject(const String& yaml, TObject* pObject)
 		{
 			YamlDefaultSerializer::ToObject(yaml, pObject,typeof(TObject));
-			return true;
 		}
 
 		/// <summary>

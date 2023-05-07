@@ -24,7 +24,7 @@ namespace Portakal
 		* Deserialize yaml into scene descriptor
 		*/
 		SceneDescriptor descriptor = {};
-		ASSERT(Yaml::ToObject<SceneDescriptor>(yaml, &descriptor), "SceneSerializer", "Failed to read from yaml");
+		Yaml::ToObject<SceneDescriptor>(yaml, &descriptor);
 
 		/*
 		* Create Scene

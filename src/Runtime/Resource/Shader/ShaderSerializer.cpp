@@ -26,7 +26,7 @@ namespace Portakal
 		* Deserialize yaml into descriptor
 		*/
 		ShaderObjectDescriptor descriptor = {};
-		ASSERT(Yaml::ToObject<ShaderObjectDescriptor>(yaml, &descriptor), "ShaderSerializer", "Failed to read from yaml");
+		Yaml::ToObject<ShaderObjectDescriptor>(yaml, &descriptor);
 
 		/*
 		* Create shader
