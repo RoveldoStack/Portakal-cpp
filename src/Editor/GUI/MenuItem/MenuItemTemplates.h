@@ -7,7 +7,7 @@
 
 namespace Portakal
 {
-	class PORTAKAL_API TestMenuItem : public MenuItemBehaviour
+	/*class PORTAKAL_API TestMenuItem : public MenuItemBehaviour
 	{
 		GENERATE_CLASS(TestMenuItem);
 	public:
@@ -70,5 +70,5 @@ namespace Portakal
 	END_TYPE_PROPERTIES;
 
 	HAS_DEFAULT_CONSTRUCTOR(CreateDisplayButton);
-	END_GENERATE_TYPE(CreateDisplayButton);
+	END_GENERATE_TYPE(CreateDisplayButton);*/
 }

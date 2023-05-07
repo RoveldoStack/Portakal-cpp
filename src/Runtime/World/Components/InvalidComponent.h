@@ -3,6 +3,7 @@
 
 namespace Portakal
 {
+	PCLASS();
 	class PORTAKAL_API InvalidComponent : public Component
 	{
 		GENERATE_CLASS(InvalidComponent);

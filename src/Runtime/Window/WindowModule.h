@@ -18,6 +18,7 @@ namespace Portakal
 	/// <summary>
 	/// An application module for authoring the core window related operations
 	/// </summary>
+	PCLASS();
 	class PORTAKAL_API WindowModule : public ApplicationModule
 	{
 		GENERATE_CLASS(WindowModule);

@@ -9,6 +9,7 @@ namespace Portakal
 	/// <summary>
 	/// Asster visualizer interface, it's used to customize the behaviour of the asset icons
 	/// </summary>
+	PCLASS();
 	class PORTAKAL_API IAssetVisualizer : public Class
 	{
 		GENERATE_CLASS(IAssetVisualizer,Virtual);
@@ -23,12 +24,5 @@ namespace Portakal
 		/// <returns></returns>
 		virtual TextureResource* OnPaint(DomainFile* pFile) = 0;
 	};
-
-	//START_GENERATE_TYPE(IAssetVisualizer);
-	//START_TYPE_PROPERTIES(IAssetVisualizer);
-	//END_TYPE_PROPERTIES;
-	//NO_DEFAULT_CONSTRUCTOR;
-	//END_GENERATE_TYPE(IAssetVisualizer);
-
 #include "IAssetVisualizer.reflect.h"
 }

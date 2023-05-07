@@ -1,6 +1,6 @@
 #include "TestStruct.h" 
 START_GENERATE_TYPE(TestStruct);
-START_TYPE_PROPERTIES(TestStruct)
+START_STRUCT_TYPE_PROPERTIES(TestStruct)
 REGISTER_FIELD(TestStruct,A,int,AccessSpecifier::Public);
 REGISTER_FIELD(TestStruct,B,int,AccessSpecifier::Public);
 REGISTER_FIELD(TestStruct,C,int,AccessSpecifier::Public);

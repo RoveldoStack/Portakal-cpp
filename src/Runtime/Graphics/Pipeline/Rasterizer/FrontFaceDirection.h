@@ -7,7 +7,7 @@ namespace Portakal
 	/// <summary>
 	/// Available front face directions
 	/// </summary>
-	ENUM();
+	PENUM();
 	enum class PORTAKAL_API FrontFaceDirection : long long
 	{
 		Clockwise,

@@ -1,6 +1,6 @@
 #include "IAssetOpenOperation.h" 
 START_GENERATE_TYPE(IAssetOpenOperation);
-START_TYPE_PROPERTIES(IAssetOpenOperation)
+START_CLASS_TYPE_PROPERTIES(IAssetOpenOperation)
 
 END_TYPE_PROPERTIES;
 NO_DEFAULT_CONSTRUCTOR;

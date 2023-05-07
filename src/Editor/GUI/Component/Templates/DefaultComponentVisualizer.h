@@ -4,6 +4,7 @@
 
 namespace Portakal
 {
+	PCLASS();
 	class PORTAKAL_API DefaultComponentVisualizer : public EditorComponentVisualizer
 	{
 		GENERATE_CLASS(DefaultComponentVisualizer);

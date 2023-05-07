@@ -4,7 +4,8 @@
 
 namespace Portakal
 {
-	CLASS_ATTRIBUTE(CustomAssetVisualizerAttribute, "texture");
+	PCLASS_ATTRIBUTE(CustomAssetVisualizerAttribute, "texture");
+	PCLASS();
 	class PORTAKAL_API TextureAssetVisualizer : public IAssetVisualizer
 	{
 		GENERATE_CLASS(TextureAssetVisualizer);
@@ -15,13 +16,6 @@ namespace Portakal
 		virtual TextureResource* OnPaint(DomainFile* pFile) override;
 	};
 
-	/*START_GENERATE_TYPE(TextureAssetVisualizer);
-	START_TYPE_PROPERTIES(TextureAssetVisualizer);
-	REGISTER_BASE_TYPE(IAssetVisualizer);
-	REGISTER_TYPE_ATTRIBUTE(CustomAssetVisualizerAttribute, "texture");
-	END_TYPE_PROPERTIES;
-	HAS_DEFAULT_CONSTRUCTOR(TextureAssetVisualizer);
-	END_GENERATE_TYPE(TextureAssetVisualizer);*/
 #include "TextureAssetVisualizer.reflect.h"
 
 }

@@ -15,9 +15,11 @@ namespace Portakal
 
 	class EditorResourceAPI;
 	class EditorResource;
+
 	/// <summary>
 	/// An application which authors the editor resources
 	/// </summary>
+	PCLASS();
 	class PORTAKAL_API EditorResourceModule : public ApplicationModule
 	{
 		GENERATE_CLASS(EditorResourceModule);

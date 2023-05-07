@@ -6,7 +6,7 @@ namespace Portakal
 	/// <summary>
 	/// Available mesh shading modes
 	/// </summary>
-	ENUM();
+	PENUM();
 	enum class PORTAKAL_API MeshShadeMode : long long
 	{
 		Solid,

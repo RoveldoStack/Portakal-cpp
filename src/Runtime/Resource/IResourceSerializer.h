@@ -6,6 +6,7 @@
 namespace Portakal
 {
 	class ResourceSubObject;
+	PCLASS();
 	class PORTAKAL_API IResourceSerializer : public Class
 	{
 		GENERATE_CLASS(IResourceSerializer,Virtual);

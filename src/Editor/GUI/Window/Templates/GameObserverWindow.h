@@ -7,6 +7,7 @@ namespace Portakal
 	class DisplayAspect;
 	class RenderTarget;
 	class TextureResource;
+	PCLASS();
 	class PORTAKAL_API GameObserverWindow : public EditorWindow
 	{
 		GENERATE_CLASS(GameObserverWindow);
@@ -36,13 +37,6 @@ namespace Portakal
 		Vector2UI mLastViewportSize;
 		bool mHasResizeRequest;
 	};
-
-	//START_GENERATE_TYPE(GameObserverWindow);
-	//START_TYPE_PROPERTIES(GameObserverWindow);
-	//REGISTER_BASE_TYPE(EditorWindow);
-	//END_TYPE_PROPERTIES;
-	//HAS_DEFAULT_CONSTRUCTOR(GameObserverWindow);
-	//END_GENERATE_TYPE(GameObserverWindow);
 
 #include "GameObserverWindow.reflect.h"
 }

@@ -1,18 +1,19 @@
 #pragma once
 #include <Runtime/Containers/String.h>
 #include <Runtime/Reflection/Type.h>
-
+#include <Runtime/Reflection/Reflection.h>
 namespace Portakal
 {
 	/// <summary>
 	/// Describes a menu item button behaviour
 	/// </summary>
-	class PORTAKAL_API MenuItemBehaviour : Class
+	PCLASS(Virtual);
+	class PORTAKAL_API GUIMenuItemBehaviour : public Class
 	{
-		GENERATE_CLASS(MenuItemBehaviour);
+		GENERATE_CLASS(GUIMenuItemBehaviour);
 	public:
-		MenuItemBehaviour() = default;
-		~MenuItemBehaviour() = default;
+		GUIMenuItemBehaviour() = default;
+		~GUIMenuItemBehaviour() = default;
 
 		/// <summary>
 		/// Called upon clicking
@@ -25,10 +26,5 @@ namespace Portakal
 		/// <returns></returns>
 		virtual String GetItemName() const noexcept { return "No name";}
 	};
-
-	START_GENERATE_TYPE(MenuItemBehaviour);
-	START_TYPE_PROPERTIES(MenuItemBehaviour);
-	END_TYPE_PROPERTIES;
-	NO_DEFAULT_CONSTRUCTOR;
-	END_GENERATE_TYPE(MenuItemBehaviour);
+#include "GUIMenuItemBehaviour.reflect.h"
 }

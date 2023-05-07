@@ -4,7 +4,7 @@
 
 namespace Portakal
 {
-	class MenuItemBehaviour;
+	class GUIMenuItemBehaviour;
 
 	/// <summary>
 	/// Represents a menu item tree hierarchy
@@ -73,7 +73,7 @@ namespace Portakal
 		void SetBehaviour(const Type* pType);
 	private:
 		Array<MenuItemTree*> mSubTrees;
-		MenuItemBehaviour* mBehaviour;
+		GUIMenuItemBehaviour* mBehaviour;
 		String mName;
 	};
 }

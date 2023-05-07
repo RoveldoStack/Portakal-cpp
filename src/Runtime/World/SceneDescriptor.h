@@ -68,10 +68,9 @@ namespace Portakal
 	/// <summary>
 	/// A descriptor for the scene, one can serialize scene into a scene descriptor and later can create a scene from it
 	/// </summary>
-	struct PORTAKAL_API SceneDescriptor : public Class
+	PSTRUCT()
+	struct PORTAKAL_API SceneDescriptor
 	{
-		GENERATE_CLASS(SceneDescriptor);
-
 		SceneDescriptor() = default;
 		~SceneDescriptor() = default;
 

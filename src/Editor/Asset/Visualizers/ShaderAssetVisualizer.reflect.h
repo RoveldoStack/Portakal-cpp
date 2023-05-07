@@ -1,6 +1,6 @@
 #include "ShaderAssetVisualizer.h" 
 START_GENERATE_TYPE(ShaderAssetVisualizer);
-START_TYPE_PROPERTIES(ShaderAssetVisualizer)
+START_CLASS_TYPE_PROPERTIES(ShaderAssetVisualizer)
 REGISTER_BASE_TYPE(IAssetVisualizer);
 REGISTER_TYPE_ATTRIBUTE(CustomAssetVisualizerAttribute, "shader")
 END_TYPE_PROPERTIES;

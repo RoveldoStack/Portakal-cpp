@@ -3,18 +3,16 @@
 
 namespace Portakal
 {
-	class PORTAKAL_API TestStruct : public Class
+	PSTRUCT();
+	struct PORTAKAL_API TestStruct
 	{
-		GENERATE_CLASS(TestStruct);
-	public:
-
-		FIELD();
+		PFIELD();
 		int A;
-		FIELD();
+		PFIELD();
 		int B;
-		FIELD();
+		PFIELD();
 		int C;
-		FIELD();
+		PFIELD();
 		String MyStr;
 	};
 

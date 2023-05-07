@@ -6,6 +6,7 @@
 #include <Runtime/Graphics/Pipeline/Input/InputElementDesc.h>
 namespace Portakal
 {
+	PCLASS();
 	class PORTAKAL_API Mesh : public ResourceSubObject
 	{
 		GENERATE_CLASS(Mesh);

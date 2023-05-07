@@ -1,6 +1,6 @@
 #include "EditorWindowSetting.h" 
 START_GENERATE_TYPE(EditorWindowSetting);
-START_TYPE_PROPERTIES(EditorWindowSetting)
+START_STRUCT_TYPE_PROPERTIES(EditorWindowSetting)
 REGISTER_FIELD(EditorWindowSetting,Name,String,AccessSpecifier::Public);
 REGISTER_FIELD(EditorWindowSetting,ID,Guid,AccessSpecifier::Public);
 REGISTER_FIELD(EditorWindowSetting,DockState,EditorWindowDockState,AccessSpecifier::Public);

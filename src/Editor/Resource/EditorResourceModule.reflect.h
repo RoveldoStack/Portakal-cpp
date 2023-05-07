@@ -1,6 +1,6 @@
 #include "EditorResourceModule.h" 
 START_GENERATE_TYPE(EditorResourceModule);
-START_TYPE_PROPERTIES(EditorResourceModule)
+START_CLASS_TYPE_PROPERTIES(EditorResourceModule)
 REGISTER_BASE_TYPE(ApplicationModule);
 
 END_TYPE_PROPERTIES;

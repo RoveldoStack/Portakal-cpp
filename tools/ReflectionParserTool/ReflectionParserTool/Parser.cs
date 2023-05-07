@@ -8,6 +8,12 @@ namespace ReflectionParserTool
 {
     internal static class Parser
     {
+        private struct ReflectionEnableUnit
+        {
+            public string HeaderFile;
+            public string Content;
+            public ObjectType Type;
+        }
       
         private static ObjectEntry? FindClass(IReadOnlyCollection<ObjectEntry> entries,string name)
         {
@@ -16,6 +22,17 @@ namespace ReflectionParserTool
                     return entry;
 
             return null;
+        }
+        internal static void Clear(string targetDirectory)
+        {
+            /*
+            * Collect all the files with extension .reflect.h
+            */
+            string[] headerFiles = Directory.GetFiles(targetDirectory, "*.reflect.h", SearchOption.AllDirectories);
+            foreach (string headerFile in headerFiles) 
+            {
+                File.Delete(headerFile);
+            }
         }
         internal static void Parse(string targetDirectory)
         {
@@ -29,17 +46,24 @@ namespace ReflectionParserTool
             /*
              * Collect classes
              */
-            List<string> reflectionEnabledClasses = new List<string>();
+            List<ReflectionEnableUnit> reflectionEnabledUnits = new List<ReflectionEnableUnit>();
             foreach (string headerFile in headerFiles)
             {
                 string fileContent = File.ReadAllText(headerFile);
 
-                int index = fileContent.IndexOf("GENERATE_CLASS");
-
-                if (index == -1)
+                int index = fileContent.IndexOf("PCLASS");
+                if (index != -1)
+                {
+                    reflectionEnabledUnits.Add(new ReflectionEnableUnit() { HeaderFile = headerFile,Content = fileContent,Type = ObjectType.Class});
                     continue;
+                }
+                index = fileContent.IndexOf("PSTRUCT");
+                if (index != -1)
+                {
+                    reflectionEnabledUnits.Add(new ReflectionEnableUnit() { HeaderFile = headerFile, Content = fileContent, Type = ObjectType.Struct });
+                    continue;
+                }
 
-                reflectionEnabledClasses.Add(headerFile);
             }
 
             /*
@@ -50,7 +74,10 @@ namespace ReflectionParserTool
             {
                 string fileContent = File.ReadAllText(headerFile, Encoding.UTF8);
 
-                int index = fileContent.IndexOf("ENUM()");
+                if (fileContent.IndexOf("#define PENUM") != -1)
+                    continue;
+
+                int index = fileContent.IndexOf("PENUM");
 
                 if (index == -1)
                     continue;
@@ -62,22 +89,21 @@ namespace ReflectionParserTool
             /*
              * First collect all the reflected classes and their local properties
              */
-            foreach(string headerFilePath in reflectionEnabledClasses)
+            foreach(ReflectionEnableUnit unit in reflectionEnabledUnits)
             {
-                string className = Path.GetFileNameWithoutExtension(headerFilePath);
-                string fileContent = File.ReadAllText(headerFilePath);
+                string className = Path.GetFileNameWithoutExtension(unit.HeaderFile);
 
                 /*
                  * Try find class name
                  */
-                int classNameCursor = fileContent.IndexOf(className);
+                int classNameCursor = unit.Content.IndexOf(className);
                 if (classNameCursor == -1)
                     continue;
                 if (className == "Class")
                     continue;
 
-                bool bVirtual = !fileContent.Contains("Virtual");
-                objectEntries.Add(new ObjectEntry(className,headerFilePath,fileContent, ObjectType.Class,bVirtual,false));  
+                bool bVirtual = unit.Content.Contains("Virtual");
+                objectEntries.Add(new ObjectEntry(className,unit.HeaderFile,unit.Content,unit.Type,bVirtual,false));  
             }
 
             /*
@@ -130,6 +156,11 @@ namespace ReflectionParserTool
                 if (entry.IsEnum)
                     continue;
 
+               
+                if(entry.Name == "Guid")
+                {
+                    Console.WriteLine("wee");
+                }
                 /*
                  * Try find class name
                  */
@@ -140,44 +171,50 @@ namespace ReflectionParserTool
                 /*
                  * Try collect base classes
                  */
-                int baseClassStartCursor = entry.FileContent.IndexOf(":", classNameCursor);
-                int baseClassEndCursor = entry.FileContent.IndexOf("{", baseClassStartCursor);
-
-                if (baseClassStartCursor != -1 || baseClassEndCursor != -1) // validate that we have a proper base class section
+                if(entry.Type == ObjectType.Class)
                 {
-                    string baseClassSubString = entry.FileContent.Substring(baseClassStartCursor + 1, (baseClassEndCursor - baseClassStartCursor) - 1);
-                    string[] baseClassFragments = baseClassSubString.Split(" ");
-
-                    foreach (string fragment in baseClassFragments)
+                    int baseClassStartCursor = entry.FileContent.IndexOf(":", classNameCursor);
+                    int baseClassEndCursor = entry.FileContent.IndexOf("{", baseClassStartCursor == -1 ? 0 : baseClassStartCursor);
+                    if (baseClassStartCursor != -1 && baseClassEndCursor != -1)
                     {
-                        string trimmmed = fragment.Trim();
-                        if (trimmmed == "public" || trimmmed == " " || trimmmed == string.Empty || trimmmed == System.Environment.NewLine)
-                            continue;
+                        if (baseClassStartCursor != -1 || baseClassEndCursor != -1) // validate that we have a proper base class section
+                        {
+                            string baseClassSubString = entry.FileContent.Substring(baseClassStartCursor + 1, (baseClassEndCursor - baseClassStartCursor) - 1);
+                            string[] baseClassFragments = baseClassSubString.Split(" ");
 
-                        ObjectEntry? baseClass = FindClass(objectEntries, trimmmed);
-                        if (baseClass == null)
-                            continue;
+                            foreach (string fragment in baseClassFragments)
+                            {
+                                string trimmmed = fragment.Trim();
+                                if (trimmmed == "public" || trimmmed == " " || trimmmed == string.Empty || trimmmed == System.Environment.NewLine)
+                                    continue;
 
-                        entry.RegisterBaseObject(baseClass);
+                                ObjectEntry? baseClass = FindClass(objectEntries, trimmmed);
+                                if (baseClass == null)
+                                    continue;
+
+                                entry.RegisterBaseObject(baseClass);
+                            }
+                        }
                     }
                 }
+
 
                 /*
                  * Try collect class attributes
                  */
-                int classAttributeCursor = entry.FileContent.IndexOf("CLASS_ATTRIBUTE");
+                int classAttributeCursor = entry.FileContent.IndexOf("PCLASS_ATTRIBUTE");
                 while(classAttributeCursor != -1)
                 {
                     int attributeEndCursor = entry.FileContent.IndexOf(System.Environment.NewLine, classAttributeCursor);
                     string subStr = entry.FileContent.Substring(classAttributeCursor, (attributeEndCursor-classAttributeCursor));
                     subStr = subStr.Trim();
-                    subStr = subStr.Replace("CLASS_ATTRIBUTE(", string.Empty);
+                    subStr = subStr.Replace("PCLASS_ATTRIBUTE(", string.Empty);
                     subStr = subStr.Replace(");", string.Empty);
 
                     int parameterStart = subStr.IndexOf(",");
                     if(parameterStart == -1) // has no parameters
                     {
-                        classAttributeCursor = entry.FileContent.IndexOf("CLASS_ATTRIBUTE", attributeEndCursor);
+                        classAttributeCursor = entry.FileContent.IndexOf("PCLASS_ATTRIBUTE", attributeEndCursor);
                         continue;
                     }
 
@@ -186,20 +223,20 @@ namespace ReflectionParserTool
 
                     entry.RegisterClassAttribute(attributeName, attributeParameters);
 
-                    classAttributeCursor = entry.FileContent.IndexOf("CLASS_ATTRIBUTE", attributeEndCursor);
+                    classAttributeCursor = entry.FileContent.IndexOf("PCLASS_ATTRIBUTE", attributeEndCursor);
                 }
 
                 /*
                  * Try collect fields
                  */
-                int fieldStartCursor = entry.FileContent.IndexOf("FIELD()");
+                int fieldStartCursor = entry.FileContent.IndexOf("PFIELD");
                 while(fieldStartCursor != -1)
                 {
                     int fieldEndCursor = entry.FileContent.IndexOf(";",fieldStartCursor);
 
                     if(fieldEndCursor == -1)
                     {
-                        fieldStartCursor = entry.FileContent.IndexOf("FIELD()", fieldStartCursor + "FIELD()".Length);
+                        fieldStartCursor = entry.FileContent.IndexOf("PFIELD", fieldStartCursor + "PFIELD".Length);
                         continue;
                     }
 
@@ -207,7 +244,7 @@ namespace ReflectionParserTool
                     int fieldBodyEndCursor = entry.FileContent.IndexOf(";", fieldBodyStartCursor+1);
                     if(fieldBodyEndCursor == -1)
                     {
-                        fieldStartCursor = entry.FileContent.IndexOf("FIELD()", fieldBodyEndCursor);
+                        fieldStartCursor = entry.FileContent.IndexOf("PFIELD", fieldBodyEndCursor);
                         continue;
                     }
 
@@ -218,9 +255,19 @@ namespace ReflectionParserTool
                     string fieldType = fragments[0];
                     string fieldName = fragments[1];
                     bool bArray = fieldType.Contains("Array");
-                    entry.RegisterField(fieldType, fieldName,bArray);
+                    if(bArray)
+                    {
+                        string elementType = fieldType;
+                        elementType = elementType.Replace("Array<", "");
+                        elementType = elementType.Replace(">", "");
+                        entry.RegisterFieldArray(fieldType, fieldName, elementType);
+                    }
+                    else
+                    {
+                        entry.RegisterField(fieldType, fieldName);
 
-                    fieldStartCursor = entry.FileContent.IndexOf("FIELD()", fieldBodyEndCursor);
+                    }
+                    fieldStartCursor = entry.FileContent.IndexOf("PFIELD", fieldBodyEndCursor);
                 }
             }
 
@@ -252,14 +299,24 @@ namespace ReflectionParserTool
                 }
                 foreach(FieldEntry field in entry.Fields)
                 {
-                    registerContent += $"REGISTER_FIELD({entry.Name},{field.Name},{field.Type},AccessSpecifier::Public);{System.Environment.NewLine}";
+                    if(field.IsArray)
+                    {
+                        registerContent += $"REGISTER_ARRAY_FIELD({entry.Name},{field.Name},{field.ElementType},AccessSpecifier::Public);{System.Environment.NewLine}";
+
+                    }
+                    else
+                    {
+                        registerContent += $"REGISTER_FIELD({entry.Name},{field.Name},{field.Type},AccessSpecifier::Public);{System.Environment.NewLine}";
+
+                    }
                 }
                
-                string constructorType = entry.IsVirtual ? $"HAS_DEFAULT_CONSTRUCTOR({entry.Name});" : "NO_DEFAULT_CONSTRUCTOR;";
+                string constructorType = !entry.IsVirtual ? $"HAS_DEFAULT_CONSTRUCTOR({entry.Name});" : "NO_DEFAULT_CONSTRUCTOR;";
+                string typePropertiesType = entry.Type == ObjectType.Class  ? "START_CLASS_TYPE_PROPERTIES" : "START_STRUCT_TYPE_PROPERTIES";
                 string fileContent = $"""
 #include "{entry.Name}.h" 
 START_GENERATE_TYPE({entry.Name});
-START_TYPE_PROPERTIES({entry.Name})
+{typePropertiesType}({entry.Name})
 {registerContent}
 END_TYPE_PROPERTIES;
 {constructorType}
@@ -267,6 +324,8 @@ END_GENERATE_TYPE({entry.Name});
 """;
                 string fileName = entry.Folder + $@"\{entry.Name}.reflect.h";
                 File.WriteAllText(fileName, fileContent);
+
+                Console.WriteLine($"Written reflect file for: {entry.Name}-{entry.Folder}");
             }
 
             foreach (ObjectEntry entry in objectEntries)

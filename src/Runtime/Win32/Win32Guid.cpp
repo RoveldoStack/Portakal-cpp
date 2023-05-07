@@ -6,7 +6,7 @@ namespace Portakal
 {
 	void Win32Guid::Create(Guid& id)
 	{
-		const HRESULT createHR = CoCreateGuid((GUID*)&id);
+		const HRESULT createHR = CoCreateGuid((GUID*)&id.A);
 		ASSERT(SUCCEEDED(createHR), "Win32Guid", "Guid creation failed!");
 	}
 }

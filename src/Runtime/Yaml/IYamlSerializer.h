@@ -7,6 +7,7 @@ namespace Portakal
 	/// <summary>
 	/// Serialization interface for the yaml, which authors both serialization and deserialization implementation
 	/// </summary>
+	PCLASS();
 	class PORTAKAL_API IYamlSerializer : public Class
 	{
 		GENERATE_CLASS(IYamlSerializer,Virtual);

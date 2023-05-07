@@ -1,6 +1,6 @@
 #include "YamlSerializerAttribute.h" 
 START_GENERATE_TYPE(YamlSerializerAttribute);
-START_TYPE_PROPERTIES(YamlSerializerAttribute)
+START_CLASS_TYPE_PROPERTIES(YamlSerializerAttribute)
 
 END_TYPE_PROPERTIES;
 HAS_DEFAULT_CONSTRUCTOR(YamlSerializerAttribute);

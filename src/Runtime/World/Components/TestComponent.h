@@ -1,4 +1,5 @@
 #pragma once
+#include <Runtime/Reflection/Reflection.h>
 #include <Runtime/World/Component.h>
 #include <Runtime/World/Components/TestEnum.h>
 #include <Runtime/World/Components/TestStruct.h>
@@ -6,22 +7,23 @@
 
 namespace Portakal
 {
+	PCLASS();
 	class PORTAKAL_API TestComponent : public Component
 	{
 		GENERATE_CLASS(TestComponent);
 	public:
 
-		FIELD();
+		PFIELD();
 		int int0;
-		FIELD();
+		PFIELD();
 		int int1;
-		FIELD();
+		PFIELD();
 		int int3;
 
-		FIELD();
+		PFIELD();
 		TestEnum myEnum;
 
-		FIELD();
+		PFIELD();
 		TestStruct someTestStruct;
 
 		Array<TestStruct> MyIntArray;

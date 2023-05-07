@@ -1,6 +1,6 @@
 #include "Transform2DComponent.h" 
 START_GENERATE_TYPE(Transform2DComponent);
-START_TYPE_PROPERTIES(Transform2DComponent)
+START_CLASS_TYPE_PROPERTIES(Transform2DComponent)
 REGISTER_BASE_TYPE(Component);
 
 END_TYPE_PROPERTIES;

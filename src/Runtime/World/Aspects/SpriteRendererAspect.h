@@ -5,6 +5,7 @@ namespace Portakal
 {
 	class CommandList;
 	class SpriteCamera;
+	PCLASS();
 	class PORTAKAL_API SpriteRendererAspect : public SceneAspect
 	{
 		GENERATE_CLASS(SpriteRendererAspect);

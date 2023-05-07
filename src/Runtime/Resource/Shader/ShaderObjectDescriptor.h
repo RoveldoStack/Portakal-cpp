@@ -5,15 +5,17 @@
 
 namespace Portakal
 {
-	struct PORTAKAL_API ShaderObjectDescriptor : public Class
+	PSTRUCT();
+	struct PORTAKAL_API ShaderObjectDescriptor
 	{
-		GENERATE_CLASS(ShaderObjectDescriptor);
-
 		ShaderObjectDescriptor() = default;
 		~ShaderObjectDescriptor() = default;
 
+		PFIELD();
 		String Source;
+		PFIELD();
 		String EntryPoint;
+		PFIELD();
 		ShaderStage Stage;
 	};
 

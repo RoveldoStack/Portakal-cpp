@@ -1,6 +1,6 @@
 #include "InvalidAspect.h" 
 START_GENERATE_TYPE(InvalidAspect);
-START_TYPE_PROPERTIES(InvalidAspect)
+START_CLASS_TYPE_PROPERTIES(InvalidAspect)
 REGISTER_BASE_TYPE(SceneAspect);
 
 END_TYPE_PROPERTIES;

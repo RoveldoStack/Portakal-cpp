@@ -1,6 +1,6 @@
 #include "ApplicationModule.h" 
 START_GENERATE_TYPE(ApplicationModule);
-START_TYPE_PROPERTIES(ApplicationModule)
+START_CLASS_TYPE_PROPERTIES(ApplicationModule)
 
 END_TYPE_PROPERTIES;
 NO_DEFAULT_CONSTRUCTOR;

@@ -8,6 +8,7 @@ namespace Portakal
 	/// <summary>
 	/// An application module which authors the core main menu bar components
 	/// </summary>
+	PCLASS();
 	class PORTAKAL_API GUIMainMenuItemModule : public ApplicationModule
 	{
 		GENERATE_CLASS(GUIMainMenuItemModule);

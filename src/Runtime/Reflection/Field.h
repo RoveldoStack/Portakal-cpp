@@ -99,6 +99,4 @@ namespace Portakal
 #define REGISTER_ARRAY_FIELD(cls,member,elementType) pType->_RegisterField(new Field(typeof(Array<char>),#member,offsetof(cls,member),AccessSpecifier::Public,typeof(elementType)));
 
 #define REGISTER_FIELD_SELF(cls,member,accessSpecifier) pType->_RegisterField(new Field(pType,#member,offsetof(cls,member),accessSpecifier));
-
-#define FIELD()
 }

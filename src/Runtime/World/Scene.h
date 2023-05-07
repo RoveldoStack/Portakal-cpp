@@ -14,6 +14,7 @@ namespace Portakal
 	/// Aspects defines the properties of a scene.
 	/// Entities populates these properties.
 	/// </summary>
+	PCLASS();
 	class PORTAKAL_API Scene : public ResourceSubObject
 	{
 		friend class SceneAPI;

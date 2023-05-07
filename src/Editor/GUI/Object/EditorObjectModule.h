@@ -4,6 +4,7 @@
 namespace Portakal
 {
 	class EditorObjectAPI;
+	PCLASS();
 	class PORTAKAL_API EditorObjectModule : public ApplicationModule
 	{
 		GENERATE_CLASS(EditorObjectModule);

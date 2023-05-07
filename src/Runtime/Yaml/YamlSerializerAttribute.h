@@ -6,6 +6,7 @@ namespace Portakal
 	/// <summary>
 	/// Used for marking serializer class and enabling him to be viewed by the reflection, so can yaml framework can find it and use it for the target type
 	/// </summary>
+	PCLASS();
 	class PORTAKAL_API YamlSerializerAttribute : public Attribute
 	{
 		GENERATE_CLASS(YamlSerializerAttribute);

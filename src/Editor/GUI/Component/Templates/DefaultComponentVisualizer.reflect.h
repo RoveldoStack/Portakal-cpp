@@ -1,6 +1,6 @@
 #include "DefaultComponentVisualizer.h" 
 START_GENERATE_TYPE(DefaultComponentVisualizer);
-START_TYPE_PROPERTIES(DefaultComponentVisualizer)
+START_CLASS_TYPE_PROPERTIES(DefaultComponentVisualizer)
 REGISTER_BASE_TYPE(EditorComponentVisualizer);
 
 END_TYPE_PROPERTIES;

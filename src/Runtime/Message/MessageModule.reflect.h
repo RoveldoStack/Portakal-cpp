@@ -1,6 +1,6 @@
 #include "MessageModule.h" 
 START_GENERATE_TYPE(MessageModule);
-START_TYPE_PROPERTIES(MessageModule)
+START_CLASS_TYPE_PROPERTIES(MessageModule)
 REGISTER_BASE_TYPE(ApplicationModule);
 
 END_TYPE_PROPERTIES;

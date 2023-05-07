@@ -1,6 +1,6 @@
 #include "SceneModule.h" 
 START_GENERATE_TYPE(SceneModule);
-START_TYPE_PROPERTIES(SceneModule)
+START_CLASS_TYPE_PROPERTIES(SceneModule)
 REGISTER_BASE_TYPE(ApplicationModule);
 
 END_TYPE_PROPERTIES;

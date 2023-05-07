@@ -8,6 +8,7 @@ namespace Portakal
 	/// <summary>
 	/// An application modules which is responsible for the messaging throughout the application
 	/// </summary>
+	PCLASS();
 	class PORTAKAL_API MessageModule : public ApplicationModule
 	{
 		GENERATE_CLASS(MessageModule);

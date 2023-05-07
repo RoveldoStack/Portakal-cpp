@@ -9,26 +9,25 @@ namespace Portakal
 	/// <summary>
 	/// Domain file descriptor for yaml serialization
 	/// </summary>
-	struct PORTAKAL_API DomainFileDescriptor : public Class
+	PSTRUCT();
+	struct PORTAKAL_API DomainFileDescriptor
 	{
-		GENERATE_CLASS(DomainFileDescriptor);
-
 		/// <summary>
 		/// Resource type
 		/// </summary>
-		FIELD();
+		PFIELD();
 		String ResourceType;
 
 		/// <summary>
 		/// Source file path
 		/// </summary>
-		FIELD();
+		PFIELD();
 		String SourceFile;
 
 		/// <summary>
 		/// Unique id
 		/// </summary>
-		FIELD();
+		PFIELD();
 		Guid ID;
 	};
 

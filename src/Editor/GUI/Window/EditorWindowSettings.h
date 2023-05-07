@@ -10,10 +10,9 @@ namespace Portakal
 	/// <summary>
 	/// Editor window settings file
 	/// </summary>
-	struct PORTAKAL_API EditorWindowSettings : public Class
+	PSTRUCT();
+	struct PORTAKAL_API EditorWindowSettings
 	{
-		GENERATE_CLASS(EditorWindowSettings);
-
 		/// <summary>
 		/// Generates the default window layout
 		/// </summary>
@@ -57,7 +56,7 @@ namespace Portakal
 			return settings;
 		}
 
-		FIELD();
+		PFIELD();
 		Array<EditorWindowSetting> Windows;
 	};
 

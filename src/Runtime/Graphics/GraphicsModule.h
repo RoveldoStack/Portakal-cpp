@@ -9,6 +9,7 @@ namespace Portakal
 	/// <summary>
 	/// An application modules designed to author the core graphics related stuff
 	/// </summary>
+	PCLASS();
 	class PORTAKAL_API GraphicsModule : public ApplicationModule
 	{
 		GENERATE_CLASS(GraphicsModule,Virtual);

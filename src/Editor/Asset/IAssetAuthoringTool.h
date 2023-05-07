@@ -8,6 +8,7 @@ namespace Portakal
 	/// <summary>
 	/// Asset authorization tool interface, used for displaying the asset specific configurations in the editor.
 	/// </summary>
+	PCLASS();
 	class PORTAKAL_API IAssetAuthoringTool : public Class
 	{
 		GENERATE_CLASS(IAssetAuthoringTool,Virtual);
@@ -32,12 +33,6 @@ namespace Portakal
 		virtual void OnFinalize() = 0;
 
 	};
-
-	//START_GENERATE_TYPE(IAssetAuthoringTool);
-	//START_TYPE_PROPERTIES(IAssetAuthoringTool);
-	//END_TYPE_PROPERTIES;
-	//NO_DEFAULT_CONSTRUCTOR;
-	//END_GENERATE_TYPE(IAssetAuthoringTool);
 
 #include "IAssetAuthoringTool.reflect.h"
 }

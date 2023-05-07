@@ -17,6 +17,7 @@ namespace Portakal
 	/// <summary>
 	/// An application module which authors the core components of the project
 	/// </summary>
+	PCLASS();
 	class PORTAKAL_API ProjectModule : public ApplicationModule
 	{
 		GENERATE_CLASS(ProjectModule);

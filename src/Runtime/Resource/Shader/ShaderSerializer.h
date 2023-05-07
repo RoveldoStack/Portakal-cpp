@@ -4,7 +4,8 @@
 
 namespace Portakal
 {
-	CLASS_ATTRIBUTE(CustomResourceSerializerAttribute, "shader");
+	PCLASS_ATTRIBUTE(CustomResourceSerializerAttribute, "shader");
+	PCLASS();
 	class PORTAKAL_API ShaderSerializer : public IResourceSerializer
 	{
 		GENERATE_CLASS(ShaderSerializer);

@@ -111,6 +111,6 @@ namespace Portakal
 	}
 	void MenuItemTree::SetBehaviour(const Type* pType)
 	{
-		mBehaviour = (MenuItemBehaviour*)pType->CreateDefaultHeapObject();
+		mBehaviour = (GUIMenuItemBehaviour*)pType->CreateDefaultHeapObject();
 	}
 }

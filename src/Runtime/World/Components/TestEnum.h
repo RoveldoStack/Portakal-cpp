@@ -2,7 +2,7 @@
 #include <Runtime/Reflection/Reflection.h>
 namespace Portakal
 {
-	ENUM();
+	PENUM();
 	enum class PORTAKAL_API TestEnum : long long
 	{
 		A,

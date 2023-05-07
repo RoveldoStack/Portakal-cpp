@@ -1,0 +1,8 @@
+#include "DomainModule.h" 
+START_GENERATE_TYPE(DomainModule);
+START_CLASS_TYPE_PROPERTIES(DomainModule)
+REGISTER_BASE_TYPE(ApplicationModule);
+
+END_TYPE_PROPERTIES;
+HAS_DEFAULT_CONSTRUCTOR(DomainModule);
+END_GENERATE_TYPE(DomainModule);

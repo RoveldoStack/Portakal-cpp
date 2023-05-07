@@ -1,6 +1,6 @@
 #include "CustomAssetProcessorAttribute.h" 
 START_GENERATE_TYPE(CustomAssetProcessorAttribute);
-START_TYPE_PROPERTIES(CustomAssetProcessorAttribute)
+START_CLASS_TYPE_PROPERTIES(CustomAssetProcessorAttribute)
 
 END_TYPE_PROPERTIES;
 HAS_DEFAULT_CONSTRUCTOR(CustomAssetProcessorAttribute);

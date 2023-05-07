@@ -5,7 +5,8 @@
 
 namespace Portakal
 {
-	CLASS_ATTRIBUTE(CustomEditorComponentAttribute, typeof(SpriteCamera));
+	PCLASS_ATTRIBUTE(CustomEditorComponentAttribute, typeof(SpriteCamera));
+	PCLASS();
 	class PORTAKAL_API SpriteCameraComponentVisualizer : public EditorComponentVisualizer
 	{
 		GENERATE_CLASS(SpriteCameraComponentVisualizer);

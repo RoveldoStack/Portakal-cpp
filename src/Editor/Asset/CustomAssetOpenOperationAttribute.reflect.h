@@ -1,6 +1,6 @@
 #include "CustomAssetOpenOperationAttribute.h" 
 START_GENERATE_TYPE(CustomAssetOpenOperationAttribute);
-START_TYPE_PROPERTIES(CustomAssetOpenOperationAttribute)
+START_CLASS_TYPE_PROPERTIES(CustomAssetOpenOperationAttribute)
 
 END_TYPE_PROPERTIES;
 HAS_DEFAULT_CONSTRUCTOR(CustomAssetOpenOperationAttribute);

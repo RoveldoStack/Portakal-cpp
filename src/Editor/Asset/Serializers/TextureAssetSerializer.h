@@ -4,7 +4,8 @@
 
 namespace Portakal
 {
-	CLASS_ATTRIBUTE(CustomAssetSerializerAttribute, "texture");
+	PCLASS_ATTRIBUTE(CustomAssetSerializerAttribute, "texture");
+	PCLASS();
 	class PORTAKAL_API TextureAssetSerializer : public IAssetSerializer
 	{
 		GENERATE_CLASS(TextureAssetSerializer);
@@ -16,13 +17,5 @@ namespace Portakal
 		virtual void SerializeToPackage(const ResourceSubObject* pObject, ByteBlock& outBlock) override;
 
 	};
-
-	//START_GENERATE_TYPE(TextureAssetSerializer);
-	//START_TYPE_PROPERTIES(TextureAssetSerializer);
-	//REGISTER_BASE_TYPE(IAssetSerializer);
-	//REGISTER_TYPE_ATTRIBUTE(CustomAssetSerializerAttribute, "texture");
-	//END_TYPE_PROPERTIES;
-	//HAS_DEFAULT_CONSTRUCTOR(TextureAssetSerializer);
-	//END_GENERATE_TYPE(TextureAssetSerializer);
 #include "TextureAssetSerializer.reflect.h"
 }

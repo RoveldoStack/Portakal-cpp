@@ -4,6 +4,7 @@
 namespace Portakal
 {
 	class RenderTarget;
+	PCLASS();
 	class PORTAKAL_API DisplayAspect : public SceneAspect
 	{
 		GENERATE_CLASS(DisplayAspect);

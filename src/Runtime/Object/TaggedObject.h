@@ -7,6 +7,7 @@ namespace Portakal
 	/// <summary>
 	/// Represents an identifiable unique object
 	/// </summary>
+	PCLASS();
 	class PORTAKAL_API TaggedObject : public Class
 	{
 		friend class GarbageCollector;

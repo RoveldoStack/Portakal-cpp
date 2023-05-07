@@ -8,6 +8,7 @@ namespace Portakal
 	/// <summary>
 	/// The module which authors the ownership of the InputAPI
 	/// </summary>
+	PCLASS();
 	class PORTAKAL_API InputModule : public ApplicationModule
 	{
 		GENERATE_CLASS(InputModule);

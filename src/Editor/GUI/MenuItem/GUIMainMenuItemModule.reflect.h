@@ -1,6 +1,6 @@
 #include "GUIMainMenuItemModule.h" 
 START_GENERATE_TYPE(GUIMainMenuItemModule);
-START_TYPE_PROPERTIES(GUIMainMenuItemModule)
+START_CLASS_TYPE_PROPERTIES(GUIMainMenuItemModule)
 REGISTER_BASE_TYPE(ApplicationModule);
 
 END_TYPE_PROPERTIES;

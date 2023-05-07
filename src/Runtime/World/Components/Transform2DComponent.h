@@ -5,6 +5,7 @@
 
 namespace Portakal
 {
+	PCLASS();
 	class PORTAKAL_API Transform2DComponent : public Component
 	{
 		GENERATE_CLASS(Transform2DComponent);

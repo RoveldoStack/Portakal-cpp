@@ -1,6 +1,6 @@
 #include "EditorGameModule.h" 
 START_GENERATE_TYPE(EditorGameModule);
-START_TYPE_PROPERTIES(EditorGameModule)
+START_CLASS_TYPE_PROPERTIES(EditorGameModule)
 REGISTER_BASE_TYPE(ApplicationModule);
 
 END_TYPE_PROPERTIES;

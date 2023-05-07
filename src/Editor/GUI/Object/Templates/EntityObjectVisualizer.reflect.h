@@ -1,6 +1,6 @@
 #include "EntityObjectVisualizer.h" 
 START_GENERATE_TYPE(EntityObjectVisualizer);
-START_TYPE_PROPERTIES(EntityObjectVisualizer)
+START_CLASS_TYPE_PROPERTIES(EntityObjectVisualizer)
 REGISTER_BASE_TYPE(EditorObjectVisualizer);
 REGISTER_TYPE_ATTRIBUTE(CustomEditorObjectAttribute, typeof(Entity))
 END_TYPE_PROPERTIES;

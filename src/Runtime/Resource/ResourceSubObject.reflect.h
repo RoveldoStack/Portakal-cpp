@@ -1,6 +1,6 @@
 #include "ResourceSubObject.h" 
 START_GENERATE_TYPE(ResourceSubObject);
-START_TYPE_PROPERTIES(ResourceSubObject)
+START_CLASS_TYPE_PROPERTIES(ResourceSubObject)
 REGISTER_BASE_TYPE(TaggedObject);
 
 END_TYPE_PROPERTIES;

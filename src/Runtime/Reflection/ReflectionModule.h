@@ -5,6 +5,7 @@ namespace Portakal
 {
 	class AppDomain;
 	class ReflectionAPI;
+	PCLASS();
 	class PORTAKAL_API ReflectionModule : public ApplicationModule
 	{
 		GENERATE_CLASS(ReflectionModule);

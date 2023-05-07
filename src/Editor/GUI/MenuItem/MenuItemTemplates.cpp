@@ -6,7 +6,7 @@
 
 namespace Portakal
 {
-	void CreateEmptySceneButton::OnClick()
+	/*void CreateEmptySceneButton::OnClick()
 	{
 		Scene* pScene = new Scene();
 		pScene->MarkPrimal();
@@ -24,5 +24,5 @@ namespace Portakal
 			return;
 
 		pAspect->RegisterDisplay(pRt);
-	}
+	}*/
 }

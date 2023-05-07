@@ -8,6 +8,7 @@ namespace Portakal
 	/// <summary>
 	/// Application module which authors the domain components
 	/// </summary>
+	PCLASS();
 	class PORTAKAL_API DomainModule : public ApplicationModule
 	{
 	public:

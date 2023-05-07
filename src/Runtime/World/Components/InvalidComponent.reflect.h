@@ -1,6 +1,6 @@
 #include "InvalidComponent.h" 
 START_GENERATE_TYPE(InvalidComponent);
-START_TYPE_PROPERTIES(InvalidComponent)
+START_CLASS_TYPE_PROPERTIES(InvalidComponent)
 REGISTER_BASE_TYPE(Component);
 
 END_TYPE_PROPERTIES;

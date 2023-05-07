@@ -5,7 +5,8 @@
 
 namespace Portakal
 {
-	CLASS_ATTRIBUTE(CustomAssetOpenOperationAttribute, "scene");
+	PCLASS_ATTRIBUTE(CustomAssetOpenOperationAttribute, "scene");
+	PCLASS();
 	class PORTAKAL_API SceneOpenOperation : public IAssetOpenOperation
 	{
 		GENERATE_CLASS(SceneOpenOperation);
@@ -13,13 +14,6 @@ namespace Portakal
 		virtual void OnOpen(DomainFile* pFile) override;
 	};
 
-	//START_GENERATE_TYPE(SceneOpenOperation);
-	//START_TYPE_PROPERTIES(SceneOpenOperation);
-	//REGISTER_BASE_TYPE(IAssetOpenOperation);
-	//REGISTER_TYPE_ATTRIBUTE(CustomAssetOpenOperationAttribute,"scene");
-	//END_TYPE_PROPERTIES;
-	//HAS_DEFAULT_CONSTRUCTOR(SceneOpenOperation);
-	//END_GENERATE_TYPE(SceneOpenOperation);
 
 #include "SceneOpenOperation.reflect.h"
 }

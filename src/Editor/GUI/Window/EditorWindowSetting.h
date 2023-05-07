@@ -8,35 +8,34 @@ namespace Portakal
 	/// <summary>
 	/// Editor window settings
 	/// </summary>
-	struct PORTAKAL_API EditorWindowSetting : public Class
+	PSTRUCT();
+	struct PORTAKAL_API EditorWindowSetting
 	{
-		GENERATE_CLASS(EditorWindowSetting);
-
 		EditorWindowSetting() = default;
 		~EditorWindowSetting() = default;
 
 		/// <summary>
 		/// Title of the window
 		/// </summary>
-		FIELD();
+		PFIELD();
 		String Name;
 
 		/// <summary>
 		/// Unique id of the window
 		/// </summary>
-		FIELD();
+		PFIELD();
 		Guid ID;
 
 		/// <summary>
 		/// Dock state of the window
 		/// </summary>
-		FIELD();
+		PFIELD();
 		EditorWindowDockState DockState;
 
 		/// <summary>
 		/// Owner window id
 		/// </summary>
-		FIELD();
+		PFIELD();
 		Guid OwnerID;
 	};
 

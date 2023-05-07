@@ -8,6 +8,7 @@ namespace Portakal
 	/// <summary>
 	/// Represents a loaded resource object
 	/// </summary>
+	PCLASS();
 	class PORTAKAL_API ResourceSubObject : public TaggedObject
 	{
 		friend class Resource;

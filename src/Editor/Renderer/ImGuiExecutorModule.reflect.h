@@ -1,6 +1,6 @@
 #include "ImGuiExecutorModule.h" 
 START_GENERATE_TYPE(ImGuiExecutorModule);
-START_TYPE_PROPERTIES(ImGuiExecutorModule)
+START_CLASS_TYPE_PROPERTIES(ImGuiExecutorModule)
 REGISTER_BASE_TYPE(ApplicationModule);
 
 END_TYPE_PROPERTIES;

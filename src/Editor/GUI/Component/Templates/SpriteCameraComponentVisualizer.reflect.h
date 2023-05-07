@@ -1,6 +1,6 @@
 #include "SpriteCameraComponentVisualizer.h" 
 START_GENERATE_TYPE(SpriteCameraComponentVisualizer);
-START_TYPE_PROPERTIES(SpriteCameraComponentVisualizer)
+START_CLASS_TYPE_PROPERTIES(SpriteCameraComponentVisualizer)
 REGISTER_BASE_TYPE(EditorComponentVisualizer);
 REGISTER_TYPE_ATTRIBUTE(CustomEditorComponentAttribute, typeof(SpriteCamera))
 END_TYPE_PROPERTIES;

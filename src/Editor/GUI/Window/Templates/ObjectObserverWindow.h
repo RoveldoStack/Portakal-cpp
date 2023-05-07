@@ -5,6 +5,7 @@
 namespace Portakal
 {
 	class EditorObjectVisualizer;
+	PCLASS();
 	class PORTAKAL_API ObjectObserverWindow : public EditorWindow
 	{
 		GENERATE_CLASS(ObjectObserverWindow);
@@ -35,13 +36,6 @@ namespace Portakal
 		Array<VisualizerEntry> mVisualizerEntries;
 		bool mLock;
 	};
-
-	//START_GENERATE_TYPE(ObjectObserverWindow);
-	//START_TYPE_PROPERTIES(ObjectObserverWindow);
-	//REGISTER_BASE_TYPE(EditorWindow);
-	//END_TYPE_PROPERTIES;
-	//HAS_DEFAULT_CONSTRUCTOR(ObjectObserverWindow);
-	//END_GENERATE_TYPE(ObjectObserverWindow);
 
 #include "ObjectObserverWindow.reflect.h"
 }

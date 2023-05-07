@@ -1,6 +1,6 @@
 #include "RenderTarget.h" 
 START_GENERATE_TYPE(RenderTarget);
-START_TYPE_PROPERTIES(RenderTarget)
+START_CLASS_TYPE_PROPERTIES(RenderTarget)
 REGISTER_BASE_TYPE(ResourceSubObject);
 
 END_TYPE_PROPERTIES;

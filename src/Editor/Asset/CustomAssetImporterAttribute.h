@@ -6,6 +6,7 @@ namespace Portakal
 	/// <summary>
 	/// Attribute for a importer class to target a resource type
 	/// </summary>
+	PCLASS();
 	class PORTAKAL_API CustomAssetImporterAttribute : public Attribute
 	{
 		GENERATE_CLASS(CustomAssetImporterAttribute);
@@ -29,12 +30,6 @@ namespace Portakal
 		String mResourceType;
 		Array<String> mExtensions;
 	};
-
-	//START_GENERATE_TYPE(CustomAssetImporterAttribute);
-	//START_TYPE_PROPERTIES(CustomAssetImporterAttribute);
-	//END_TYPE_PROPERTIES;
-	//HAS_DEFAULT_CONSTRUCTOR(CustomAssetImporterAttribute);
-	//END_GENERATE_TYPE(CustomAssetImporterAttribute);
 
 #include "CustomAssetImporterAttribute.reflect.h"
 

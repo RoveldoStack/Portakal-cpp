@@ -5,9 +5,11 @@
 namespace Portakal
 {
 	class DomainFile;
+
 	/// <summary>
 	/// Interface for asset open implementation
 	/// </summary>
+	PCLASS();
 	class PORTAKAL_API IAssetOpenOperation : public Class
 	{
 		GENERATE_CLASS(IAssetOpenOperation,Virtual);
@@ -21,11 +23,6 @@ namespace Portakal
 		virtual void OnOpen(DomainFile* pFile) = 0;
 	};
 
-	//START_GENERATE_TYPE(IAssetOpenOperation);
-	//START_TYPE_PROPERTIES(IAssetOpenOperation);
-	//END_TYPE_PROPERTIES;
-	//NO_DEFAULT_CONSTRUCTOR;
-	//END_GENERATE_TYPE(IAssetOpenOperation);
 
 #include "IAssetOpenOperation.reflect.h"
 }

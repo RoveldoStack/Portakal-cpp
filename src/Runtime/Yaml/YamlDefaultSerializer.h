@@ -10,7 +10,7 @@ namespace Portakal
 		YamlDefaultSerializer() = delete;
 		~YamlDefaultSerializer() = delete;
 
-		static String ToYaml(const Class* pObject);
-		static void ToObject(const String& yamlString, Class* pObject);
+		static String ToYaml(const void* pObject,const Type* pType);
+		static void ToObject(const String& yamlString, void* pObject,const Type* pType);
 	};
 }

@@ -3,6 +3,7 @@
 
 namespace Portakal
 {
+	PCLASS();
 	class PORTAKAL_API InvalidAspect : public SceneAspect
 	{
 		GENERATE_CLASS(InvalidAspect);

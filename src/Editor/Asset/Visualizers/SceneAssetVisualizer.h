@@ -4,7 +4,8 @@
 
 namespace Portakal
 {
-	CLASS_ATTRIBUTE(CustomAssetVisualizerAttribute, "scene");
+	PCLASS_ATTRIBUTE(CustomAssetVisualizerAttribute, "scene");
+	PCLASS();
 	class PORTAKAL_API SceneAssetVisualizer : public IAssetVisualizer
 	{
 		GENERATE_CLASS(SceneAssetVisualizer);

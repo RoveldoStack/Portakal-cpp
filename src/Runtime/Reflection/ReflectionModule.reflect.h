@@ -1,6 +1,6 @@
 #include "ReflectionModule.h" 
 START_GENERATE_TYPE(ReflectionModule);
-START_TYPE_PROPERTIES(ReflectionModule)
+START_CLASS_TYPE_PROPERTIES(ReflectionModule)
 REGISTER_BASE_TYPE(ApplicationModule);
 
 END_TYPE_PROPERTIES;

@@ -8,6 +8,7 @@ namespace Portakal
 	/// <summary>
 	/// An application module which authors the editor window components
 	/// </summary>
+	PCLASS();
 	class PORTAKAL_API GUIWindowModule : public ApplicationModule
 	{
 		GENERATE_CLASS(GUIWindowModule);

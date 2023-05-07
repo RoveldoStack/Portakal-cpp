@@ -9,6 +9,7 @@ namespace Portakal
 	/// <summary>
 	/// Applicaton module responsible for starts execution of the imgui rendering session
 	/// </summary>
+	PCLASS();
 	class PORTAKAL_API ImGuiExecutorModule : public ApplicationModule
 	{
 		GENERATE_CLASS(ImGuiExecutorModule);

@@ -24,31 +24,7 @@ namespace Portakal
 		template<typename TObject>
 		static bool ToObject(const String& yaml, TObject* pObject)
 		{
-			YamlDefaultSerializer::ToObject(yaml, pObject);
-			return true;
-
-			/*
-			* Get serializer
-			*/
-			IYamlSerializer* pSerializer = GetSerializer<TObject>();
-
-			/*
-			* Validate serializer
-			*/
-			if (pSerializer == nullptr)
-				return false;
-
-			/*
-			* Get yaml node
-			*/
-			YAML::Node node = YAML::Load(*yaml);
-
-			/*
-			* Run deserialization
-			*/
-			pSerializer->Deserialize(node, pObject);
-			delete pSerializer;
-
+			YamlDefaultSerializer::ToObject(yaml, pObject,typeof(TObject));
 			return true;
 		}
 
@@ -61,77 +37,8 @@ namespace Portakal
 		template<typename TObject>
 		static String ToYaml(const TObject* pObject)
 		{
-			return YamlDefaultSerializer::ToYaml(pObject);
-			/*
-			* Get serializer
-			*/
-			IYamlSerializer* pSerializer = GetSerializer<TObject>();
-
-			/*
-			* Validate serializer
-			*/
-			if (pSerializer == nullptr)
-				return "";
-
-			/*
-			* Create emitter
-			*/
-			YAML::Emitter emitter;
-
-			/*
-			* Run serialization
-			*/
-			pSerializer->Serialize(emitter, (const Class*)pObject);
-
-			return emitter.c_str();
+			return YamlDefaultSerializer::ToYaml(pObject,typeof(TObject));
 		}
 
-		/// <summary>
-		/// Returns the serializer of the given template type
-		/// </summary>
-		/// <typeparam name="TObject"></typeparam>
-		/// <returns></returns>
-		template<typename TObject>
-		static IYamlSerializer* GetSerializer()
-		{
-			Type* pTargetType = TypeAccessor<TObject>::GetAccessorType();
-
-			const Array<Type*> types = Assembly::GetProcessAssembly()->GetTypes();
-
-
-			for (unsigned int i = 0; i < types.GetCursor(); i++)
-			{
-				Type* pType = types[i];
-
-				const YamlSerializerAttribute* pAttribute = pType->GetAttribute<YamlSerializerAttribute>();
-
-				if (pAttribute == nullptr)
-					continue;
-
-				if (pAttribute->GetTargetSerializerType() == pTargetType)
-					return (IYamlSerializer*)pType->CreateDefaultHeapObject();
-			}
-
-			return nullptr;
-		}
-
-		static String ToDefaultYaml(const Class* pObject)
-		{
-			if (pObject == nullptr)
-				return String();
-
-			return YamlDefaultSerializer::ToYaml(pObject);
-		}
-
-		template<typename TObject>
-		static void ToDefaultObject(const String& str, TObject* pObject)
-		{
-			if (pObject == nullptr)
-				return;
-			if (str.GetCursor() == 0)
-				return;
-
-			return YamlDefaultSerializer::ToObject(str,pObject);
-		}
 	};
 }

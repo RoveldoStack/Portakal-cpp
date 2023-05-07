@@ -1,6 +1,6 @@
 #include "CustomEditorObjectAttribute.h" 
 START_GENERATE_TYPE(CustomEditorObjectAttribute);
-START_TYPE_PROPERTIES(CustomEditorObjectAttribute)
+START_CLASS_TYPE_PROPERTIES(CustomEditorObjectAttribute)
 
 END_TYPE_PROPERTIES;
 HAS_DEFAULT_CONSTRUCTOR(CustomEditorObjectAttribute);

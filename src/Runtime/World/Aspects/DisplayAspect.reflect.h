@@ -1,6 +1,6 @@
 #include "DisplayAspect.h" 
 START_GENERATE_TYPE(DisplayAspect);
-START_TYPE_PROPERTIES(DisplayAspect)
+START_CLASS_TYPE_PROPERTIES(DisplayAspect)
 REGISTER_BASE_TYPE(SceneAspect);
 
 END_TYPE_PROPERTIES;

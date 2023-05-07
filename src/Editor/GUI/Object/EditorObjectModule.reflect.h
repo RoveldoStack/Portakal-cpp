@@ -1,6 +1,6 @@
 #include "EditorObjectModule.h" 
 START_GENERATE_TYPE(EditorObjectModule);
-START_TYPE_PROPERTIES(EditorObjectModule)
+START_CLASS_TYPE_PROPERTIES(EditorObjectModule)
 REGISTER_BASE_TYPE(ApplicationModule);
 
 END_TYPE_PROPERTIES;

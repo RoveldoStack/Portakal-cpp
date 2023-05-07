@@ -10,6 +10,7 @@ namespace Portakal
 	/// <summary>
 	/// Entity is a sub object of the scene, entities can be populated with components to perform various behaviours
 	/// </summary>
+	PCLASS();
 	class PORTAKAL_API Entity : public TaggedObject
 	{
 		GENERATE_CLASS(Entity);

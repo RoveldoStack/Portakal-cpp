@@ -1,7 +1,7 @@
 #include "EditorComponentVisualizer.h" 
 START_GENERATE_TYPE(EditorComponentVisualizer);
-START_TYPE_PROPERTIES(EditorComponentVisualizer)
+START_CLASS_TYPE_PROPERTIES(EditorComponentVisualizer)
 
 END_TYPE_PROPERTIES;
-HAS_DEFAULT_CONSTRUCTOR(EditorComponentVisualizer);
+NO_DEFAULT_CONSTRUCTOR;
 END_GENERATE_TYPE(EditorComponentVisualizer);

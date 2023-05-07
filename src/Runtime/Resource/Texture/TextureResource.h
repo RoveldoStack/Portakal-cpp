@@ -12,6 +12,7 @@ namespace Portakal
 	/// <summary>
 	/// A resource which is specialized in textures
 	/// </summary>
+	PCLASS();
 	class PORTAKAL_API TextureResource final : public ResourceSubObject
 	{
 		GENERATE_CLASS(TextureResource);

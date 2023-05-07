@@ -6,6 +6,7 @@ namespace Portakal
 	/// <summary>
 	/// Attribute for marking a serializer class to target a resource type
 	/// </summary>
+	PCLASS();
 	class PORTAKAL_API CustomAssetSerializerAttribute : public Attribute
 	{
 		GENERATE_CLASS(CustomAssetSerializerAttribute);
@@ -23,11 +24,6 @@ namespace Portakal
 		String mResourceType;
 	};
 
-	//START_GENERATE_TYPE(CustomAssetSerializerAttribute);
-	//START_TYPE_PROPERTIES(CustomAssetSerializerAttribute);
-	//END_TYPE_PROPERTIES;
-	//HAS_DEFAULT_CONSTRUCTOR(CustomAssetSerializerAttribute);
-	//END_GENERATE_TYPE(CustomAssetSerializerAttribute);
 
 #include "CustomAssetSerializerAttribute.reflect.h"
 

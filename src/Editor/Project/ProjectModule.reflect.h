@@ -1,6 +1,6 @@
 #include "ProjectModule.h" 
 START_GENERATE_TYPE(ProjectModule);
-START_TYPE_PROPERTIES(ProjectModule)
+START_CLASS_TYPE_PROPERTIES(ProjectModule)
 REGISTER_BASE_TYPE(ApplicationModule);
 
 END_TYPE_PROPERTIES;

@@ -3,6 +3,7 @@
 
 namespace Portakal
 {
+	PCLASS();
 	class PORTAKAL_API CustomAssetOpenOperationAttribute : public Attribute
 	{
 		GENERATE_CLASS(CustomAssetOpenOperationAttribute);
@@ -15,12 +16,5 @@ namespace Portakal
 	private:
 		String mResourceType;
 	};
-	//START_GENERATE_TYPE(CustomAssetOpenOperationAttribute);
-	//START_TYPE_PROPERTIES(CustomAssetOpenOperationAttribute);
-	//END_TYPE_PROPERTIES;
-	//HAS_DEFAULT_CONSTRUCTOR(CustomAssetOpenOperationAttribute);
-	//END_GENERATE_TYPE(CustomAssetOpenOperationAttribute);
-
-
 #include "CustomAssetOpenOperationAttribute.reflect.h"
 }

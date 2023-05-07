@@ -1,6 +1,6 @@
 #include "Project.h" 
 START_GENERATE_TYPE(Project);
-START_TYPE_PROPERTIES(Project)
+START_STRUCT_TYPE_PROPERTIES(Project)
 REGISTER_FIELD(Project,Name,String,AccessSpecifier::Public);
 REGISTER_FIELD(Project,ID,Guid,AccessSpecifier::Public);
 REGISTER_FIELD(Project,VersionMajor,UInt,AccessSpecifier::Public);

@@ -11,6 +11,7 @@
 namespace Portakal
 {
 	class TextureResource;
+	PCLASS();
 	class PORTAKAL_API Material : public ResourceSubObject
 	{
 		GENERATE_CLASS(Material);

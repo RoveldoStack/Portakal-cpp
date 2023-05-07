@@ -1,6 +1,6 @@
 #include "WindowModule.h" 
 START_GENERATE_TYPE(WindowModule);
-START_TYPE_PROPERTIES(WindowModule)
+START_CLASS_TYPE_PROPERTIES(WindowModule)
 REGISTER_BASE_TYPE(ApplicationModule);
 
 END_TYPE_PROPERTIES;

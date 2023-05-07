@@ -6,7 +6,7 @@ namespace Portakal
 	/// <summary>
 	/// Available dock states
 	/// </summary>
-	ENUM();
+	PENUM();
 	enum class PORTAKAL_API EditorWindowDockState : long long
 	{
 		None,

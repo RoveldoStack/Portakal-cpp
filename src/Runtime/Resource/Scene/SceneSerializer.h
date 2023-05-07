@@ -5,7 +5,8 @@
 
 namespace Portakal
 {
-	CLASS_ATTRIBUTE(CustomResourceSerializerAttribute, "scene");
+	PCLASS_ATTRIBUTE(CustomResourceSerializerAttribute, "scene");
+	PCLASS();
 	class PORTAKAL_API SceneSerializer : public IResourceSerializer
 	{
 		GENERATE_CLASS(SceneSerializer);

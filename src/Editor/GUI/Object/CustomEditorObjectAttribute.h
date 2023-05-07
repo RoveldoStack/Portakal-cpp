@@ -3,6 +3,7 @@
 
 namespace Portakal
 {
+	PCLASS();
 	class PORTAKAL_API CustomEditorObjectAttribute : public Attribute
 	{
 		GENERATE_CLASS(CustomEditorObjectAttribute);
@@ -15,12 +16,6 @@ namespace Portakal
 	private:
 		Type* mTargetObjectType;
 	};
-
-	//START_GENERATE_TYPE(CustomEditorObjectAttribute);
-	//START_TYPE_PROPERTIES(CustomEditorObjectAttribute);
-	//END_TYPE_PROPERTIES;
-	//HAS_DEFAULT_CONSTRUCTOR(CustomEditorObjectAttribute);
-	//END_GENERATE_TYPE(CustomEditorObjectAttribute);
 
 #include "CustomEditorObjectAttribute.reflect.h"
 }

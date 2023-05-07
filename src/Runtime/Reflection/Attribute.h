@@ -24,6 +24,5 @@ namespace Portakal
 	};
 
 #define REGISTER_TYPE_ATTRIBUTE(attribute,...) pType->_RegisterAttribute(new attribute(__VA_ARGS__));
-#define CLASS_ATTRIBUTE(attribute,__VA__ARGS__)
 
 }

@@ -1,6 +1,6 @@
 #include "SpriteCamera.h" 
 START_GENERATE_TYPE(SpriteCamera);
-START_TYPE_PROPERTIES(SpriteCamera)
+START_CLASS_TYPE_PROPERTIES(SpriteCamera)
 REGISTER_BASE_TYPE(Component);
 
 END_TYPE_PROPERTIES;

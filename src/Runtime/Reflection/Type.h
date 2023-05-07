@@ -221,7 +221,9 @@ namespace Portakal
 									private:
 
 
-#define START_TYPE_PROPERTIES(type) static EMPTY(type)_Type* GenerateTypeData() { EMPTY(type)_Type* pType = new EMPTY(type)_Type; type::SetType(pType); Assembly::GetProcessAssembly()->RegisterType(pType); 
+#define START_CLASS_TYPE_PROPERTIES(type) static EMPTY(type)_Type* GenerateTypeData() { EMPTY(type)_Type* pType = new EMPTY(type)_Type; type::SetType(pType); Assembly::GetProcessAssembly()->RegisterType(pType); 
+
+#define START_STRUCT_TYPE_PROPERTIES(type) static EMPTY(type)_Type* GenerateTypeData() { EMPTY(type)_Type* pType = new EMPTY(type)_Type; Assembly::GetProcessAssembly()->RegisterType(pType); 
 
 #define START_PRIMITIVE_TYPE_PROPERTIES(type) static EMPTY(type)_Type* GenerateTypeData() { EMPTY(type)_Type* pType = new EMPTY(type)_Type; Assembly::GetProcessAssembly()->RegisterType(pType); 
 

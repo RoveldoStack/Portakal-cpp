@@ -1,6 +1,6 @@
 #include "Material.h" 
 START_GENERATE_TYPE(Material);
-START_TYPE_PROPERTIES(Material)
+START_CLASS_TYPE_PROPERTIES(Material)
 REGISTER_BASE_TYPE(ResourceSubObject);
 
 END_TYPE_PROPERTIES;

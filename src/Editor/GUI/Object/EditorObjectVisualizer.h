@@ -6,6 +6,7 @@ namespace Portakal
 	/// <summary>
 	/// Represents a base class of all editor object visualizers that will appear on the ObjectObserverWindow
 	/// </summary>
+	PCLASS(Virtual);
 	class PORTAKAL_API EditorObjectVisualizer : Class
 	{
 		friend class ObjectObserverWindow;
@@ -24,12 +25,6 @@ namespace Portakal
 	private:
 		Class* mTargetObject;
 	};
-
-	//START_GENERATE_TYPE(EditorObjectVisualizer);
-	//START_TYPE_PROPERTIES(EditorObjectVisualizer);
-	//END_TYPE_PROPERTIES;
-	//NO_DEFAULT_CONSTRUCTOR;
-	//END_GENERATE_TYPE(EditorObjectVisualizer);
 
 #include "EditorObjectVisualizer.reflect.h"
 }

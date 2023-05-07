@@ -1,6 +1,6 @@
 #include "SimpleTextAssetImporter2.h" 
 START_GENERATE_TYPE(SimpleTextAssetImporter2);
-START_TYPE_PROPERTIES(SimpleTextAssetImporter2)
+START_CLASS_TYPE_PROPERTIES(SimpleTextAssetImporter2)
 REGISTER_BASE_TYPE(IAssetImporter);
 REGISTER_TYPE_ATTRIBUTE(CustomAssetImporterAttribute, "simple_text", { ".txt",".docx" })
 END_TYPE_PROPERTIES;

@@ -5,7 +5,8 @@
 
 namespace Portakal
 {
-	CLASS_ATTRIBUTE(CustomResourceSerializerAttribute, "texture");
+	PCLASS_ATTRIBUTE(CustomResourceSerializerAttribute, "texture");
+	PCLASS();
 	class PORTAKAL_API TextureSerializer : public IResourceSerializer
 	{
 		GENERATE_CLASS(TextureSerializer);

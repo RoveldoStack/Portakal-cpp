@@ -4,6 +4,7 @@
 
 namespace Portakal
 {
+	PCLASS();
 	class PORTAKAL_API ShaderObject : public ResourceSubObject
 	{
 		GENERATE_CLASS(ShaderObject);

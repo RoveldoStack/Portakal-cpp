@@ -4,6 +4,7 @@
 namespace Portakal
 {
 	class Component;
+	PCLASS(Virtual);
 	class PORTAKAL_API EditorComponentVisualizer : Class
 	{
 		friend class EntityObjectVisualizer;
@@ -25,9 +26,5 @@ namespace Portakal
 		Component* mComponent;
 	};
 
-	START_GENERATE_TYPE(EditorComponentVisualizer);
-	START_TYPE_PROPERTIES(EditorComponentVisualizer);
-	END_TYPE_PROPERTIES;
-	NO_DEFAULT_CONSTRUCTOR;
-	END_GENERATE_TYPE(EditorComponentVisualizer);
+#include "EditorComponentVisualizer.reflect.h"
 }

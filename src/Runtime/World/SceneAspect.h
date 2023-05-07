@@ -7,6 +7,7 @@ namespace Portakal
 	/// <summary>
 	/// Scene aspect is used to populate scene property types
 	/// </summary>
+	PCLASS();
 	class PORTAKAL_API SceneAspect : public Class
 	{
 		GENERATE_CLASS(SceneAspect,Virtual);

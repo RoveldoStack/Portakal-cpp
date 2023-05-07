@@ -1,6 +1,6 @@
 #include "IAssetAuthoringTool.h" 
 START_GENERATE_TYPE(IAssetAuthoringTool);
-START_TYPE_PROPERTIES(IAssetAuthoringTool)
+START_CLASS_TYPE_PROPERTIES(IAssetAuthoringTool)
 
 END_TYPE_PROPERTIES;
 NO_DEFAULT_CONSTRUCTOR;

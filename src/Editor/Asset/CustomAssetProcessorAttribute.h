@@ -6,6 +6,7 @@ namespace Portakal
 	/// <summary>
 	/// Attribute for marking a processor class to target a resource type
 	/// </summary>
+	PCLASS();
 	class PORTAKAL_API CustomAssetProcessorAttribute : public Attribute
 	{
 		GENERATE_CLASS(CustomAssetProcessorAttribute);
@@ -22,12 +23,6 @@ namespace Portakal
 	private:
 		String mResourceType;
 	};
-
-	//START_GENERATE_TYPE(CustomAssetProcessorAttribute);
-	//START_TYPE_PROPERTIES(CustomAssetProcessorAttribute);
-	//END_TYPE_PROPERTIES;
-	//HAS_DEFAULT_CONSTRUCTOR(CustomAssetProcessorAttribute);
-	//END_GENERATE_TYPE(CustomAssetProcessorAttribute);
 
 #include "CustomAssetProcessorAttribute.reflect.h"
 }

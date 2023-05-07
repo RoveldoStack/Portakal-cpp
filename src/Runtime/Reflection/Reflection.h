@@ -5,4 +5,5 @@
 #include <Runtime/Reflection/Attribute.h>
 #include <Runtime/Reflection/PrimitiveTypes.h>
 #include <Runtime/Reflection/Enum.h>
+#include <Runtime/Reflection/GeneratorInstructions.h>
 

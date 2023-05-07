@@ -6,6 +6,7 @@ namespace Portakal
 	/// <summary>
 	/// An attribute for marking a class as a menu item
 	/// </summary>
+	PCLASS();
 	class PORTAKAL_API GUICustomMenuItem : public Attribute
 	{
 		GENERATE_CLASS(GUICustomMenuItem);
@@ -23,11 +24,6 @@ namespace Portakal
 		const String mLocation;
 	};
 
-	/*START_GENERATE_TYPE(GUICustomMenuItem);
-	START_TYPE_PROPERTIES(GUICustomMenuItem);
-	END_TYPE_PROPERTIES;
-	HAS_DEFAULT_CONSTRUCTOR(GUICustomMenuItem);
-	END_GENERATE_TYPE(GUICustomMenuItem);*/
 
 #include "GUICustomMenuItem.reflect.h"
 }

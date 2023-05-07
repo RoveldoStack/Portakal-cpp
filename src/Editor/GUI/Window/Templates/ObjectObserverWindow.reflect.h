@@ -1,6 +1,6 @@
 #include "ObjectObserverWindow.h" 
 START_GENERATE_TYPE(ObjectObserverWindow);
-START_TYPE_PROPERTIES(ObjectObserverWindow)
+START_CLASS_TYPE_PROPERTIES(ObjectObserverWindow)
 REGISTER_BASE_TYPE(EditorWindow);
 
 END_TYPE_PROPERTIES;

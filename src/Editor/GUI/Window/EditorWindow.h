@@ -9,6 +9,7 @@ namespace Portakal
 	/// <summary>
 	/// Represents an editor window
 	/// </summary>
+	PCLASS(Virtual);
 	class PORTAKAL_API EditorWindow : public Class
 	{
 		friend class EditorWindowAPI;
@@ -116,12 +117,5 @@ namespace Portakal
 		bool mVisible;
 		bool mCloseRequest;
 	};
-
-	//START_GENERATE_TYPE(EditorWindow);
-	//START_TYPE_PROPERTIES(EditorWindow);
-	//END_TYPE_PROPERTIES;
-	//NO_DEFAULT_CONSTRUCTOR;
-	//END_GENERATE_TYPE(EditorWindow);
-
 #include "EditorWindow.reflect.h"
 }

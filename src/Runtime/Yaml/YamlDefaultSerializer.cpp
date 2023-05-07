@@ -126,18 +126,16 @@ namespace Portakal
         emitter << YAML::EndMap;
     }
 
-    String YamlDefaultSerializer::ToYaml(const Class* pObject)
+    String YamlDefaultSerializer::ToYaml(const void* pObject,const Type* pType)
     {
         if (pObject == nullptr)
             return String();
-
-        const Type* pObjectType = pObject->GetType();
 
         YAML::Emitter emitter;
 
         emitter << YAML::BeginDoc;
 
-        GenerateObjectYaml(emitter,pObject,pObjectType);
+        GenerateObjectYaml(emitter,pObject,pType);
 
         emitter << YAML::EndDoc;
 
@@ -282,7 +280,7 @@ namespace Portakal
             LoadAsObject(fieldNode, pLocation, pFieldType);
         }
     }
-    void YamlDefaultSerializer::ToObject(const String& yamlString, Class* pObject)
+    void YamlDefaultSerializer::ToObject(const String& yamlString, void* pObject,const Type* pType)
     {
         if (pObject == nullptr)
             return;
@@ -298,6 +296,6 @@ namespace Portakal
         if (!rootNode.IsMap())
             return;
 
-        LoadAsObject(rootNode,pObject,pObject->GetType());
+        LoadAsObject(rootNode,pObject,pType);
     }
 }

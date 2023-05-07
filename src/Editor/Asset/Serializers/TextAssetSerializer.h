@@ -4,7 +4,8 @@
 
 namespace Portakal
 {
-	CLASS_ATTRIBUTE(CustomAssetSerializerAttribute, "simple-text");
+	PCLASS_ATTRIBUTE(CustomAssetSerializerAttribute, "simple-text");
+	PCLASS();
 	class PORTAKAL_API TextAssetSerializer : public IAssetSerializer
 	{
 		GENERATE_CLASS(TextAssetSerializer);
@@ -16,15 +17,6 @@ namespace Portakal
 		virtual void SerializeToEditor(const ResourceSubObject* pObject, ByteBlock& outBlock) override;
 		virtual void SerializeToPackage(const ResourceSubObject* pObject, ByteBlock& outBlock) override;
 	};
-
-	/*START_GENERATE_TYPE(TextAssetSerializer);
-	START_TYPE_PROPERTIES(TextAssetSerializer);
-	REGISTER_BASE_TYPE(IAssetSerializer);
-	REGISTER_TYPE_ATTRIBUTE(CustomAssetSerializerAttribute, "simple-text");
-	END_TYPE_PROPERTIES;
-	HAS_DEFAULT_CONSTRUCTOR(TextAssetSerializer);
-
-	END_GENERATE_TYPE(TextAssetSerializer);*/
 
 #include "TextAssetSerializer.reflect.h"
 

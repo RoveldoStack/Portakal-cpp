@@ -5,8 +5,6 @@ namespace Portakal
 {
 #define IS_ENUM() FORCEINLINE virtual void bool IsEnum() const noexcept override { return true;}
 
-#define ENUM()
-
 #define REGISTER_ENUM(name,value) pType->_RegisterEnum(#name,value);
 
 #define START_GENERATE_ENUM(type)\

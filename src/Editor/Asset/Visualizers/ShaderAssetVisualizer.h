@@ -4,7 +4,8 @@
 
 namespace Portakal
 {
-	CLASS_ATTRIBUTE(CustomAssetVisualizerAttribute, "shader");
+	PCLASS_ATTRIBUTE(CustomAssetVisualizerAttribute, "shader");
+	PCLASS();
 	class PORTAKAL_API ShaderAssetVisualizer : public IAssetVisualizer
 	{
 		GENERATE_CLASS(ShaderAssetVisualizer);
@@ -14,14 +15,6 @@ namespace Portakal
 
 		int abc;
 	};
-
-	//START_GENERATE_TYPE(ShaderAssetVisualizer);
-	//START_TYPE_PROPERTIES(ShaderAssetVisualizer);
-	//REGISTER_BASE_TYPE(IAssetVisualizer);
-	//REGISTER_TYPE_ATTRIBUTE(CustomAssetVisualizerAttribute, "shader");
-	//END_TYPE_PROPERTIES;
-	//HAS_DEFAULT_CONSTRUCTOR(ShaderAssetVisualizer);
-	//END_GENERATE_TYPE(ShaderAssetVisualizer);
 
 #include "ShaderAssetVisualizer.reflect.h"
 }

@@ -8,9 +8,11 @@ namespace Portakal
 	class TextureResource;
 	class GraphicsDevice;
 	class ResourceTable;
+
 	/// <summary>
 	/// A resource specialized in render targets
 	/// </summary>
+	PCLASS();
 	class PORTAKAL_API RenderTarget : public ResourceSubObject
 	{
 		GENERATE_CLASS(RenderTarget,Virtual);

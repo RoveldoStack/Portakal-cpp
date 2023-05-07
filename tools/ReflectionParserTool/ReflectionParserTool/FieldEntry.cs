@@ -10,6 +10,7 @@ namespace ReflectionParserTool
     {
         public string Type;
         public string Name;
+        public string? ElementType;
         public bool IsArray;
     }
 }

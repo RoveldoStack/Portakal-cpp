@@ -1,6 +1,6 @@
 #include "GameObserverWindow.h" 
 START_GENERATE_TYPE(GameObserverWindow);
-START_TYPE_PROPERTIES(GameObserverWindow)
+START_CLASS_TYPE_PROPERTIES(GameObserverWindow)
 REGISTER_BASE_TYPE(EditorWindow);
 
 END_TYPE_PROPERTIES;

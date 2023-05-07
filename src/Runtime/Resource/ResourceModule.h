@@ -4,6 +4,7 @@
 namespace Portakal
 {
 	class ResourceAPI;
+	PCLASS();
 	class PORTAKAL_API ResourceModule : public ApplicationModule
 	{
 		GENERATE_CLASS(ResourceModule);

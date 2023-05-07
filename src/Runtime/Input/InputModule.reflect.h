@@ -1,6 +1,6 @@
 #include "InputModule.h" 
 START_GENERATE_TYPE(InputModule);
-START_TYPE_PROPERTIES(InputModule)
+START_CLASS_TYPE_PROPERTIES(InputModule)
 REGISTER_BASE_TYPE(ApplicationModule);
 
 END_TYPE_PROPERTIES;

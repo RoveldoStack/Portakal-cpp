@@ -8,6 +8,7 @@ namespace Portakal
 	/// <summary>
 	/// A component is a sub object of a scene entity, component may hold data,logic or both
 	/// </summary>
+	PCLASS();
 	class PORTAKAL_API Component : public TaggedObject
 	{
 		GENERATE_CLASS(Component,Virtual);

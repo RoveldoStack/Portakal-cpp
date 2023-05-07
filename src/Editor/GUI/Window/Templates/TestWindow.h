@@ -3,6 +3,7 @@
 
 namespace Portakal
 {
+	PCLASS();
 	class PORTAKAL_API TestWindow : public EditorWindow
 	{
 		GENERATE_CLASS(TestWindow);
@@ -16,13 +17,6 @@ namespace Portakal
 		virtual void OnFinalize() override;
 		virtual void OnPaint() override;
 	};
-
-	//START_GENERATE_TYPE(TestWindow);
-	//START_TYPE_PROPERTIES(TestWindow);
-	//REGISTER_BASE_TYPE(EditorWindow);
-	//END_TYPE_PROPERTIES;
-	//HAS_DEFAULT_CONSTRUCTOR(TestWindow);
-	//END_GENERATE_TYPE(TestWindow);
 
 #include "TestWindow.reflect.h"
 }

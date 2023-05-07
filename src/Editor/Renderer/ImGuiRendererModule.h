@@ -10,6 +10,7 @@ namespace Portakal
 	/// <summary>
 	/// An application which authors the finalization rendering of the imgui commands
 	/// </summary>
+	PCLASS();
 	class PORTAKAL_API ImGuiRendererModule : public ApplicationModule
 	{
 		GENERATE_CLASS(ImGuiRendererModule);

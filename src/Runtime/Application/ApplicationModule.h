@@ -11,6 +11,7 @@ namespace Portakal
 	/// Represents a single responsibility of a the application
 	/// Application modules are used to populate the behaviours on application
 	/// </summary>
+	PCLASS();
 	class PORTAKAL_API ApplicationModule : public Class
 	{
 		GENERATE_CLASS(ApplicationModule,Virtual);

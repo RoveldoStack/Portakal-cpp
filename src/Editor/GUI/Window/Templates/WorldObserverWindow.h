@@ -4,6 +4,7 @@
 namespace Portakal
 {
 	class Scene;
+	PCLASS();
 	class PORTAKAL_API WorldObserverWindow : public EditorWindow
 	{
 		GENERATE_CLASS(WorldObserverWindow);
@@ -31,13 +32,6 @@ namespace Portakal
 		Scene* mTargetScene;
 		bool mSceneContentChanged;
 	};
-
-	//START_GENERATE_TYPE(WorldObserverWindow);
-	//START_TYPE_PROPERTIES(WorldObserverWindow);
-	//REGISTER_BASE_TYPE(EditorWindow);
-	//END_TYPE_PROPERTIES;
-	//HAS_DEFAULT_CONSTRUCTOR(WorldObserverWindow);
-	//END_GENERATE_TYPE(WorldObserverWindow);
 
 #include "WorldObserverWindow.reflect.h"
 }

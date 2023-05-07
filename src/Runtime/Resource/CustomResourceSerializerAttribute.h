@@ -3,6 +3,7 @@
 
 namespace Portakal
 {
+	PCLASS();
 	class PORTAKAL_API CustomResourceSerializerAttribute : public Attribute
 	{
 		GENERATE_CLASS(CustomResourceSerializerAttribute);

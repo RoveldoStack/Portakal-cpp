@@ -5,7 +5,8 @@
 
 namespace Portakal
 {
-	CLASS_ATTRIBUTE(CustomEditorComponentAttribute, typeof(Transform2DComponent));
+	PCLASS_ATTRIBUTE(CustomEditorComponentAttribute, typeof(Transform2DComponent));
+	PCLASS();
 	class PORTAKAL_API Transform2DComponentVisualizer : public EditorComponentVisualizer
 	{
 		GENERATE_CLASS(Transform2DComponentVisualizer);
@@ -26,14 +27,6 @@ namespace Portakal
 	private:
 		Transform2DComponent* mTransform;
 	};
-
-	/*START_GENERATE_TYPE(Transform2DComponentVisualizer);
-	START_TYPE_PROPERTIES(Transform2DComponentVisualizer);
-	REGISTER_BASE_TYPE(EditorComponentVisualizer);
-	REGISTER_TYPE_ATTRIBUTE(CustomEditorComponentAttribute, typeof(Transform2DComponent));
-	END_TYPE_PROPERTIES;
-	HAS_DEFAULT_CONSTRUCTOR(Transform2DComponentVisualizer);
-	END_GENERATE_TYPE(Transform2DComponentVisualizer);*/
 
 #include "Transform2DComponentVisualizer.reflect.h"
 }

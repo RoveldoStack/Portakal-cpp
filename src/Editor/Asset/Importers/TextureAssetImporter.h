@@ -5,7 +5,8 @@
 namespace Portakal
 {
 	class DomainFile;
-	CLASS_ATTRIBUTE(CustomAssetImporterAttribute, "texture", { ".png",".jpg",".jpeg" });
+	PCLASS_ATTRIBUTE(CustomAssetImporterAttribute, "texture", { ".png",".jpg",".jpeg" });
+	PCLASS();
 	class PORTAKAL_API TextureAssetImporter : public IAssetImporter
 	{
 		GENERATE_CLASS(TextureAssetImporter);
@@ -17,13 +18,6 @@ namespace Portakal
 	private:
 	};
 
-	//START_GENERATE_TYPE(TextureAssetImporter);
-	//START_TYPE_PROPERTIES(TextureAssetImporter);
-	//REGISTER_BASE_TYPE(IAssetImporter);
-	//REGISTER_TYPE_ATTRIBUTE(CustomAssetImporterAttribute, "texture", { ".png",".jpg",".jpeg" });
-	//END_TYPE_PROPERTIES;
-	//HAS_DEFAULT_CONSTRUCTOR(TextureAssetImporter);
-	//END_GENERATE_TYPE(TextureAssetImporter);
 #include "TextureAssetImporter.reflect.h"
 
 }

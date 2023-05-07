@@ -1,6 +1,6 @@
 #include "Transform2DComponentVisualizer.h" 
 START_GENERATE_TYPE(Transform2DComponentVisualizer);
-START_TYPE_PROPERTIES(Transform2DComponentVisualizer)
+START_CLASS_TYPE_PROPERTIES(Transform2DComponentVisualizer)
 REGISTER_BASE_TYPE(EditorComponentVisualizer);
 REGISTER_TYPE_ATTRIBUTE(CustomEditorComponentAttribute, typeof(Transform2DComponent))
 END_TYPE_PROPERTIES;

@@ -7,7 +7,7 @@ namespace Portakal
 	/// <summary>
 	/// Available shader stages
 	/// </summary>
-	ENUM();
+	PENUM();
 	enum class PORTAKAL_API ShaderStage : long long
 	{
 		None,

@@ -5,7 +5,8 @@
 
 namespace Portakal
 {
-	CLASS_ATTRIBUTE(CustomAssetAuthoringToolAttribute, "shader");
+	PCLASS_ATTRIBUTE(CustomAssetAuthoringToolAttribute, "shader");
+	PCLASS();
 	class PORTAKAL_API ShaderAuthoringTool : public IAssetAuthoringTool
 	{
 		GENERATE_CLASS(ShaderAuthoringTool);
