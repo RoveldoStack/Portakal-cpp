@@ -38,7 +38,7 @@ extern ImGuiID ImHashData(const void* data_p, size_t data_size, ImU32 seed = 0);
 // WebGPU data
 static WGPUDevice               g_wgpuDevice = NULL;
 static WGPUQueue                g_defaultQueue = NULL;
-static WGPUTextureFormat        g_renderTargetFormat = WGPUTextureFormat_Undefined;
+static WGPUTextureFormat        g_RenderTargetFormat = WGPUTextureFormat_Undefined;
 static WGPURenderPipeline       g_pipelineState = NULL;
 
 struct RenderResources
@@ -593,7 +593,7 @@ bool ImGui_ImplWGPU_CreateDeviceObjects()
     blend_state.color.dstFactor = WGPUBlendFactor_OneMinusSrcAlpha;
 
     WGPUColorTargetState color_state = {};
-    color_state.format = g_renderTargetFormat;
+    color_state.format = g_RenderTargetFormat;
     color_state.blend = &blend_state;
     color_state.writeMask = WGPUColorWriteMask_All;
 
@@ -672,7 +672,7 @@ bool ImGui_ImplWGPU_Init(WGPUDevice device, int num_frames_in_flight, WGPUTextur
 
     g_wgpuDevice = device;
     g_defaultQueue = wgpuDeviceGetQueue(g_wgpuDevice);
-    g_renderTargetFormat = rt_format;
+    g_RenderTargetFormat = rt_format;
     g_pFrameResources = new FrameResources[num_frames_in_flight];
     g_numFramesInFlight = num_frames_in_flight;
     g_frameIndex = UINT_MAX;

@@ -6,18 +6,18 @@
 #include <Runtime/Graphics/Pipeline/Rasterizer/RasterizerStateDesc.h>
 #include <Runtime/Graphics/Pipeline/DepthStencil/DepthStencilStateDesc.h>
 #include <Runtime/Graphics/Pipeline/Blending/BlendingStateDesc.h>
-#include <Runtime/Resource/Shader/ShaderObject.h>
+#include <Runtime/Resource/Shader/ShaderResource.h>
 #include <Runtime/Memory/SharedSafeHeap.h>
 namespace Portakal
 {
 	class TextureResource;
 	PCLASS();
-	class PORTAKAL_API Material : public ResourceSubObject
+	class PORTAKAL_API MaterialResource : public ResourceSubObject
 	{
-		GENERATE_CLASS(Material);
+		GENERATE_CLASS(MaterialResource);
 	public:
-		Material();
-		~Material();
+		MaterialResource();
+		~MaterialResource();
 
 	
 		TextureResource* GetTextureParameter(const String& name, const ShaderStage stage) const noexcept;
@@ -25,7 +25,7 @@ namespace Portakal
 		DepthStencilStateDesc GetDepthStencilState() const noexcept { return mDepthStencilState; }
 		BlendingStateDesc GetBlendingState() const noexcept { return mBlendingState; }
 
-		void CreateFromShaders(const Array<SharedSafeHeap<ShaderObject>>& shaders);
+		void CreateFromShaders(const Array<SharedSafeHeap<ShaderResource>>& shaders);
 		void SetTextureParameter(const String& name, const ShaderStage stage, TextureResource* pTexture);
 		void SetRasterizerState(const RasterizerStateDesc& stateDesc);
 		void SetDepthStencilState(const DepthStencilStateDesc& stateDesc);
@@ -35,7 +35,7 @@ namespace Portakal
 		virtual void DestroyCore() override;
 	private:
 		Registry<ShaderStage, MaterialStageParameterBlock> mParameterBlocks;
-		Array<SharedSafeHeap<ShaderObject>> mShaders;
+		Array<SharedSafeHeap<ShaderResource>> mShaders;
 		GraphicsDevice* mOwnerDevice;
 
 		RasterizerStateDesc mRasterizerState;
@@ -43,5 +43,5 @@ namespace Portakal
 		BlendingStateDesc mBlendingState;
 	};
 
-#include "Material.reflect.h"
+#include "MaterialResource.reflect.h"
 }

@@ -5,7 +5,7 @@ namespace Portakal
 {
 	class Scene;
 	class DisplayAspect;
-	class RenderTarget;
+	class RenderTargetResource;
 	class TextureResource;
 	PCLASS();
 	class PORTAKAL_API GameObserverWindow : public EditorWindow
@@ -25,13 +25,13 @@ namespace Portakal
 	private:
 		void OnSceneChanged(Scene* pNewScene);
 		void OnViewportChanged(const Vector2UI newSize);
-		void OnDisplayChanged(RenderTarget* pDisplay);
+		void OnDisplayChanged(RenderTargetResource* pDisplay);
 		void OnResize();
 		void ClearCurrentDisplayBindings();
 		void GetCurrentTargets();
 	private:
 		Scene* mTargetScene;
-		RenderTarget* mCurrentDisplay;
+		RenderTargetResource* mCurrentDisplay;
 		Array<TextureResource*> mCurrentTargets;
 		unsigned int mCurrentSelectedTargetIndex;
 		Vector2UI mLastViewportSize;

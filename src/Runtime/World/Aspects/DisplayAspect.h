@@ -3,7 +3,7 @@
 
 namespace Portakal
 {
-	class RenderTarget;
+	class RenderTargetResource;
 	PCLASS();
 	class PORTAKAL_API DisplayAspect : public SceneAspect
 	{
@@ -12,18 +12,18 @@ namespace Portakal
 		DisplayAspect() = default;
 		~DisplayAspect() = default;
 
-		FORCEINLINE RenderTarget* GetDefaultDisplay() const noexcept;
-		FORCEINLINE RenderTarget* GetDisplay(const unsigned int index) const noexcept;
-		FORCEINLINE Array<RenderTarget*> GetDisplays() const noexcept;
+		FORCEINLINE RenderTargetResource* GetDefaultDisplay() const noexcept;
+		FORCEINLINE RenderTargetResource* GetDisplay(const unsigned int index) const noexcept;
+		FORCEINLINE Array<RenderTargetResource*> GetDisplays() const noexcept;
 
-		void RegisterDisplay(RenderTarget* pTarget);
-		void RemoveDisplay(RenderTarget* pTarget);
+		void RegisterDisplay(RenderTargetResource* pTarget);
+		void RemoveDisplay(RenderTargetResource* pTarget);
 	private:
 		virtual void OnInitialize() override;
 		virtual void OnExecute() override;
 		virtual void OnFinalize() override;
 	private:
-		Array<RenderTarget*> mDisplays;
+		Array<RenderTargetResource*> mDisplays;
 	};
 
 

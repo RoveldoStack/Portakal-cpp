@@ -5,7 +5,7 @@
 
 namespace Portakal
 {
-    void SpriteCamera::SetRenderTarget(RenderTarget* pTarget)
+    void SpriteCamera::SetRenderTarget(RenderTargetResource* pTarget)
     {
         mTarget = pTarget;
     }

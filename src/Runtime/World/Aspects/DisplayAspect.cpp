@@ -2,23 +2,23 @@
 
 namespace Portakal
 {
-    RenderTarget* DisplayAspect::GetDefaultDisplay() const noexcept
+    RenderTargetResource* DisplayAspect::GetDefaultDisplay() const noexcept
     {
         return mDisplays.GetCursor() > 0 ? mDisplays[0] : nullptr;
     }
-    RenderTarget* DisplayAspect::GetDisplay(const unsigned int index) const noexcept
+    RenderTargetResource* DisplayAspect::GetDisplay(const unsigned int index) const noexcept
     {
         return mDisplays.GetCursor() > index ? mDisplays[index] : nullptr;
     }
-    Array<RenderTarget*> DisplayAspect::GetDisplays() const noexcept
+    Array<RenderTargetResource*> DisplayAspect::GetDisplays() const noexcept
     {
         return mDisplays;
     }
-    void DisplayAspect::RegisterDisplay(RenderTarget* pTarget)
+    void DisplayAspect::RegisterDisplay(RenderTargetResource* pTarget)
     {
         mDisplays.Add(pTarget);
     }
-    void DisplayAspect::RemoveDisplay(RenderTarget* pTarget)
+    void DisplayAspect::RemoveDisplay(RenderTargetResource* pTarget)
     {
         mDisplays.Remove(pTarget);
     }

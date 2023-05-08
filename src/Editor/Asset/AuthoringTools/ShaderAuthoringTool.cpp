@@ -2,7 +2,7 @@
 #include <Editor/Domain/DomainFile.h>
 #include <Editor/Renderer/GUICommands.h>
 #include <Runtime/Resource/Resource.h>
-#include <Runtime/Resource/Shader/ShaderObject.h>
+#include <Runtime/Resource/Shader/ShaderResource.h>
 #include <Libs/ImGui/imgui.h>
 #include <Runtime/Memory/Memory.h>
 #include <Runtime/Platform/PlatformClipboard.h>
@@ -23,7 +23,7 @@ namespace Portakal
 		/*
 		* Validate shader object
 		*/
-		ShaderObject* pShader = (ShaderObject*)pFile->GetResource()->PeekSubObject();
+		ShaderResource* pShader = (ShaderResource*)pFile->GetResource()->PeekSubObject();
 		if (pShader == nullptr)
 		{
 			GUICommands::Text("Invalid shader resource");

@@ -1,7 +1,7 @@
 #include "MenuItemTemplates.h"
 #include <Runtime/World/SceneAPI.h>
 #include <Runtime/World/Scene.h>
-#include <Runtime/Resource/RenderTarget/RenderTarget.h>
+#include <Runtime/Resource/RenderTarget/RenderTargetResource.h>
 #include <Runtime/World/Aspects/DisplayAspect.h>
 
 namespace Portakal

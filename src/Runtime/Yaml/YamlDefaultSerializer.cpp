@@ -270,8 +270,6 @@ namespace Portakal
         const long long value = node.as<long long>();
 
         *(long long*)pObject = value;
-
-        //pField->SetValue<long long>(pObject,value);
     }
     void LoadAsArray(const YAML::Node& node, void* pObject,const Type* pElementType)
     {

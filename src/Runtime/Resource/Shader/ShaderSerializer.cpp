@@ -1,7 +1,7 @@
 #include "ShaderSerializer.h"
 #include <Runtime/Yaml/Yaml.h>
-#include <Runtime/Resource/Shader/ShaderObject.h>
-#include <Runtime/Resource/Shader/ShaderObjectDescriptor.h>
+#include <Runtime/Resource/Shader/ShaderResource.h>
+#include <Runtime/Resource/Shader/ShaderResourceDescriptor.h>
 #include <Runtime/Yaml/Yaml.h>
 #include <Runtime/Assert/Assert.h>
 
@@ -14,7 +14,7 @@ namespace Portakal
 		*/
 		if (block.GetBlockSizeInBytes() == 0)
 		{
-			return new ShaderObject();
+			return new ShaderResource();
 		}
 
 		/*
@@ -25,13 +25,13 @@ namespace Portakal
 		/*
 		* Deserialize yaml into descriptor
 		*/
-		ShaderObjectDescriptor descriptor = {};
-		Yaml::ToObject<ShaderObjectDescriptor>(yaml, &descriptor);
+		ShaderResourceDescriptor descriptor = {};
+		Yaml::ToObject<ShaderResourceDescriptor>(yaml, &descriptor);
 
 		/*
 		* Create shader
 		*/
-		ShaderObject* pShader = new ShaderObject();
+		ShaderResource* pShader = new ShaderResource();
 		pShader->Compile(descriptor.EntryPoint, descriptor.Source, descriptor.Stage);
 
 		return pShader;

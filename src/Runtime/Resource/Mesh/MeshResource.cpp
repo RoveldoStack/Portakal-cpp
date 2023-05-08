@@ -1,10 +1,10 @@
-#include "Mesh.h"
+#include "MeshResource.h"
 #include <Runtime/Graphics/GraphicsDeviceAPI.h>
 #include <Runtime/Resource/Mesh/MeshUtils.h>
 #include <Runtime/Graphics/Buffer/GraphicsBufferUpdateDesc.h>
 namespace Portakal
 {
-	Mesh::Mesh(GraphicsDevice* pOwnerDevice)
+	MeshResource::MeshResource(GraphicsDevice* pOwnerDevice)
 	{
 		mOwnerDevice = pOwnerDevice;
 		mVertexBuffer = nullptr;
@@ -14,7 +14,7 @@ namespace Portakal
 		mIndexSubItemCount = 0;
 		mIndexType = MeshIndexType::Unknown;
 	}
-	Mesh::Mesh()
+	MeshResource::MeshResource()
 	{
 		mOwnerDevice = GraphicsDeviceAPI::GetDefaultDevice();
 		mVertexBuffer = nullptr;
@@ -24,11 +24,11 @@ namespace Portakal
 		mIndexSubItemCount = 0;
 		mIndexType = MeshIndexType::Unknown;
 	}
-	Mesh::~Mesh()
+	MeshResource::~MeshResource()
 	{
 		mOwnerDevice = nullptr;
 	}
-	void Mesh::AllocateVertexes(const Byte* pData, const unsigned long long subItemSize, const unsigned long long subItemCount, const Array<InputElementDesc>& inputElements)
+	void MeshResource::AllocateVertexes(const Byte* pData, const unsigned long long subItemSize, const unsigned long long subItemCount, const Array<InputElementDesc>& inputElements)
 	{
 		DeleteVertexBuffer();
 		if (mOwnerDevice == nullptr)
@@ -45,7 +45,7 @@ namespace Portakal
 		mVertexSubItemSize = subItemSize;
 		mInputElements = inputElements;
 	}
-	void Mesh::AllocateIndexes(const Byte* pData, const MeshIndexType indexType, const unsigned long long subItemCount)
+	void MeshResource::AllocateIndexes(const Byte* pData, const MeshIndexType indexType, const unsigned long long subItemCount)
 	{
 		DeleteIndexBuffer();
 		if (mOwnerDevice == nullptr)
@@ -61,7 +61,7 @@ namespace Portakal
 		mIndexSubItemCount = subItemCount;
 		mIndexType = indexType;
 	}
-	void Mesh::UpdateVertexes(const Byte* pData, const unsigned long long offset, const unsigned long long size)
+	void MeshResource::UpdateVertexes(const Byte* pData, const unsigned long long offset, const unsigned long long size)
 	{
 		if (mOwnerDevice == nullptr || mVertexBuffer == nullptr)
 			return;
@@ -73,7 +73,7 @@ namespace Portakal
 
 		mOwnerDevice->UpdateBuffer(mVertexBuffer, desc);
 	}
-	void Mesh::UpdateIndexes(const Byte* pData, const unsigned long long offset, const unsigned long long size)
+	void MeshResource::UpdateIndexes(const Byte* pData, const unsigned long long offset, const unsigned long long size)
 	{
 		if (mOwnerDevice == nullptr || mIndexBuffer == nullptr)
 			return;
@@ -86,7 +86,7 @@ namespace Portakal
 		mOwnerDevice->UpdateBuffer(mIndexBuffer, desc);
 
 	}
-	void Mesh::DeleteVertexBuffer()
+	void MeshResource::DeleteVertexBuffer()
 	{
 		if (mVertexBuffer == nullptr || mOwnerDevice == nullptr)
 			return;
@@ -98,7 +98,7 @@ namespace Portakal
 		mVertexSubItemCount = 0;
 		mVertexSubItemSize = 0;
 	}
-	void Mesh::DeleteIndexBuffer()
+	void MeshResource::DeleteIndexBuffer()
 	{
 		if (mIndexBuffer == nullptr || mOwnerDevice == nullptr)
 			return;
@@ -109,7 +109,7 @@ namespace Portakal
 		mIndexSubItemCount = 0;
 		mIndexType = MeshIndexType::Unknown;
 	}
-	void Mesh::DestroyCore()
+	void MeshResource::DestroyCore()
 	{
 		DeleteVertexBuffer();
 		DeleteIndexBuffer();

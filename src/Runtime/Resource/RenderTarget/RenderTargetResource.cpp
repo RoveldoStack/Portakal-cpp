@@ -1,4 +1,4 @@
-#include "RenderTarget.h"
+#include "RenderTargetResource.h"
 #include <Runtime/Graphics/Texture/Texture.h>
 #include <Runtime/Graphics/GraphicsDevice.h>
 #include <Runtime/Graphics/GraphicsDeviceAPI.h>
@@ -8,31 +8,31 @@
 
 namespace Portakal
 {
-	RenderTarget::RenderTarget(const unsigned int width, const unsigned int height, const Array<TextureFormat>& colorTargetFormats, const TextureFormat depthStencilFormat, const Array<String>& colorTargetNames)
+	RenderTargetResource::RenderTargetResource(const unsigned int width, const unsigned int height, const Array<TextureFormat>& colorTargetFormats, const TextureFormat depthStencilFormat, const Array<String>& colorTargetNames)
 	{
 		mDevice = GraphicsDeviceAPI::GetDefaultDevice();
 
-		ASSERT(colorTargetFormats.GetCursor() == colorTargetNames.GetCursor(),"RenderTarget","Given color target names are not matched with the given format count");
+		ASSERT(colorTargetFormats.GetCursor() == colorTargetNames.GetCursor(),"RenderTargetResource","Given color target names are not matched with the given format count");
 
 		/*
 		* Create resources
 		*/
 		CreateResources(width, height, colorTargetFormats, depthStencilFormat,colorTargetNames);
 	}
-	RenderTarget::~RenderTarget()
+	RenderTargetResource::~RenderTargetResource()
 	{
 		mFramebuffer = nullptr;
 		mDevice = nullptr;
 	}
-	unsigned int RenderTarget::GetWidth() const noexcept
+	unsigned int RenderTargetResource::GetWidth() const noexcept
 	{
 		return mWidth;
 	}
-	unsigned int RenderTarget::GetHeight() const noexcept
+	unsigned int RenderTargetResource::GetHeight() const noexcept
 	{
 		return mHeight;
 	}
-	void RenderTarget::Resize(const unsigned int width, const unsigned int height)
+	void RenderTargetResource::Resize(const unsigned int width, const unsigned int height)
 	{
 		/*
 		* Create a copy of the former attachment descriptions
@@ -56,7 +56,7 @@ namespace Portakal
 		*/
 		CreateResources(width, height, colorTargetFormats, depthStencilFormat,colorTargetNames);
 	}
-	void RenderTarget::Delete()
+	void RenderTargetResource::Delete()
 	{
 		/*
 		* Validate framebuffer
@@ -81,7 +81,7 @@ namespace Portakal
 			mDepthStencilTarget = nullptr;
 		}
 	}
-	void RenderTarget::CreateResources(const unsigned int width, const unsigned int height, const Array<TextureFormat>& colorTargetFormats, const TextureFormat depthStencilFormat, const Array<String>& colorTargetNames)
+	void RenderTargetResource::CreateResources(const unsigned int width, const unsigned int height, const Array<TextureFormat>& colorTargetFormats, const TextureFormat depthStencilFormat, const Array<String>& colorTargetNames)
 	{
 		/*
 		* Create color targets
@@ -138,7 +138,7 @@ namespace Portakal
 		mHeight = height;
 
 	}
-	void RenderTarget::DestroyCore()
+	void RenderTargetResource::DestroyCore()
 	{
 		Delete();
 	}

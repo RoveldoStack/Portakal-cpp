@@ -5,12 +5,12 @@
 namespace Portakal
 {
 	PCLASS();
-	class PORTAKAL_API ShaderObject : public ResourceSubObject
+	class PORTAKAL_API ShaderResource : public ResourceSubObject
 	{
-		GENERATE_CLASS(ShaderObject);
+		GENERATE_CLASS(ShaderResource);
 	public:
-		ShaderObject();
-		~ShaderObject();
+		ShaderResource();
+		~ShaderResource();
 
 		FORCEINLINE bool IsCompiled() const noexcept;
 		FORCEINLINE String GetSource() const noexcept { return mSource; }
@@ -34,5 +34,5 @@ namespace Portakal
 
 	};
 
-#include "ShaderObject.reflect.h"
+#include "ShaderResource.reflect.h"
 }

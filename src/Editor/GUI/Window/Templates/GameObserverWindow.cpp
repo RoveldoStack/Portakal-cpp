@@ -2,7 +2,7 @@
 #include <Runtime/World/SceneAPI.h>
 #include <Runtime/World/Scene.h>
 #include <Runtime/World/Aspects/DisplayAspect.h>
-#include <Runtime/Resource/RenderTarget/RenderTarget.h>
+#include <Runtime/Resource/RenderTarget/RenderTargetResource.h>
 #include <Runtime/Graphics/Framebuffer/Framebuffer.h>
 #include <Runtime/Graphics/Resource/ResourceTable.h>
 #include <Libs/ImGui/imgui.h>
@@ -87,7 +87,7 @@ namespace Portakal
 		/*
 		* Check if display changed
 		*/
-		RenderTarget* pDefaultDisplay = pDisplayAspect->GetDefaultDisplay();
+		RenderTargetResource* pDefaultDisplay = pDisplayAspect->GetDefaultDisplay();
 		if (pDefaultDisplay != mCurrentDisplay)
 			OnDisplayChanged(pDefaultDisplay);
 
@@ -143,7 +143,7 @@ namespace Portakal
 
 		LOG("GameObserverWindow", "Viewport changed");
 	}
-	void GameObserverWindow::OnDisplayChanged(RenderTarget* pDisplay)
+	void GameObserverWindow::OnDisplayChanged(RenderTargetResource* pDisplay)
 	{
 		/*
 		* Clear current display imgui bindings

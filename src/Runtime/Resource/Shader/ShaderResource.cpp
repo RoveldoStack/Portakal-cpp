@@ -1,34 +1,34 @@
-#include "ShaderObject.h"
+#include "ShaderResource.h"
 #include <Runtime/Graphics/GraphicsDeviceAPI.h>
 #include <Runtime/HLSL/HLSLCompiler.h>
 
 namespace Portakal
 {
-	ShaderObject::ShaderObject()
+	ShaderResource::ShaderResource()
 	{
 		mDevice = GraphicsDeviceAPI::GetDefaultDevice();
 		mShader = nullptr;
 		mReflectionBlob = nullptr;
 	}
-	ShaderObject::~ShaderObject()
+	ShaderResource::~ShaderResource()
 	{
 		
 	}
-	bool ShaderObject::IsCompiled() const noexcept
+	bool ShaderResource::IsCompiled() const noexcept
 	{
 		if (mShader == nullptr)
 			return false;
 
 		return true;
 	}
-	String ShaderObject::GetEntryPoint() const noexcept
+	String ShaderResource::GetEntryPoint() const noexcept
 	{
 		if (mShader == nullptr)
 			return String();
 
 		return mShader->GetEntryPointMethod();
 	}
-	ShaderStage ShaderObject::GetStage() const noexcept
+	ShaderStage ShaderResource::GetStage() const noexcept
 	{
 		if (mShader == nullptr)
 			return ShaderStage::None;
@@ -36,7 +36,7 @@ namespace Portakal
 		return mShader->GetStage();
 	}
 	
-	void ShaderObject::Compile(const String& entryPoint, const String& source, const ShaderStage stage)
+	void ShaderResource::Compile(const String& entryPoint, const String& source, const ShaderStage stage)
 	{
 		/*
 		* Delete the former shader
@@ -73,7 +73,7 @@ namespace Portakal
 		mCompiled = true;
 		
 	}
-	void ShaderObject::Delete()
+	void ShaderResource::Delete()
 	{
 		if (mShader == nullptr)
 			return;
@@ -88,7 +88,7 @@ namespace Portakal
 			mReflectionBlob = nullptr;
 		}
 	}
-	void ShaderObject::DestroyCore()
+	void ShaderResource::DestroyCore()
 	{
 		Delete();
 	}

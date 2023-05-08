@@ -1,8 +1,8 @@
 #include "ShaderAssetSerializer.h"
 
 #include <Runtime/Yaml/Yaml.h>
-#include <Runtime/Resource/Shader/ShaderObject.h>
-#include <Runtime/Resource/Shader/ShaderObjectDescriptor.h>
+#include <Runtime/Resource/Shader/ShaderResource.h>
+#include <Runtime/Resource/Shader/ShaderResourceDescriptor.h>
 
 
 namespace Portakal
@@ -12,14 +12,14 @@ namespace Portakal
 		/*
 		* Get shader
 		*/
-		ShaderObject* pShader = (ShaderObject*)pObject;
+		ShaderResource* pShader = (ShaderResource*)pObject;
 
-		ShaderObjectDescriptor descriptor = {};
+		ShaderResourceDescriptor descriptor = {};
 		descriptor.EntryPoint = pShader->GetEntryPoint();
 		descriptor.Source = pShader->GetSource();
 		descriptor.Stage = pShader->GetStage();
 
-		const String yamlContent = Yaml::ToYaml<ShaderObjectDescriptor>(&descriptor);
+		const String yamlContent = Yaml::ToYaml<ShaderResourceDescriptor>(&descriptor);
 		outBlock.Copy(yamlContent.GetSource(), yamlContent.GetCursor());
 	}
 	void ShaderAssetSerializer::SerializeToPackage(const ResourceSubObject* pObject, ByteBlock& outBlock)

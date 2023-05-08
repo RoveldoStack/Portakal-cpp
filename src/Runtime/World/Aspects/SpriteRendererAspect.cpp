@@ -1,6 +1,6 @@
 #include "SpriteRendererAspect.h"
 #include <Runtime/World/Aspects/DisplayAspect.h>
-#include <Runtime/Resource/RenderTarget/RenderTarget.h>
+#include <Runtime/Resource/RenderTarget/RenderTargetResource.h>
 #include <Runtime/World/Scene.h>
 #include <Runtime/Graphics/GraphicsDevice.h>
 #include <Runtime/Graphics/GraphicsDeviceAPI.h>
@@ -50,7 +50,7 @@ namespace Portakal
         if (pDisplayAspect == nullptr)
             return;
 
-        RenderTarget* pDefaultDisplay = pDisplayAspect->GetDefaultDisplay();
+        RenderTargetResource* pDefaultDisplay = pDisplayAspect->GetDefaultDisplay();
         if (pDefaultDisplay == nullptr)
             return;
 
@@ -62,7 +62,7 @@ namespace Portakal
         {
             const SpriteCamera* pCamera = mCameras[i];
 
-            RenderTarget* pTarget = pCamera->GetRenderTarget();
+            RenderTargetResource* pTarget = pCamera->GetRenderTarget();
             if (pTarget == nullptr)
             {
                 pTarget = pDefaultDisplay;

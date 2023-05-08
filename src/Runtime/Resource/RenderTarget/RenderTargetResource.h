@@ -13,12 +13,12 @@ namespace Portakal
 	/// A resource specialized in render targets
 	/// </summary>
 	PCLASS();
-	class PORTAKAL_API RenderTarget : public ResourceSubObject
+	class PORTAKAL_API RenderTargetResource : public ResourceSubObject
 	{
-		GENERATE_CLASS(RenderTarget,Virtual);
+		GENERATE_CLASS(RenderTargetResource,Virtual);
 	public:
-		RenderTarget(const unsigned int width, const unsigned int height, const Array<TextureFormat>& colorTargetFormats, const TextureFormat depthStencilFormat,const Array<String>& colorTargetNames = {});
-		~RenderTarget();
+		RenderTargetResource(const unsigned int width, const unsigned int height, const Array<TextureFormat>& colorTargetFormats, const TextureFormat depthStencilFormat,const Array<String>& colorTargetNames = {});
+		~RenderTargetResource();
 
 		/// <summary>
 		/// Returns the width
@@ -79,9 +79,8 @@ namespace Portakal
 		TextureResource* mDepthStencilTarget;
 		unsigned int mWidth;
 		unsigned int mHeight;
-
 	};
 
 
-#include "RenderTarget.reflect.h"
+#include "RenderTargetResource.reflect.h"
 }

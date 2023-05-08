@@ -7,13 +7,13 @@
 namespace Portakal
 {
 	PCLASS();
-	class PORTAKAL_API Mesh : public ResourceSubObject
+	class PORTAKAL_API MeshResource : public ResourceSubObject
 	{
-		GENERATE_CLASS(Mesh);
+		GENERATE_CLASS(MeshResource);
 	public:
-		Mesh(GraphicsDevice* pOwnerDevice);
-		Mesh();
-		~Mesh();
+		MeshResource(GraphicsDevice* pOwnerDevice);
+		MeshResource();
+		~MeshResource();
 
 		void AllocateVertexes(const Byte* pData,const unsigned long long subItemSize,const unsigned long long subItemCount,const Array<InputElementDesc>& inputElements);
 		void AllocateIndexes(const Byte* pData,const MeshIndexType indexType,const unsigned long long subItemCount);
@@ -36,5 +36,5 @@ namespace Portakal
 		MeshIndexType mIndexType;
 	};
 
-#include "Mesh.reflect.h"
+#include "MeshResource.reflect.h"
 }

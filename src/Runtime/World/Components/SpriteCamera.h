@@ -4,7 +4,7 @@
 
 namespace Portakal
 {
-	class RenderTarget;
+	class RenderTargetResource;
 	PCLASS();
 	class PORTAKAL_API SpriteCamera : public Component
 	{
@@ -13,10 +13,10 @@ namespace Portakal
 		SpriteCamera() = default;
 		~SpriteCamera() = default;
 
-		FORCEINLINE RenderTarget* GetRenderTarget() const noexcept { return mTarget; }
+		FORCEINLINE RenderTargetResource* GetRenderTarget() const noexcept { return mTarget; }
 		FORCEINLINE ColorRgbaF GetClearColor() const noexcept { return mClearColor; }
 
-		FORCEINLINE void SetRenderTarget(RenderTarget* pTarget);
+		FORCEINLINE void SetRenderTarget(RenderTargetResource* pTarget);
 		FORCEINLINE void SetClearColor(const ColorRgbaF& clearColor) { mClearColor = clearColor; }
 
 	private:
@@ -26,7 +26,7 @@ namespace Portakal
 		virtual void OnFinalize() override;
 
 	private:
-		RenderTarget* mTarget;
+		RenderTargetResource* mTarget;
 		ColorRgbaF mClearColor;
 		float mNearPlane;
 		float mFarPlane;

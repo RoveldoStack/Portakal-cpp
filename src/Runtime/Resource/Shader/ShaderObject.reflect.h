@@ -1,8 +1,0 @@
-#include "ShaderObject.h" 
-START_GENERATE_TYPE(ShaderObject);
-START_CLASS_TYPE_PROPERTIES(ShaderObject)
-REGISTER_BASE_TYPE(ResourceSubObject);
-
-END_TYPE_PROPERTIES;
-HAS_DEFAULT_CONSTRUCTOR(ShaderObject);
-END_GENERATE_TYPE(ShaderObject);

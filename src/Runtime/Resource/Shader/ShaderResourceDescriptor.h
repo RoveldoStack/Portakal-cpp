@@ -6,10 +6,10 @@
 namespace Portakal
 {
 	PSTRUCT();
-	struct PORTAKAL_API ShaderObjectDescriptor
+	struct PORTAKAL_API ShaderResourceDescriptor
 	{
-		ShaderObjectDescriptor() = default;
-		~ShaderObjectDescriptor() = default;
+		ShaderResourceDescriptor() = default;
+		~ShaderResourceDescriptor() = default;
 
 		PFIELD();
 		String Source;
@@ -19,5 +19,5 @@ namespace Portakal
 		ShaderStage Stage;
 	};
 
-#include "ShaderObjectDescriptor.reflect.h"
+#include "ShaderResourceDescriptor.reflect.h"
 }

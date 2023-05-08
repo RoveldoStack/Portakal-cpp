@@ -1,0 +1,8 @@
+#include "MeshResource.h" 
+START_GENERATE_TYPE(MeshResource);
+START_CLASS_TYPE_PROPERTIES(MeshResource)
+REGISTER_BASE_TYPE(ResourceSubObject);
+
+END_TYPE_PROPERTIES;
+HAS_DEFAULT_CONSTRUCTOR(MeshResource);
+END_GENERATE_TYPE(MeshResource);
