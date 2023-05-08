@@ -66,10 +66,11 @@ namespace Portakal
 	GENERATE_PRIMITIVE_TYPE(double,TypeCodes::Double);
 	GENERATE_PRIMITIVE_TYPE(Long,TypeCodes::Long);
 	GENERATE_PRIMITIVE_TYPE(ULong,TypeCodes::ULong);
+	GENERATE_PRIMITIVE_TYPE(LongLong, TypeCodes::LongLong);
+	GENERATE_PRIMITIVE_TYPE(ULongLong, TypeCodes::ULongLong);
 	GENERATE_PRIMITIVE_TYPE(int, TypeCodes::Int);
 	GENERATE_PRIMITIVE_TYPE(String, TypeCodes::String);
 	GENERATE_PRIMITIVE_TYPE(UInt, TypeCodes::UInt);
-	//GENERATE_PRIMITIVE_TYPE(Guid, TypeCodes::Composed);
-	//GENERATE_PRIMITIVE_TYPE(ColorRgbaF, TypeCodes::Char);
+
 	GENERATE_PRIMITIVE_TYPE2(Array, TypeCodes::Composed);
 }

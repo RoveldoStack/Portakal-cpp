@@ -6,5 +6,7 @@ namespace Portakal
 	typedef unsigned char Byte;
 	typedef long Long;
 	typedef unsigned long ULong;
+	typedef long long LongLong;
+	typedef unsigned long long ULongLong;
 
 }

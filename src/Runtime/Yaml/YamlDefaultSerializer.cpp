@@ -27,7 +27,11 @@ namespace Portakal
         case Portakal::TypeCodes::UChar:
             break;
         case Portakal::TypeCodes::Int:
+        {
+            int* pValue = (int*)pObject;
+            emitter << YAML::Value << *pValue;
             break;
+        }
         case Portakal::TypeCodes::UInt:
         {
             UInt* pValue = (UInt*)pObject;
@@ -36,16 +40,54 @@ namespace Portakal
             break;
         }
         case Portakal::TypeCodes::Short:
+        {
+            short* pValue = (short*)pObject;
+            emitter << YAML::Value << *pValue;
+
             break;
+        }
         case Portakal::TypeCodes::UShort:
+        {
+            unsigned short* pValue = (unsigned short*)pObject;
+            emitter << YAML::Value << *pValue;
+
             break;
+        }
         case Portakal::TypeCodes::Float:
         {
             emitter << YAML::Value << *String::GetFromFloat(*(float*)pObject);
             break;
         }
         case Portakal::TypeCodes::Double:
+        {
+            double* pValue = (double*)pObject;
+            emitter << YAML::Value << *pValue;
             break;
+        }
+        case Portakal::TypeCodes::Long:
+        {
+            long* pValue = (long*)pObject;
+            emitter << YAML::Value << *pValue;
+            break;
+        }
+        case TypeCodes::LongLong:
+        {
+            long long* pValue = (long long*)pObject;
+            emitter << YAML::Value << *pValue;
+            break;
+        }
+        case TypeCodes::ULong:
+        {
+            unsigned long* pValue = (unsigned long*)pObject;
+            emitter << YAML::Value << *pValue;
+            break;
+        }
+        case TypeCodes::ULongLong:
+        {
+            unsigned long long* pValue = (unsigned long long*)pObject;
+            emitter << YAML::Value << *pValue;
+            break;
+        }
         default:
             break;
         }
@@ -159,13 +201,29 @@ namespace Portakal
             case Portakal::TypeCodes::UChar:
                 break;
             case Portakal::TypeCodes::Int:
+            {
+                const int value = node.as<int>();
+                *(int*)pObject = value;
                 break;
+            }
             case Portakal::TypeCodes::UInt:
+            {
+                const unsigned int value = node.as<unsigned int>();
+                *(unsigned int*)pObject = value;
                 break;
+            }
             case Portakal::TypeCodes::Short:
+            {
+                const short value = node.as<short>();
+                *(short*)pObject = value;
                 break;
+            }
             case Portakal::TypeCodes::UShort:
+            {
+                const unsigned short value = node.as<unsigned short>();
+                *(unsigned short*)pObject = value;
                 break;
+            }
             case Portakal::TypeCodes::Float:
             {
                 const float value = node.as<float>();
@@ -173,15 +231,35 @@ namespace Portakal
                 break;
             }
             case Portakal::TypeCodes::Double:
+            {
+                const double value = node.as<double>();
+                *(double*)pObject = value;
                 break;
+            }
             case Portakal::TypeCodes::Long:
+            {
+                const long value = node.as<long>();
+                *(long*)pObject = value;
                 break;
+            }
             case Portakal::TypeCodes::LongLong:
+            {
+                const long long value = node.as<long long>();
+                *(long long*)pObject = value;
                 break;
+            }
             case Portakal::TypeCodes::ULong:
+            {
+                const unsigned long value = node.as<unsigned long>();
+                *(unsigned long*)pObject = value;
                 break;
+            }
             case Portakal::TypeCodes::ULongLong:
+            {
+                const unsigned long long value = node.as<unsigned long long>();
+                *(unsigned long long*)pObject = value;
                 break;
+            }
             default:
                 break;
         }

@@ -1,6 +1,5 @@
 #pragma once
 #include <Runtime/Reflection/Reflection.h>
-#include <Runtime/World/Scene/SceneComponentFieldEntry.h>
 #include <Runtime/Containers/Guid.h>
 #include <Runtime/World/Scene/SceneComponentEntry.h>
 namespace Portakal

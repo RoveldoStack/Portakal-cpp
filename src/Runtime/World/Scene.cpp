@@ -6,6 +6,7 @@
 #include <Runtime/Message/MessageAPI.h>
 #include <Runtime/World/Components/InvalidComponent.h>
 #include <Runtime/World/Aspects/InvalidAspect.h>
+#include <Runtime/Yaml/YamlDefaultSerializer.h>
 
 namespace Portakal
 {
@@ -108,47 +109,48 @@ namespace Portakal
 				componentEntry.ID = pComponent->GetID();
 				componentEntry.TagName = pComponent->GetTagName();
 				componentEntry.TypeName = pComponent->GetType()->GetTypeName();
-				
-				/*
-				* Record component field values
-				*/
-				const Array<Field*> fields = pComponent->GetType()->GetFields();
-				for (unsigned int fieldIndex = 0; fieldIndex < fields.GetCursor(); fieldIndex++)
-				{
-					const Field* pField = fields[fieldIndex];
-					if (pField->GetAccessSpecifier() != AccessSpecifier::Public)
-						continue;
+				componentEntry.Content = YamlDefaultSerializer::ToYaml(pComponent, pComponent->GetType());
 
-					SceneComponentFieldEntry fieldEntry = {};
-					fieldEntry.FieldName = pField->GetFieldName();
+				///*
+				//* Record component field values
+				//*/
+				//const Array<Field*> fields = pComponent->GetType()->GetFields();
+				//for (unsigned int fieldIndex = 0; fieldIndex < fields.GetCursor(); fieldIndex++)
+				//{
+				//	const Field* pField = fields[fieldIndex];
+				//	if (pField->GetAccessSpecifier() != AccessSpecifier::Public)
+				//		continue;
 
-					const Type* pFieldType = pField->GetFieldType();
-					if (pFieldType == typeof(Entity)) // its an entity
-					{
-						const Entity* pObject = pField->GetValue<Entity*>((void*)pComponent);
-						fieldEntry.Type = SceneComponentFieldType::Entity;
-						fieldEntry.Content = Guid::ToString(pObject == nullptr ? Guid::Zero() : pObject->GetID());
-					}
-					else if (pFieldType->IsSubClassOf(typeof(Component))) // its a component
-					{
-						const Component* pObject = pField->GetValue<Component*>((void*)pComponent);
-						fieldEntry.Type = SceneComponentFieldType::Component;
-						fieldEntry.Content = Guid::ToString(pObject == nullptr ? Guid::Zero() : pObject->GetID());
-					}
-					else if (pFieldType->IsSubClassOf(typeof(ResourceSubObject)))
-					{
-						const ResourceSubObject* pObject = pField->GetValue<ResourceSubObject*>((void*)pComponent);
-						fieldEntry.Type = SceneComponentFieldType::Resource;
-						fieldEntry.Content = Guid::ToString(pObject == nullptr ? Guid::Zero() : pObject->GetID());
-					}
-					else
-					{
-						fieldEntry.Type = SceneComponentFieldType::Raw;
-						//fieldEntry.Content = YamlDefaultSerializer::FieldToYaml(pComponent,pField);
-					}
+				//	SceneComponentFieldEntry fieldEntry = {};
+				//	fieldEntry.FieldName = pField->GetFieldName();
 
-					componentEntry.Fields.Add(fieldEntry);
-				}
+				//	const Type* pFieldType = pField->GetFieldType();
+				//	if (pFieldType == typeof(Entity)) // its an entity
+				//	{
+				//		const Entity* pObject = pField->GetValue<Entity*>((void*)pComponent);
+				//		fieldEntry.Type = SceneComponentFieldType::Entity;
+				//		fieldEntry.Content = Guid::ToString(pObject == nullptr ? Guid::Zero() : pObject->GetID());
+				//	}
+				//	else if (pFieldType->IsSubClassOf(typeof(Component))) // its a component
+				//	{
+				//		const Component* pObject = pField->GetValue<Component*>((void*)pComponent);
+				//		fieldEntry.Type = SceneComponentFieldType::Component;
+				//		fieldEntry.Content = Guid::ToString(pObject == nullptr ? Guid::Zero() : pObject->GetID());
+				//	}
+				//	else if (pFieldType->IsSubClassOf(typeof(ResourceSubObject)))
+				//	{
+				//		const ResourceSubObject* pObject = pField->GetValue<ResourceSubObject*>((void*)pComponent);
+				//		fieldEntry.Type = SceneComponentFieldType::Resource;
+				//		fieldEntry.Content = Guid::ToString(pObject == nullptr ? Guid::Zero() : pObject->GetID());
+				//	}
+				//	else
+				//	{
+				//		fieldEntry.Type = SceneComponentFieldType::Raw;
+				//		fieldEntry.Content = YamlDefaultSerializer::ToYaml((unsigned char*)pComponent+pField->GetOffset(), pField->GetFieldType());
+				//	}
+
+				//	componentEntry.Fields.Add(fieldEntry);
+				//}
 
 				entityEntry.Components.Add(componentEntry);
 			}
@@ -331,22 +333,9 @@ namespace Portakal
 				}
 
 				/*
-				* Load fields
+				* Set component values
 				*/
-				for (unsigned int fieldIndex = 0; fieldIndex < componentEntry.Fields.GetCursor(); fieldIndex++)
-				{
-					const SceneComponentFieldEntry& fieldEntry = componentEntry.Fields[fieldIndex];
-
-					Field* pField = pComponentType->GetField(fieldEntry.FieldName);
-
-					if (pField == nullptr)
-						continue;
-
-					Type* pFieldType = pField->GetFieldType();
-
-					if (pFieldType == nullptr)
-						continue;
-				}
+				YamlDefaultSerializer::ToObject(componentEntry.Content, pComponent, pComponent->GetType());
 			}
 		}
 	}

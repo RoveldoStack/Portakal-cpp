@@ -91,6 +91,11 @@ namespace Portakal
 		* Render
 		*/
 		RenderScene(mTargetScene);
+
+		if (ImGui::Button("Save"))
+		{
+			SaveScene();
+		}
 	}
 	void WorldObserverWindow::OnSceneChanged(Scene* pNewScene)
 	{

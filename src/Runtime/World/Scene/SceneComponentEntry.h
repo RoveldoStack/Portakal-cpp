@@ -1,6 +1,5 @@
 #pragma once
 #include <Runtime/Reflection/Reflection.h>
-#include <Runtime/World/Scene/SceneComponentFieldEntry.h>
 #include <Runtime/Containers/Guid.h>
 namespace Portakal
 {
@@ -17,7 +16,7 @@ namespace Portakal
 		PFIELD();
 		Guid ID;
 		PFIELD();
-		Array<SceneComponentFieldEntry> Fields;
+		String Content;
 	};
 
 #include "SceneComponentEntry.reflect.h"
