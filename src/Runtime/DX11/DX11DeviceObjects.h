@@ -6,3 +6,4 @@
 #include <Runtime/DX11/Framebuffer/DX11Framebuffer.h>
 #include <Runtime/DX11/Buffer/DX11Buffer.h>
 #include <Runtime/DX11/Shader/DX11Shader.h>
+#include <Runtime/DX11/Sampler/DX11Sampler.h>

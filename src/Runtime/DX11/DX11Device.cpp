@@ -98,7 +98,7 @@ namespace Portakal
     }
     Sampler* DX11Device::CreateSamplerCore(const SamplerCreateDesc& desc)
     {
-        return nullptr;
+        return new DX11Sampler(desc,this);
     }
     Framebuffer* DX11Device::CreateFramebufferCore(const FramebufferCreateDesc& desc)
     {
