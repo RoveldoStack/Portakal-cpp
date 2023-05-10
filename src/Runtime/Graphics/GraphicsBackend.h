@@ -11,6 +11,7 @@ namespace Portakal
 		Directx11,
 		Directx12,
 		Vulkan,
-		Gnm
+		Gnm,
+		Nvn
 	};
 }
