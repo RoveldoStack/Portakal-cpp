@@ -1,13 +1,14 @@
-#include "DX11Pipeline.h"
+#include "DX11GraphicsPipeline.h"
 #include <Runtime/DX11/DX11Device.h>
 #include <Runtime/DX11/Pipeline/DX11PipelineUtils.h>
 #include <Runtime/DXGI/DXGIUtils.h>
 #include <Runtime/DX11/Shader/DX11Shader.h>
 #include <Runtime/Assert/Assert.h>
+#include <Runtime/Graphics/Pipeline/PipelineUtils.h>
 
 namespace Portakal
 {
-	DX11Pipeline::DX11Pipeline(const GraphicsPipelineCreateDesc& desc,DX11Device* pDevice) : Pipeline(desc)
+	DX11GraphicsPipeline::DX11GraphicsPipeline(const GraphicsPipelineCreateDesc& desc,DX11Device* pDevice) : Pipeline(desc)
 	{
 		/*
 		* Get vertex shader for input layout
@@ -22,14 +23,13 @@ namespace Portakal
 				break;
 			}
 		}
-		ASSERT(pVertexShader != nullptr, "DX11Pipeline", "Invalid pipeline shader state, there is no vertex shader bound to the pipeline!");
+		ASSERT(pVertexShader != nullptr, "DX11GraphicsPipeline", "Invalid pipeline shader state, there is no vertex shader bound to the pipeline!");
 
 		/*
 		* Create input layout
 		*/
 		{
 			Array<D3D11_INPUT_ELEMENT_DESC> inputElements;
-			Array<String> semanticNameCache;
 			Array<unsigned int> semanticIndexCache;
 			for (unsigned char i = 0; i < (unsigned char)InputElementSemantic::COUNT; i++)
 			{
@@ -41,12 +41,10 @@ namespace Portakal
 			{
 				InputElementDesc& element = desc.InputLayout.Elements[i];
 
-				semanticNameCache.Add(DX11PipelineUtils::GetSemanticName(element.Semantic));
-
 				D3D11_INPUT_ELEMENT_DESC elementDesc = {};
 				elementDesc.Format = DXGIUtils::GetInputElementFormat(element.Format);
 				elementDesc.AlignedByteOffset = offset;
-				elementDesc.SemanticName = *semanticNameCache[i];
+				elementDesc.SemanticName = DX11PipelineUtils::GetSemanticName(element.Semantic).GetSourceCopy();
 				elementDesc.SemanticIndex = semanticIndexCache[(unsigned int)element.Semantic];
 				semanticIndexCache[(unsigned int)element.Semantic]++;
 
@@ -55,9 +53,20 @@ namespace Portakal
 				elementDesc.InputSlotClass = desc.InputLayout.InstanceStepRate == 0 ? D3D11_INPUT_PER_VERTEX_DATA : D3D11_INPUT_PER_INSTANCE_DATA;
 
 				inputElements.Add(elementDesc);
+
+				offset += PipelineUtils::GetInputElementDataSize(element.Format);
 			}
-			const Array<byte> vertexShaderBlob = pVertexShader->GetBytes();
-			ASSERT(SUCCEEDED(pDevice->GetDXDevice()->CreateInputLayout(inputElements.GetData(), inputElements.GetCursor(), vertexShaderBlob.GetData(), vertexShaderBlob.GetCursor(), mInputLayout.GetAddressOf())), "DX11Pipeline", "Failed to create input layout");
+
+			const ByteBlock vertexShaderBlob = pVertexShader->GetBytes();
+			ASSERT(SUCCEEDED(pDevice->GetDXDevice()->CreateInputLayout(inputElements.GetData(), inputElements.GetCursor(), vertexShaderBlob.GetBlockDataPtr(), vertexShaderBlob.GetBlockSizeInBytes(), mInputLayout.GetAddressOf())), "DX11GraphicsPipeline", "Failed to create input layout");
+
+			/*
+			* Delete names
+			*/
+			for (unsigned int i = 0; i < inputElements.GetCursor(); i++)
+			{
+				delete inputElements[i].SemanticName;
+			}
 		}
 
 		/*
@@ -76,7 +85,7 @@ namespace Portakal
 			rasterizerDesc.SlopeScaledDepthBias = desc.RasterizerState.DepthBiasSlope;
 			rasterizerDesc.FillMode = DX11PipelineUtils::GetFillMode(desc.RasterizerState.ShadeMode);
 
-			ASSERT(SUCCEEDED(pDevice->GetDXDevice()->CreateRasterizerState(&rasterizerDesc, mRasterizerState.GetAddressOf())),"DX11Pipeline","Failed to create rasterizer state");
+			ASSERT(SUCCEEDED(pDevice->GetDXDevice()->CreateRasterizerState(&rasterizerDesc, mRasterizerState.GetAddressOf())),"DX11GraphicsPipeline","Failed to create rasterizer state");
 		}
 
 		/*
@@ -94,7 +103,7 @@ namespace Portakal
 			depthStencilDesc.FrontFace = DX11PipelineUtils::GetStencilFaceDesc(desc.DepthStencilState.StencilFrontFace);
 			depthStencilDesc.BackFace = DX11PipelineUtils::GetStencilFaceDesc(desc.DepthStencilState.StencilBackFace);
 
-			ASSERT(SUCCEEDED(pDevice->GetDXDevice()->CreateDepthStencilState(&depthStencilDesc, mDepthStencilState.GetAddressOf())),"DX11Pipeline","Failed to create depth stencil state");
+			ASSERT(SUCCEEDED(pDevice->GetDXDevice()->CreateDepthStencilState(&depthStencilDesc, mDepthStencilState.GetAddressOf())),"DX11GraphicsPipeline","Failed to create depth stencil state");
 		}
 
 		/*
@@ -112,7 +121,7 @@ namespace Portakal
 				blendingDesc.RenderTarget[i] = DX11PipelineUtils::GetBlendingAttachmentDesc(attachment);
 			}
 
-			ASSERT(SUCCEEDED(pDevice->GetDXDevice()->CreateBlendState(&blendingDesc, mBlendingState.GetAddressOf())),"DX11Pipeline","Failed to create blending state");
+			ASSERT(SUCCEEDED(pDevice->GetDXDevice()->CreateBlendState(&blendingDesc, mBlendingState.GetAddressOf())),"DX11GraphicsPipeline","Failed to create blending state");
 		}
 
 		/*
@@ -158,16 +167,16 @@ namespace Portakal
 					break;
 				}
 				default:
-					ASSERT(false, "DX11Pipeline", "Invalid shader in the pipeline!");
+					ASSERT(false, "DX11GraphicsPipeline", "Invalid shader in the pipeline!");
 					break;
 			}
 		}
 	}
-	DX11Pipeline::~DX11Pipeline()
+	DX11GraphicsPipeline::~DX11GraphicsPipeline()
 	{
 
 	}
-	void DX11Pipeline::OnDestroy()
+	void DX11GraphicsPipeline::OnDestroy()
 	{
 
 	}

@@ -24,10 +24,5 @@ namespace Portakal
 		/// The data format
 		/// </summary>
 		InputElementDataFormat Format;
-
-		/// <summary>
-		/// The offset
-		/// </summary>
-		unsigned int Offset;
 	};
 }

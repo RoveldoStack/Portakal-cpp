@@ -110,7 +110,8 @@ namespace Portakal
     }
     Pipeline* DX11Device::CreateGraphicsPipelineCore(const GraphicsPipelineCreateDesc& desc)
     {
-        return nullptr;
+        return new DX11GraphicsPipeline(desc,this);
+;
     }
     Pipeline* DX11Device::CreateComputePipelineCore(const ComputePipelineCreateDesc& desc)
     {
@@ -148,6 +149,7 @@ namespace Portakal
     }
     void DX11Device::SubmitCommandsCore(const Array<CommandList*>& cmdBuffers)
     {
+        return;
         mContextBarrier->Lock();
         for (unsigned int i = 0; i < cmdBuffers.GetCursor(); i++)
         {

@@ -13,7 +13,6 @@ namespace Portakal
 
 		FORCEINLINE const TextureResource* GetTargetTexture() const noexcept { return mTargetTexture; }
 		FORCEINLINE const ResourceTable* GetTable() const noexcept { return mTable; }
-		FORCEINLINE virtual void* GetBinding() const noexcept = 0;
 	private:
 		const TextureResource* mTargetTexture;
 		ResourceTable* mTable;

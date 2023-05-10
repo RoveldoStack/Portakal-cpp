@@ -46,7 +46,7 @@ namespace Portakal
 		/*
 		* Compile the source text
 		*/
-		Array<Byte> bytes;
+		ByteBlock bytes;
 		HLSLCompiler::Compile(source, entryPoint, stage, 4, 0,bytes, mErrors);
 
 		/*

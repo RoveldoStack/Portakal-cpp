@@ -28,9 +28,22 @@ namespace Portakal
 		/// <returns></returns>
 		FORCEINLINE unsigned long long GetBlockSizeInBytes() const;
 
+		/*
+		* Copies data from another location
+		*/
 		void Copy(void* pData,const unsigned long long size);
 
+		/*
+		* Clears the current data
+		*/
 		void Clear();
+
+		/// <summary>
+		/// Allocates new data block
+		/// </summary>
+		/// <param name="size"></param>
+		void Allocate(const unsigned long long size);
+
 		/// <summary>
 		/// Returns the any data interval inside the block
 		/// </summary>
@@ -42,6 +55,9 @@ namespace Portakal
 		{
 			return *(TObject*)(mBlock + offset);
 		}
+
+		FORCEINLINE void operator =(const ByteBlock& other);
+		
 	private:
 		unsigned char* mBlock;
 		unsigned long long mSize;

@@ -28,7 +28,7 @@ namespace Portakal
         /*
         * Create renderer
         */
-        mRenderer = ImGuiRenderer::Create(pDefaultDevice);
+        mRenderer = new ImGuiRenderer(pDefaultDevice);
 
         /*
         * Create api

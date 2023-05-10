@@ -2,6 +2,7 @@
 #include <Runtime/Graphics/GraphicsDeviceObject.h>
 #include <Runtime/Graphics/Shader/ShaderCreateDesc.h>
 #include <Runtime/Graphics/Shader/ShaderReflectionBlob.h>
+#include <Runtime/Memory/ByteBlock.h>
 
 namespace Portakal
 {
@@ -27,7 +28,7 @@ namespace Portakal
 		/// Returns the shader source in text
 		/// </summary>
 		/// <returns></returns>
-		FORCEINLINE Array<Byte> GetBytes() const noexcept { return mBytes; }
+		FORCEINLINE ByteBlock GetBytes() const noexcept { return mBytes; }
 
 		FORCEINLINE virtual GraphicsDeviceObjectType GetDeviceObjectType() const noexcept override final { return GraphicsDeviceObjectType::Shader; }
 	protected:
@@ -36,6 +37,6 @@ namespace Portakal
 	private:
 		const ShaderStage mStage;
 		const String mEntryPointMethod;
-		const Array<Byte> mBytes;
+		const ByteBlock mBytes;
 	};
 }

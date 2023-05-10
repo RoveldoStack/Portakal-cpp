@@ -192,10 +192,10 @@ namespace Portakal
         {
             const ScissorDesc& scissorDesc = scissors[i];
             D3D12_RECT rect = {};
-            rect.left = 0;
-            rect.top = 0;
-            rect.right = scissorDesc.Width - scissorDesc.X;
-            rect.bottom = scissorDesc.Height - scissorDesc.Y;
+            rect.left = scissorDesc.Left;
+            rect.top = scissorDesc.Top;
+            rect.right = scissorDesc.Right;
+            rect.bottom = scissorDesc.Bottom;
 
             dxScissors.Add(rect);
         }
@@ -302,9 +302,9 @@ namespace Portakal
             mCmdList->SetGraphicsRootDescriptorTable(i, heaps[i]->GetGPUDescriptorHandleForHeapStart());
         }
     }
-    void DX12GraphicsCommandList::DrawIndexedCore(const unsigned int indexCount)
+    void DX12GraphicsCommandList::DrawIndexedCore(const unsigned int indexCount, const unsigned int indexStartLocation, const unsigned int vertexStartLocation)
     {
-        mCmdList->DrawIndexedInstanced(indexCount, 1, 0, 0, 0);
+        mCmdList->DrawIndexedInstanced(indexCount, 1, indexStartLocation,vertexStartLocation, 0);
     }
     void DX12GraphicsCommandList::DispatchCore(const unsigned int sizeX, const unsigned int sizeY, const unsigned int sizeZ)
     {

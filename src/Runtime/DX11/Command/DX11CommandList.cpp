@@ -4,7 +4,7 @@
 #include <Runtime/Graphics/Texture/TextureUtils.h>
 #include <Runtime/DX11/Swapchain/DX11Swapchain.h>
 #include <Runtime/Graphics/Framebuffer/Framebuffer.h>
-#include <Runtime/DX11/Pipeline/DX11Pipeline.h>
+#include <Runtime/DX11/Pipeline/DX11GraphicsPipeline.h>
 #include <Runtime/Log/Log.h>
 #include <Runtime/Assert/Assert.h>
 #include <Runtime/Platform/PlatformError.h>
@@ -12,10 +12,11 @@
 
 namespace Portakal
 {
-    DX11CommandList::DX11CommandList(const CommandListCreateDesc& desc, DX11Device* pDevice) : CommandList(desc,CommandQueueType::Graphics)
+    DX11CommandList::DX11CommandList(const CommandListCreateDesc& desc, DX11Device* pDevice) : mMapped(false), CommandList(desc,CommandQueueType::Graphics)
     {
         mDevice = pDevice->GetDXDevice();
-        ASSERT(SUCCEEDED(pDevice->GetDXDevice()->CreateDeferredContext(0, mContext.GetAddressOf())),"DX11CommandList","Failed to create a deferred context");
+        mContext = pDevice->GetDXImmediateContext();
+        //ASSERT(SUCCEEDED(pDevice->GetDXDevice()->CreateDeferredContext(0, mContext.GetAddressOf())),"DX11CommandList","Failed to create a deferred context");
     }
     DX11CommandList::~DX11CommandList()
     {
@@ -28,16 +29,17 @@ namespace Portakal
     void DX11CommandList::LockCore()
     {
         DX11Device* pDevice = (DX11Device*)GetOwnerDevice();
+        pDevice->LockImmediateContext();
     }
     void DX11CommandList::UnlockCore()
     {
         DX11Device* pDevice = (DX11Device*)GetOwnerDevice();
-
-        ASSERT(SUCCEEDED(mContext->FinishCommandList(FALSE, mCmdList.GetAddressOf())), "DX11CommandList", "Failed to finish cmdlist");
+        pDevice->UnlockImmediateContext();
+        //ASSERT(SUCCEEDED(mContext->FinishCommandList(FALSE, mCmdList.GetAddressOf())), "DX11CommandList", "Failed to finish cmdlist");
     }
     void DX11CommandList::BindPipelineCore(Pipeline* pPipeline)
     {
-        DX11Pipeline* pDXPipeline = (DX11Pipeline*)pPipeline;
+        DX11GraphicsPipeline* pDXPipeline = (DX11GraphicsPipeline*)pPipeline;
 
         /*
         * Set rasterizer
@@ -52,7 +54,8 @@ namespace Portakal
         /*
         * Set blending state
         */
-        mContext->OMSetBlendState(pDXPipeline->GetDXBlendState(), nullptr, 0);
+        float factor[4] = {0,0,0,0};
+        mContext->OMSetBlendState(pDXPipeline->GetDXBlendState(), factor, 0xffffffff);
 
         /*
         * Set input layout
@@ -137,10 +140,10 @@ namespace Portakal
             const ScissorDesc& desc = scissors[i];
 
             D3D11_RECT rect = {};
-            rect.bottom = desc.Height * desc.Y;
-            rect.left = 0;
-            rect.top = 0;
-            rect.right = desc.Width - desc.X;
+            rect.bottom = desc.Bottom;
+            rect.left = desc.Left;
+            rect.top = desc.Top;
+            rect.right = desc.Right;
 
             dx11Scissors.Add(rect);
         }
@@ -198,7 +201,15 @@ namespace Portakal
         if (pRtv == nullptr)
             return;
 
-        mContext->ClearRenderTargetView(pRtv, &color.R);
+        /*
+        * Normalize color
+        */
+        const float clearColor[] = { color.R / 255.0f,color.G / 255.0f,color.B / 255.0f,color.A / 255.0f };
+
+        /*
+        * Clear rtv command
+        */
+        mContext->ClearRenderTargetView(pRtv, clearColor);
     }
     void DX11CommandList::ClearDepthCore(const float depth)
     {
@@ -221,13 +232,19 @@ namespace Portakal
     }
     void DX11CommandList::SetVertexBufferCore(GraphicsBuffer* pBuffer)
     {
-        UINT stride = 0;
-        UINT offsets = 0;
-        mContext->IASetVertexBuffers(0,1,nullptr,&stride,&offsets);
+        const DX11Buffer* pDXBuffer = (const DX11Buffer*)pBuffer;
+        ID3D11Buffer* pNativeBuffer = pDXBuffer->GetDXBuffer();
+
+        unsigned int strides = pBuffer->GetSubItemSize();
+        unsigned int offsets = 0;
+
+        mContext->IASetVertexBuffers(0,1,&pNativeBuffer,&strides,&offsets);
     }
     void DX11CommandList::SetIndexBufferCore(GraphicsBuffer* pBuffer)
     {
-        mContext->IASetIndexBuffer(nullptr, DXGI_FORMAT_UNKNOWN, 0);
+        const DX11Buffer* pDXBuffer = (const DX11Buffer*)pBuffer;
+         
+        mContext->IASetIndexBuffer(pDXBuffer->GetDXBuffer(), pBuffer->GetSubItemSize() == sizeof(unsigned int) ? DXGI_FORMAT_R32_UINT : DXGI_FORMAT_R16_UINT, 0);
     }
     void DX11CommandList::CommitResourceTableCore(const unsigned int slotIndex, const ResourceTable* pTable)
     {
@@ -347,9 +364,9 @@ namespace Portakal
         }
 
     }
-    void DX11CommandList::DrawIndexedCore(const unsigned int indexCount)
+    void DX11CommandList::DrawIndexedCore(const unsigned int indexCount, const unsigned int indexStartLocation, const unsigned int vertexStartLocation)
     {
-        mContext->DrawIndexed(indexCount, 0, 0);
+        mContext->DrawIndexed(indexCount, indexStartLocation,vertexStartLocation);
     }
     void DX11CommandList::DispatchCore(const unsigned int sizeX, const unsigned int sizeY, const unsigned int sizeZ)
     {
@@ -360,34 +377,59 @@ namespace Portakal
         DX11Buffer* pDX11Buffer = (DX11Buffer*)pBuffer;
 
         D3D11_MAPPED_SUBRESOURCE subResource = {};
+        ASSERT(SUCCEEDED(mContext->Map(pDX11Buffer->GetDXBuffer(), 0,D3D11_MAP_WRITE_NO_OVERWRITE , 0, &subResource)), "DX11CommandList", "Failed to map buffer");
 
-        mContext->Map(pDX11Buffer->GetDXBuffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &subResource);
-        Memory::Copy((desc.pData+desc.Offset), subResource.pData, desc.Size);
+        Memory::Copy(desc.pData, (Byte*)subResource.pData + desc.Offset, desc.Size);
+
         mContext->Unmap(pDX11Buffer->GetDXBuffer(), 0);
+
+       // mMapped = true;
     }
     void DX11CommandList::UpdateTextureCore(const TextureUpdateDesc& desc, Texture* pTexture)
     {
+
         DX11Texture* pTargetTexture = (DX11Texture*)pTexture;
 
-        D3D11_MAPPED_SUBRESOURCE subResource = {};
-
-        mContext->Map(pTargetTexture->GetDXTexture(), 0, D3D11_MAP_WRITE_DISCARD, 0, &subResource);
-
-        const unsigned long long size = TextureUtils::GetFormatSize(pTexture->GetTextureFormat())*pTexture->GetWidth()*pTexture->GetHeight();
-        const unsigned long long expectedSize = subResource.RowPitch * pTexture->GetHeight();
-
-        if (size != expectedSize)
+        if (pTexture->GetTextureUsage() &  TextureUsage::CpuWrite)
         {
-            LOG("DX11CommandList", "Unexpected rowpitch for texture update");
+            D3D11_MAPPED_SUBRESOURCE subResource = {};
+
+            if (FAILED(mContext->Map(pTargetTexture->GetDXTexture(), 0, D3D11_MAP_WRITE_DISCARD, 0, &subResource)))
+            {
+                LOG("DX11CommandList", "Failed to map");
+                return;
+            }
+
+            const unsigned long long size = TextureUtils::GetFormatSize(pTexture->GetTextureFormat()) * pTexture->GetWidth() * pTexture->GetHeight();
+            const unsigned long long expectedRowPitch = pTexture->GetWidth() * TextureUtils::GetFormatSize(pTexture->GetTextureFormat());
+
+            if (size != expectedRowPitch)
+            {
+                Memory::Copy(desc.pData, subResource.pData, size);
+            }
+            else
+            {
+                const unsigned int height = pTargetTexture->GetHeight();
+                for (unsigned int i = 0; i < height; i++)
+                {
+                    Memory::Copy((Byte*)desc.pData + i * expectedRowPitch, (Byte*)subResource.pData + i * subResource.RowPitch, subResource.RowPitch);
+                }
+            }
+
+
+            mContext->Unmap(pTargetTexture->GetDXTexture(), 0);
+        }
+        else
+        {
+            const unsigned int pitch = TextureUtils::GetFormatSize(pTargetTexture->GetTextureFormat()) * pTargetTexture->GetWidth();
+            mContext->UpdateSubresource(pTargetTexture->GetDXTexture(),0,nullptr,desc.pData,pitch, 0);
         }
 
-        Memory::Copy(desc.pData, subResource.pData,size);
-
-        mContext->Unmap(pTargetTexture->GetDXTexture(), 0);
+       // mMapped = true;
     }
     void DX11CommandList::ClearCachedStateCore()
     {
-
+        mMapped = false;
     }
   
 }

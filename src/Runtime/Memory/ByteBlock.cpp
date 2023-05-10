@@ -28,8 +28,7 @@ namespace Portakal
 	}
 	ByteBlock::~ByteBlock()
 	{
-		if (mBlock != nullptr)
-			delete[] mBlock;
+		Clear();
 	}
 	const unsigned char* ByteBlock::GetBlockDataPtr(const unsigned long long offset) const
 	{
@@ -41,8 +40,10 @@ namespace Portakal
 	}
 	void ByteBlock::Copy(void* pData, const unsigned long long size)
 	{
-		if (mBlock != nullptr)
-			delete[] pData;
+		/*
+		* First clear
+		*/
+		Clear();
 
 		mBlock = new unsigned char[size];
 		Memory::Copy(pData, mBlock, size);
@@ -50,8 +51,25 @@ namespace Portakal
 	}
 	void ByteBlock::Clear()
 	{
-		delete[] mBlock;
+		if(mBlock != nullptr)
+			delete[] mBlock;
+
 		mBlock = nullptr;
 		mSize = 0;
+	}
+	void ByteBlock::Allocate(const unsigned long long size)
+	{
+		Clear();
+
+		mBlock = new Byte[size];
+		mSize = size;
+	}
+	void ByteBlock::operator=(const ByteBlock& other)
+	{
+		Clear();
+
+		mBlock = new unsigned char[other.GetBlockSizeInBytes()];
+		mSize = other.mSize;
+		Memory::Copy(other.mBlock, mBlock, mSize);
 	}
 }

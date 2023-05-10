@@ -181,7 +181,7 @@ namespace Portakal
 		*/
 		for (unsigned int i = 0; i < desc.Resources.GetCursor(); i++)
 		{
-			const GraphicsDeviceObject* pDeviceObject = desc.Resources[i];
+			const GraphicsDeviceObject* pDeviceObject = (const GraphicsDeviceObject*)desc.Resources[i];
 			const GraphicsDeviceObjectType type = pDeviceObject->GetDeviceObjectType();
 
 			ASSERT(type == GraphicsDeviceObjectType::Buffer || type == GraphicsDeviceObjectType::Texture || type == GraphicsDeviceObjectType::Sampler, "GraphicsDevice", "Invalid graphics device object as resource!");

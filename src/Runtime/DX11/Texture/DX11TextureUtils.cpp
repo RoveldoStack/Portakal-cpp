@@ -2,7 +2,7 @@
 
 namespace Portakal
 {
-	UINT DX11TextureUtils::GetTextureUsageFlags( TextureUsage usage)
+	UINT DX11TextureUtils::GetTextureUsageFlags(TextureUsage usage)
 	{
 		UINT flags = 0;
 		if (usage & TextureUsage::Sampled)
@@ -22,45 +22,27 @@ namespace Portakal
 	}
 	UINT DX11TextureUtils::GetCpuFlags(TextureUsage usage)
 	{
-		switch (usage)
+		UINT flags = 0;
+		if (usage & TextureUsage::CpuWrite)
 		{
-			case Portakal::TextureUsage::Sampled:
-				return D3D11_CPU_ACCESS_WRITE;
-			case Portakal::TextureUsage::Storage:
-				return D3D11_CPU_ACCESS_WRITE | D3D11_CPU_ACCESS_READ;
-			case Portakal::TextureUsage::RenderTarget:
-				return 0;
-			case Portakal::TextureUsage::DepthStencil:
-				return 0;
-			case Portakal::TextureUsage::Cubemap:
-				return 0;
-			case Portakal::TextureUsage::Staging:
-				return D3D11_CPU_ACCESS_WRITE;
-			default:
-				return 0;
-				break;
+			flags |= D3D11_CPU_ACCESS_WRITE;
+		}
+		if (usage & TextureUsage::CpuRead)
+		{
+			flags |= D3D11_CPU_ACCESS_READ;
 		}
 
+		return flags;
 	}
 	D3D11_USAGE DX11TextureUtils::GetUsage(const TextureUsage usage)
 	{
-		switch (usage)
-		{
-			case Portakal::TextureUsage::Sampled:
-				return D3D11_USAGE_DYNAMIC;
-			case Portakal::TextureUsage::Storage:
-				return D3D11_USAGE_DYNAMIC;
-			case Portakal::TextureUsage::RenderTarget:
-				return D3D11_USAGE_DEFAULT;
-			case Portakal::TextureUsage::DepthStencil:
-				return D3D11_USAGE_DEFAULT;
-			case Portakal::TextureUsage::Cubemap:
-				return D3D11_USAGE_DEFAULT;
-			case Portakal::TextureUsage::Staging:
-				return D3D11_USAGE_DEFAULT;
-			default:
-				return D3D11_USAGE_DEFAULT;
-				break;
-		}
+		D3D11_USAGE usageOut = D3D11_USAGE_DEFAULT;
+
+		if (usage & TextureUsage::CpuWrite && usage & TextureUsage::CpuRead)
+			usageOut = D3D11_USAGE_STAGING;
+		else if (usage & TextureUsage::CpuWrite)
+			usageOut = D3D11_USAGE_DYNAMIC;
+
+		return usageOut;
 	}
 }

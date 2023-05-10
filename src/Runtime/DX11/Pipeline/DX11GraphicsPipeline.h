@@ -5,11 +5,11 @@
 
 namespace Portakal
 {
-	class PORTAKAL_API DX11Pipeline : public Pipeline
+	class PORTAKAL_API DX11GraphicsPipeline : public Pipeline
 	{
 	public:
-		DX11Pipeline(const GraphicsPipelineCreateDesc& desc, DX11Device* pDevice);
-		virtual ~DX11Pipeline() override;
+		DX11GraphicsPipeline(const GraphicsPipelineCreateDesc& desc, DX11Device* pDevice);
+		virtual ~DX11GraphicsPipeline() override;
 
 		FORCEINLINE ID3D11InputLayout* GetDXInputLayout() const noexcept { return mInputLayout.Get(); }
 		FORCEINLINE D3D11_PRIMITIVE_TOPOLOGY GetDXTopology() const noexcept { return mTopology; }

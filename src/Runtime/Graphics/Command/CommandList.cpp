@@ -124,11 +124,11 @@ namespace Portakal
 	{
 		UpdateTextureCore(desc, pTexture);
 	}
-	void CommandList::DrawIndexed(const unsigned int indexCount)
+	void CommandList::DrawIndexed(const unsigned int indexCount, const unsigned int indexStartLocation, const unsigned int vertexStartLocation)
 	{
 		CheckBoundVertexIndexBuffer();
 
-		DrawIndexedCore(indexCount);
+		DrawIndexedCore(indexCount,indexStartLocation,vertexStartLocation);
 	}
 	void CommandList::Dispatch(const unsigned int sizeX, const unsigned int sizeY, const unsigned int sizeZ)
 	{

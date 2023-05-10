@@ -35,9 +35,9 @@ namespace Portakal
 			/*
 			* Count table resources
 			*/
-			for (unsigned int resourceIndex = 0; resourceIndex < table.Slots.GetCursor(); resourceIndex++)
+			for (unsigned int resourceIndex = 0; resourceIndex < table.Entries.GetCursor(); resourceIndex++)
 			{
-				const PipelineResourceEntry& resourceSlot = table.Slots[resourceIndex];
+				const PipelineResourceEntry& resourceSlot = table.Entries[resourceIndex];
 
 
 				switch (resourceSlot.Type)
@@ -47,8 +47,7 @@ namespace Portakal
 						currentStageConstantBufferCount++;
 						break;
 					}
-					case Portakal::PipelineResourceType::TextureReadOnly:;
-					case Portakal::PipelineResourceType::TextureReadWrite:
+					case Portakal::PipelineResourceType::ResourceView:
 					{
 						currentStageTextureCount++;
 						break;

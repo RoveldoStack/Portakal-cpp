@@ -149,7 +149,7 @@ namespace Portakal
 		/// Issues an indexed draw call
 		/// </summary>
 		/// <param name="indexCount"></param>
-		FORCEINLINE void DrawIndexed(const unsigned int indexCount);
+		FORCEINLINE void DrawIndexed(const unsigned int indexCount,const unsigned int indexStartLocation,const unsigned int vertexStartLocation);
 
 		/// <summary>
 		/// Dispatches compute shader
@@ -217,7 +217,7 @@ namespace Portakal
 
 		FORCEINLINE virtual void CommitResourceTableCore(const unsigned int slotIndex, const ResourceTable* pTable) = 0;
 
-		FORCEINLINE virtual void DrawIndexedCore(const unsigned int indexCount) = 0;
+		FORCEINLINE virtual void DrawIndexedCore(const unsigned int indexCount, const unsigned int indexStartLocation, const unsigned int vertexStartLocation) = 0;
 		FORCEINLINE virtual void DispatchCore(const unsigned int sizeX, const unsigned int sizeY, const unsigned int sizeZ) = 0;
 		FORCEINLINE virtual void UpdateBufferCore(const GraphicsBufferUpdateDesc& desc, GraphicsBuffer* pBuffer) = 0;
 		FORCEINLINE virtual void UpdateTextureCore(const TextureUpdateDesc& desc, Texture* pTexture) = 0;

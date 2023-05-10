@@ -7,6 +7,7 @@
 #include <Editor/Renderer/ImGuiAPI.h>
 #include <Runtime/Resource/Texture/TextureResource.h>
 #include <Runtime/Memory/SharedSafeHeap.h>
+#include <Runtime/Graphics/Swapchain/Swapchain.h>
 
 namespace Portakal
 {
@@ -49,12 +50,8 @@ namespace Portakal
     {
         ImGuiRenderer* pRenderer = ImGuiAPI::GetDefaultRenderer();
 
-        //mCmdList->Lock();
-        pRenderer->FinalizeRendering(mCmdList);
-       // mCmdList->Unlock();
-
-       // mDevice->SubmitCommands({ mCmdList });
-       // mDevice->WaitForFinish();
+        if(pRenderer != nullptr)
+            pRenderer->FinalizeRendering(mDevice->GetSwapchain()->GetFramebuffer());
     }
     void ImGuiRendererModule::OnPostTick()
     {

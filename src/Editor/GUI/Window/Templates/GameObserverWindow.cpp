@@ -126,7 +126,7 @@ namespace Portakal
 		*/
 		ImGuiTextureBinding* pBinding = ImGuiAPI::GetDefaultRenderer()->GetOrCreateTextureBinding(mCurrentTargets[mCurrentSelectedTargetIndex]);
 		const ImVec2 size = ImGui::GetContentRegionAvail();
-		ImGui::Image(pBinding->GetBinding(), size);
+		ImGui::Image(pBinding, size);
 	}
 	void GameObserverWindow::OnSceneChanged(Scene* pNewScene)
 	{

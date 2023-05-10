@@ -122,7 +122,6 @@ namespace Portakal
 			if (*mRefCount == 0)
 			{
 				mHeap->Destroy();
-				delete mHeap;
 				delete mRefCount;
 				mBarrier->Release();
 				delete mBarrier;

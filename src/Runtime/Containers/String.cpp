@@ -546,10 +546,10 @@ namespace Portakal
 	String String::GetFromFloat(const float value)
 	{
 		char* chars = new char[MAX_FLOAT_DIGITS];
-
+		chars[MAX_INT_DIGITS - 1] = '/0';
 		sprintf(chars, "%f", value);
 
-		String str(chars, MAX_FLOAT_DIGITS);
+		String str(chars);
 
 		delete[] chars;
 
@@ -558,10 +558,11 @@ namespace Portakal
 	String String::GetFromInteger(const int value)
 	{
 		char* chars = new char[MAX_INT_DIGITS];
+		chars[MAX_INT_DIGITS - 1] = '/0';
 
 		sprintf(chars, "%d", value);
 
-		String str(chars, MAX_INT_DIGITS);
+		String str(chars);
 
 		delete[] chars;
 
@@ -571,10 +572,11 @@ namespace Portakal
 	String String::GetFromLongLong(const long long value)
 	{
 		char* chars = new char[MAX_LONGLONG_DIGITS];
+		chars[MAX_INT_DIGITS - 1] = '/0';
 
 		sprintf(chars, "%ld", value);
 
-		String str(chars, MAX_LONGLONG_DIGITS);
+		String str(chars);
 
 		delete[] chars;
 

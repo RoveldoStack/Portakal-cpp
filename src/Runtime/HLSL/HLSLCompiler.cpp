@@ -4,7 +4,7 @@
 #include <Runtime/Memory/Memory.h>
 namespace Portakal
 {
-	void HLSLCompiler::Compile(const String& source, const String& entryPoint, const ShaderStage stage, const unsigned int major, const unsigned int minor, Array<Byte>& bytesOut,String& errorOut)
+	void HLSLCompiler::Compile(const String& source, const String& entryPoint, const ShaderStage stage, const unsigned int major, const unsigned int minor, ByteBlock& bytesOut,String& errorOut)
 	{
 		const String targetString = D3DCompilerUtils::GetCompilerTarget(stage, major, minor);
 
@@ -36,10 +36,7 @@ namespace Portakal
 		/*
 		* Copy compiled bytes
 		*/
-		bytesOut.Reserve(pShaderBlob->GetBufferSize());
-
-		Memory::Copy(pShaderBlob->GetBufferPointer(),bytesOut.GetData(),pShaderBlob->GetBufferSize());
-
+		bytesOut.Copy(pShaderBlob->GetBufferPointer(), pShaderBlob->GetBufferSize());
 		errorOut = String();
 
 		pShaderBlob->Release();

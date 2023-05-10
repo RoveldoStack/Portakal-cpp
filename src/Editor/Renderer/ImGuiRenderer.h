@@ -21,18 +21,19 @@ namespace Portakal
 
 	class ImGuiTextureBinding;
 	class TextureResource;
+	class Sampler;
+	class Texture;
+	class GraphicsBuffer;
+	class Pipeline;
+	class ResourceTable;
+	class Shader;
+	class Framebuffer;
 	/// <summary>
 	/// Represents a imgui renderer (later it will be revised for suiting any type of user imgui renderer implementation)
 	/// </summary>
 	class PORTAKAL_API ImGuiRenderer
 	{
 	public:
-		/// <summary>
-		/// Creates an imgui renderer
-		/// </summary>
-		/// <param name="pDevice"></param>
-		/// <returns></returns>
-		static ImGuiRenderer* Create(GraphicsDevice* pDevice);
 	public:
 		ImGuiRenderer(GraphicsDevice* pDevice);
 		virtual ~ImGuiRenderer();
@@ -60,7 +61,7 @@ namespace Portakal
 		/// Finalizes the rendering session
 		/// </summary>
 		/// <param name="pCmdBuffer"></param>
-		void FinalizeRendering(CommandList* pCmdBuffer);
+		void FinalizeRendering(Framebuffer* pFramebuffer);
 
 		/// <summary>
 		/// Called upon reciving an event
@@ -79,11 +80,6 @@ namespace Portakal
 		/// </summary>
 		/// <returns></returns>
 		FORCEINLINE GraphicsDevice* GetTargetDevice() const noexcept { return mDevice; }
-
-	protected:
-		virtual void StartRenderingCore() = 0;
-		virtual void FinalizeRenderingCore(CommandList* pCmdBuffer) = 0;
-		virtual ImGuiTextureBinding* CreateTextureBinding(TextureResource* pTexture) = 0;
 	private:
 		/// <summary>
 		/// Called on when window is resized
@@ -136,5 +132,18 @@ namespace Portakal
 		Registry<TextureResource*, ImGuiTextureBinding*> mTextureBindings;
 		ImGuiContext* mContext;
 		GraphicsDevice* mDevice;
+
+		TextureResource* mFontTexture;
+		Pipeline* mPipeline;
+		GraphicsBuffer* mVertexBuffer;
+		GraphicsBuffer* mIndexBuffer;
+		GraphicsBuffer* mConstantBuffer;
+		Sampler* mSampler;
+		ResourceTable* mFontTable;
+		ResourceTable* mSamplerTable;
+		ResourceTable* mProjectionTable;
+		Shader* mVertexShader;
+		Shader* mFragmentShader;
+		CommandList* mCmdList;
 	};
 }

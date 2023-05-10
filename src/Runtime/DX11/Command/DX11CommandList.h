@@ -28,7 +28,7 @@ namespace Portakal
 		virtual void SetIndexBufferCore(GraphicsBuffer* pBuffer) override;
 		virtual void CommitResourceTableCore(const unsigned int slotIndex, const ResourceTable* pTable) override;
 		virtual void DispatchCore(const unsigned int sizeX, const unsigned int sizeY, const unsigned int sizeZ) override;
-		virtual void DrawIndexedCore(const unsigned int indexCount) override;
+		virtual void DrawIndexedCore(const unsigned int indexCount, const unsigned int indexStartLocation, const unsigned int vertexStartLocation) override;
 		virtual void UpdateBufferCore(const GraphicsBufferUpdateDesc& desc, GraphicsBuffer* pBuffer) override;
 		virtual void UpdateTextureCore(const TextureUpdateDesc& desc, Texture* pTexture) override;
 		virtual void ClearCachedStateCore() override;
@@ -36,5 +36,6 @@ namespace Portakal
 		ComPtr<ID3D11CommandList> mCmdList;
 		ID3D11Device* mDevice;
 		ComPtr<ID3D11DeviceContext> mContext;
+		bool mMapped;
 	};
 }

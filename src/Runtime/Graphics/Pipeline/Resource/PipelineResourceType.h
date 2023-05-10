@@ -9,10 +9,7 @@ namespace Portakal
 	enum class PORTAKAL_API PipelineResourceType
 	{
         ConstantBuffer,
-        StructuredBufferReadOnly,
-        StructuredBufferReadWrite,
-        TextureReadOnly,
-        TextureReadWrite,
+		ResourceView,
         Sampler
 	};
 }

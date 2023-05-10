@@ -23,15 +23,20 @@ namespace Portakal
 			return;
 
 		sCollector->mCriticalSection->Lock();
-
+		Array<TaggedObject*>& objects = sCollector->mObjects;
+		const unsigned long long size = sCollector->mSize;
+		const unsigned int objectCount = objects.GetCursor();
 		for (unsigned int i = 0; i < sCollector->mObjects.GetCursor(); i++)
 		{
-			delete sCollector->mObjects[i];
+			TaggedObject* pObject = objects[i];
+			delete pObject;
 		}
-		sCollector->mObjects.Clear();
+		objects.Clear();
 		sCollector->mSize = 0;
 
 		sCollector->mCriticalSection->Release();
+
+		LOG("GarbageCollector", "Clared [%d] objects with [%ld] bytes", objectCount, size);
 	}
 
 	void GarbageCollector::_Register(TaggedObject* pObject)

@@ -20,7 +20,7 @@ namespace Portakal
 		*/
 		for (unsigned int i = 0; i < desc.Resources.GetCursor(); i++)
 		{
-			const GraphicsDeviceObject* pObject = desc.Resources[i];
+			const GraphicsDeviceObject* pObject = (const GraphicsDeviceObject*)desc.Resources[i];
 
 			switch (pObject->GetDeviceObjectType())
 			{

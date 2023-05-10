@@ -1,7 +1,6 @@
 #pragma once
 #include <Runtime/Containers/Array.h>
 #include <Runtime/Graphics/GraphicsDeviceObject.h>
-
 namespace Portakal
 {
 	/// <summary>

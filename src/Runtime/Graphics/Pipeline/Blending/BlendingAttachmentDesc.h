@@ -2,6 +2,7 @@
 #include <Runtime/Graphics/Pipeline/Blending/BlendFactor.h>
 #include <Runtime/Graphics/Pipeline/Blending/BlendFunction.h>
 #include <Runtime/Graphics/LogicOperation.h>
+#include <Runtime/Graphics/Pipeline/Blending/BlendingColorWriteFlags.h>
 
 namespace Portakal
 {
@@ -58,6 +59,6 @@ namespace Portakal
 		/// <summary>
 		/// Blending write mask
 		/// </summary>
-		unsigned char WriteMask;
+		BlendingColorWriteFlags WriteMask;
 	};
 }

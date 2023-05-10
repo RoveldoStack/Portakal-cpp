@@ -31,4 +31,20 @@ namespace Portakal
 		}
 		return D3D11_CPU_ACCESS_WRITE;
     }
+	UINT DX11BufferUtils::GetBindFlags(const GraphicsBufferType type)
+	{
+		switch (type)
+		{
+		case Portakal::GraphicsBufferType::VertexBuffer:
+			return D3D11_BIND_VERTEX_BUFFER;
+		case Portakal::GraphicsBufferType::IndexBuffer:
+			return D3D11_BIND_INDEX_BUFFER;
+		case Portakal::GraphicsBufferType::ConstantBuffer:
+			return D3D11_BIND_CONSTANT_BUFFER;
+		default:
+			ASSERT(false, "DX11BufferUtils", "Invalid GraphicsBufferType");
+			break;
+		}
+
+	}
 }

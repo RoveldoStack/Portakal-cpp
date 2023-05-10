@@ -181,7 +181,7 @@ namespace Portakal
 			/*
 			* Draw image
 			*/
-			ImGui::Image(mFolderIcon->GetImGuiTexture()->GetBinding(), {mItemSize.X,mItemSize.Y});
+			ImGui::Image(mFolderIcon->GetImGuiTexture(), {mItemSize.X,mItemSize.Y});
 
 			/*
 			* Draw text
@@ -244,7 +244,7 @@ namespace Portakal
 			ImGui::SetCursorPos(currentCursorPosition);
 			if (pVisualizer == nullptr || pTexture == nullptr)
 			{
-				ImGui::Image(mInvalidIcon->GetImGuiTexture()->GetBinding(), {mItemSize.X,mItemSize.Y});
+				ImGui::Image(mInvalidIcon->GetImGuiTexture(), {mItemSize.X,mItemSize.Y});
 
 			}
 			else
@@ -252,9 +252,9 @@ namespace Portakal
 				ImGuiTextureBinding* pImGuiTexture = ImGuiAPI::GetDefaultRenderer()->GetOrCreateTextureBinding(pTexture);
 
 				if(pImGuiTexture == nullptr)
-					ImGui::Image(mInvalidIcon->GetImGuiTexture()->GetBinding(), { mItemSize.X,mItemSize.Y });
+					ImGui::Image(mInvalidIcon->GetImGuiTexture(), { mItemSize.X,mItemSize.Y });
 				else
-					ImGui::Image(pImGuiTexture->GetBinding(), {mItemSize.X,mItemSize.Y});
+					ImGui::Image(pImGuiTexture, {mItemSize.X,mItemSize.Y});
 			}
 			
 			/*

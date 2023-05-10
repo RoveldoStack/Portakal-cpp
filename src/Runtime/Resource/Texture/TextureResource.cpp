@@ -107,6 +107,8 @@ namespace Portakal
 		mArrayLevel = 0;
 		mMipLevels = 0;
 		mTexture = nullptr;
+		mCmdList = nullptr;
+		mDevice = GraphicsDeviceAPI::GetDefaultDevice();
 	}
 	TextureResource::~TextureResource()
 	{
@@ -134,7 +136,6 @@ namespace Portakal
 
 		mDevice->SubmitCommands(mCmdList);
 		mDevice->WaitForFinish();
-
 	}
 	void TextureResource::DeleteTexture()
 	{
@@ -142,6 +143,13 @@ namespace Portakal
 			mTexture->Destroy();
 
 		mTexture = nullptr;
+	}
+	void TextureResource::DeleteCmdList()
+	{
+		if (mCmdList != nullptr)
+			mCmdList->Destroy();
+
+		mCmdList = nullptr;
 	}
 	void TextureResource::CreateCmdList()
 	{
@@ -154,5 +162,6 @@ namespace Portakal
 	{
 		LOG("TextureResource", "Destroy core: %s",*GetTagName());
 		DeleteTexture();
+		DeleteCmdList();
 	}
 }

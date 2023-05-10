@@ -12,5 +12,6 @@ namespace Portakal
 
 		FORCEINLINE static D3D11_USAGE GetUsage(const GraphicsBufferType type);
 		FORCEINLINE static D3D11_CPU_ACCESS_FLAG GetCpuFlags(const GraphicsBufferType type);
+		FORCEINLINE static UINT GetBindFlags(const GraphicsBufferType type);
 	};
 }

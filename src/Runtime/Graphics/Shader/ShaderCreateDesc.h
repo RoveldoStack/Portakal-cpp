@@ -1,7 +1,7 @@
 #pragma once
 #include <Runtime/Graphics/Shader/ShaderStage.h>
 #include <Runtime/Containers/String.h>
-#include <Runtime/Containers/Array.h>
+#include <Runtime/Memory/ByteBlock.h>
 
 namespace Portakal
 {
@@ -21,8 +21,8 @@ namespace Portakal
 		String EntryPointMethod;
 
 		/// <summary>
-		/// The source of text
+		/// Bytes of the compiled source
 		/// </summary>
-		Array<Byte> Bytes;
+		ByteBlock Bytes;
 	};
 }

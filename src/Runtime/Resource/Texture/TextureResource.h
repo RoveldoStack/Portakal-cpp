@@ -82,6 +82,11 @@ namespace Portakal
 		void DeleteTexture();
 
 		/// <summary>
+		/// Deletes the dedicated command list
+		/// </summary>
+		void DeleteCmdList();
+
+		/// <summary>
 		/// Creates cmd list
 		/// </summary>
 		void CreateCmdList();

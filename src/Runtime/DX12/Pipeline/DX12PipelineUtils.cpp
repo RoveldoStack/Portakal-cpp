@@ -329,8 +329,7 @@ namespace Portakal
 		{
 			case Portakal::PipelineResourceType::ConstantBuffer:
 				return D3D12_ROOT_PARAMETER_TYPE_CBV;
-			case Portakal::PipelineResourceType::TextureReadOnly:
-			case Portakal::PipelineResourceType::TextureReadWrite:
+			case Portakal::PipelineResourceType::ResourceView:
 				return D3D12_ROOT_PARAMETER_TYPE_SRV;
 			default:
 				ASSERT(false, "DX12PipelineUtils", "Invalid GraphicsResourceType!");
@@ -344,8 +343,7 @@ namespace Portakal
 		{
 			case Portakal::PipelineResourceType::ConstantBuffer:
 				return D3D12_DESCRIPTOR_RANGE_TYPE_CBV;
-			case Portakal::PipelineResourceType::TextureReadOnly:
-			case Portakal::PipelineResourceType::TextureReadWrite:
+			case Portakal::PipelineResourceType::ResourceView:
 				return D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
 			case Portakal::PipelineResourceType::Sampler:
 				return D3D12_DESCRIPTOR_RANGE_TYPE_SAMPLER;
