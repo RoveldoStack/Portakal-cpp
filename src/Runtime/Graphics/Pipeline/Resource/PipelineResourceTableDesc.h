@@ -10,8 +10,13 @@ namespace Portakal
 	/// </summary>
 	struct PORTAKAL_API PipelineResourceTableDesc
 	{
-		PipelineResourceTableDesc(const ShaderStage stage,const Array<PipelineResourceEntry>& entries) : Stage(stage), Entries(entries) {}
-		PipelineResourceTableDesc() = default;
+		PipelineResourceTableDesc(const ShaderStage stage,const unsigned int startLocation,const Array<PipelineResourceEntry>& entries) : Stage(stage), StartLocation(startLocation), Entries(entries) {}
+		PipelineResourceTableDesc() : Stage(ShaderStage::None), StartLocation(0) {}
+
+		/// <summary>
+		/// The starting location of the table
+		/// </summary>
+		unsigned int StartLocation;
 
 		/// <summary>
 		/// The shader stage it targets

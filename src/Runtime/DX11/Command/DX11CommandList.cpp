@@ -252,8 +252,9 @@ namespace Portakal
         const Array<ID3D11ShaderResourceView*>& srvs = pDXTable->GetDXSrvs();
         const Array<ID3D11Buffer*>& buffers = pDXTable->GetDXBuffers();
         const Array<ID3D11SamplerState*>& samplers = pDXTable->GetDXSamplers();
-
-        ShaderStage stage = GetBoundPipeline()->GetResourceState().Slots[slotIndex].Stage;
+        const PipelineResourceTableDesc tableDesc = GetBoundPipeline()->GetResourceState().Slots[slotIndex];
+        const ShaderStage stage = tableDesc.Stage;
+        const unsigned int startLocation = tableDesc.StartLocation;
 
         /*
         * Set srvs
@@ -264,27 +265,27 @@ namespace Portakal
                 break;
             case Portakal::ShaderStage::Vertex:
             {
-                mContext->VSSetShaderResources(0,srvs.GetCursor(),srvs.GetData());
+                mContext->VSSetShaderResources(startLocation,srvs.GetCursor(),srvs.GetData());
                 break;
             }
             case Portakal::ShaderStage::Fragment:
             {
-                mContext->PSSetShaderResources(0, srvs.GetCursor(), srvs.GetData());
+                mContext->PSSetShaderResources(startLocation, srvs.GetCursor(), srvs.GetData());
                 break;
             }
             case Portakal::ShaderStage::TesellationEval:
             {
-                mContext->DSSetShaderResources(0, srvs.GetCursor(), srvs.GetData());
+                mContext->DSSetShaderResources(startLocation, srvs.GetCursor(), srvs.GetData());
                 break;
             }
             case Portakal::ShaderStage::TesellationControl:
             {
-                mContext->HSSetShaderResources(0, srvs.GetCursor(), srvs.GetData());
+                mContext->HSSetShaderResources(startLocation, srvs.GetCursor(), srvs.GetData());
                 break;
             }
             case Portakal::ShaderStage::Compute:
             {
-                mContext->CSSetShaderResources(0, srvs.GetCursor(), srvs.GetData());
+                mContext->CSSetShaderResources(startLocation, srvs.GetCursor(), srvs.GetData());
                 break;
             }
             default:
@@ -300,27 +301,27 @@ namespace Portakal
             break;
         case Portakal::ShaderStage::Vertex:
         {
-            mContext->VSSetConstantBuffers(0, buffers.GetCursor(), buffers.GetData());
+            mContext->VSSetConstantBuffers(startLocation, buffers.GetCursor(), buffers.GetData());
             break;
         }
         case Portakal::ShaderStage::Fragment:
         {
-            mContext->PSSetConstantBuffers(0, buffers.GetCursor(), buffers.GetData());
+            mContext->PSSetConstantBuffers(startLocation, buffers.GetCursor(), buffers.GetData());
             break;
         }
         case Portakal::ShaderStage::TesellationEval:
         {
-            mContext->DSSetConstantBuffers(0, buffers.GetCursor(), buffers.GetData());
+            mContext->DSSetConstantBuffers(startLocation, buffers.GetCursor(), buffers.GetData());
             break;
         }
         case Portakal::ShaderStage::TesellationControl:
         {
-            mContext->HSSetConstantBuffers(0, buffers.GetCursor(), buffers.GetData());
+            mContext->HSSetConstantBuffers(startLocation, buffers.GetCursor(), buffers.GetData());
             break;
         }
         case Portakal::ShaderStage::Compute:
         {
-            mContext->CSSetConstantBuffers(0, buffers.GetCursor(), buffers.GetData());
+            mContext->CSSetConstantBuffers(startLocation, buffers.GetCursor(), buffers.GetData());
             break;
         }
         default:
@@ -336,27 +337,27 @@ namespace Portakal
             break;
         case Portakal::ShaderStage::Vertex:
         {
-            mContext->VSSetSamplers(0, samplers.GetCursor(), samplers.GetData());
+            mContext->VSSetSamplers(startLocation, samplers.GetCursor(), samplers.GetData());
             break;
         }
         case Portakal::ShaderStage::Fragment:
         {
-            mContext->PSSetSamplers(0, samplers.GetCursor(), samplers.GetData());
+            mContext->PSSetSamplers(startLocation, samplers.GetCursor(), samplers.GetData());
             break;
         }
         case Portakal::ShaderStage::TesellationEval:
         {
-            mContext->DSSetSamplers(0, samplers.GetCursor(), samplers.GetData());
+            mContext->DSSetSamplers(startLocation, samplers.GetCursor(), samplers.GetData());
             break;
         }
         case Portakal::ShaderStage::TesellationControl:
         {
-            mContext->HSSetSamplers(0, samplers.GetCursor(), samplers.GetData());
+            mContext->HSSetSamplers(startLocation, samplers.GetCursor(), samplers.GetData());
             break;
         }
         case Portakal::ShaderStage::Compute:
         {
-            mContext->CSSetSamplers(0, samplers.GetCursor(), samplers.GetData());
+            mContext->CSSetSamplers(startLocation, samplers.GetCursor(), samplers.GetData());
             break;
         }
         default:

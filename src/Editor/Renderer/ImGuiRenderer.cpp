@@ -284,19 +284,21 @@ namespace Portakal
 		ResourceStateDesc resourceStateDesc = {};
 
 		resourceStateDesc.Slots.Add(
-			PipelineResourceTableDesc(ShaderStage::Vertex,
+			PipelineResourceTableDesc(
+				ShaderStage::Vertex,0,
 				{
 					{"vertexBuffer",PipelineResourceType::ConstantBuffer}
 				})
 		);
 		resourceStateDesc.Slots.Add(
-			PipelineResourceTableDesc(ShaderStage::Fragment,
+			PipelineResourceTableDesc(
+				ShaderStage::Fragment,0,
 				{
 					{"sampler0",PipelineResourceType::Sampler}
 				})
 		);
 		resourceStateDesc.Slots.Add(
-			PipelineResourceTableDesc(ShaderStage::Fragment,
+			PipelineResourceTableDesc(ShaderStage::Fragment,0,
 				{
 					{"texture0",PipelineResourceType::ResourceView}
 				})
