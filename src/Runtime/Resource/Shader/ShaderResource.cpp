@@ -72,6 +72,24 @@ namespace Portakal
 		mSource = source;
 		mCompiled = true;
 		
+		/*
+		* Invoke event
+		*/
+		mOnCompiledEvent.Invoke(this);
+	}
+	void ShaderResource::RegisterOnCompiledEvent(const Delegate<void, ShaderResource*>& del)
+	{
+		if (IsDestroyed())
+			return;
+
+		mOnCompiledEvent += del;
+	}
+	void ShaderResource::RemoveOnCompiledEvent(const Delegate<void, ShaderResource*>& del)
+	{
+		if (IsDestroyed())
+			return;
+
+		mOnCompiledEvent += del;
 	}
 	void ShaderResource::Delete()
 	{
@@ -90,6 +108,14 @@ namespace Portakal
 	}
 	void ShaderResource::DestroyCore()
 	{
+		/*
+		* Clear the invocation list
+		*/
+		mOnCompiledEvent.Clear();
+
+		/*
+		* Delete the shader
+		*/
 		Delete();
 	}
 }

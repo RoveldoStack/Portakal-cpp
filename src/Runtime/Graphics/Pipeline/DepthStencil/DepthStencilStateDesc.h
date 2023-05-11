@@ -8,6 +8,12 @@ namespace Portakal
 	/// </summary>
 	struct PORTAKAL_API DepthStencilStateDesc
 	{
+		DepthStencilStateDesc() :
+			bDepthTestEnabled(false), bDepthWriteEnabled(false), bStencilTestEnabled(false), StencilReadMask(0),
+			StencilWriteMask(0), StencilReference(0),DepthComparision(ComparisionMethod::Always),StencilFrontFace({}),StencilBackFace({})
+		{
+
+		}
 		/// <summary>
 		/// Whether the depth testing is enabled
 		/// </summary>

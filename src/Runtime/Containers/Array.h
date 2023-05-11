@@ -126,7 +126,7 @@ namespace Portakal
 		/// Returns the array per element size in bytes
 		/// </summary>
 		/// <returns></returns>
-		unsigned int GetItemSýzeInBytes() const { return sizeof(TValue); }
+		unsigned int GetItemSizeInBytes() const { return sizeof(TValue); }
 
 		/// <summary>
 		/// Returns the pointer to the data

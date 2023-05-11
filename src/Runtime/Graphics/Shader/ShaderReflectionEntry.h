@@ -10,6 +10,7 @@ namespace Portakal
 	{
 		String Name;
 		ShaderResourceType Type;
+		unsigned int SizeInBytes;
 		Array<ShaderReflectionBufferParameter> BufferParameters;
 	};
 }

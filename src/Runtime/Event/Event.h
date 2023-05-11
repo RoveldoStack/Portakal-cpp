@@ -21,12 +21,21 @@ namespace Portakal
 				mDelegates[i].Invoke(parameters...);
 		}
 
-		void operator +=(Delegate<TReturn, TParameters...>& target)
+		Array<Delegate<TReturn, TParameters...>> GetInvocationList() const noexcept
+		{
+			return mDelegates;
+		}
+		void Clear()
+		{
+			mDelegates.Clear();
+		}
+
+		void operator +=(const Delegate<TReturn, TParameters...>& target)
 		{
 			mDelegates.Add(target);
 		}
 
-		void operator -=(Delegate<TReturn, TParameters...>& target)
+		void operator -=(const Delegate<TReturn, TParameters...>& target)
 		{
 			mDelegates.Remove(target);
 		}
