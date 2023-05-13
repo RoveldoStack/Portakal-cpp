@@ -1,6 +1,7 @@
 #pragma once
 #include <Runtime/Graphics/GraphicsDeviceObject.h>
 #include <Runtime/Graphics/Pipeline/GraphicsPipelineCreateDesc.h>
+#include <Runtime/Graphics/Pipeline/ComputePipelineCreateDesc.h>
 #include <Runtime/Graphics/Pipeline/PipelineBindPoint.h>
 
 namespace Portakal
