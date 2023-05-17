@@ -4,6 +4,7 @@
 #include <Runtime/Application/Application.h>
 #include <Runtime/Platform/PlatformMonitor.h>
 #include <Runtime/Log/Log.h>
+#include <Runtime/Platform/PlatformIcon.h>
 #
 namespace Portakal
 {
@@ -22,7 +23,7 @@ namespace Portakal
             const WindowCreateDesc desc = mParams.CreateDescs[i];
 
             Window* pWindow = Window::Create(desc);
-
+            Portakal::PlatformIcon::LoadIconFromPath("D:\\Roveldo\\Portakal\\portakal_logo_2023-05-17_1315\\portakal_logo\\Renkli\\64.png", pWindow);
             GetOwnerApplication()->RegisterWindow(pWindow);
 
             mWindows.Add(pWindow);

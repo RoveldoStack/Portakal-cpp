@@ -31,6 +31,6 @@ namespace Portakal
 		/// <summary>
 		/// The uncompressed data
 		/// </summary>
-		const unsigned char* pData;
+		Byte* pData;
 	};
 }

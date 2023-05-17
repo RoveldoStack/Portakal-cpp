@@ -26,6 +26,7 @@
 #include <Runtime/Object/GarbageCollector.h>
 #include <Editor/GUI/Object/EditorObjectModule.h>
 #include <Editor/Project/ProjectGenerator.h>
+#include <Runtime/Platform/PlatformIcon.h>
 
 namespace Portakal
 {
@@ -37,6 +38,7 @@ namespace Portakal
 
 int main(unsigned int argumentCount, const char** ppArguments)
 {
+	
 	/*Portakal::ProjectGenerator::GenerateSync("TestProject","C:\\Users\\Roveldo\\Documents\\Portakal\\Project0");
 	return 0;*/
 	/*
