@@ -41,27 +41,27 @@ namespace Portakal
 			mCapacity = preallocatedCount;
 			mCapacityMultiplier = 2;
 		}
-		Registry(std::initializer_list<TValue> initializerList)
-		{
+		//Registry(std::initializer_list<TValue> initializerList)
+		//{
 
-			/*
-			* Allocate space
-			*/
-			mData = new TValue[initializerList.size()];
-			mCursor = initializerList.size();
-			mCapacity = initializerList.size();
-			mCapacityMultiplier = 2;
+		//	/*
+		//	* Allocate space
+		//	*/
+		//	mData = new TValue[initializerList.size()];
+		//	mCursor = initializerList.size();
+		//	mCapacity = initializerList.size();
+		//	mCapacityMultiplier = 2;
 
-			/*
-			* Copy
-			*/
-			unsigned int index = 0;
-			for (const TValue& value : initializerList)
-			{
-				mData[index] = value;
-				index++;
-			}
-		}
+		//	/*
+		//	* Copy
+		//	*/
+		//	unsigned int index = 0;
+		//	for (const TValue& value : initializerList)
+		//	{
+		//		mData[index] = value;
+		//		index++;
+		//	}
+		//}
 		Registry()
 		{
 			mData = nullptr;
@@ -140,6 +140,10 @@ namespace Portakal
 			mCursor++;
 
 			return entry;
+		}
+		FORCEINLINE RegistryEntry<TKey, TValue>& operator[](const unsigned int index) const noexcept
+		{
+			return mData[index];
 		}
 		FORCEINLINE bool Remove(const TKey& key) noexcept
 		{

@@ -19,10 +19,13 @@
 #include <Runtime/Object/GarbageCollector.h>
 #include <Editor/Renderer/ImGuiTextureBinding.h>
 #include <Runtime/Math/Vector2.h>
-
+#include <Runtime/Rendering/RenderGraph.h>
+#include <Runtime/Rendering/Passes/RenderTargetClearColorPass.h>
+#include <Runtime/Resource/RenderTarget/RenderTargetResource.h>
 
 namespace Portakal
 {
+	
 	/*
 	* Vertex shader for imgui
 	*/
@@ -84,7 +87,7 @@ namespace Portakal
 	}
 	ImGuiRenderer::ImGuiRenderer(GraphicsDevice* pDevice) : 
 		mDevice(nullptr),mFontTexture(nullptr),mVertexShader(nullptr),mFragmentShader(nullptr),mVertexBuffer(nullptr),mIndexBuffer(nullptr),mConstantBuffer(nullptr),
-		mFontTable(nullptr),mSamplerTable(nullptr),mProjectionTable(nullptr),mSampler(nullptr), mCmdList(nullptr),mPipeline(nullptr)
+		mFontTable(nullptr),mSamplerTable(nullptr),mProjectionTable(nullptr),mSampler(nullptr), mCmdList(nullptr),mPipeline(nullptr),mRenderGraph(nullptr),mRenderTarget(nullptr)
 	{
 		/*
 		* Get window
@@ -404,6 +407,36 @@ namespace Portakal
 		mFragmentShader = pFragmentShader;
 		mCmdList = pDevice->CreateGraphicsCommandList({});
 		mDevice = pDevice;
+
+		/*
+		* Create dummy render graph
+		*/
+		mRenderTarget = new RenderTargetResource(mDevice->GetSwapchain());
+		mRenderGraph = new RenderGraph();
+
+		/*
+		* Create globals
+		*/
+		mRenderGraph->CreateGlobalRenderTarget("ImGuiRenderTarget");
+		mRenderGraph->CreateGlobalColorRgbaF("ImGuiClearColor");
+
+		/*
+		* Create render passes
+		*/
+		RenderTargetClearColorPass* pClearColorPass = mRenderGraph->CreatePass<RenderTargetClearColorPass>();
+		mRenderGraph->GetGlobalIO("ImGuiRenderTarget")->ConnectOutputTo(pClearColorPass, "rtIn");
+		mRenderGraph->GetGlobalIO("ImGuiClearColor")->ConnectOutputTo(pClearColorPass, "colorIn");
+
+		/*
+		* Setup finish pass
+		*/
+		mRenderGraph->SetFinishPass(pClearColorPass);
+
+		/*
+		* Compile render graph
+		*/
+		mRenderGraph->Compile();
+
 	}
 	ImGuiRenderer::~ImGuiRenderer()
 	{
@@ -421,6 +454,8 @@ namespace Portakal
 		mVertexShader->Destroy();
 		mFragmentShader->Destroy();
 		mCmdList->Destroy();
+		delete mRenderGraph;
+
 		mFontTexture = nullptr;
 		mVertexBuffer = nullptr;
 		mIndexBuffer = nullptr;
@@ -434,6 +469,7 @@ namespace Portakal
 		mFragmentShader = nullptr;
 		mCmdList = nullptr;
 		mDevice = nullptr;
+		mRenderGraph = nullptr;
 
 		GarbageCollector::Collect();
 
@@ -479,6 +515,7 @@ namespace Portakal
 
 		ImGui::NewFrame();
 	}
+
 	void ImGuiRenderer::FinalizeRendering(Framebuffer* pFramebuffer)
 	{
 		ImGuiIO& io = ImGui::GetIO();
@@ -488,6 +525,17 @@ namespace Portakal
 		*/
 		ImGui::Render();
 
+		/*
+		* Set render graph globals
+		*/
+		mRenderGraph->SetGlobalRenderTarget("ImGuiRenderTarget", mRenderTarget);
+		mRenderGraph->SetGlobalColorRgbaF("ImGuiClearColor", ColorRgbaF::CornflowerBlue());
+
+		/*
+		* Execute render graph
+		*/
+		mRenderGraph->ExecuteSync(mCmdList);
+		return;
 		/*
 		* Get draw data and validate if there are some data to render into
 		*/

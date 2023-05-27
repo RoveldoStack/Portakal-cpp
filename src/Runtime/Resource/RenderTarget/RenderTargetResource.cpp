@@ -4,11 +4,12 @@
 #include <Runtime/Graphics/GraphicsDeviceAPI.h>
 #include <Runtime/Graphics/Framebuffer/Framebuffer.h>
 #include <Runtime/Graphics/Resource/ResourceTable.h>
+#include <Runtime/Graphics/Swapchain/Swapchain.h>
 #include <Runtime/Assert/Assert.h>
 
 namespace Portakal
 {
-	RenderTargetResource::RenderTargetResource(const unsigned int width, const unsigned int height, const Array<TextureFormat>& colorTargetFormats, const TextureFormat depthStencilFormat, const Array<String>& colorTargetNames)
+	RenderTargetResource::RenderTargetResource(const unsigned int width, const unsigned int height, const Array<TextureFormat>& colorTargetFormats, const TextureFormat depthStencilFormat, const Array<String>& colorTargetNames) : mSwapchain(false)
 	{
 		mDevice = GraphicsDeviceAPI::GetDefaultDevice();
 
@@ -19,6 +20,21 @@ namespace Portakal
 		*/
 		CreateResources(width, height, colorTargetFormats, depthStencilFormat,colorTargetNames);
 	}
+	RenderTargetResource::RenderTargetResource(Swapchain* pSwapchain) : mSwapchain(true)
+	{
+		/*
+		* Get and validate
+		*/
+		Framebuffer* pSwapchainFramebuffer = pSwapchain->GetFramebuffer();
+		ASSERT(pSwapchainFramebuffer != nullptr, "RenderTargetResource", "The given swapchain has no framebuffer!");
+
+		/*
+		* Initialize
+		*/
+		mFramebuffer = pSwapchainFramebuffer;
+		mDepthStencilTarget = nullptr;
+		mDevice = GraphicsDeviceAPI::GetDefaultDevice();
+	}
 	RenderTargetResource::~RenderTargetResource()
 	{
 		mFramebuffer = nullptr;
@@ -26,11 +42,17 @@ namespace Portakal
 	}
 	unsigned int RenderTargetResource::GetWidth() const noexcept
 	{
-		return mWidth;
+		if (mFramebuffer == nullptr)
+			return 0;
+
+		return mFramebuffer->GetWidth();
 	}
 	unsigned int RenderTargetResource::GetHeight() const noexcept
 	{
-		return mHeight;
+		if (mFramebuffer == nullptr)
+			return 0;
+
+		return mFramebuffer->GetHeight();
 	}
 	void RenderTargetResource::Resize(const unsigned int width, const unsigned int height)
 	{
@@ -134,9 +156,6 @@ namespace Portakal
 		mFramebuffer = mDevice->CreateFramebuffer(framebufferDesc);
 		mColorTargets = colorTextures;
 		mDepthStencilTarget = pDepthStencilTexture;
-		mWidth = width;
-		mHeight = height;
-
 	}
 	void RenderTargetResource::DestroyCore()
 	{

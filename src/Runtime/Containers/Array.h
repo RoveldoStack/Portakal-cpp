@@ -625,6 +625,24 @@ namespace Portakal
 		}
 
 		/// <summary>
+		/// Revereses the array
+		/// </summary>
+		void Reverse()
+		{
+			const unsigned int halfSize = mCursor / 2;
+			for (unsigned int i = 0; i < halfSize; i++)
+			{
+				const unsigned counterIndex = mCursor - i-1;
+
+				const TValue value0 = mSource[i];
+				const TValue value1 = mSource[counterIndex];
+
+				mSource[i] = value1;
+				mSource[counterIndex] = value0;
+			}
+		}
+
+		/// <summary>
 		/// Sets the allocate multiplier
 		/// </summary>
 		/// <param name="amount"></param>

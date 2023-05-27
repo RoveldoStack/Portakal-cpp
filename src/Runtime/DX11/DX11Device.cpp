@@ -52,7 +52,7 @@ namespace Portakal
     {
 
     }
-    Texture* DX11Device::CreateSwapchainTexture(const TextureCreateDesc& desc, const DXPTR<ID3D11Resource>& texture)
+    Texture* DX11Device::CreateDXSwapchainTexture(const TextureCreateDesc& desc, const DXPTR<ID3D11Resource>& texture)
     {
         Texture* pTexture = new DX11Texture(desc, texture, this);
 
@@ -60,7 +60,7 @@ namespace Portakal
 
         return pTexture;
     }
-    Framebuffer* DX11Device::CreateSwapchainFramebuffer(const FramebufferCreateDesc& desc)
+    Framebuffer* DX11Device::CreateDXSwapchainFramebuffer(const FramebufferCreateDesc& desc)
     {
         Framebuffer* pFramebuffer = new DX11Framebuffer(desc, true, this);
 

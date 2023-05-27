@@ -64,7 +64,7 @@ namespace Portakal
 			DXPTR<ID3D11Resource> resource;
 			pBackBuffer.As<ID3D11Resource>(&resource);
 
-			colorTargets.Add(pDevice->CreateSwapchainTexture(colorTextureDesc, resource));
+			colorTargets.Add(pDevice->CreateDXSwapchainTexture(colorTextureDesc, resource));
 		}
 
 		/*
@@ -91,6 +91,8 @@ namespace Portakal
 		* Set swapchain framebuffer
 		*/
 		FramebufferCreateDesc framebufferDesc = {};
+		framebufferDesc.Width = desc.Width;
+		framebufferDesc.Height = desc.Height;
 		framebufferDesc.DepthStencilTarget.ArrayLayer = 0;
 		framebufferDesc.DepthStencilTarget.MipLevel = 0;
 		framebufferDesc.DepthStencilTarget.pTexture = pDsv;
@@ -100,7 +102,7 @@ namespace Portakal
 		colorAttachment.pTexture = colorTargets[0];
 		framebufferDesc.ColorTargets.Add(colorAttachment);
 
-		Framebuffer* pFramebuffer = pDevice->CreateSwapchainFramebuffer(framebufferDesc);
+		Framebuffer* pFramebuffer = pDevice->CreateDXSwapchainFramebuffer(framebufferDesc);
 		SetFramebuffer(pFramebuffer);
 	}
 	DX11Swapchain::~DX11Swapchain()
@@ -124,20 +126,16 @@ namespace Portakal
 	}
 	void DX11Swapchain::ResizeCore(const unsigned int width, const unsigned int height)
 	{
-
 		DX11Device* pDevice = ((DX11Device*)GetOwnerDevice());
 		pDevice->LockImmediateContext();
 
 		/*
-		* Delete framebuffer and its textures
+		* Delete former framebuffer textures
 		*/
+		DX11Framebuffer* pFramebuffer = (DX11Framebuffer*)GetFramebuffer();
 		{
-			DX11Framebuffer* pFramebuffer = (DX11Framebuffer*)GetFramebuffer();
-
 			const Array<FramebufferAttachmentDesc> colorAttachments = pFramebuffer->GetColorTargets();
 			const FramebufferAttachmentDesc depthStencilAttachment = pFramebuffer->GetDepthStencilTarget();
-
-			pFramebuffer->Destroy();
 
 			for (unsigned int i = 0; i < colorAttachments.GetCursor(); i++)
 			{
@@ -150,6 +148,11 @@ namespace Portakal
 				depthStencilAttachment.pTexture->Destroy();
 			}
 		}
+
+		/*
+		* Delete framebuffer resources
+		*/
+		pFramebuffer->DeleteDXResources();
 
 		/*
 		* Resize swapchain buffers
@@ -181,7 +184,7 @@ namespace Portakal
 			DXPTR<ID3D11Resource> resource;
 			pBackBuffer.As<ID3D11Resource>(&resource);
 
-			colorTargets.Add(pDevice->CreateSwapchainTexture(colorTextureDesc, resource));
+			colorTargets.Add(pDevice->CreateDXSwapchainTexture(colorTextureDesc, resource));
 		}
 
 		/*
@@ -217,7 +220,9 @@ namespace Portakal
 		colorAttachment.pTexture = colorTargets[0];
 		framebufferDesc.ColorTargets.Add(colorAttachment);
 
-		SetFramebuffer(pDevice->CreateSwapchainFramebuffer(framebufferDesc));
+		pFramebuffer->ResizeDXSwapchainFramebuffer(framebufferDesc);
+
+		//SetFramebuffer(pDevice->CreateSwapchainFramebuffer(framebufferDesc));
 
 		pDevice->UnlockImmediateContext();
 	}

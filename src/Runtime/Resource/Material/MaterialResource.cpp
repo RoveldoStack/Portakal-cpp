@@ -13,7 +13,7 @@ namespace Portakal
 		mOwnerDevice = nullptr;
 	}
 
-	void MaterialResource::CreateFromShaders(const Array<ShaderResource*>& shaders)
+	void MaterialResource::Create(const Array<ShaderResource*>& shaders)
 	{
 		/*
 		* Free former shaders
@@ -179,6 +179,15 @@ namespace Portakal
 		mResourceState.Slots = newResourceStateTables;
 	}
 
+	void MaterialResource::CreateWithStates(const Array<ShaderResource*>& shaders, const RasterizerStateDesc& rasterizerDesc, const DepthStencilStateDesc& depthStencilDesc, const BlendingStateDesc& blendingDesc)
+	{
+		mRasterizerState = rasterizerDesc;
+		mDepthStencilState = depthStencilDesc;
+		mBlendingState = blendingDesc;
+
+		Create(shaders);
+	}
+
 	void MaterialResource::SetTextureParameter(const String& name, const ShaderStage stage, TextureResource* pTexture)
 	{
 		
@@ -218,7 +227,7 @@ namespace Portakal
 		/*
 		* Recreate
 		*/
-		CreateFromShaders(mShaders);
+		Create(mShaders);
 	}
 	TextureResource* MaterialResource::GetTextureParameter(const String& name, const ShaderStage stage) const noexcept
 	{

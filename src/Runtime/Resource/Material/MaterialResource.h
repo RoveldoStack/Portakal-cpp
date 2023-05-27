@@ -26,14 +26,14 @@ namespace Portakal
 		DepthStencilStateDesc GetDepthStencilState() const noexcept { return mDepthStencilState; }
 		BlendingStateDesc GetBlendingState() const noexcept { return mBlendingState; }
 
-		void CreateFromShaders(const Array<ShaderResource*>& shaders);
+		void Create(const Array<ShaderResource*>& shaders);
+		void CreateWithStates(const Array<ShaderResource*>& shaders, const RasterizerStateDesc& rasterizerDesc = {},const DepthStencilStateDesc& depthStencilDesc = {}, const BlendingStateDesc& blendingDesc = {});
 		void SetTextureParameter(const String& name, const ShaderStage stage, TextureResource* pTexture);
 		void SetRasterizerState(const RasterizerStateDesc& stateDesc);
 		void SetDepthStencilState(const DepthStencilStateDesc& stateDesc);
 		void SetBlendingState(const BlendingStateDesc& stateDesc);
 	private:
 		void OnShaderCompiled(ShaderResource* pShader);
-		void RecreatePipelines();
 
 		// Inherited via ResourceSubObject
 		virtual void DestroyCore() override;

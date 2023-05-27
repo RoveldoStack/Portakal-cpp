@@ -16,6 +16,9 @@ namespace Portakal
 		DX11Framebuffer(const FramebufferCreateDesc& desc,const bool bSwapchain,DX11Device* pDevice);
 		~DX11Framebuffer();
 
+		void DeleteDXResources();
+		void ResizeDXSwapchainFramebuffer(const FramebufferCreateDesc& desc);
+
 		FORCEINLINE Array<ID3D11RenderTargetView*> GetDXRtvs() const noexcept;
 		FORCEINLINE ID3D11DepthStencilView* GetDXDsv() const noexcept { return mDsv.Get(); }
 		virtual void OnDestroy() override;

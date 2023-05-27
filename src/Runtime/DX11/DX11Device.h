@@ -21,8 +21,8 @@ namespace Portakal
 		FORCEINLINE ID3D11Device* GetDXDevice() const noexcept { return mDevice.Get(); }
 		FORCEINLINE ID3D11DeviceContext* GetDXImmediateContext() const noexcept { return mImmediateContext.Get(); }
 
-		Texture* CreateSwapchainTexture(const TextureCreateDesc& desc, const DXPTR<ID3D11Resource>& texture);
-		Framebuffer* CreateSwapchainFramebuffer(const FramebufferCreateDesc& desc);
+		Texture* CreateDXSwapchainTexture(const TextureCreateDesc& desc, const DXPTR<ID3D11Resource>& texture);
+		Framebuffer* CreateDXSwapchainFramebuffer(const FramebufferCreateDesc& desc);
 		void LockImmediateContext();
 		void UnlockImmediateContext();
 	private:

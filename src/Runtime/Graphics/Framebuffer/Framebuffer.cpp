@@ -3,7 +3,7 @@
 
 namespace Portakal
 {
-    Framebuffer::Framebuffer(const FramebufferCreateDesc& desc,const bool bSwapchain) : mSwapchain(bSwapchain)
+    Framebuffer::Framebuffer(const FramebufferCreateDesc& desc,const bool bSwapchain) : mSwapchain(bSwapchain),mWidth(desc.Width),mHeight(desc.Height)
     {
         /*
         * Create output desc

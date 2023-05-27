@@ -8,7 +8,7 @@ namespace Portakal
 	class TextureResource;
 	class GraphicsDevice;
 	class ResourceTable;
-
+	class Swapchain;
 	/// <summary>
 	/// A resource specialized in render targets
 	/// </summary>
@@ -17,7 +17,21 @@ namespace Portakal
 	{
 		GENERATE_CLASS(RenderTargetResource,Virtual);
 	public:
+		/// <summary>
+		/// Generates custom render target
+		/// </summary>
+		/// <param name="width"></param>
+		/// <param name="height"></param>
+		/// <param name="colorTargetFormats"></param>
+		/// <param name="depthStencilFormat"></param>
+		/// <param name="colorTargetNames"></param>
 		RenderTargetResource(const unsigned int width, const unsigned int height, const Array<TextureFormat>& colorTargetFormats, const TextureFormat depthStencilFormat,const Array<String>& colorTargetNames = {});
+
+		/// <summary>
+		/// Generates render target for target swapchain framebuffer
+		/// </summary>
+		/// <param name="pSwapchain"></param>
+		RenderTargetResource(Swapchain* pSwapchain);
 		~RenderTargetResource();
 
 		/// <summary>
@@ -73,12 +87,11 @@ namespace Portakal
 		void CreateResources(const unsigned int width,const unsigned int height,const Array<TextureFormat>& colorTargetFormats,const TextureFormat depthStencilFormat, const Array<String>& colorTargetNames);
 		virtual void DestroyCore() override;
 	private:
+		const bool mSwapchain;
 		GraphicsDevice* mDevice;
 		Framebuffer* mFramebuffer;
 		Array<TextureResource*> mColorTargets;
 		TextureResource* mDepthStencilTarget;
-		unsigned int mWidth;
-		unsigned int mHeight;
 	};
 
 

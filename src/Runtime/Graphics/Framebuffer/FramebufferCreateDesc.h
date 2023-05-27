@@ -10,6 +10,16 @@ namespace Portakal
 	struct PORTAKAL_API FramebufferCreateDesc
 	{
 		/// <summary>
+		/// The width of the framebuffer
+		/// </summary>
+		unsigned int Width;
+
+		/// <summary>
+		/// The height of the framebuffer
+		/// </summary>
+		unsigned int Height;
+
+		/// <summary>
 		/// Color targets
 		/// </summary>
 		Array<FramebufferAttachmentDesc> ColorTargets;
