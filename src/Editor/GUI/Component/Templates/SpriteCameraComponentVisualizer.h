@@ -1,11 +1,12 @@
 #pragma once
-#include <Runtime/World/Components/SpriteCamera.h>
 #include <Editor/GUI/Component/EditorComponentVisualizer.h>
 #include <Editor/GUI/Component/CustomEditorComponentAttribute.h>
+#include <Runtime/Renderers/2DRenderer/SpriteCameraComponent.h>
+
 
 namespace Portakal
 {
-	PCLASS_ATTRIBUTE(CustomEditorComponentAttribute, typeof(SpriteCamera));
+	PCLASS_ATTRIBUTE(CustomEditorComponentAttribute, typeof(SpriteCameraComponent));
 	PCLASS();
 	class PORTAKAL_API SpriteCameraComponentVisualizer : public EditorComponentVisualizer
 	{
@@ -21,7 +22,7 @@ namespace Portakal
 
 		virtual void OnFinalize() override;
 	private:
-		SpriteCamera* mCamera;
+
 	};
 
 

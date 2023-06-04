@@ -36,6 +36,9 @@ namespace Portakal
 		virtual void OnInitialize() override;
 
 		virtual void OnFinalize() override;
+
+		// Inherited via Component
+		virtual void OnAspectRemoved(SceneAspect* pAspect) override;
 	};
 #include "TestComponent.reflect.h"
 }

@@ -9,21 +9,28 @@ namespace Portakal
 	{
 		GENERATE_CLASS(DisplayAspect);
 	public:
-		DisplayAspect() = default;
+		DisplayAspect() : mMaxDisplayCount(8) {}
 		~DisplayAspect() = default;
 
 		FORCEINLINE RenderTargetResource* GetDefaultDisplay() const noexcept;
 		FORCEINLINE RenderTargetResource* GetDisplay(const unsigned int index) const noexcept;
 		FORCEINLINE Array<RenderTargetResource*> GetDisplays() const noexcept;
+		FORCEINLINE unsigned int GetMaxDisplayCount() const noexcept { return mMaxDisplayCount; }
 
-		void RegisterDisplay(RenderTargetResource* pTarget);
-		void RemoveDisplay(RenderTargetResource* pTarget);
+		void SelectDisplay(const unsigned int index, RenderTargetResource* pRenderTarget);
+		void RegisterDisplay(RenderTargetResource* pRenderTarget);
+		void RemoveDisplay(RenderTargetResource* pRenderTarget);
 	private:
-		virtual void OnInitialize() override;
-		virtual void OnExecute() override;
-		virtual void OnFinalize() override;
+		virtual void InitializeCore() override;
+		virtual void ExecuteCore() override;
+		virtual void FinalizeCore() override;
 	private:
+		const unsigned int mMaxDisplayCount;
 		Array<RenderTargetResource*> mDisplays;
+
+		// Inherited via SceneAspect
+		virtual bool RegisterComponentCore(Component* pComponent) override;
+		virtual void RemoveComponentCore(Component* pComponent) override;
 	};
 
 

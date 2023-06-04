@@ -28,7 +28,7 @@ namespace Portakal
             for (unsigned int aspectIndex = 0; aspectIndex < aspects.GetCursor(); aspectIndex++)
             {
                 SceneAspect* pAspect = aspects[aspectIndex];
-                pAspect->OnExecute();
+                pAspect->_Execute();
             }
         }
     }

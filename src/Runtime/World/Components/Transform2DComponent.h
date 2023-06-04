@@ -20,18 +20,20 @@ namespace Portakal
 		FORCEINLINE void SetPosition(const Vector2F value) { mPosition = value; }
 		FORCEINLINE void SetScale(const Vector2F value) { mScale = value; }
 		FORCEINLINE void SetRotation(const float value) { mRotation = value; }
+	private:
+		// Inherited via Component
+		virtual void OnAspectRemoved(SceneAspect* pAspect) override;
 
 		// Inherited via Component
 		virtual void DestroyCore() override;
-
 		virtual void OnInitialize() override;
-
 		virtual void OnFinalize() override;
-
 	private:
 		Vector2F mPosition;
 		Vector2F mScale;
 		float mRotation;
+
+
 
 	};
 

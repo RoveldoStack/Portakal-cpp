@@ -13,12 +13,18 @@ namespace Portakal
 	{
 		GENERATE_CLASS(Component,Virtual);
 		friend class Entity;
+		friend class SceneAspect;
 	public:
 		/// <summary>
 		/// Returns the owner entity of this component
 		/// </summary>
 		/// <returns></returns>
 		FORCEINLINE Entity* GetOwnerEntity() const noexcept { return mOwnerEntity; }
+
+
+	protected:
+		Component() : mOwnerEntity(nullptr){}
+		~Component() = default;
 
 		/// <summary>
 		/// Called upon first initialization
@@ -30,9 +36,11 @@ namespace Portakal
 		/// </summary>
 		virtual void OnFinalize() = 0;
 
-	protected:
-		Component() : mOwnerEntity(nullptr){}
-		~Component() = default;
+		/// <summary>
+		/// Called upon an aspect which this component registered itself into has been removed
+		/// </summary>
+		/// <param name="pAspect"></param>
+		virtual void OnAspectRemoved(SceneAspect* pAspect) = 0;
 
 		/// <summary>
 		/// Internal setter for the owner entity

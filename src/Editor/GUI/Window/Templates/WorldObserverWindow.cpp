@@ -4,7 +4,6 @@
 #include <Runtime/World/Entity.h>
 #include <Runtime/World/SceneAspect.h>
 #include <Libs/ImGui/imgui.h>
-#include <Runtime/World/Aspects/SpriteRendererAspect.h>
 #include <Editor/Game/EditorGameAPI.h>
 #include <Runtime/Resource/Resource.h>
 #include <Runtime/Resource/ResourceAPI.h>

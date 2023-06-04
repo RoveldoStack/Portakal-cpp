@@ -11,4 +11,7 @@ namespace Portakal
 	void Transform2DComponent::OnFinalize()
 	{
 	}
+	void Transform2DComponent::OnAspectRemoved(SceneAspect* pAspect)
+	{
+	}
 }

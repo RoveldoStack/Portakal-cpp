@@ -15,11 +15,16 @@ namespace Portakal
 		FORCEINLINE void SetIntendedAspect(const String& intendedAspect) { mIntendedAspectTypeName = intendedAspect; }
 
 		// Inherited via SceneAspect
-		virtual void OnInitialize() override;
-		virtual void OnExecute() override;
-		virtual void OnFinalize() override;
+		virtual void InitializeCore() override;
+		virtual void ExecuteCore() override;
+		virtual void FinalizeCore() override;
+	private:
+		// Inherited via SceneAspect
+		virtual bool RegisterComponentCore(Component* pComponent) override;
+		virtual void RemoveComponentCore(Component* pComponent) override;
 	private:
 		String mIntendedAspectTypeName;
+
 	};
 #include "InvalidAspect.reflect.h"
 }

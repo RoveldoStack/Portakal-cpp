@@ -1,0 +1,8 @@
+#include "SpriteRendererComponent.h" 
+START_GENERATE_TYPE(SpriteRendererComponent);
+START_CLASS_TYPE_PROPERTIES(SpriteRendererComponent)
+REGISTER_BASE_TYPE(Component);
+
+END_TYPE_PROPERTIES;
+HAS_DEFAULT_CONSTRUCTOR(SpriteRendererComponent);
+END_GENERATE_TYPE(SpriteRendererComponent);
