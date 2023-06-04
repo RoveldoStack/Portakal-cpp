@@ -25,7 +25,7 @@ namespace Portakal
 		{
 			return mDelegates;
 		}
-		void Clear()
+		void ClearInvocationList()
 		{
 			mDelegates.Clear();
 		}

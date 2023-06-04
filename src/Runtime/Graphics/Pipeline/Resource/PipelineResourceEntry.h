@@ -1,6 +1,7 @@
 #pragma once
 #include <Runtime/Graphics/Pipeline/Resource/PipelineResourceType.h>
 #include <Runtime/Containers/String.h>
+#include <Runtime/Graphics/Shader/ShaderStage.h>
 
 namespace Portakal
 {
@@ -14,9 +15,14 @@ namespace Portakal
 		/// </summary>
 		String Name;
 
-		/// <summary>
+		/*/// <summary>
 		/// Type of the resource
 		/// </summary>
-		PipelineResourceType Type;
+		PipelineResourceType Type;*/
+
+		///// <summary>
+		///// The stage of the shader
+		///// </summary>
+		//ShaderStage Stage;
 	};
 }

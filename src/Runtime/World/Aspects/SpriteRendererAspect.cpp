@@ -24,7 +24,7 @@ namespace Portakal
         if (pDefaultDevice == nullptr)
             return;
 
-        mCmdList = pDefaultDevice->CreateGraphicsCommandList({});
+        mCmdList = pDefaultDevice->CreateCommandList({});
 
         /*
         * Get all cameras

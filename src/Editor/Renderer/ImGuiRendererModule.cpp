@@ -34,7 +34,7 @@ namespace Portakal
         /*
         * Create command buffer
         */
-        mCmdList = pDevice->CreateGraphicsCommandList({});
+        mCmdList = pDevice->CreateCommandList({});
 
         mDevice = pDevice;
     }

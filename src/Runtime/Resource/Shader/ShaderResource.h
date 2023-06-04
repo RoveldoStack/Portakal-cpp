@@ -22,13 +22,13 @@ namespace Portakal
 		FORCEINLINE const ShaderReflectionBlob* GetReflectionBlob() const noexcept { return mReflectionBlob; }
 
 		void Compile(const String& entryPoint,const String& source,const ShaderStage stage);
-		void RegisterOnCompiledEvent(const Delegate<void, ShaderResource*>& del);
-		void RemoveOnCompiledEvent(const Delegate<void, ShaderResource*>& del);
+		void RegisterOnStateChangedEvent(const Delegate<void, ShaderResource*>& del);
+		void RemoveOnOnStateChangedEvent(const Delegate<void, ShaderResource*>& del);
 	private:
 		void Delete();
 		virtual void DestroyCore() override;
 	private:
-		Event<void, ShaderResource*> mOnCompiledEvent;
+		Event<void, ShaderResource*> mOnStateChangedEvent;
 		ShaderReflectionBlob* mReflectionBlob;
 		GraphicsDevice* mDevice;
 		Shader* mShader;

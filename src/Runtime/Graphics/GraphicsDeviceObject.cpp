@@ -15,7 +15,6 @@ namespace Portakal
             mOwnerDevice->_NotifyChildObjectDestroyed(this);
         }
 
-
         mDestroyed = true;
     }
 }

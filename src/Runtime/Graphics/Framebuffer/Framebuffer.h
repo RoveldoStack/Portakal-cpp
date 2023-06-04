@@ -71,9 +71,17 @@ namespace Portakal
 		/// <param name="height"></param>
 		FORCEINLINE void SetHeight(const unsigned int height) { mHeight = height; }
 
+		/// <summary>
+		/// Sets the underlying color targets
+		/// </summary>
+		/// <param name="targets"></param>
 		void SetColorTargets(const Array<FramebufferAttachmentDesc>& targets) { mColorTargets = targets; }
-		void SetDepthStencilTarget(const FramebufferAttachmentDesc& target) { mDepthStencilTarget = target; }
 
+		/// <summary>
+		/// Sets the underlying depth stencil target
+		/// </summary>
+		/// <param name="target"></param>
+		void SetDepthStencilTarget(const FramebufferAttachmentDesc& target) { mDepthStencilTarget = target; }
 	protected:
 		virtual void OnDestroy() override;
 	private:

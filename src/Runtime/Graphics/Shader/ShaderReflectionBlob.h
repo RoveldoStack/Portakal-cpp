@@ -1,24 +1,23 @@
 #pragma once
 #include <Runtime/Containers/Array.h>
 #include <Runtime/Containers/String.h>
-#include <Runtime/Graphics/Shader/ShaderReflectionEntry.h>
-#include <Runtime/Graphics/Shader/ShadingLanguage.h>
+#include <Runtime/Graphics/Shader/ShaderReflectionResource.h>
+#include <Runtime/Memory/ByteBlock.h>
 
 namespace Portakal
 {
 	class PORTAKAL_API ShaderReflectionBlob
 	{
 	public:
-		static ShaderReflectionBlob* Create(const String& source, const ShadingLanguage language);
+		static ShaderReflectionBlob* Create(const ByteBlock& byteBlock);
 	public:
 		ShaderReflectionBlob() = default;
 		~ShaderReflectionBlob() = default;
 
-		FORCEINLINE virtual ShadingLanguage GetLanguage() const noexcept = 0;
-		FORCEINLINE Array<ShaderReflectionEntry> GetEntries() const noexcept { return mEntries; }
+		FORCEINLINE Array<ShaderReflectionResource> GetResources() const noexcept { return mResources; }
 	protected:
-		void SetReflectionData(const Array<ShaderReflectionEntry>& entries) { mEntries = entries; }
+		void SetReflectionData(const Array<ShaderReflectionResource>& resources) { mResources = resources; }
 	private:
-		Array<ShaderReflectionEntry> mEntries;
+		Array<ShaderReflectionResource> mResources;
 	};
 }

@@ -61,7 +61,6 @@ namespace Portakal
 	}
 	String::String(const String& target)
 	{
-
 		mCursor = target.mCursor;
 		mSource = new char[(double)mCursor + 1];
 
@@ -76,11 +75,11 @@ namespace Portakal
 		mCursor = 0;
 		if(mSource != nullptr)
 			delete[] mSource;
+
 		mSource = nullptr;
 	}
 	String String::GetSubset(const unsigned int start, const unsigned  int length) const
 	{
-
 		unsigned int end = start + length;
 		/*if (end >= mCursor)
 			end = mCursor - 1;*/

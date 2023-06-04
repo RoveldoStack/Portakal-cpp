@@ -9,6 +9,7 @@
 #include <Runtime/Assert/Assert.h>
 #include <Runtime/Platform/PlatformError.h>
 #include <Runtime/DX11/DX11DeviceObjects.h>
+#include <d3d11shader.h>
 
 namespace Portakal
 {
@@ -246,122 +247,140 @@ namespace Portakal
          
         mContext->IASetIndexBuffer(pDXBuffer->GetDXBuffer(), pBuffer->GetSubItemSize() == sizeof(unsigned int) ? DXGI_FORMAT_R32_UINT : DXGI_FORMAT_R16_UINT, 0);
     }
-    void DX11CommandList::CommitResourceTableCore(const unsigned int slotIndex, const ResourceTable* pTable)
+    void DX11CommandList::CommitResourceTableCore(const unsigned int slotIndex,const ResourceTable* pTable)
     {
         const DX11ResourceTable* pDXTable = (const DX11ResourceTable*)pTable;
-        const Array<ID3D11ShaderResourceView*>& srvs = pDXTable->GetDXSrvs();
+        const Array<ID3D11ShaderResourceView*>& resourceViews = pDXTable->GetDXResourceViews();
         const Array<ID3D11Buffer*>& buffers = pDXTable->GetDXBuffers();
         const Array<ID3D11SamplerState*>& samplers = pDXTable->GetDXSamplers();
-        const PipelineResourceTableDesc tableDesc = GetBoundPipeline()->GetResourceState().Slots[slotIndex];
+        ID3D11ShaderResourceView** ppResourceViews = resourceViews.GetData();
+        ID3D11Buffer** ppBuffers = buffers.GetData();
+        ID3D11SamplerState** ppSamplers = samplers.GetData();
+        const ResourceStateDesc resourceStateDesc = GetBoundPipeline()->GetResourceState();
+        const PipelineResourceTableDesc& tableDesc = resourceStateDesc.Tables[slotIndex];
         const ShaderStage stage = tableDesc.Stage;
-        const unsigned int startLocation = tableDesc.StartLocation;
+        const unsigned int resourceViewCount = resourceViews.GetCursor();
+        const unsigned int bufferCount = buffers.GetCursor();
+        const unsigned int samplerCount = samplers.GetCursor();
+        const unsigned int resourceViewOffset = tableDesc.TextureOffset;
+        const unsigned int bufferOffset = tableDesc.BufferOffset;
+        const unsigned int samplerOffset = tableDesc.SamplerOffset;
 
         /*
         * Set srvs
         */
-        switch (stage)
+        if (resourceViewCount > 0)
         {
+            switch (stage)
+            {
             case Portakal::ShaderStage::None:
                 break;
             case Portakal::ShaderStage::Vertex:
             {
-                mContext->VSSetShaderResources(startLocation,srvs.GetCursor(),srvs.GetData());
+                mContext->VSSetShaderResources(resourceViewOffset, resourceViewCount, ppResourceViews);
                 break;
             }
             case Portakal::ShaderStage::Fragment:
             {
-                mContext->PSSetShaderResources(startLocation, srvs.GetCursor(), srvs.GetData());
+                mContext->PSSetShaderResources(resourceViewOffset, resourceViewCount, ppResourceViews);
                 break;
             }
             case Portakal::ShaderStage::TesellationEval:
             {
-                mContext->DSSetShaderResources(startLocation, srvs.GetCursor(), srvs.GetData());
+                mContext->DSSetShaderResources(resourceViewOffset, resourceViewCount, ppResourceViews);
                 break;
             }
             case Portakal::ShaderStage::TesellationControl:
             {
-                mContext->HSSetShaderResources(startLocation, srvs.GetCursor(), srvs.GetData());
+                mContext->HSSetShaderResources(resourceViewOffset, resourceViewCount, ppResourceViews);
                 break;
             }
             case Portakal::ShaderStage::Compute:
             {
-                mContext->CSSetShaderResources(startLocation, srvs.GetCursor(), srvs.GetData());
+                mContext->CSSetShaderResources(resourceViewOffset, resourceViewCount, ppResourceViews);
                 break;
             }
             default:
                 break;
+            }
         }
-
+       
         /*
         * Set constant buffers
         */
-        switch (stage)
+        if (bufferCount > 0)
         {
-        case Portakal::ShaderStage::None:
-            break;
-        case Portakal::ShaderStage::Vertex:
-        {
-            mContext->VSSetConstantBuffers(startLocation, buffers.GetCursor(), buffers.GetData());
-            break;
-        }
-        case Portakal::ShaderStage::Fragment:
-        {
-            mContext->PSSetConstantBuffers(startLocation, buffers.GetCursor(), buffers.GetData());
-            break;
-        }
-        case Portakal::ShaderStage::TesellationEval:
-        {
-            mContext->DSSetConstantBuffers(startLocation, buffers.GetCursor(), buffers.GetData());
-            break;
-        }
-        case Portakal::ShaderStage::TesellationControl:
-        {
-            mContext->HSSetConstantBuffers(startLocation, buffers.GetCursor(), buffers.GetData());
-            break;
-        }
-        case Portakal::ShaderStage::Compute:
-        {
-            mContext->CSSetConstantBuffers(startLocation, buffers.GetCursor(), buffers.GetData());
-            break;
-        }
-        default:
-            break;
+            switch (stage)
+            {
+            case Portakal::ShaderStage::None:
+                break;
+            case Portakal::ShaderStage::Vertex:
+            {
+                mContext->VSSetConstantBuffers(bufferOffset, bufferCount, ppBuffers);
+                break;
+            }
+            case Portakal::ShaderStage::Fragment:
+            {
+                mContext->PSSetConstantBuffers(bufferOffset, bufferCount, ppBuffers);
+                break;
+            }
+            case Portakal::ShaderStage::TesellationEval:
+            {
+                mContext->DSSetConstantBuffers(bufferOffset, bufferCount, ppBuffers);
+                break;
+            }
+            case Portakal::ShaderStage::TesellationControl:
+            {
+                mContext->HSSetConstantBuffers(bufferOffset, bufferCount, ppBuffers);
+                break;
+            }
+            case Portakal::ShaderStage::Compute:
+            {
+                mContext->CSSetConstantBuffers(bufferOffset, bufferCount, ppBuffers);
+                break;
+            }
+            default:
+                break;
+            }
         }
 
         /*
         * Set samplers
         */
-        switch (stage)
+        if (samplerCount > 0)
         {
-        case Portakal::ShaderStage::None:
-            break;
-        case Portakal::ShaderStage::Vertex:
-        {
-            mContext->VSSetSamplers(startLocation, samplers.GetCursor(), samplers.GetData());
-            break;
-        }
-        case Portakal::ShaderStage::Fragment:
-        {
-            mContext->PSSetSamplers(startLocation, samplers.GetCursor(), samplers.GetData());
-            break;
-        }
-        case Portakal::ShaderStage::TesellationEval:
-        {
-            mContext->DSSetSamplers(startLocation, samplers.GetCursor(), samplers.GetData());
-            break;
-        }
-        case Portakal::ShaderStage::TesellationControl:
-        {
-            mContext->HSSetSamplers(startLocation, samplers.GetCursor(), samplers.GetData());
-            break;
-        }
-        case Portakal::ShaderStage::Compute:
-        {
-            mContext->CSSetSamplers(startLocation, samplers.GetCursor(), samplers.GetData());
-            break;
-        }
-        default:
-            break;
+            switch (stage)
+            {
+            case Portakal::ShaderStage::None:
+                break;
+            case Portakal::ShaderStage::Vertex:
+            {
+                mContext->VSSetSamplers(samplerOffset, samplerCount, ppSamplers);
+                break;
+            }
+            case Portakal::ShaderStage::Fragment:
+            {
+                mContext->PSSetSamplers(samplerOffset, samplerCount, ppSamplers);
+                break;
+            }
+            case Portakal::ShaderStage::TesellationEval:
+            {
+                mContext->DSSetSamplers(samplerOffset, samplerCount, ppSamplers);
+                break;
+            }
+            case Portakal::ShaderStage::TesellationControl:
+            {
+                mContext->HSSetSamplers(samplerOffset, samplerCount, ppSamplers);
+                break;
+            }
+            case Portakal::ShaderStage::Compute:
+            {
+                mContext->CSSetSamplers(samplerOffset, samplerCount, ppSamplers);
+                break;
+            }
+            default:
+                break;
+            }
         }
 
     }

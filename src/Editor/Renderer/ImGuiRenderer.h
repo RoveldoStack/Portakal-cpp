@@ -31,6 +31,10 @@ namespace Portakal
 
 	class RenderGraph;
 	class RenderTargetResource;
+	class SamplerResource;
+	class MeshResource;
+	class MaterialResource;
+	class ShaderResource;
 
 	/// <summary>
 	/// Represents a imgui renderer (later it will be revised for suiting any type of user imgui renderer implementation)
@@ -138,18 +142,8 @@ namespace Portakal
 		GraphicsDevice* mDevice;
 
 		RenderTargetResource* mRenderTarget;
-		RenderGraph* mRenderGraph;
-		TextureResource* mFontTexture;
-		Pipeline* mPipeline;
-		GraphicsBuffer* mVertexBuffer;
-		GraphicsBuffer* mIndexBuffer;
-		GraphicsBuffer* mConstantBuffer;
-		Sampler* mSampler;
-		ResourceTable* mFontTable;
-		ResourceTable* mSamplerTable;
-		ResourceTable* mProjectionTable;
-		Shader* mVertexShader;
-		Shader* mFragmentShader;
 		CommandList* mCmdList;
+
+		RenderGraph* mRenderGraph;
 	};
 }

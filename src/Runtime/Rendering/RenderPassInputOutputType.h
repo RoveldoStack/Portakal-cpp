@@ -10,6 +10,8 @@ namespace Portakal
 	{
 		RenderTarget,
 		Texture,
+		Mesh,
+		Material,
 		Color,
 		Float,
 		Integer,

@@ -8,31 +8,47 @@ namespace Portakal
 {
     DX11Device::DX11Device(const WindowedGraphicsDeviceCreateDesc& desc) : GraphicsDevice(desc.pOwnerWindow)
     {
-
+        /*
+        * Get win32 window
+        */
         Win32Window* pWin32Window = (Win32Window*)desc.pOwnerWindow;
 
+        /*
+        * Create dxgi factory
+        */
         ASSERT(SUCCEEDED(CreateDXGIFactory2(0, IID_PPV_ARGS(&mFactory))), "DX11Device", "Failed to create dxgi factory");
 
+        /*
+        * Iterate visible gpus and select the optimal one
+        */
         int adapterIndex = 0;
         bool bAdapterFound = false;
-
         while (mFactory->EnumAdapters1(adapterIndex, mAdapter.GetAddressOf()) != DXGI_ERROR_NOT_FOUND)
         {
             DXGI_ADAPTER_DESC1 adapterDesc = {};
             mAdapter->GetDesc1(&adapterDesc);
 
+            /*
+            * Validate if the given adapter is a software adapter. If it's then simply skip it
+            */
             if (adapterDesc.Flags & DXGI_ADAPTER_FLAG_SOFTWARE)
             {
                 adapterIndex++;
                 continue;
             }
-
+            
+            /*
+            * Create device
+            */
 #if PORTAKAL_DEBUG
             D3D11CreateDevice(mAdapter.Get(), D3D_DRIVER_TYPE_UNKNOWN, NULL, D3D11_CREATE_DEVICE_DEBUG, NULL, NULL, D3D11_SDK_VERSION, mDevice.GetAddressOf(), NULL, mImmediateContext.GetAddressOf());
 #else
             D3D11CreateDevice(mAdapter.Get(), D3D_DRIVER_TYPE_UNKNOWN, NULL, NULL, NULL, NULL, D3D11_SDK_VERSION, mDevice.GetAddressOf(), NULL, mImmediateContext.GetAddressOf());
 #endif
 
+            /*
+            * Set the dedicated memory
+            */
             SetMemory(adapterDesc.DedicatedVideoMemory);
 
             bAdapterFound = true;
@@ -42,6 +58,15 @@ namespace Portakal
 
         ASSERT(bAdapterFound, "DX11Device", "Failed to find any suitable device");
 
+        /*
+        * Create query
+        */
+        D3D11_QUERY_DESC queryDesc = { D3D11_QUERY_EVENT,0 };
+        ASSERT(SUCCEEDED(mDevice->CreateQuery(&queryDesc, mQuery.GetAddressOf())), "DX11Device", "Failed to create wait query");
+
+        /*
+        * Create immediate context barrier
+        */
         mContextBarrier = PlatformCriticalSection::Create();
     }
     DX11Device::DX11Device()
@@ -80,7 +105,7 @@ namespace Portakal
     {
         GetSwapchain()->Swapbuffers();
     }
-    CommandList* DX11Device::CreateGraphicsCommandListCore(const CommandListCreateDesc& desc)
+    CommandList* DX11Device::CreateCommandListCore(const CommandListCreateDesc& desc)
     {
         return new DX11CommandList(desc, this);
     }
@@ -125,26 +150,31 @@ namespace Portakal
     {
         return nullptr;
     }
-    void DX11Device::UpdateBufferCore(GraphicsBuffer* pBuffer, const GraphicsBufferUpdateDesc& desc)
-    {
-
-    }
     void DX11Device::WaitForFinishCore()
     {
+        /*
+        * Lock the immediate context barrier
+        */
         mContextBarrier->Lock();
 
-        DXPTR<ID3D11Query> query = 0;
-        D3D11_QUERY_DESC desc = { D3D11_QUERY_EVENT,0 };
-        mDevice->CreateQuery(&desc, query.GetAddressOf());
-
+        /*
+        * Flush the commands
+        */
+        mImmediateContext->Begin(mQuery.Get());
         mImmediateContext->Flush();
-        mImmediateContext->End(query.Get());
+        mImmediateContext->End(mQuery.Get());
 
-        while (mImmediateContext->GetData(query.Get(), nullptr, 0, 0) == S_FALSE)
+        /*
+        * Wait for the events to finish
+        */
+        while (mImmediateContext->GetData(mQuery.Get(), nullptr, 0, 0) == S_FALSE)
         {
 
         }
 
+        /*
+        * Release the immediate context barrier
+        */
         mContextBarrier->Release();
     }
     void DX11Device::SubmitCommandsCore(const Array<CommandList*>& cmdBuffers)

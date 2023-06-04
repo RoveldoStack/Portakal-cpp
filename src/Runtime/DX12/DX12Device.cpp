@@ -41,7 +41,7 @@ namespace Portakal
 	{
 		GetSwapchain()->Swapbuffers();
 	}
-	CommandList* DX12Device::CreateGraphicsCommandListCore(const CommandListCreateDesc& desc)
+	CommandList* DX12Device::CreateCommandListCore(const CommandListCreateDesc& desc)
 	{
 		return new DX12GraphicsCommandList(desc,this);
 	}
@@ -85,9 +85,6 @@ namespace Portakal
 	{
 		return new DX12Fence(this);
 	}
-	void DX12Device::UpdateBufferCore(GraphicsBuffer* pBuffer, const GraphicsBufferUpdateDesc& desc)
-	{
-	}
 	void DX12Device::WaitForFinishCore()
 	{
 		/*
@@ -117,7 +114,6 @@ namespace Portakal
 		*/
 		mGraphicsCmdAllocator->Reset();
 		mComputeCmdAllocator->Reset();
-		
 	}
 	void DX12Device::SubmitCommandsCore(const Array<CommandList*>& cmdBuffers)
 	{

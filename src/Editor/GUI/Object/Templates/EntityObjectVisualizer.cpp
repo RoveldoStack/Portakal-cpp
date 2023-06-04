@@ -101,7 +101,7 @@ namespace Portakal
 		*/
 		for (unsigned int i = 0; i < mVisualizerMap.GetCursor(); i++)
 		{
-			const RegistryEntry<Component*, EditorComponentVisualizer*> entry = mVisualizerMap.GetEntryViaIndex(i);
+			const RegistryEntry<Component*, EditorComponentVisualizer*>& entry = mVisualizerMap[i];
 			if (entry.Key == nullptr || entry.Value == nullptr)
 				continue;
 
@@ -121,7 +121,7 @@ namespace Portakal
 		*/
 		for (unsigned int i = 0; i < mVisualizerMap.GetCursor(); i++)
 		{
-			const RegistryEntry<Component*, EditorComponentVisualizer*> entry = mVisualizerMap.GetEntryViaIndex(i);
+			const RegistryEntry<Component*, EditorComponentVisualizer*>& entry = mVisualizerMap[i];
 			if (entry.Key == nullptr || entry.Key->IsDestroyed() || entry.Value == nullptr)
 				continue;
 

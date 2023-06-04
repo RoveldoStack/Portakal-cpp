@@ -11,6 +11,8 @@ namespace Portakal
 		/// <summary>
 		/// The resources
 		/// </summary>
-		Array<GraphicsDeviceObject*> Resources;
+		Array<GraphicsDeviceObject*> Buffers;
+		Array<GraphicsDeviceObject*> Textures;
+		Array<GraphicsDeviceObject*> Samplers;
 	};
 }

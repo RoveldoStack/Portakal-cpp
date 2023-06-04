@@ -16,7 +16,6 @@ namespace Portakal
 
             outputDesc.ColorAttachments.Add(attachmentDesc);
         }
-
         outputDesc.DepthStencilAttachment = { desc.DepthStencilTarget.pTexture == nullptr ? TextureFormat::None : desc.DepthStencilTarget.pTexture->GetTextureFormat() };
 
         mOutputDesc = outputDesc;

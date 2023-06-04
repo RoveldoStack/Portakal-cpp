@@ -5,6 +5,11 @@
 
 namespace Portakal
 {
+	/// <summary>
+	/// Represents a single Registry entry. It contains Key&Value tupple
+	/// </summary>
+	/// <typeparam name="TKey"></typeparam>
+	/// <typeparam name="TValue"></typeparam>
 	template<typename TKey,typename TValue>
 	struct RegistryEntry
 	{
@@ -13,10 +18,24 @@ namespace Portakal
 			Key = {};
 			Value = {};
 		}
+
+		/// <summary>
+		/// The key
+		/// </summary>
 		TKey Key;
+
+		/// <summary>
+		/// The value
+		/// </summary>
 		TValue Value;
 	};
 
+	/// <summary>
+	/// Unlike array it holds tupples Key&Value
+	/// Acts as a C# Dictionary
+	/// </summary>
+	/// <typeparam name="TKey"></typeparam>
+	/// <typeparam name="TValue"></typeparam>
 	template<typename TKey,typename TValue>
 	class Registry
 	{
@@ -41,27 +60,6 @@ namespace Portakal
 			mCapacity = preallocatedCount;
 			mCapacityMultiplier = 2;
 		}
-		//Registry(std::initializer_list<TValue> initializerList)
-		//{
-
-		//	/*
-		//	* Allocate space
-		//	*/
-		//	mData = new TValue[initializerList.size()];
-		//	mCursor = initializerList.size();
-		//	mCapacity = initializerList.size();
-		//	mCapacityMultiplier = 2;
-
-		//	/*
-		//	* Copy
-		//	*/
-		//	unsigned int index = 0;
-		//	for (const TValue& value : initializerList)
-		//	{
-		//		mData[index] = value;
-		//		index++;
-		//	}
-		//}
 		Registry()
 		{
 			mData = nullptr;
@@ -70,26 +68,22 @@ namespace Portakal
 			mCapacityMultiplier = 2;
 		}
 
+
+		/// <summary>
+		/// Returns the entry count of the registry
+		/// </summary>
+		/// <returns></returns>
 		FORCEINLINE unsigned int GetCursor() const noexcept
 		{
 			return mCursor;
 		}
-		FORCEINLINE RegistryEntry<TKey, TValue>& GetEntryViaIndex(const unsigned int index) const noexcept
-		{
-			return mData[index];
-		}
-		FORCEINLINE RegistryEntry<TKey, TValue> FindEntry(const TKey& key) const noexcept
-		{
-			for (unsigned int i = 0; i < mCursor; i++)
-			{
-				RegistryEntry<TKey, TValue>& entry = mData[i];
-				if (entry.Key == key)
-					return entry;
-			}
 
-			return {};
-		}
-		FORCEINLINE TValue* GetEntry(const TKey& key) const noexcept
+		/// <summary>
+		/// Returns the value address of the given key
+		/// </summary>
+		/// <param name="key"></param>
+		/// <returns></returns>
+		FORCEINLINE TValue* GetEntryValue(const TKey& key) const noexcept
 		{
 			for (unsigned int i = 0; i < mCursor; i++)
 			{
@@ -100,6 +94,12 @@ namespace Portakal
 
 			return nullptr;
 		}
+
+		/// <summary>
+		/// Returns whether the given key exists
+		/// </summary>
+		/// <param name="key"></param>
+		/// <returns></returns>
 		FORCEINLINE bool HasEntry(const TKey& key) const noexcept
 		{
 			for (unsigned int i = 0; i < mCursor; i++)
@@ -111,6 +111,12 @@ namespace Portakal
 
 			return false;
 		}
+
+		/// <summary>
+		/// Finds the index of the given key
+		/// </summary>
+		/// <param name="key"></param>
+		/// <returns></returns>
 		FORCEINLINE int FindIndex(const TKey& key) const noexcept
 		{
 			for (unsigned int i = 0; i < mCursor; i++)
@@ -122,12 +128,19 @@ namespace Portakal
 
 			return -1;
 		}
-		FORCEINLINE RegistryEntry<TKey,TValue> Register(const TKey& key, const TValue& value) noexcept
+
+		/// <summary>
+		/// Registers anew entry
+		/// </summary>
+		/// <param name="key"></param>
+		/// <param name="value"></param>
+		/// <returns></returns>
+		FORCEINLINE bool Register(const TKey& key, const TValue& value) noexcept
 		{
 			const int index = FindIndex(key);
 			if (index != -1)
 			{
-				return GetEntryViaIndex(index);
+				return false;
 			}
 
 			if (mCursor + 1 > mCapacity)
@@ -139,12 +152,14 @@ namespace Portakal
 			mData[mCursor] = entry;
 			mCursor++;
 
-			return entry;
+			return true;
 		}
-		FORCEINLINE RegistryEntry<TKey, TValue>& operator[](const unsigned int index) const noexcept
-		{
-			return mData[index];
-		}
+
+		/// <summary>
+		/// Removes an existing key entry
+		/// </summary>
+		/// <param name="key"></param>
+		/// <returns></returns>
 		FORCEINLINE bool Remove(const TKey& key) noexcept
 		{
 			const int index = FindIndex(key);
@@ -161,9 +176,22 @@ namespace Portakal
 			return true;
 		}
 
+		/// <summary>
+		/// Clears the registry
+		/// </summary>
 		void Clear()
 		{
 			ClearMemory();
+		}
+
+		/// <summary>
+		/// Index operator
+		/// </summary>
+		/// <param name="index"></param>
+		/// <returns></returns>
+		FORCEINLINE RegistryEntry<TKey, TValue>& operator[](const unsigned int index) const noexcept
+		{
+			return mData[index];
 		}
 	private:
 		void ExtendMemory()
@@ -175,7 +203,7 @@ namespace Portakal
 				pNewHeap[i] = mData[i];
 
 			if (mData != nullptr)
-				delete mData;
+				delete[] mData;
 
 			mData = pNewHeap;
 			mCapacity = newCapacity;
@@ -183,7 +211,8 @@ namespace Portakal
 		void ClearMemory()
 		{
 			if(mData != nullptr)
-				delete mData;
+				delete[] mData;
+
 			mData = nullptr;
 			mCursor = 0;
 			mCapacity = 0;

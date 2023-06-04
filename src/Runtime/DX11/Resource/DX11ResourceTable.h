@@ -10,7 +10,7 @@ namespace Portakal
 		DX11ResourceTable(const ResourceTableCreateDesc& desc, DX11Device* pDevice);
 		virtual ~DX11ResourceTable() override;
 
-		FORCEINLINE const Array<ID3D11ShaderResourceView*>& GetDXSrvs() const noexcept { return mSrvsRaw; }
+		FORCEINLINE const Array<ID3D11ShaderResourceView*>& GetDXResourceViews() const noexcept { return mResourceViews; }
 		FORCEINLINE const Array<ID3D11Buffer*>& GetDXBuffers() const noexcept { return mBuffers; }
 		FORCEINLINE const Array<ID3D11SamplerState*>& GetDXSamplers() const noexcept { return mSamplers; }
 
@@ -20,8 +20,7 @@ namespace Portakal
 	private:
 	
 	private:
-		Array<DXPTR<ID3D11ShaderResourceView>> mSrvs;
-		Array<ID3D11ShaderResourceView*> mSrvsRaw;
+		Array<ID3D11ShaderResourceView*> mResourceViews;
 		Array<ID3D11Buffer*> mBuffers;
 		Array<ID3D11SamplerState*> mSamplers;
 		

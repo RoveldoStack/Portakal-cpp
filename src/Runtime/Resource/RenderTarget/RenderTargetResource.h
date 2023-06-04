@@ -1,6 +1,8 @@
 #pragma once
 #include <Runtime/Resource/ResourceSubObject.h>
 #include <Runtime/Resource/Texture/TextureResource.h>
+#include <Runtime/Event/Event.h>
+#include <Runtime/Graphics/Pipeline/Output/OutputDesc.h>
 
 namespace Portakal
 {
@@ -9,6 +11,7 @@ namespace Portakal
 	class GraphicsDevice;
 	class ResourceTable;
 	class Swapchain;
+
 	/// <summary>
 	/// A resource specialized in render targets
 	/// </summary>
@@ -47,6 +50,12 @@ namespace Portakal
 		FORCEINLINE unsigned int GetHeight() const noexcept;
 
 		/// <summary>
+		/// Returns the output description of the underlying framebuffer
+		/// </summary>
+		/// <returns></returns>
+		FORCEINLINE OutputDesc GetOutputDesc() const noexcept;
+
+		/// <summary>
 		/// Returns the underlying framebuffer object
 		/// </summary>
 		/// <returns></returns>
@@ -70,6 +79,18 @@ namespace Portakal
 		/// <param name="width"></param>
 		/// <param name="height"></param>
 		void Resize(const unsigned int width,const unsigned int height);
+
+		/// <summary>
+		/// Registers anew delegate to the state changed event of this render target
+		/// </summary>
+		/// <param name="del"></param>
+		void RegisterStateChangedDelegate(const Delegate<void, RenderTargetResource*>& del);
+
+		/// <summary>
+		/// Removes the existing delegate from the state changed event of this render target
+		/// </summary>
+		/// <param name="del"></param>
+		void RemoveStateChangedDelegate(const Delegate<void, RenderTargetResource*>& del);
 	private:
 
 		/// <summary>
@@ -85,9 +106,16 @@ namespace Portakal
 		/// <param name="colorTargetFormats"></param>
 		/// <param name="depthStencilFormat"></param>
 		void CreateResources(const unsigned int width,const unsigned int height,const Array<TextureFormat>& colorTargetFormats,const TextureFormat depthStencilFormat, const Array<String>& colorTargetNames);
+
+		/// <summary>
+		/// Signals that the state of this render target changed, invokes event.
+		/// </summary>
+		void SignalStateChangedEvent();
+
 		virtual void DestroyCore() override;
 	private:
 		const bool mSwapchain;
+		Event<void, RenderTargetResource*> mStateChangedEvent;
 		GraphicsDevice* mDevice;
 		Framebuffer* mFramebuffer;
 		Array<TextureResource*> mColorTargets;

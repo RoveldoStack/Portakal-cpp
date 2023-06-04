@@ -54,6 +54,13 @@ namespace Portakal
 
 		return mFramebuffer->GetHeight();
 	}
+	OutputDesc RenderTargetResource::GetOutputDesc() const noexcept
+	{
+		if (mFramebuffer == nullptr)
+			return {};
+
+		return mFramebuffer->GetOutputDesc();
+	}
 	void RenderTargetResource::Resize(const unsigned int width, const unsigned int height)
 	{
 		/*
@@ -77,6 +84,14 @@ namespace Portakal
 		* Create the new attachments and the framebuffer
 		*/
 		CreateResources(width, height, colorTargetFormats, depthStencilFormat,colorTargetNames);
+	}
+	void RenderTargetResource::RegisterStateChangedDelegate(const Delegate<void, RenderTargetResource*>& del)
+	{
+		mStateChangedEvent += del;
+	}
+	void RenderTargetResource::RemoveStateChangedDelegate(const Delegate<void, RenderTargetResource*>& del)
+	{
+		mStateChangedEvent -= del;
 	}
 	void RenderTargetResource::Delete()
 	{
@@ -156,9 +171,21 @@ namespace Portakal
 		mFramebuffer = mDevice->CreateFramebuffer(framebufferDesc);
 		mColorTargets = colorTextures;
 		mDepthStencilTarget = pDepthStencilTexture;
+
+		/*
+		* Signal state changed
+		*/
+		SignalStateChangedEvent();
+	}
+	void RenderTargetResource::SignalStateChangedEvent()
+	{
+		mStateChangedEvent.Invoke(this);
 	}
 	void RenderTargetResource::DestroyCore()
 	{
+		/*
+		* Signal state changed
+		*/
 		Delete();
 	}
 }

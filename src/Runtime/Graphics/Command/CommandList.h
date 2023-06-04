@@ -129,7 +129,7 @@ namespace Portakal
 		/// </summary>
 		/// <param name="slotIndex"></param>
 		/// <param name="pTable"></param>
-		FORCEINLINE void CommitResourceTable(const unsigned int slotIndex, const ResourceTable* pTable);
+		FORCEINLINE void CommitResourceTable(const unsigned int slotIndex,const ResourceTable* pTable);
 
 		/// <summary>
 		/// Sumbits a buffer update command
@@ -215,7 +215,7 @@ namespace Portakal
 		FORCEINLINE virtual void SetVertexBufferCore(GraphicsBuffer* pBuffer) = 0;
 		FORCEINLINE virtual void SetIndexBufferCore(GraphicsBuffer* pBuffer) = 0;
 
-		FORCEINLINE virtual void CommitResourceTableCore(const unsigned int slotIndex, const ResourceTable* pTable) = 0;
+		FORCEINLINE virtual void CommitResourceTableCore(const unsigned int slotIndex,const ResourceTable* pTable) = 0;
 
 		FORCEINLINE virtual void DrawIndexedCore(const unsigned int indexCount, const unsigned int indexStartLocation, const unsigned int vertexStartLocation) = 0;
 		FORCEINLINE virtual void DispatchCore(const unsigned int sizeX, const unsigned int sizeY, const unsigned int sizeZ) = 0;

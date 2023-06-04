@@ -62,7 +62,7 @@ namespace Portakal
 		void Forward(void* pData);
 
 		/// <summary>
-		/// Connects an another IO to the output of this pin
+		/// Connects this output pin to another IO
 		/// </summary>
 		/// <param name="pIO"></param>
 		void ConnectOutputTo(RenderPassInputOutput* pIO);
@@ -79,6 +79,11 @@ namespace Portakal
 		/// </summary>
 		/// <param name="pIO"></param>
 		void _ConnectInput(RenderPassInputOutput* pIO);
+
+		/// <summary>
+		/// Internal method that clears all the input output pins
+		/// </summary>
+		void _ClearInputOutputs();
 	protected:
 		virtual void ForwardCore(void* pData) = 0;
 	private:

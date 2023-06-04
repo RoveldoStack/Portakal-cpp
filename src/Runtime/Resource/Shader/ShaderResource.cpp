@@ -58,7 +58,7 @@ namespace Portakal
 		/*
 		* Create reflection blob
 		*/
-		mReflectionBlob = ShaderReflectionBlob::Create(source, ShadingLanguage::HLSL);
+		mReflectionBlob = ShaderReflectionBlob::Create(bytes);
 
 		/*
 		* Create shader
@@ -75,21 +75,21 @@ namespace Portakal
 		/*
 		* Invoke event
 		*/
-		mOnCompiledEvent.Invoke(this);
+		mOnStateChangedEvent.Invoke(this);
 	}
-	void ShaderResource::RegisterOnCompiledEvent(const Delegate<void, ShaderResource*>& del)
+	void ShaderResource::RegisterOnStateChangedEvent(const Delegate<void, ShaderResource*>& del)
 	{
 		if (IsDestroyed())
 			return;
 
-		mOnCompiledEvent += del;
+		mOnStateChangedEvent += del;
 	}
-	void ShaderResource::RemoveOnCompiledEvent(const Delegate<void, ShaderResource*>& del)
+	void ShaderResource::RemoveOnOnStateChangedEvent(const Delegate<void, ShaderResource*>& del)
 	{
 		if (IsDestroyed())
 			return;
 
-		mOnCompiledEvent += del;
+		mOnStateChangedEvent += del;
 	}
 	void ShaderResource::Delete()
 	{
@@ -109,9 +109,14 @@ namespace Portakal
 	void ShaderResource::DestroyCore()
 	{
 		/*
+		* Invoke state changed event
+		*/
+		mOnStateChangedEvent.Invoke(this);
+
+		/*
 		* Clear the invocation list
 		*/
-		mOnCompiledEvent.Clear();
+		mOnStateChangedEvent.ClearInvocationList();
 
 		/*
 		* Delete the shader

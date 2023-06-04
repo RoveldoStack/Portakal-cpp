@@ -9,9 +9,6 @@ namespace Portakal
 	/// </summary>
 	struct PORTAKAL_API ResourceStateDesc
 	{
-		/// <summary>
-		/// The specifications
-		/// </summary>
-		Array<PipelineResourceTableDesc> Slots;
+		Array<PipelineResourceTableDesc> Tables;
 	};
 }

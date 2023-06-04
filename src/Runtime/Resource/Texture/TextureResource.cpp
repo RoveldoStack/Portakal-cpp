@@ -156,7 +156,7 @@ namespace Portakal
 		if (mCmdList != nullptr)
 			return;
 
-		mCmdList = mDevice->CreateGraphicsCommandList({});
+		mCmdList = mDevice->CreateCommandList({});
 	}
 	void TextureResource::DestroyCore()
 	{

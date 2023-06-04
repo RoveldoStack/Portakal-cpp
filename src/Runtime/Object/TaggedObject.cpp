@@ -14,8 +14,8 @@ namespace Portakal
 		/*
 		* Call destroy implementation
 		*/
-		DestroyCore();
 		mDestroyed = true;
+		DestroyCore();
 
 		/*
 		* Register it to the garbage collector

@@ -5,8 +5,8 @@ namespace Portakal
 {
 	enum class PORTAKAL_API MaterialParameterType
 	{
+		Buffer,
 		Texture,
-		Sampler,
-		Buffer
+		Sampler
 	};
 }

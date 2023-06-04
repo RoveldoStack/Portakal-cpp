@@ -11,7 +11,7 @@ namespace Portakal
 		/*
 		* First check if there is an existing query
 		*/
-		Array<const Type*>* pSubTypes = pAPI->mSubClasses.GetEntry(pType);
+		Array<const Type*>* pSubTypes = pAPI->mSubClasses.GetEntryValue(pType);
 		if (pSubTypes != nullptr)
 			return *pSubTypes;
 
@@ -44,7 +44,7 @@ namespace Portakal
 		/*
 		* First check if there is an existing query
 		*/
-		Array<const Type*>* pSubTypes = pAPI->mClassesWithAttribute.GetEntry(pAttributeType);
+		Array<const Type*>* pSubTypes = pAPI->mClassesWithAttribute.GetEntryValue(pAttributeType);
 		if (pSubTypes != nullptr)
 			return *pSubTypes;
 

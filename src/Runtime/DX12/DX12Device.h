@@ -30,7 +30,7 @@ namespace Portakal
 		// Inherited via GraphicsDevice
 		virtual GraphicsBackend GetBackend() const noexcept override;
 		virtual void SwapbuffersCore() override;
-		virtual CommandList* CreateGraphicsCommandListCore(const CommandListCreateDesc& desc) override;
+		virtual CommandList* CreateCommandListCore(const CommandListCreateDesc& desc) override;
 		virtual GraphicsBuffer* CreateBufferCore(const GraphicsBufferCreateDesc& desc) override;
 		virtual Shader* CreateShaderCore(const ShaderCreateDesc& desc) override;
 		virtual Texture* CreateTextureCore(const TextureCreateDesc& desc) override;
@@ -41,7 +41,6 @@ namespace Portakal
 		virtual Pipeline* CreateComputePipelineCore(const ComputePipelineCreateDesc& desc) override;
 		virtual ResourceTable* CreateResourceTableCore(const ResourceTableCreateDesc& desc) override;
 		virtual Fence* CreateFenceCore() override;
-		virtual void UpdateBufferCore(GraphicsBuffer* pBuffer, const GraphicsBufferUpdateDesc& desc) override;
 		virtual void WaitForFinishCore() override;
 		virtual void SubmitCommandsCore(const Array<CommandList*>& cmdBuffers) override;
 	private:

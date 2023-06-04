@@ -20,7 +20,7 @@ namespace Portakal
         _eventableModules = GetEventableModules();
         _validationModules = GetValidationModules();
 
-        _cmdBuffer = GraphicsDeviceAPI::GetDefaultDevice()->CreateGraphicsCommandList({});
+        _cmdBuffer = GraphicsDeviceAPI::GetDefaultDevice()->CreateCommandList({});
         _defaultWindow = WindowAPI::GetDefaultWindow();
         _defaultDevice = GraphicsDeviceAPI::GetDefaultDevice();
 

@@ -6,11 +6,11 @@
 
 namespace Portakal
 {
-	struct PORTAKAL_API ShaderReflectionEntry
+	struct PORTAKAL_API ShaderReflectionResource
 	{
 		String Name;
 		ShaderResourceType Type;
-		unsigned int SizeInBytes;
 		Array<ShaderReflectionBufferParameter> BufferParameters;
+		unsigned int BufferSize;
 	};
 }

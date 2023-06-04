@@ -563,7 +563,7 @@ namespace Portakal
 		/// Removes the target element
 		/// </summary>
 		/// <param name="element"></param>
-		void Remove(const TValue& element)
+		bool Remove(const TValue& element)
 		{
 			/*
 			* Find it
@@ -583,7 +583,7 @@ namespace Portakal
 			*/
 			if (index == -1)
 			{
-				return;
+				return false;
 			}
 
 			/*
@@ -598,6 +598,8 @@ namespace Portakal
 			* Decrement mCursor
 			*/
 			mCursor--;
+
+			return true;
 		}
 
 		/// <summary>

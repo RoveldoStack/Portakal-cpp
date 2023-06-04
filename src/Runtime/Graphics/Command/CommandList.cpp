@@ -103,7 +103,7 @@ namespace Portakal
 
 		mBoundIndexBuffer = pBuffer;
 	}
-	void CommandList::CommitResourceTable(const unsigned int slotIndex, const ResourceTable* pTable)
+	void CommandList::CommitResourceTable(const unsigned int slotIndex,const ResourceTable* pTable)
 	{
 		CheckBoundPipeline();
 
@@ -112,9 +112,7 @@ namespace Portakal
 		*/
 		const ResourceStateDesc& resourceState = GetBoundPipeline()->GetResourceState();
 
-		ASSERT(slotIndex >= 0 && slotIndex < resourceState.Slots.GetCursor(), "CommandList", "Invalid table slot");
-
-		CommitResourceTableCore(slotIndex, pTable);
+		CommitResourceTableCore(slotIndex,pTable);
 	}
 	void CommandList::UpdateBuffer(const GraphicsBufferUpdateDesc& desc, GraphicsBuffer* pBuffer)
 	{

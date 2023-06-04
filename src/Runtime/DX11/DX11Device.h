@@ -28,7 +28,7 @@ namespace Portakal
 	private:
 		virtual GraphicsBackend GetBackend() const noexcept override { return GraphicsBackend::Directx11; }
 		virtual void SwapbuffersCore() override;
-		virtual CommandList* CreateGraphicsCommandListCore(const CommandListCreateDesc& desc) override;
+		virtual CommandList* CreateCommandListCore(const CommandListCreateDesc& desc) override;
 		virtual GraphicsBuffer* CreateBufferCore(const GraphicsBufferCreateDesc& desc) override;
 		virtual Shader* CreateShaderCore(const ShaderCreateDesc& desc) override;
 		virtual Texture* CreateTextureCore(const TextureCreateDesc& desc) override;
@@ -39,14 +39,14 @@ namespace Portakal
 		virtual Pipeline* CreateComputePipelineCore(const ComputePipelineCreateDesc& desc) override;
 		virtual ResourceTable* CreateResourceTableCore(const ResourceTableCreateDesc& desc) override;
 		virtual Fence* CreateFenceCore() override;
-		virtual void UpdateBufferCore(GraphicsBuffer* pBuffer, const GraphicsBufferUpdateDesc& desc) override;
 		virtual void WaitForFinishCore() override;
 		virtual void SubmitCommandsCore(const Array<CommandList*>& cmdBuffers) override;
 	private:
 		PlatformCriticalSection* mContextBarrier;
-		ComPtr<IDXGIFactory4> mFactory;
-		ComPtr<IDXGIAdapter1> mAdapter;
-		ComPtr<ID3D11Device> mDevice;
-		ComPtr<ID3D11DeviceContext> mImmediateContext;
+		DXPTR<IDXGIFactory4> mFactory;
+		DXPTR<IDXGIAdapter1> mAdapter;
+		DXPTR<ID3D11Device> mDevice;
+		DXPTR<ID3D11DeviceContext> mImmediateContext;
+		DXPTR<ID3D11Query> mQuery;
 	};
 }

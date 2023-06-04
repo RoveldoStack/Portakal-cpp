@@ -1,10 +1,10 @@
 #pragma once
 #include <Runtime/Resource/ResourceSubObject.h>
 #include <Runtime/Graphics/Texture/TextureCreateDesc.h>
+#include <Runtime/Graphics/Texture/Texture.h>
 
 namespace Portakal
 {
-	class Texture;
 	class GraphicsDevice;
 	class CommandList;
 	class ResourceTable;

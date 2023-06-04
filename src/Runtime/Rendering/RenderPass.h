@@ -22,6 +22,12 @@ namespace Portakal
 		virtual ~RenderPass() {}
 
 		/// <summary>
+		/// Returns the owner graph
+		/// </summary>
+		/// <returns></returns>
+		FORCEINLINE RenderGraph* GetOwnerGraph() const noexcept { return mOwnerGraph; }
+
+		/// <summary>
 		/// Returns the input pins
 		/// </summary>
 		/// <returns></returns>
@@ -32,7 +38,6 @@ namespace Portakal
 		/// </summary>
 		/// <returns></returns>
 		const Array<RenderPassInputOutput*>& GetOutputs() const noexcept { return mOutputs; }
-
 
 		/// <summary>
 		/// Connects this pass's output to another input pin
@@ -93,9 +98,25 @@ namespace Portakal
 		virtual void Execute(CommandList* pCmdList) const = 0;
 	private:
 		/// <summary>
+		/// Marks the owner graph dirty
+		/// </summary>
+		void MarkOwnerGraphDirty();
+
+		/// <summary>
 		/// Internal method that binds an another IO to the input pin with the given name
 		/// </summary>
 		void _ConnectInputTo(const String& name,RenderPassInputOutput* pIO);
+
+		/// <summary>
+		/// Called upon delete
+		/// </summary>
+		void _OnDelete();
+
+		/// <summary>
+		/// Internal method that binds the owner graph
+		/// </summary>
+		/// <param name="pOwnerGraph"></param>
+		void _SetOwnerGraph(RenderGraph* pOwnerGraph) { mOwnerGraph = pOwnerGraph; }
 	protected:
 		/// <summary>
 		/// Called upon compilation
@@ -162,5 +183,6 @@ namespace Portakal
 	private:
 		Array<RenderPassInputOutput*> mInputs;
 		Array<RenderPassInputOutput*> mOutputs;
+		RenderGraph* mOwnerGraph;
 	};
 }

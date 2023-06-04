@@ -13,7 +13,7 @@ namespace Portakal
 			return;
 
 		ResourceTableCreateDesc tableDesc = {};
-		tableDesc.Resources.Add(pNativeTexture);
+		tableDesc.Textures.Add(pNativeTexture);
 
 		mTable = pNativeTexture->GetOwnerDevice()->CreateResourceTable(tableDesc);
 	}

@@ -107,7 +107,7 @@ namespace Portakal
 		/// </summary>
 		/// <param name="desc"></param>
 		/// <returns></returns>
-		CommandList* CreateGraphicsCommandList(const CommandListCreateDesc& desc);
+		CommandList* CreateCommandList(const CommandListCreateDesc& desc);
 
 		/// <summary>
 		/// Creates a buffer
@@ -171,13 +171,7 @@ namespace Portakal
 		/// <returns></returns>
 		Fence* CreateFence();
 
-		/// <summary>
-		/// Updates the target buffer
-		/// </summary>
-		/// <param name="pBuffer"></param>
-		/// <param name="desc"></param>
-		void UpdateBuffer(GraphicsBuffer* pBuffer, const GraphicsBufferUpdateDesc& desc);
-
+		
 		void SignalFence();
 
 		/// <summary>
@@ -208,7 +202,7 @@ namespace Portakal
 		void SetMemory(const unsigned long long amount) { mMemory = amount; }
 		virtual void SwapbuffersCore() = 0;
 
-		virtual CommandList* CreateGraphicsCommandListCore(const CommandListCreateDesc& desc) = 0;
+		virtual CommandList* CreateCommandListCore(const CommandListCreateDesc& desc) = 0;
 		virtual GraphicsBuffer* CreateBufferCore(const GraphicsBufferCreateDesc& desc) = 0;
 		virtual Shader* CreateShaderCore(const ShaderCreateDesc& desc) = 0;
 		virtual Texture* CreateTextureCore(const TextureCreateDesc& desc) = 0;
@@ -219,9 +213,6 @@ namespace Portakal
 		virtual Pipeline* CreateComputePipelineCore(const ComputePipelineCreateDesc& desc) = 0;
 		virtual ResourceTable* CreateResourceTableCore(const ResourceTableCreateDesc& desc) = 0;
 		virtual Fence* CreateFenceCore() = 0;
-
-		virtual void UpdateBufferCore(GraphicsBuffer* pBuffer, const GraphicsBufferUpdateDesc& desc) = 0;
-
 		virtual void WaitForFinishCore() = 0;
 		virtual void SubmitCommandsCore(const Array<CommandList*>& cmdBuffers) = 0;
 	private:

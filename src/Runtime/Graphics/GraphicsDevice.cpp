@@ -110,9 +110,9 @@ namespace Portakal
 
 		SwapbuffersCore();
 	}
-	CommandList* GraphicsDevice::CreateGraphicsCommandList(const CommandListCreateDesc& desc)
+	CommandList* GraphicsDevice::CreateCommandList(const CommandListCreateDesc& desc)
 	{
-		CommandList* pBuffer = CreateGraphicsCommandListCore(desc);
+		CommandList* pBuffer = CreateCommandListCore(desc);
 
 		RegisterChildObject(pBuffer);
 
@@ -179,13 +179,7 @@ namespace Portakal
 		/*
 		* Validate resources
 		*/
-		for (unsigned int i = 0; i < desc.Resources.GetCursor(); i++)
-		{
-			const GraphicsDeviceObject* pDeviceObject = (const GraphicsDeviceObject*)desc.Resources[i];
-			const GraphicsDeviceObjectType type = pDeviceObject->GetDeviceObjectType();
-
-			ASSERT(type == GraphicsDeviceObjectType::Buffer || type == GraphicsDeviceObjectType::Texture || type == GraphicsDeviceObjectType::Sampler, "GraphicsDevice", "Invalid graphics device object as resource!");
-		}
+		
 
 		ResourceTable* pTable = CreateResourceTableCore(desc);
 
@@ -201,12 +195,7 @@ namespace Portakal
 
 		return pFence;
 	}
-	void GraphicsDevice::UpdateBuffer(GraphicsBuffer* pBuffer, const GraphicsBufferUpdateDesc& desc)
-	{
-		ASSERT(pBuffer != nullptr, "GraphicsDevice", "You cannot update a null GraphicsBuffer");
-
-		UpdateBufferCore(pBuffer, desc);
-	}
+	
 	void GraphicsDevice::WaitForFinish()
 	{
 		WaitForFinishCore();
@@ -254,6 +243,8 @@ namespace Portakal
 		}
 
 		mChildObjects.RemoveIndex(index);
+
+		delete pObject;
 
 		mChildObjectBarrier->Release();
 	}

@@ -1,11 +1,17 @@
 #include "RenderPass.h"
+#include <Runtime/Rendering/RenderGraph.h>
 
 namespace Portakal
 {
-	RenderPass::RenderPass()
+	RenderPass::RenderPass() : mOwnerGraph(nullptr)
 	{
 
 	}
+	void RenderPass::MarkOwnerGraphDirty()
+	{
+		mOwnerGraph->_MarkGraphDirty();
+	}
+
 	void RenderPass::_ConnectInputTo(const String& name, RenderPassInputOutput* pIO)
 	{
 		/*
@@ -19,6 +25,34 @@ namespace Portakal
 		* Connect pins
 		*/
 		pIO->ConnectOutputTo(pInput);
+	}
+
+	void RenderPass::_OnDelete()
+	{
+		/*
+		* First finalize
+		*/
+		Finalize();
+
+		/*
+		* Remove input outputs
+		*/
+		for (unsigned int i = 0; i < mOutputs.GetCursor(); i++)
+		{
+			RenderPassInputOutput* pIO = mOutputs[i];
+			pIO->_ClearInputOutputs();
+		}
+
+		/*
+		* Clear the ios
+		*/
+		mOutputs.Clear();
+		mInputs.Clear();
+
+		/*
+		* Remove the ownership
+		*/
+		mOwnerGraph = nullptr;
 	}
 
 	void RenderPass::ConnectOutputTo(const String& name, RenderPassInputOutput* pIO)

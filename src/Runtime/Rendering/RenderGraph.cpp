@@ -4,9 +4,9 @@
 
 namespace Portakal
 {
-	RenderGraph::RenderGraph() : mFinishPass(nullptr),mCompiled(false)
+	RenderGraph::RenderGraph() : mFinishPass(nullptr),mCompiled(false),mDirty(false)
 	{
-
+		mPathCache = new RenderingPathCache();
 	}
 
 	RenderGraph::~RenderGraph()
@@ -16,7 +16,7 @@ namespace Portakal
 
 	RenderPassInputOutput* RenderGraph::GetGlobalIO(const String& name) const noexcept
 	{
-		return *mGlobals.GetEntry(name);
+		return *mGlobals.GetEntryValue(name);
 	}
 	
 	void RenderGraph::SetGlobalColorRgbaF(const String& name, const ColorRgbaF& value)
@@ -24,10 +24,43 @@ namespace Portakal
 		/*
 		* Get and validate
 		*/
-		ColorRgbaInputOutput** pResource = (ColorRgbaInputOutput**)mGlobals.GetEntry(name);
-		ASSERT(pResource != nullptr, "RenderGraph", "The render target resource does not exist");
+		ColorRgbaInputOutput** ppResource = (ColorRgbaInputOutput**)mGlobals.GetEntryValue(name);
+		ASSERT(ppResource != nullptr, "RenderGraph", "The render target resource does not exist");
 
-		(*pResource)->SetColor(value);
+		(*ppResource)->SetColor(value);
+	}
+
+	void RenderGraph::SetGlobalMesh(const String& name, MeshResource* pMesh)
+	{
+		/*
+		* Get and validate
+		*/
+		MeshInputOutput** ppResource = (MeshInputOutput**)mGlobals.GetEntryValue(name);
+		ASSERT(ppResource != nullptr, "RenderGraph", "The mesh resource does not exist");
+
+		(*ppResource)->SetMesh(pMesh);
+	}
+
+	void RenderGraph::SetGlobalMaterial(const String& name, MaterialResource* pMaterial)
+	{
+		/*
+		* Get and validate
+		*/
+		MaterialInputOutput** ppResource = (MaterialInputOutput**)mGlobals.GetEntryValue(name);
+		ASSERT(ppResource != nullptr, "RenderGraph", "The material resource does not exist");
+
+		(*ppResource)->SetMaterial(pMaterial);
+	}
+
+	void RenderGraph::SetGlobalTexture(const String& name, TextureResource* pTexture)
+	{
+		/*
+		* Get and validate
+		*/
+		TextureInputOutput** ppResource = (TextureInputOutput**)mGlobals.GetEntryValue(name);
+		ASSERT(ppResource != nullptr, "RenderGraph", "The material resource does not exist");
+
+		(*ppResource)->SetTexture(pTexture);
 	}
 
 	void RenderGraph::ExecuteSync(CommandList* pCmdList)
@@ -37,7 +70,7 @@ namespace Portakal
 		*/
 		if (!mCompiled)
 		{
-			LOG("RenderGraph","The given is not compiled, therefore it cannot be executed")
+			LOG("RenderGraph","The given render graph is not compiled, therefore it cannot be executed")
 			return;
 		}
 
@@ -60,7 +93,6 @@ namespace Portakal
 			for (unsigned int passIndex = 0; passIndex < set.Passes.GetCursor(); passIndex++)
 				set.Passes[passIndex]->Execute(pCmdList);
 		}
-		
 	}
 	void RenderGraph::ExecuteAsync()
 	{
@@ -80,12 +112,15 @@ namespace Portakal
 		* Check if compiled
 		*/
 		if (mCompiled)
+		{
+			LOG("RenderGraph", "Cannot connect global output, the render graph is already compiled");
 			return;
+		}
 
 		/*
 		* Get and validate
 		*/
-		RenderPassInputOutput** pIO = mGlobals.GetEntry(name);
+		RenderPassInputOutput** pIO = mGlobals.GetEntryValue(name);
 		ASSERT(pIO != nullptr, "RenderGraph", "The ColorRgbaF resource does not exist");
 
 		(*pIO)->ConnectOutputTo(pInput);
@@ -97,9 +132,42 @@ namespace Portakal
 		* Check if compiled
 		*/
 		if (mCompiled)
+		{
+			LOG("RenderGraph", "Cannot set a finish pass, the render graph is already compiled");
 			return;
+		}
 
 		mFinishPass = pPass;
+	}
+
+	void RenderGraph::RegisterMaterial(MaterialResource* pMaterial)
+	{
+		mPathCache->RegisterMaterial(pMaterial);
+	}
+
+	void RenderGraph::RemoveMaterial(MaterialResource* pMaterial)
+	{
+		mPathCache->RemoveMaterial(pMaterial);
+	}
+
+	void RenderGraph::RegisterMesh(MeshResource* pMesh)
+	{
+		mPathCache->RegisterMesh(pMesh);
+	}
+
+	void RenderGraph::RemoveMesh(MeshResource* pMesh)
+	{
+		mPathCache->RemoveMesh(pMesh);
+	}
+
+	void RenderGraph::RegisterRenderTarget(RenderTargetResource* pRenderTarget)
+	{
+		mPathCache->RegisterRenderTarget(pRenderTarget);
+	}
+
+	void RenderGraph::RemoveRenderTarget(RenderTargetResource* pRenderTarget)
+	{
+		mPathCache->RemoveRenderTarget(pRenderTarget);
 	}
 
 	void RenderGraph::CreateGlobalColorRgbaF(const String& name)
@@ -108,9 +176,50 @@ namespace Portakal
 		* Check if compiled
 		*/
 		if (mCompiled)
-			return;
+		{
+			_MarkGraphDirty();
+		}
 
 		mGlobals.Register(name, new ColorRgbaInputOutput(name, nullptr));
+	}
+
+	void RenderGraph::CreateGlobalMesh(const String& name)
+	{
+		/*
+		* Check if compiled
+		*/
+		if (mCompiled)
+		{
+			_MarkGraphDirty();
+		}
+
+		mGlobals.Register(name, new MeshInputOutput(name, nullptr));
+	}
+
+	void RenderGraph::CreateGlobalMaterial(const String& name)
+	{
+		/*
+		* Check if compiled
+		*/
+		if (mCompiled)
+		{
+			_MarkGraphDirty();
+		}
+
+		mGlobals.Register(name, new MaterialInputOutput(name, nullptr));
+	}
+
+	void RenderGraph::CreateGlobalTexture(const String& name)
+	{
+		/*
+		* Check if compiled
+		*/
+		if (mCompiled)
+		{
+			_MarkGraphDirty();
+		}
+
+		mGlobals.Register(name, new TextureInputOutput(name, nullptr));
 	}
 
 	void RenderGraph::CreateGlobalRenderTarget(const String& name)
@@ -119,7 +228,9 @@ namespace Portakal
 		* Check if compiled
 		*/
 		if (mCompiled)
-			return;
+		{
+			LOG("RenderGraph", "Cannot create a global render target, the render graph is already compiled");
+		}
 
 		mGlobals.Register(name, new RenderTargetInputOutput(name,nullptr));
 	}
@@ -129,7 +240,7 @@ namespace Portakal
 		/*
 		* Get and validate
 		*/
-		RenderTargetInputOutput** pResource = (RenderTargetInputOutput**)mGlobals.GetEntry(name);
+		RenderTargetInputOutput** pResource = (RenderTargetInputOutput**)mGlobals.GetEntryValue(name);
 		ASSERT(pResource != nullptr, "RenderGraph", "The render target resource does not exist");
 
 		/*
@@ -158,7 +269,6 @@ namespace Portakal
 		bool mConsumed;
 		unsigned int mDepth;
 	};
-
 	bool HasNodeCollected(Array<Array<DAGNode*>>& layers, RenderPass* pPass)
 	{
 		for (unsigned int layerIndex = 0; layerIndex < layers.GetCursor(); layerIndex++)
@@ -415,6 +525,72 @@ namespace Portakal
 		* Mark compiled
 		*/
 		mCompiled = true;
+	}
+
+	bool RenderGraph::DeletePass(RenderPass* pPass)
+	{
+		/*
+		* Validate if this is the owner graph of the given pass
+		*/
+		if (pPass->GetOwnerGraph() != this)
+			return false;
+
+		/*
+		* Remove the input and output of the pass
+		*/
+		pPass->_OnDelete();
+		delete pPass;
+
+		/*
+		* Remove pass from the list
+		*/
+		mPasses.Remove(pPass);
+
+		return true;
+	}
+
+	void RenderGraph::_MarkGraphDirty()
+	{
+		mDirty = true;
+		mCompiled = false;
+	}
+
+	void RenderGraph::DestroyCore()
+	{
+		/*
+		* Delete passes
+		*/
+		for (unsigned int i = 0; i < mPasses.GetCursor(); i++)
+		{
+			DeletePass(mPasses[i]);
+			i--;
+		}
+
+		/*
+		* Clear global IOs
+		*/
+		for (unsigned int i = 0; i < mGlobals.GetCursor(); i++)
+		{
+			delete mGlobals[i].Value;
+		}
+		mGlobals.Clear();
+
+		/*
+		* Clear compiled sets
+		*/
+		mCompiled = false;
+		mCompiledPassSets.Clear();
+
+		/*
+		* Destroy rendering path cache
+		*/
+		mPathCache->Destroy();
+		mPathCache = nullptr;
+
+		/*
+		* Reset finish pass
+		*/
+		mFinishPass = nullptr;
 	}
 
 }

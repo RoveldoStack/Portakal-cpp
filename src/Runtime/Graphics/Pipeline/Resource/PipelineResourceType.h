@@ -8,8 +8,8 @@ namespace Portakal
 	/// </summary>
 	enum class PORTAKAL_API PipelineResourceType
 	{
-        ConstantBuffer,
-		ResourceView,
+		ConstantBuffer,
+		Texture,
         Sampler
 	};
 }
