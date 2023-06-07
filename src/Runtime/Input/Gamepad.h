@@ -1,6 +1,6 @@
 #pragma once
 #include <Runtime/Core/Core.h>
-#include <Runtime/Math/Vector2.h>
+#include <Runtime/Math/Vector2F.h>
 #include <Runtime/Object/TaggedObject.h>
 
 namespace Portakal

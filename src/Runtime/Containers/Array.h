@@ -566,25 +566,11 @@ namespace Portakal
 		bool Remove(const TValue& element)
 		{
 			/*
-			* Find it
+			* Find and validate index
 			*/
-			int index = -1;
-			for (unsigned int i = 0; i < mCursor; i++)
-			{
-				if (mSource[i] == element)
-				{
-					index = i;
-					break;
-				}
-			}
-
-			/*
-			* Validate index
-			*/
+			const int index = FindIndex(element);
 			if (index == -1)
-			{
 				return false;
-			}
 
 			/*
 			* Shift elements

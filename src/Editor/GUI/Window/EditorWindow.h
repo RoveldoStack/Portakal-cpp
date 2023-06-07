@@ -1,7 +1,7 @@
 #pragma once
 #include <Runtime/Containers/Guid.h>
 #include <Runtime/Reflection/Type.h>
-#include <Runtime/Math/Vector2.h>
+#include <Runtime/Math/Vector2UI.h>
 #include <Editor/GUI/Window/EditorWindowDockState.h>
 
 namespace Portakal
@@ -34,13 +34,13 @@ namespace Portakal
 		/// Returns the window position
 		/// </summary>
 		/// <returns></returns>
-		FORCEINLINE Vector2<unsigned int> GetPosition() const noexcept { return mPos; }
+		FORCEINLINE Vector2UI GetPosition() const noexcept { return mPos; }
 
 		/// <summary>
 		/// Returns the window size
 		/// </summary>
 		/// <returns></returns>
-		FORCEINLINE Vector2<unsigned int> GetSize() const noexcept { return mSize; }
+		FORCEINLINE Vector2UI GetSize() const noexcept { return mSize; }
 
 		/// <summary>
 		/// Returns the dock state
@@ -83,13 +83,13 @@ namespace Portakal
 		/// Internal setter for position
 		/// </summary>
 		/// <param name="position"></param>
-		FORCEINLINE void _SetPosition(const Vector2<unsigned int>& position) { mPos = position; }
+		FORCEINLINE void _SetPosition(const Vector2UI& position) { mPos = position; }
 
 		/// <summary>
 		/// Internal setter for size
 		/// </summary>
 		/// <param name="size"></param>
-		FORCEINLINE void _SetSize(const Vector2<unsigned int>& size) { mSize = size; }
+		FORCEINLINE void _SetSize(const Vector2UI& size) { mSize = size; }
 
 		/// <summary>
 		/// Internal setter for dock state
@@ -110,8 +110,8 @@ namespace Portakal
 		FORCEINLINE void _SetParentWindow(EditorWindow* pWindow);
 	private:
 		EditorWindow* mParentWindow;
-		Vector2<unsigned int> mPos;
-		Vector2<unsigned int> mSize;
+		Vector2UI mPos;
+		Vector2UI mSize;
 		EditorWindowDockState mDockState;
 		Guid mID;
 		bool mVisible;

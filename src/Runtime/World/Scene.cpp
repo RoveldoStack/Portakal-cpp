@@ -199,7 +199,7 @@ namespace Portakal
 		{
 			SceneAspect* pAspect = mAspects[i];
 
-			pAspect->_Finalize();
+			pAspect->Finalize();
 			pAspect->_SetOnwerScene(nullptr);
 
 			delete pAspect;
@@ -313,6 +313,10 @@ namespace Portakal
 			*/
 			for (unsigned int componentIndex = 0; componentIndex < entityEntry.Components.GetCursor(); componentIndex++)
 			{
+				/*
+				* While loading the component one should set all the field values first and then register it to the entity.
+				* This is required due to all values serialized into the Scene file should be set before the component's initialization implementation run
+				*/
 				const SceneComponentEntry& componentEntry = entityEntry.Components[componentIndex];
 
 				Type* pComponentType = GetTypeFromArray(componentTypes, componentEntry.TypeName);
@@ -322,9 +326,13 @@ namespace Portakal
 				}
 
 				/*
-				* Create component
+				* Create component 
 				*/
-				Component* pComponent = pEntity->CreateComponent(pComponentType);
+				Component* pComponent = pEntity->_SetDefaultsAndCreateComponent(pComponentType, componentEntry.Content);
+
+				/*
+				* Check if the component type is invalid
+				*/
 				if (pComponentType == typeof(InvalidComponent))
 				{
 					InvalidComponent* pInvalidComponent = (InvalidComponent*)pComponent;
@@ -332,10 +340,6 @@ namespace Portakal
 					continue;
 				}
 
-				/*
-				* Set component values
-				*/
-				YamlDefaultSerializer::ToObject(componentEntry.Content, pComponent, pComponent->GetType());
 			}
 		}
 	}

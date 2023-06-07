@@ -19,9 +19,6 @@ namespace Portakal
 		virtual void DestroyCore() override;
 		virtual void OnInitialize() override;
 		virtual void OnFinalize() override;
-
-		// Inherited via Component
-		virtual void OnAspectRemoved(SceneAspect* pAspect) override;
 	};
 
 #include "InvalidComponent.reflect.h"

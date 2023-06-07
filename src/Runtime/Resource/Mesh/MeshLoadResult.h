@@ -1,6 +1,6 @@
 #pragma once
 #include <Runtime/Containers/Array.h>
-#include <Runtime/Math/Vector2.h>
+#include <Runtime/Math/Vector2F.h>
 #include <Runtime/Math/Vector3.h>
 
 namespace Portakal

@@ -19,7 +19,7 @@ namespace Portakal
 		return *mGlobals.GetEntryValue(name);
 	}
 	
-	void RenderGraph::SetGlobalColorRgbaF(const String& name, const ColorRgbaF& value)
+	void RenderGraph::SetGlobalColorRgbaF(const String& name, const Color4& value)
 	{
 		/*
 		* Get and validate
@@ -61,6 +61,17 @@ namespace Portakal
 		ASSERT(ppResource != nullptr, "RenderGraph", "The material resource does not exist");
 
 		(*ppResource)->SetTexture(pTexture);
+	}
+
+	void RenderGraph::SetGlobalOther(const String& name, void* pData)
+	{
+		/*
+		* Get and validate
+		*/
+		OtherInputOutput** ppResource = (OtherInputOutput**)mGlobals.GetEntryValue(name);
+		ASSERT(ppResource != nullptr, "RenderGraph", "The global other does not exist");
+
+		(*ppResource)->SetOtherData(pData);
 	}
 
 	void RenderGraph::ExecuteSync(CommandList* pCmdList)
@@ -220,6 +231,19 @@ namespace Portakal
 		}
 
 		mGlobals.Register(name, new TextureInputOutput(name, nullptr));
+	}
+
+	void RenderGraph::CreateGlobalOther(const String& name)
+	{
+		/*
+		* Check if compiled
+		*/
+		if (mCompiled)
+		{
+			_MarkGraphDirty();
+		}
+
+		mGlobals.Register(name, new OtherInputOutput(name, nullptr));
 	}
 
 	void RenderGraph::CreateGlobalRenderTarget(const String& name)

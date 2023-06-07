@@ -116,14 +116,11 @@ namespace Portakal
 	}
 	DX12ResourceTable::~DX12ResourceTable()
 	{
-		mCbvSrvUavHeap.Reset();
-		mSamplerHeap.Reset();
+		
 	}
 	void DX12ResourceTable::OnDestroy()
 	{
-	}
-	void* DX12ResourceTable::GetHandle() const noexcept
-	{
-		return mCbvSrvUavHeap.Get();
+		mCbvSrvUavHeap.Reset();
+		mSamplerHeap.Reset();
 	}
 }

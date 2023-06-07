@@ -151,6 +151,7 @@ namespace Portakal
 		Entity();
 		~Entity();
 
+		Component* _SetDefaultsAndCreateComponent(Type* pComponentType,const String& yamlDefaults);
 		void _NotifyComponentDeleted(Component* pComponent);
 		void _SetOwnerScene(Scene* pScene) { mOwnerScene = pScene; }
 

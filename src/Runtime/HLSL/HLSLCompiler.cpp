@@ -30,6 +30,7 @@ namespace Portakal
 		{
 			errorOut = String((char*)pErrorBlob->GetBufferPointer(), pErrorBlob->GetBufferSize());
 			pErrorBlob->Release();
+			LOG("ShaderHLSL", "Error: %s", *errorOut);
 			return;
 		}
 

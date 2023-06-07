@@ -259,7 +259,7 @@ namespace Portakal
 	}
 
 	
-	ColorRgbaF GUICommands::RgbaFField(const String& name, const ColorRgbaF& value)
+	Color4 GUICommands::RgbaField(const String& name, const Color4& value)
 	{
 		const String title = "##" + name;
 
@@ -269,12 +269,12 @@ namespace Portakal
 		ImGui::PopStyleColor();
 		ImGui::SameLine();
 
-		ColorRgbaF mutableValue = value;
-		ImGui::ColorEdit4(*title, &mutableValue.R);
+		Color4 mutableValue = value;
+		//ImGui::ColorEdit4(*title, &mutableValue.R);
 
 		return mutableValue;
 	}
-	ColorRgbaF GUICommands::RgbaFField(const String& name, const ColorRgbaF& value, bool& bChanged)
+	Color4 GUICommands::RgbaField(const String& name, const Color4& value, bool& bChanged)
 	{
 		const String title = "##" + name;
 
@@ -284,15 +284,46 @@ namespace Portakal
 
 		ImGui::SameLine();
 
-		ColorRgbaF mutableValue = value;
+		Color4 mutableValue = value;
+		//ImGui::ColorEdit4(*title, &mutableValue.R);
+
+		bChanged = mutableValue != value;
+		return mutableValue;
+	}
+	Color4F GUICommands::RgbaFField(const String& name, const Color4F& value)
+	{
+		const String title = "##" + name;
+
+
+		ImGui::PushStyleColor(ImGuiCol_Text, ImGui::GetStyle().Colors[ImGuiCol_Text]);
+		ImGui::Text(*name);
+		ImGui::PopStyleColor();
+		ImGui::SameLine();
+
+		Color4F mutableValue = value;
+		//ImGui::ColorEdit4(*title, &mutableValue.R);
+
+		return mutableValue;
+	}
+	Color4F GUICommands::RgbaFField(const String& name, const Color4F& value, bool& bChanged)
+	{
+		const String title = "##" + name;
+
+		ImGui::PushStyleColor(ImGuiCol_Text, ImGui::GetStyle().Colors[ImGuiCol_Text]);
+		ImGui::Text(*name);
+		ImGui::PopStyleColor();
+
+		ImGui::SameLine();
+
+		Color4F mutableValue = value;
 		ImGui::ColorEdit4(*title, &mutableValue.R);
 
 		bChanged = mutableValue != value;
 		return mutableValue;
 	}
-	void GUICommands::PushColor(const GUIColorType type, const ColorRgbaF& color)
+	void GUICommands::PushColor(const GUIColorType type, const Color4& color)
 	{
-		ImGui::PushStyleColor((ImGuiCol)type, ImGui::ColorConvertFloat4ToU32({ color.R,color.G,color.B,color.A }));
+		//ImGui::PushStyleColor((ImGuiCol)type, ImGui::ColorConvertFloat4ToU32({ color.R,color.G,color.B,color.A }));
 	}
 	void GUICommands::PopColor()
 	{

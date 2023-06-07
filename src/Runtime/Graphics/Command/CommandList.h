@@ -8,6 +8,7 @@
 #include <Runtime/Graphics/Command/CommandQueueType.h>
 #include <Runtime/Math/Color4.h>
 #include <Runtime/Platform/PlatformCriticalSection.h>
+#include <Runtime/Graphics/Shader/ShaderStage.h>
 
 namespace Portakal
 {
@@ -84,21 +85,11 @@ namespace Portakal
 		FORCEINLINE void SetScissor(const ScissorDesc& scissor);
 
 		/// <summary>
-		/// Clears the currently bound framebuffer's attachment index
-		/// </summary>
-		/// <param name="index"></param>
-		/// <param name="r"></param>
-		/// <param name="g"></param>
-		/// <param name="b"></param>
-		/// <param name="a"></param>
-		FORCEINLINE void ClearColor(const unsigned int index,const ColorRgba& color);
-
-		/// <summary>
 		/// Clears the currently bound framebuffer attachment index
 		/// </summary>
 		/// <param name="index"></param>
 		/// <param name="color"></param>
-		void ClearColor(const unsigned int index, const ColorRgbaF& color);
+		void ClearColor(const unsigned int index, const Color4& color);
 
 		/// <summary>
 		/// Clears the currently bound framebuffer's depth stencil attachment's depth value
@@ -129,7 +120,7 @@ namespace Portakal
 		/// </summary>
 		/// <param name="slotIndex"></param>
 		/// <param name="pTable"></param>
-		FORCEINLINE void CommitResourceTable(const unsigned int slotIndex,const ResourceTable* pTable);
+		FORCEINLINE void CommitResourceTable(const unsigned int stageIndex,const unsigned int slotIndex,const ResourceTable* pTable);
 
 		/// <summary>
 		/// Sumbits a buffer update command
@@ -207,15 +198,14 @@ namespace Portakal
 		FORCEINLINE virtual void SetViewportsCore(const Array<ViewportDesc>& viewports) = 0;
 		FORCEINLINE virtual void SetScissorsCore(const Array<ScissorDesc>& scissors) = 0;
 
-		FORCEINLINE virtual void ClearColorCore(const unsigned int index,const ColorRgba& color) = 0;
-		FORCEINLINE virtual void ClearColorCore(const unsigned int index, const ColorRgbaF& color) = 0;
+		FORCEINLINE virtual void ClearColorCore(const unsigned int index,const Color4& color) = 0;
 		FORCEINLINE virtual void ClearDepthCore(const float depth) = 0;
 		FORCEINLINE virtual void ClearStencilCore(const int stencil) = 0;
 
 		FORCEINLINE virtual void SetVertexBufferCore(GraphicsBuffer* pBuffer) = 0;
 		FORCEINLINE virtual void SetIndexBufferCore(GraphicsBuffer* pBuffer) = 0;
 
-		FORCEINLINE virtual void CommitResourceTableCore(const unsigned int slotIndex,const ResourceTable* pTable) = 0;
+		FORCEINLINE virtual void CommitResourceTableCore(const unsigned int stageIndex, const unsigned int slotIndex,const ResourceTable* pTable) = 0;
 
 		FORCEINLINE virtual void DrawIndexedCore(const unsigned int indexCount, const unsigned int indexStartLocation, const unsigned int vertexStartLocation) = 0;
 		FORCEINLINE virtual void DispatchCore(const unsigned int sizeX, const unsigned int sizeY, const unsigned int sizeZ) = 0;

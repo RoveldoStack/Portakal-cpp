@@ -2,6 +2,7 @@
 #include <Runtime/Core/Core.h>
 #include <initializer_list>
 #include <Runtime/Log/Log.h>
+#include <Runtime/Containers/Array.h>
 
 namespace Portakal
 {
@@ -13,11 +14,17 @@ namespace Portakal
 	template<typename TKey,typename TValue>
 	struct RegistryEntry
 	{
+		RegistryEntry(const RegistryEntry& other)
+		{
+			Key = other.Key;
+			Value = other.Value;
+		}
 		RegistryEntry()
 		{
 			Key = {};
 			Value = {};
 		}
+
 
 		/// <summary>
 		/// The key
@@ -42,30 +49,15 @@ namespace Portakal
 	public:
 		Registry(const Registry& target)
 		{
-			mData = new RegistryEntry<TKey,TValue>[target.mCapacity];
-			mCursor = target.mCursor;
-			mCapacity = target.mCapacity;
-			mCapacityMultiplier = target.mCapacityMultiplier;
-
-			/*
-			* Copy the data
-			*/
-			for (unsigned int i = 0; i < mCursor; i++)
-				mData[i] = target.mData[i];
+			mArray = target.mArray;
 		}
 		Registry(const unsigned int preallocatedCount)
 		{
-			mData = new RegistryEntry<TKey,TValue>[preallocatedCount];
-			mCursor = 0;
-			mCapacity = preallocatedCount;
-			mCapacityMultiplier = 2;
+			mArray = Array<RegistryEntry<TKey, TValue>>(preallocatedCount);
 		}
 		Registry()
 		{
-			mData = nullptr;
-			mCursor = 0;
-			mCapacity = 0;
-			mCapacityMultiplier = 2;
+
 		}
 
 
@@ -75,7 +67,7 @@ namespace Portakal
 		/// <returns></returns>
 		FORCEINLINE unsigned int GetCursor() const noexcept
 		{
-			return mCursor;
+			return mArray.GetCursor();
 		}
 
 		/// <summary>
@@ -85,9 +77,9 @@ namespace Portakal
 		/// <returns></returns>
 		FORCEINLINE TValue* GetEntryValue(const TKey& key) const noexcept
 		{
-			for (unsigned int i = 0; i < mCursor; i++)
+			for (unsigned int i = 0; i < mArray.GetCursor(); i++)
 			{
-				RegistryEntry<TKey, TValue>& entry = mData[i];
+				RegistryEntry<TKey, TValue>& entry = mArray[i];
 				if (entry.Key == key)
 					return &entry.Value;
 			}
@@ -102,9 +94,9 @@ namespace Portakal
 		/// <returns></returns>
 		FORCEINLINE bool HasEntry(const TKey& key) const noexcept
 		{
-			for (unsigned int i = 0; i < mCursor; i++)
+			for (unsigned int i = 0; i < mArray.GetCursor(); i++)
 			{
-				RegistryEntry<TKey, TValue>& entry = mData[i];
+				RegistryEntry<TKey, TValue>& entry = mArray[i];
 				if (entry.Key == key)
 					return true;
 			}
@@ -119,9 +111,9 @@ namespace Portakal
 		/// <returns></returns>
 		FORCEINLINE int FindIndex(const TKey& key) const noexcept
 		{
-			for (unsigned int i = 0; i < mCursor; i++)
+			for (unsigned int i = 0; i < mArray.GetCursor(); i++)
 			{
-				RegistryEntry<TKey, TValue>& entry = mData[i];
+				RegistryEntry<TKey, TValue>& entry = mArray[i];
 				if (entry.Key == key)
 					return i;
 			}
@@ -143,14 +135,10 @@ namespace Portakal
 				return false;
 			}
 
-			if (mCursor + 1 > mCapacity)
-				ExtendMemory();
-
 			RegistryEntry<TKey, TValue> entry = {};
 			entry.Key = key;
 			entry.Value = value;
-			mData[mCursor] = entry;
-			mCursor++;
+			mArray.Add(entry);
 
 			return true;
 		}
@@ -166,12 +154,7 @@ namespace Portakal
 			if (index == -1)
 				return false;
 
-			for (unsigned int i = index + 1; i < mCursor; i++)
-			{
-				mData[i - 1] = mData[i];
-			}
-
-			mCursor--;
+			mArray.RemoveIndex(index);
 
 			return true;
 		}
@@ -181,7 +164,7 @@ namespace Portakal
 		/// </summary>
 		void Clear()
 		{
-			ClearMemory();
+			mArray.Clear();
 		}
 
 		/// <summary>
@@ -191,36 +174,10 @@ namespace Portakal
 		/// <returns></returns>
 		FORCEINLINE RegistryEntry<TKey, TValue>& operator[](const unsigned int index) const noexcept
 		{
-			return mData[index];
+			return mArray[index];
 		}
+
 	private:
-		void ExtendMemory()
-		{
-			const unsigned int newCapacity = (mCapacity == 0 ? 1 : mCapacity) * mCapacityMultiplier;
-			RegistryEntry<TKey, TValue>* pNewHeap = new RegistryEntry<TKey, TValue>[newCapacity];
-
-			for (unsigned int i = 0; i < mCursor; i++)
-				pNewHeap[i] = mData[i];
-
-			if (mData != nullptr)
-				delete[] mData;
-
-			mData = pNewHeap;
-			mCapacity = newCapacity;
-		}
-		void ClearMemory()
-		{
-			if(mData != nullptr)
-				delete[] mData;
-
-			mData = nullptr;
-			mCursor = 0;
-			mCapacity = 0;
-		}
-	private:
-		RegistryEntry<TKey,TValue>* mData;
-		unsigned int mCursor;
-		unsigned int mCapacity;
-		unsigned int mCapacityMultiplier;
+		Array<RegistryEntry<TKey, TValue>> mArray;
 	};
 }

@@ -15,7 +15,7 @@ namespace Portakal
 		virtual void Execute(CommandList* pCmdList) const override;
 		virtual void Finalize() override;
 	private:
-		ColorRgbaF mClearColor;
+		Color4 mClearColor;
 		RenderTargetResource* mRenderTarget;
 	};
 }

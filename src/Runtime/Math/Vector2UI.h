@@ -5,28 +5,27 @@
 namespace Portakal
 {
 	/// <summary>
-	/// Templated vector2d implementation
+	/// Vector2UI implementation
 	/// </summary>
-	template<typename TValue>
-	struct Vector2
+	struct Vector2UI
 	{
 		/// <summary>
 		/// Returns the dot product of the two vectors
 		/// </summary>
-		static TValue DotProduct(const Vector2& a, const Vector2& b)
+		static unsigned int DotProduct(const Vector2UI& a, const Vector2UI& b)
 		{
 			return a.X * b.X + a.Y * b.Y;
 		}
 
-		Vector2(const TValue x, const TValue y) : X(x), Y(y) {}
-		Vector2(const TValue value = 0) : X(value), Y(value) {}
-		~Vector2() = default;
+		Vector2UI(const unsigned int x, const unsigned int y) : X(x), Y(y) {}
+		Vector2UI(const unsigned int value = 0) : X(value), Y(value) {}
+		~Vector2UI() = default;
 
 		/// <summary>
 		/// Returns the length of the vector
 		/// </summary>
 		/// <returns></returns>
-		FORCEINLINE float GetLength() const
+		FORCEINLINE unsigned int GetLength() const
 		{
 			return Math::Sqrt(X * X + Y * Y);
 		}
@@ -35,9 +34,9 @@ namespace Portakal
 		/// Returns the normalized version of this vector
 		/// </summary>
 		/// <returns></returns>
-		FORCEINLINE Vector2 GetNormalized() const
+		FORCEINLINE Vector2UI GetNormalized() const
 		{
-			const float length = GetLength();
+			const unsigned int length = GetLength();
 			return { X / length,Y / length };
 		}
 
@@ -46,59 +45,53 @@ namespace Portakal
 		/// </summary>
 		FORCEINLINE void Normalize()
 		{
-			const float length = GetLength();
+			const unsigned int length = GetLength();
 			X /= length;
 			Y /= length;
 		}
 
-		FORCEINLINE Vector2 operator+(const Vector2 other)
+		FORCEINLINE Vector2UI operator+(const Vector2UI other)
 		{
 			return { X + other.X,Y + other.Y };
 		}
-		FORCEINLINE Vector2 operator-(const Vector2 other)
+		FORCEINLINE Vector2UI operator-(const Vector2UI other)
 		{
 			return { X - other.X,Y - other.Y };
 		}
-		FORCEINLINE Vector2 operator*(const Vector2 other)
+		FORCEINLINE Vector2UI operator*(const Vector2UI other)
 		{
 			return { X * other.X,Y * other.Y };
 		}
-		FORCEINLINE Vector2 operator/(const Vector2 other)
+		FORCEINLINE Vector2UI operator/(const Vector2UI other)
 		{
 			return { X / other.X,Y / other.Y };
 		}
-		FORCEINLINE Vector2 operator+(const TValue value)
+		FORCEINLINE Vector2UI operator+(const unsigned int value)
 		{
 			return { X + value, Y + value };
 		}
-		FORCEINLINE Vector2 operator-(const TValue value)
+		FORCEINLINE Vector2UI operator-(const unsigned int value)
 		{
 			return { X - value, Y - value };
 		}
-		FORCEINLINE Vector2 operator*(const TValue value)
+		FORCEINLINE Vector2UI operator*(const unsigned int value)
 		{
 			return { X * value, Y * value };
 		}
-		FORCEINLINE Vector2 operator/(const TValue value)
+		FORCEINLINE Vector2UI operator/(const unsigned int value)
 		{
 			return { X / value, Y / value };
 		}
-		FORCEINLINE bool operator==(const Vector2 other)
+		FORCEINLINE bool operator==(const Vector2UI other)
 		{
 			return X == other.X && Y == other.Y;
 		}
-		FORCEINLINE bool operator!=(const Vector2 other)
+		FORCEINLINE bool operator!=(const Vector2UI other)
 		{
 			return Y != other.X || Y == other.Y;
 		}
 
-		TValue X;
-		TValue Y;
+		unsigned int X;
+		unsigned int Y;
 	};
-
-	typedef Vector2<float> Vector2F;
-	typedef Vector2<int> Vector2I;
-	typedef Vector2<unsigned int> Vector2UI;
-	typedef Vector2<double> Vector2D;
-
 }

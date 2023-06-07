@@ -10,11 +10,9 @@ namespace Portakal
 	/// </summary>
 	struct PORTAKAL_API PipelineResourceTableDesc
 	{
-		PipelineResourceTableDesc() : BufferOffset(0),TextureOffset(0),SamplerOffset(0),Stage(ShaderStage::None) {}
+		PipelineResourceTableDesc() : BufferOffset(0),TextureOffset(0),SamplerOffset(0) {}
 		~PipelineResourceTableDesc() = default;
 
-
-		ShaderStage Stage;
 		Array<PipelineResourceEntry> Buffers;
 		Array<PipelineResourceEntry> Textures;
 		Array<PipelineResourceEntry> Samplers;

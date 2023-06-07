@@ -20,13 +20,12 @@ namespace Portakal
 		virtual void BindFramebufferCore(Framebuffer* pFramebuffer) override;
 		virtual void SetViewportsCore(const Array<ViewportDesc>& viewports) override;
 		virtual void SetScissorsCore(const Array<ScissorDesc>& scissors) override;
-		virtual void ClearColorCore(const unsigned int index, const ColorRgba& color) override;
-		virtual void ClearColorCore(const unsigned int index, const ColorRgbaF& color) override;
+		virtual void ClearColorCore(const unsigned int index, const Color4& color) override;
 		virtual void ClearDepthCore(const float depth) override;
 		virtual void ClearStencilCore(const int stencil) override;
 		virtual void SetVertexBufferCore(GraphicsBuffer* pBuffer) override;
 		virtual void SetIndexBufferCore(GraphicsBuffer* pBuffer) override;
-		virtual void CommitResourceTableCore(const unsigned int slotIndex,const ResourceTable* pTable) override;
+		virtual void CommitResourceTableCore(const unsigned int stageIndex,const unsigned int slotIndex,const ResourceTable* pTable) override;
 		virtual void DispatchCore(const unsigned int sizeX, const unsigned int sizeY, const unsigned int sizeZ) override;
 		virtual void DrawIndexedCore(const unsigned int indexCount, const unsigned int indexStartLocation, const unsigned int vertexStartLocation) override;
 		virtual void UpdateBufferCore(const GraphicsBufferUpdateDesc& desc, GraphicsBuffer* pBuffer) override;

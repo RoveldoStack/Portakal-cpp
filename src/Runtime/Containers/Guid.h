@@ -45,9 +45,13 @@ namespace Portakal
 
 		FORCEINLINE bool IsZero() const noexcept { return A == 0 && B == 0 && C == 0 && D == 0; }
 
+		PFIELD();
 		UInt A;
+		PFIELD();
 		UInt B;
+		PFIELD();
 		UInt C;
+		PFIELD();
 		UInt D;
 	};
 

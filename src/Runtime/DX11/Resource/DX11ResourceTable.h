@@ -16,7 +16,6 @@ namespace Portakal
 
 		// Inherited via ResourceTable
 		virtual void OnDestroy() override;
-		virtual void* GetHandle() const noexcept override;
 	private:
 	
 	private:

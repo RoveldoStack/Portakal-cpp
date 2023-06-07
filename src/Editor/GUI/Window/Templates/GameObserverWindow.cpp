@@ -157,6 +157,8 @@ namespace Portakal
 		* Register targets
 		*/
 		GetCurrentTargets();
+
+		mHasResizeRequest = true;
 	}
 	void GameObserverWindow::OnResize()
 	{
@@ -174,13 +176,12 @@ namespace Portakal
 		* Resize
 		*/
 		mCurrentDisplay->Resize(mLastViewportSize.X, mLastViewportSize.Y);
+		mHasResizeRequest = false;
 
 		/*
 		* Get current targets
 		*/
 		GetCurrentTargets();
-
-		mHasResizeRequest = false;
 	}
 	void GameObserverWindow::ClearCurrentDisplayBindings()
 	{

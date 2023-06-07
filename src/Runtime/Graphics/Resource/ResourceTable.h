@@ -23,12 +23,6 @@ namespace Portakal
 		FORCEINLINE bool HasBuffers() const noexcept { return mHasBuffers; }
 		FORCEINLINE bool HasTextures() const noexcept { return mHasTextures; }
 		FORCEINLINE bool HasSamplers() const noexcept { return mHasSamplers; }
-
-		/// <summary>
-		/// Returns the native handle
-		/// </summary>
-		/// <returns></returns>
-		FORCEINLINE virtual void* GetHandle() const noexcept = 0;
 	protected:
 		ResourceTable(const ResourceTableCreateDesc& desc);
 		virtual ~ResourceTable() {}

@@ -102,7 +102,7 @@ namespace Portakal
 
 			pAspect->_SetOnwerScene(this);
 
-			pAspect->_Initialize();
+			pAspect->Initialize();
 
 			mAspects.Add(pAspect);
 
@@ -121,7 +121,7 @@ namespace Portakal
 			if (pAspect == nullptr)
 				return false;
 
-			pAspect->_Finalize();
+			pAspect->Finalize();
 			pAspect->_SetOnwerScene(nullptr);
 
 			mAspects.Remove(pAspect);
@@ -139,7 +139,7 @@ namespace Portakal
 			if (pAspect == nullptr)
 				return false;
 
-			pAspect->_Finalize();
+			pAspect->Finalize();
 			pAspect->_SetOnwerScene(nullptr);
 
 			mAspects.Remove(pAspect);

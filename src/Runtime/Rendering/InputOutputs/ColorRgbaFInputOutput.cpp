@@ -4,7 +4,7 @@ namespace Portakal
 {
 	ColorRgbaInputOutput::ColorRgbaInputOutput(const String& name, RenderPass* pOwnerPass) : RenderPassInputOutput(name,pOwnerPass)
 	{
-		mColor = ColorRgbaF::DarkBlue(); // default
+		mColor = Color4::DarkBlue(); // default
 	}
 	ColorRgbaInputOutput::~ColorRgbaInputOutput()
 	{
@@ -12,7 +12,7 @@ namespace Portakal
 	}
 	void ColorRgbaInputOutput::ForwardCore(void* pData)
 	{
-		mColor = *(ColorRgbaF*)pData;
+		mColor = *(Color4*)pData;
 	}
 	void* ColorRgbaInputOutput::GetIOData() const noexcept
 	{

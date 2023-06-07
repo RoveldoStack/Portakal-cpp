@@ -1,15 +1,15 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Roveldo\\Source\\Repos\\RoveldoStack\\Portakal-cpp\\tools\\ReflectionParserTool\\ReflectionParserTool\\ReflectionParserTool.csproj": {}
+    "C:\\Users\\Roveldo\\source\\repos\\RoveldoStack\\Portakal-cpp\\tools\\ReflectionParserTool\\ReflectionParserTool\\ReflectionParserTool.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Roveldo\\Source\\Repos\\RoveldoStack\\Portakal-cpp\\tools\\ReflectionParserTool\\ReflectionParserTool\\ReflectionParserTool.csproj": {
+    "C:\\Users\\Roveldo\\source\\repos\\RoveldoStack\\Portakal-cpp\\tools\\ReflectionParserTool\\ReflectionParserTool\\ReflectionParserTool.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Roveldo\\Source\\Repos\\RoveldoStack\\Portakal-cpp\\tools\\ReflectionParserTool\\ReflectionParserTool\\ReflectionParserTool.csproj",
+        "projectUniqueName": "C:\\Users\\Roveldo\\source\\repos\\RoveldoStack\\Portakal-cpp\\tools\\ReflectionParserTool\\ReflectionParserTool\\ReflectionParserTool.csproj",
         "projectName": "ReflectionParserTool",
-        "projectPath": "C:\\Users\\Roveldo\\Source\\Repos\\RoveldoStack\\Portakal-cpp\\tools\\ReflectionParserTool\\ReflectionParserTool\\ReflectionParserTool.csproj",
+        "projectPath": "C:\\Users\\Roveldo\\source\\repos\\RoveldoStack\\Portakal-cpp\\tools\\ReflectionParserTool\\ReflectionParserTool\\ReflectionParserTool.csproj",
         "packagesPath": "C:\\Users\\Roveldo\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\Roveldo\\Source\\Repos\\RoveldoStack\\Portakal-cpp\\tools\\ReflectionParserTool\\ReflectionParserTool\\obj\\",
         "projectStyle": "PackageReference",

@@ -44,7 +44,7 @@ namespace Portakal
 		size_t GetAddress() const
 		{
 			typedef TReturn(fnType)(TParameters...);
-			fnType** fnPointer = GetFunctionPtr().template target<fnType*>();
+			fnType* fnPointer = GetFunctionPtr().template target<fnType>();
 
 			return (size_t)*fnPointer;
 		}

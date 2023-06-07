@@ -125,9 +125,15 @@ namespace Portakal
 			return;
 
 		/*
+		* Remove material signal
+		*/
+		pMaterial->RemoveStateChangedDelegate(GENERATE_MEMBER_DELEGATE1(this, RenderingPathCache::OnMaterialStateChanged, void, MaterialResource*));
+
+		/*
 		* Delete material
 		*/
 		DeleteMaterial(pMaterial);
+
 
 		/*
 		* Remove material
@@ -141,6 +147,11 @@ namespace Portakal
 		*/
 		if (!mMeshes.Has(pMesh))
 			return;
+
+		/*
+		* Remove mesh signal
+		*/
+		pMesh->RemoveStateChangedDelegate(GENERATE_MEMBER_DELEGATE1(this, RenderingPathCache::OnMeshStateChanged, void, MeshResource*));
 
 		/*
 		* Delete mesh
@@ -159,6 +170,11 @@ namespace Portakal
 		*/
 		if (!mRenderTargets.Has(pRenderTarget))
 			return;
+
+		/*
+		* Remove render target signal
+		*/
+		pRenderTarget->RemoveStateChangedDelegate(GENERATE_MEMBER_DELEGATE1(this, RenderingPathCache::OnRenderTargetStateChanged, void, RenderTargetResource*));
 
 		/*
 		* Delete render target
@@ -441,7 +457,6 @@ namespace Portakal
 		* Remove path  from the list
 		*/
 		mPathViews.RemoveIndex(index);
-
 	}
 	void RenderingPathCache::DeleteMaterial(MaterialResource* pMaterial)
 	{
@@ -612,6 +627,9 @@ namespace Portakal
 		for (unsigned int i = 0; i < mMeshes.GetCursor(); i++)
 			DeleteMesh(mMeshes[i]);
 
+		/*
+		* Clear lists
+		*/
 		mMaterials.Clear();
 		mMeshes.Clear();
 		mRenderTargets.Clear();

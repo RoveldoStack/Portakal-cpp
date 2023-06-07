@@ -1,0 +1,8 @@
+#include "SpriteRendererComponentVisualizer.h" 
+START_GENERATE_TYPE(SpriteRendererComponentVisualizer);
+START_CLASS_TYPE_PROPERTIES(SpriteRendererComponentVisualizer)
+REGISTER_BASE_TYPE(EditorComponentVisualizer);
+REGISTER_TYPE_ATTRIBUTE(CustomEditorComponentAttribute, typeof(SpriteRendererComponent))
+END_TYPE_PROPERTIES;
+HAS_DEFAULT_CONSTRUCTOR(SpriteRendererComponentVisualizer);
+END_GENERATE_TYPE(SpriteRendererComponentVisualizer);

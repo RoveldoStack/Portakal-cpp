@@ -21,7 +21,7 @@ namespace Portakal
 		/// <returns></returns>
 		FORCEINLINE Entity* GetOwnerEntity() const noexcept { return mOwnerEntity; }
 
-
+		
 	protected:
 		Component() : mOwnerEntity(nullptr){}
 		~Component() = default;
@@ -35,12 +35,6 @@ namespace Portakal
 		/// Called upon deletion
 		/// </summary>
 		virtual void OnFinalize() = 0;
-
-		/// <summary>
-		/// Called upon an aspect which this component registered itself into has been removed
-		/// </summary>
-		/// <param name="pAspect"></param>
-		virtual void OnAspectRemoved(SceneAspect* pAspect) = 0;
 
 		/// <summary>
 		/// Internal setter for the owner entity

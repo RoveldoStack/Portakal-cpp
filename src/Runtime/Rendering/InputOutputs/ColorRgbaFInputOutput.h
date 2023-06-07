@@ -10,8 +10,8 @@ namespace Portakal
 		ColorRgbaInputOutput(const String& name,RenderPass* pOwnerPass);
 		~ColorRgbaInputOutput();
 
-		FORCEINLINE ColorRgbaF GetColor() const noexcept { return mColor; }
-		void SetColor(const ColorRgbaF& color) { mColor = color; }
+		FORCEINLINE Color4 GetColor() const noexcept { return mColor; }
+		void SetColor(const Color4& color) { mColor = color; }
 
 		// Inherited via RenderPassInputOutput
 		virtual void* GetIOData() const noexcept override;
@@ -20,6 +20,6 @@ namespace Portakal
 		// Inherited via RenderPassInputOutput
 		virtual void ForwardCore(void* pData) override;
 	private:
-		ColorRgbaF mColor;
+		Color4 mColor;
 	};
 }

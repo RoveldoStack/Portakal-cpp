@@ -18,6 +18,16 @@ namespace Portakal
 			return a.X * b.X + a.Y * b.Y + a.Z *b.Z; 
 		}
 
+		static Vector3 CrossProduct(const Vector3& a, const Vector3& b)
+		{
+			return
+			{
+				a.X * b.Z - a.Z * b.Y,
+				a.Z * b.X - a.X * b.Z,
+				a.X * b.Y - a.Y * b.X 
+			};
+		}
+
 		Vector3(const TValue x, const TValue y,const TValue z) : X(x), Y(y),Z(z) {}
 		Vector3(const TValue value = 0) : X(value), Y(value),Z(value) {}
 		~Vector3() = default;

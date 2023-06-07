@@ -21,16 +21,12 @@ namespace Portakal
 		void RegisterDisplay(RenderTargetResource* pRenderTarget);
 		void RemoveDisplay(RenderTargetResource* pRenderTarget);
 	private:
-		virtual void InitializeCore() override;
-		virtual void ExecuteCore() override;
-		virtual void FinalizeCore() override;
+		virtual void Initialize() override;
+		virtual void Execute() override;
+		virtual void Finalize() override;
 	private:
 		const unsigned int mMaxDisplayCount;
 		Array<RenderTargetResource*> mDisplays;
-
-		// Inherited via SceneAspect
-		virtual bool RegisterComponentCore(Component* pComponent) override;
-		virtual void RemoveComponentCore(Component* pComponent) override;
 	};
 
 

@@ -81,6 +81,12 @@ namespace Portakal
 		void CreateGlobalTexture(const String& name);
 
 		/// <summary>
+		/// Create anew global other slot
+		/// </summary>
+		/// <param name="name"></param>
+		void CreateGlobalOther(const String& name);
+
+		/// <summary>
 		/// Sets the existing render target stot with the given name
 		/// </summary>
 		/// <param name="name"></param>
@@ -92,7 +98,7 @@ namespace Portakal
 		/// </summary>
 		/// <param name="name"></param>
 		/// <param name="value"></param>
-		void SetGlobalColorRgbaF(const String& name, const ColorRgbaF& value);
+		void SetGlobalColorRgbaF(const String& name, const Color4& value);
 
 		/// <summary>
 		/// Sets the existing mesh slot with the given name
@@ -114,6 +120,13 @@ namespace Portakal
 		/// <param name="name"></param>
 		/// <param name="pTexture"></param>
 		void SetGlobalTexture(const String& name, TextureResource* pTexture);
+
+		/// <summary>
+		/// Sets the existing other slot with the given name
+		/// </summary>
+		/// <param name="name"></param>
+		/// <param name="pData"></param>
+		void SetGlobalOther(const String& name, void* pData);
 
 		/// <summary>
 		/// Connects a global render target to a pin of the existing rendering pass

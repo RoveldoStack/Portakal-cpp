@@ -5,3 +5,4 @@
 #include <Runtime/Rendering/InputOutputs/MaterialInputOutput.h>
 #include <Runtime/Rendering/InputOutputs/TextureInputOutput.h>
 #include <Runtime/Rendering/InputOutputs/FinishInputOutput.h>
+#include <Runtime/Rendering/InputOutputs/OtherInputOutput.h>

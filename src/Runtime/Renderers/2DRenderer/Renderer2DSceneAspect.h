@@ -1,5 +1,14 @@
 #pragma once
 #include <Runtime/World/SceneAspect.h>
+#include <Runtime/Resource/Material/MaterialResource.h>
+#include <Runtime/Resource/Texture/TextureResource.h>
+#include <Runtime/Resource/Mesh/MeshResource.h>
+#include <Runtime/Resource/RenderTarget/RenderTargetResource.h>
+#include <Runtime/Rendering/RenderGraph.h>
+#include <Runtime/Renderers/2DRenderer/SpriteCameraComponent.h>
+#include <Runtime/Renderers/2DRenderer/SpriteRendererComponent.h>
+#include <Runtime/Math/Vector2F.h>
+#include <Runtime/Renderers/2DRenderer/Renderer2DData.h>
 
 namespace Portakal
 {
@@ -8,18 +17,41 @@ namespace Portakal
 	{
 		GENERATE_CLASS(Renderer2DSceneAspect);
 	public:
-		Renderer2DSceneAspect() = default;
+		Renderer2DSceneAspect() : mCmdList(nullptr),mRenderGraph(nullptr) {}
 		~Renderer2DSceneAspect() = default;
-	private:
-		// Inherited via SceneAspect
-		virtual void InitializeCore() override;
-		virtual void ExecuteCore() override;
-		virtual void FinalizeCore() override;
-	private:
 
+		void RegisterCamera(SpriteCameraComponent* pCamera);
+		void RemoveCamera(SpriteCameraComponent* pCamera);
+
+		void RegisterRenderer(SpriteRendererComponent* pRenderer);
+		void RemoveRenderer(SpriteRendererComponent* pRenderer);
+
+		void SignalCameraPropertiesChanged(SpriteCameraComponent* pCamera);
+		void SignalCameraRenderTargetChanged(SpriteCameraComponent* pCamera,RenderTargetResource* pOldRenderTarget,RenderTargetResource* pNewRenderTarget);
+		void SignalRendererMaterialChanged(SpriteRendererComponent* pRenderer,MaterialResource* pOldMaterial, MaterialResource* pNewMaterial);
+		void SignalRendererTransformChanged(SpriteRendererComponent* pRenderer);
+		void SignalCameraTransformChanged(SpriteCameraComponent* pCamera);
+	private:
 		// Inherited via SceneAspect
-		virtual bool RegisterComponentCore(Component* pComponent) override;
-		virtual void RemoveComponentCore(Component* pComponent) override;
+		virtual void Initialize() override;
+		virtual void Execute() override;
+		virtual void Finalize() override;
+	private:
+		void CreateInstance(Renderer2DObjectData& objectData, SpriteRendererComponent* pRenderer);
+		void UpdateInstanceTransform(Renderer2DInstanceData& data, SpriteRendererComponent* pRenderer);
+		void UpdateCameraTransform(Renderer2DCameraData& data, SpriteCameraComponent* pCamera);
+		void UpdateCameraProperties(Renderer2DCameraData& data, SpriteCameraComponent* pCamera);
+		void RegisterRenderGraphMaterial(MaterialResource* pMaterial);
+		void RemoveRenderGraphMaterial(MaterialResource* pMaterial);
+		void RegisterRenderGraphRenderTarget(RenderTargetResource* pRenderTarget);
+		void RemoveRenderGraphRenderTarget(RenderTargetResource* pRenderTarget);
+		void UpdateDirtyStates();
+	private:
+		Array<SpriteCameraComponent*> mCameras;
+		Array<SpriteRendererComponent*> mRenderers;
+		Renderer2DFrameDrawData mDrawData;
+		RenderGraph* mRenderGraph;
+		CommandList* mCmdList;
 	};
 
 #include "Renderer2DSceneAspect.reflect.h"

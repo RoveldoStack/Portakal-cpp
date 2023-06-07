@@ -4,7 +4,7 @@
 
 namespace Portakal
 {
-	RenderTargetClearColorPass::RenderTargetClearColorPass() : mClearColor(ColorRgbaF::DarkGreen()),mRenderTarget(nullptr)
+	RenderTargetClearColorPass::RenderTargetClearColorPass() : mClearColor(Color4::DarkGreen()),mRenderTarget(nullptr)
 	{
 		/*
 		* Create input and outputs
@@ -29,7 +29,7 @@ namespace Portakal
 		* Get render target 
 		*/
 		RenderTargetResource* pRtv = (RenderTargetResource*)GetInput("rtIn")->GetIOData();
-		const ColorRgbaF* clearColor = (ColorRgbaF*)GetInput("colorIn")->GetIOData();
+		const Color4* clearColor = (Color4*)GetInput("colorIn")->GetIOData();
 
 		if (pRtv != nullptr)
 		{

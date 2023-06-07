@@ -18,7 +18,7 @@
 #include <Runtime/Graphics/Command/CommandList.h>
 #include <Runtime/Object/GarbageCollector.h>
 #include <Editor/Renderer/ImGuiTextureBinding.h>
-#include <Runtime/Math/Vector2.h>
+#include <Runtime/Math/Vector2F.h>
 #include <Runtime/Rendering/RenderGraph.h>
 #include <Runtime/Rendering/Passes/RenderTargetClearColorPass.h>
 #include <Runtime/Resource/RenderTarget/RenderTargetResource.h>
@@ -156,7 +156,6 @@ namespace Portakal
 		mRenderGraph->GetGlobalIO("ImGuiRenderTarget")->ConnectOutputTo(pImGuiPass, "rtIn");
 
 
-
 		/*
 		* Setup finish pass
 		*/
@@ -193,6 +192,9 @@ namespace Portakal
 	}
 	ImGuiTextureBinding* ImGuiRenderer::GetOrCreateTextureBinding(TextureResource* pTexture)
 	{
+		/*
+		* Try get index of the texture
+		*/
 		const int index = mTextureBindings.FindIndex(pTexture);
 
 		if (index == -1) // create
@@ -215,11 +217,15 @@ namespace Portakal
 		if (index == -1)
 			return;
 
-		const RegistryEntry<TextureResource*, ImGuiTextureBinding*>& entry = mTextureBindings[index];
+		/*
+		* Get and delete
+		*/
+		RegistryEntry<TextureResource*, ImGuiTextureBinding*>& entry = mTextureBindings[index];
+		delete entry.Value;
+		entry.Value = nullptr;
 
 		mTextureBindings.Remove(pTexture);
 
-		delete entry.Value;
 	}
 	void ImGuiRenderer::StartRendering(const float deltaTime)
 	{

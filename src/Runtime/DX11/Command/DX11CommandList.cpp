@@ -151,7 +151,7 @@ namespace Portakal
 
         mContext->RSSetScissorRects(dx11Scissors.GetCursor(), dx11Scissors.GetData());
     }
-    void DX11CommandList::ClearColorCore(const unsigned int index, const ColorRgba& color)
+    void DX11CommandList::ClearColorCore(const unsigned int index, const Color4& color)
     {
         Framebuffer* pBoundFramebuffer = GetBoundFramebuffer();
 
@@ -178,40 +178,7 @@ namespace Portakal
         const float clearColor[] = { color.R / 255.0f,color.G / 255.0f,color.B / 255.0f,color.A / 255.0f };
         mContext->ClearRenderTargetView(pRtv, clearColor);
     }
-    void DX11CommandList::ClearColorCore(const unsigned int index, const ColorRgbaF& color)
-    {
-        Framebuffer* pBoundFramebuffer = GetBoundFramebuffer();
-
-        /*
-        * Get rtv
-        */
-        ID3D11RenderTargetView* pRtv = nullptr;
-        if (pBoundFramebuffer->IsSwapchain())
-        {
-            DX11Framebuffer* pDXFramebuffer = (DX11Framebuffer*)pBoundFramebuffer;
-
-            pRtv = pDXFramebuffer->GetDXRtvs()[0];
-        }
-        else
-        {
-            DX11Framebuffer* pDXFramebuffer = (DX11Framebuffer*)pBoundFramebuffer;
-
-            pRtv = pDXFramebuffer->GetDXRtvs()[index];
-        }
-
-        if (pRtv == nullptr)
-            return;
-
-        /*
-        * Normalize color
-        */
-        const float clearColor[] = { color.R / 255.0f,color.G / 255.0f,color.B / 255.0f,color.A / 255.0f };
-
-        /*
-        * Clear rtv command
-        */
-        mContext->ClearRenderTargetView(pRtv, clearColor);
-    }
+   
     void DX11CommandList::ClearDepthCore(const float depth)
     {
         const DX11Framebuffer* pBoundFramebuffer = (const DX11Framebuffer*)GetBoundFramebuffer();
@@ -247,18 +214,23 @@ namespace Portakal
          
         mContext->IASetIndexBuffer(pDXBuffer->GetDXBuffer(), pBuffer->GetSubItemSize() == sizeof(unsigned int) ? DXGI_FORMAT_R32_UINT : DXGI_FORMAT_R16_UINT, 0);
     }
-    void DX11CommandList::CommitResourceTableCore(const unsigned int slotIndex,const ResourceTable* pTable)
+    void DX11CommandList::CommitResourceTableCore(const unsigned int stageIndex,const unsigned int slotIndex,const ResourceTable* pTable)
     {
         const DX11ResourceTable* pDXTable = (const DX11ResourceTable*)pTable;
+
         const Array<ID3D11ShaderResourceView*>& resourceViews = pDXTable->GetDXResourceViews();
         const Array<ID3D11Buffer*>& buffers = pDXTable->GetDXBuffers();
         const Array<ID3D11SamplerState*>& samplers = pDXTable->GetDXSamplers();
+
         ID3D11ShaderResourceView** ppResourceViews = resourceViews.GetData();
         ID3D11Buffer** ppBuffers = buffers.GetData();
         ID3D11SamplerState** ppSamplers = samplers.GetData();
+
         const ResourceStateDesc resourceStateDesc = GetBoundPipeline()->GetResourceState();
-        const PipelineResourceTableDesc& tableDesc = resourceStateDesc.Tables[slotIndex];
-        const ShaderStage stage = tableDesc.Stage;
+        const ShaderStage stage = resourceStateDesc.Stages[stageIndex].Stage;
+
+        const PipelineResourceTableDesc& tableDesc = resourceStateDesc.Stages[stageIndex].Tables[slotIndex];
+
         const unsigned int resourceViewCount = resourceViews.GetCursor();
         const unsigned int bufferCount = buffers.GetCursor();
         const unsigned int samplerCount = samplers.GetCursor();
@@ -273,35 +245,35 @@ namespace Portakal
         {
             switch (stage)
             {
-            case Portakal::ShaderStage::None:
-                break;
-            case Portakal::ShaderStage::Vertex:
-            {
-                mContext->VSSetShaderResources(resourceViewOffset, resourceViewCount, ppResourceViews);
-                break;
-            }
-            case Portakal::ShaderStage::Fragment:
-            {
-                mContext->PSSetShaderResources(resourceViewOffset, resourceViewCount, ppResourceViews);
-                break;
-            }
-            case Portakal::ShaderStage::TesellationEval:
-            {
-                mContext->DSSetShaderResources(resourceViewOffset, resourceViewCount, ppResourceViews);
-                break;
-            }
-            case Portakal::ShaderStage::TesellationControl:
-            {
-                mContext->HSSetShaderResources(resourceViewOffset, resourceViewCount, ppResourceViews);
-                break;
-            }
-            case Portakal::ShaderStage::Compute:
-            {
-                mContext->CSSetShaderResources(resourceViewOffset, resourceViewCount, ppResourceViews);
-                break;
-            }
-            default:
-                break;
+                case Portakal::ShaderStage::None:
+                    break;
+                case Portakal::ShaderStage::Vertex:
+                {
+                    mContext->VSSetShaderResources(resourceViewOffset, resourceViewCount, ppResourceViews);
+                    break;
+                }
+                case Portakal::ShaderStage::Fragment:
+                {
+                    mContext->PSSetShaderResources(resourceViewOffset, resourceViewCount, ppResourceViews);
+                    break;
+                }
+                case Portakal::ShaderStage::TesellationEval:
+                {
+                    mContext->DSSetShaderResources(resourceViewOffset, resourceViewCount, ppResourceViews);
+                    break;
+                }
+                case Portakal::ShaderStage::TesellationControl:
+                {
+                    mContext->HSSetShaderResources(resourceViewOffset, resourceViewCount, ppResourceViews);
+                    break;
+                }
+                case Portakal::ShaderStage::Compute:
+                {
+                    mContext->CSSetShaderResources(resourceViewOffset, resourceViewCount, ppResourceViews);
+                    break;
+                }
+                default:
+                    break;
             }
         }
        

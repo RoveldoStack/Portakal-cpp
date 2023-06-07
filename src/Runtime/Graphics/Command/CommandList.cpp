@@ -63,47 +63,31 @@ namespace Portakal
 
 		SetScissors(scissors);
 	}
-	void CommandList::ClearColor(const unsigned int index, const ColorRgba& color)
+	void CommandList::ClearColor(const unsigned int index, const Color4& color)
 	{
-		//CheckBoundFramebuffer();
-
-		ClearColorCore(index, color);
-	}
-	void CommandList::ClearColor(const unsigned int index, const ColorRgbaF& color)
-	{
-		//CheckBoundFramebuffer();
-
 		ClearColorCore(index, color);
 	}
 	void CommandList::ClearDepth(const float depth)
 	{
-		//CheckBoundFramebuffer();
-
 		ClearDepthCore(depth);
 	}
 	void CommandList::ClearStencil(const int stencil)
 	{
-		//CheckBoundFramebuffer();
-
 		ClearStencilCore(stencil);
 	}
 	void CommandList::SetVertexBuffer(GraphicsBuffer* pBuffer)
 	{
-		CheckBoundPipeline();
-
 		SetVertexBufferCore(pBuffer);
 
 		mBoundVertexBuffer = pBuffer;
 	}
 	void CommandList::SetIndexBuffer(GraphicsBuffer* pBuffer)
 	{
-		CheckBoundPipeline();
-
 		SetIndexBufferCore(pBuffer);
 
 		mBoundIndexBuffer = pBuffer;
 	}
-	void CommandList::CommitResourceTable(const unsigned int slotIndex,const ResourceTable* pTable)
+	void CommandList::CommitResourceTable(const unsigned int stageIndex, const unsigned int slotIndex,const ResourceTable* pTable)
 	{
 		CheckBoundPipeline();
 
@@ -112,7 +96,7 @@ namespace Portakal
 		*/
 		const ResourceStateDesc& resourceState = GetBoundPipeline()->GetResourceState();
 
-		CommitResourceTableCore(slotIndex,pTable);
+		CommitResourceTableCore(stageIndex,slotIndex,pTable);
 	}
 	void CommandList::UpdateBuffer(const GraphicsBufferUpdateDesc& desc, GraphicsBuffer* pBuffer)
 	{

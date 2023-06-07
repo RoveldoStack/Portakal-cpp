@@ -54,7 +54,7 @@ namespace Portakal
 		availableRegion = ImGui::GetContentRegionAvail();
 		if (error.GetCursor() != 0)
 		{
-			GUICommands::PushColor(GUIColorType::Text, ColorRgbaF::Red());
+			GUICommands::PushColor(GUIColorType::Text, Color4::Red());
 			GUICommands::MultilineTextField("Errors", error, { availableRegion.x,availableRegion.y / 2.0f }, GUIInputTextFlags::ReadOnly);
 			GUICommands::PopColor();
 		}

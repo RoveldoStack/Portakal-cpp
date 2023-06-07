@@ -8,4 +8,4 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = ReflectionParserTool
-build_property.ProjectDir = C:\Users\Roveldo\Source\Repos\RoveldoStack\Portakal-cpp\tools\ReflectionParserTool\ReflectionParserTool\
+build_property.ProjectDir = C:\Users\Roveldo\source\repos\RoveldoStack\Portakal-cpp\tools\ReflectionParserTool\ReflectionParserTool\

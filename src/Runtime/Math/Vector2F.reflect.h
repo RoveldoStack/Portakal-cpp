@@ -1,0 +1,9 @@
+#include "Vector2F.h" 
+START_GENERATE_TYPE(Vector2F);
+START_STRUCT_TYPE_PROPERTIES(Vector2F)
+REGISTER_FIELD(Vector2F,X,float,AccessSpecifier::Public);
+REGISTER_FIELD(Vector2F,Y,float,AccessSpecifier::Public);
+
+END_TYPE_PROPERTIES;
+HAS_DEFAULT_CONSTRUCTOR(Vector2F);
+END_GENERATE_TYPE(Vector2F);

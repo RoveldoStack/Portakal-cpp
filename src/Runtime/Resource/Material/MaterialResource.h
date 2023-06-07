@@ -10,6 +10,8 @@
 #include <Runtime/Resource/Shader/ShaderResource.h>
 #include <Runtime/Memory/SharedSafeHeap.h>
 #include <Runtime/Event/Event.h>
+#include <Runtime/Math/Matrix4x4.h>
+
 namespace Portakal
 {
 	class TextureResource;
@@ -30,7 +32,7 @@ namespace Portakal
 		/// Returns the existing resource table
 		/// </summary>
 		/// <returns></returns>
-		FORCEINLINE Array<ResourceTable*> GetResourceTables() const noexcept { return mResourceTables; }
+		FORCEINLINE const Registry<ShaderStage,Array<ResourceTable*>> GetResourceTables() const noexcept { return mResourceTables; }
 
 		/// <summary>
 		/// Returns a texture parameter with the given name
@@ -102,12 +104,28 @@ namespace Portakal
 		void SetSamplerParameter(const String& name, const ShaderStage stage, SamplerResource* pSampler);
 
 		/// <summary>
+		/// Sets a buffer data for the cached cpu side of the material
+		/// </summary>
+		/// <param name="name"></param>
+		/// <param name="stage"></param>
+		/// <param name="pSource"></param>
+		void SetBufferParameterRaw(const String& name, const ShaderStage stage, const Byte* pSource, const unsigned int offset, const unsigned int sizeInBytes,CommandList* pTargetCmdList);
+
+		/// <summary>
+		/// Sets a buffer data for the cached cpu side of the material
+		/// </summary>
+		/// <param name="name"></param>
+		/// <param name="stage"></param>
+		/// <param name="pSource"></param>
+		void SetBufferParameterRaw(const String& name, const ShaderStage stage, const Byte* pSource,const unsigned int offset,const unsigned int sizeInBytes);
+
+		/// <summary>
 		/// Sets a buffer for the cached cpu side of the material
 		/// </summary>
 		/// <param name="name"></param>
 		/// <param name="stage"></param>
 		/// <param name="pBuffer"></param>
-		void SetBufferParameter(const String& name, const ShaderStage& stage, GraphicsBuffer* pBuffer);
+		void SetBufferParameterMat4x4F(const String& name, const ShaderStage stage, const Matrix4x4F);
 
 		/// <summary>
 		/// Sets a new rasterizer state for the material
@@ -128,6 +146,13 @@ namespace Portakal
 		void SetBlendingState(const BlendingStateDesc& stateDesc);
 
 		/// <summary>
+		/// Returns a buffer table index
+		/// </summary>
+		/// <param name="name"></param>
+		/// <param name="indexOut"></param>
+		void GetBufferTableIndex(const String& name,const ShaderStage stage, int& indexOut);
+
+		/// <summary>
 		/// Register anew delegate to the state changed event of this material
 		/// </summary>
 		/// <param name="del"></param>
@@ -139,6 +164,14 @@ namespace Portakal
 		/// <param name="del"></param>
 		void RemoveStateChangedDelegate(const Delegate<void, MaterialResource*>& del);
 	private:
+		/// <summary>
+		/// Returns a parameter descriptor
+		/// </summary>
+		/// <param name="name"></param>
+		/// <param name="stage"></param>
+		/// <returns></returns>
+		MaterialParameterDescriptor* GetParameterDescriptor(const String& name, const ShaderStage stage);
+
 		/// <summary>
 		/// Called on when a registered shaders compiled
 		/// </summary>
@@ -194,13 +227,15 @@ namespace Portakal
 		Registry<ShaderStage, MaterialStageParameterDescriptor> mStageParameterDescriptors;
 		Array<ShaderResource*> mShaders;
 		GraphicsDevice* mOwnerDevice;
+		TextureResource* mDefaultTexture;
+		SamplerResource* mDefaultSampler;
 
 		//Pipeline state
 		RasterizerStateDesc mRasterizerState;
 		DepthStencilStateDesc mDepthStencilState;
 		BlendingStateDesc mBlendingState;
 		ResourceStateDesc mResourceState;
-		Array<ResourceTable*> mResourceTables;
+		Registry<ShaderStage, Array<ResourceTable*>> mResourceTables;
 
 		CommandList* mCmdList;
 	};

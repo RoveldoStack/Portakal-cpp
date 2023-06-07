@@ -202,7 +202,7 @@ namespace Portakal
 
         mCmdList->RSSetScissorRects(dxScissors.GetCursor(), dxScissors.GetData());
     }
-    void DX12GraphicsCommandList::ClearColorCore(const unsigned int index,const ColorRgba& color)
+    void DX12GraphicsCommandList::ClearColorCore(const unsigned int index,const Color4& color)
     {
         const DX12Framebuffer* pFramebuffer = (const DX12Framebuffer*)GetBoundFramebuffer();
         if (pFramebuffer == nullptr)
@@ -227,29 +227,6 @@ namespace Portakal
 
     }
 
-    void DX12GraphicsCommandList::ClearColorCore(const unsigned int index, const ColorRgbaF& color)
-    {
-        const DX12Framebuffer* pFramebuffer = (const DX12Framebuffer*)GetBoundFramebuffer();
-        if (pFramebuffer == nullptr)
-            return;
-
-        const DX12Device* pDevice = (const DX12Device*)GetOwnerDevice();
-        const Swapchain* pSwapchain = pDevice->GetSwapchain();
-        const unsigned int handleIncrementSize = pDevice->GetDXDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
-        D3D12_CPU_DESCRIPTOR_HANDLE cpuHandle = pFramebuffer->GetDXColorHeapDescriptor()->GetCPUDescriptorHandleForHeapStart();
-
-        if (pFramebuffer->IsSwapchain())
-        {
-            cpuHandle.ptr += pSwapchain->GetCurrentImageIndex() * handleIncrementSize;
-        }
-        else
-        {
-            cpuHandle.ptr + index * handleIncrementSize;
-        }
-
-        mCmdList->ClearRenderTargetView(cpuHandle, &color.R, 0, nullptr);
-
-    }
     void DX12GraphicsCommandList::ClearDepthCore(const float depth)
     {
         const Framebuffer* pFramebuffer = GetBoundFramebuffer();
@@ -280,7 +257,7 @@ namespace Portakal
 
         mCmdList->IASetIndexBuffer(&bufferView);
     }
-    void DX12GraphicsCommandList::CommitResourceTableCore(const unsigned int slotIndex,const ResourceTable* pTable)
+    void DX12GraphicsCommandList::CommitResourceTableCore(const unsigned int stageIndex,const unsigned int slotIndex,const ResourceTable* pTable)
     {
         const DX12ResourceTable* pDXTable = (const DX12ResourceTable*)pTable;
         ID3D12DescriptorHeap* pCbvSrvUavHeap = pDXTable->GetDXCbvSrvUavHeap();

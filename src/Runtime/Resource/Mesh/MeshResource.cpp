@@ -347,6 +347,9 @@ namespace Portakal
 	}
 	void MeshResource::SignalStateChangedEvent()
 	{
+		if (IsDestroyed())
+			return;
+
 		mStateChangedEvent.Invoke(this);
 	}
 	void MeshResource::DestroyCore()

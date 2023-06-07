@@ -4,7 +4,7 @@
 #include <Runtime/Resource/Texture/TextureResource.h>
 #include <Editor/Domain/DomainFile.h>
 #include <Runtime/Graphics/Resource/ResourceTable.h>
-#include <Runtime/Math/Vector2.h>
+#include <Runtime/Math/Vector2F.h>
 #include <Runtime/Math/Math.h>
 #include <Editor/Renderer/ImGuiAPI.h>
 #include <Editor/Renderer/ImGuiTextureBinding.h>
@@ -35,7 +35,7 @@ namespace Portakal
 
 		ImGui::Text("Texture auth tool");
 		ImGuiTextureBinding* pBinding = ImGuiAPI::GetDefaultRenderer()->GetOrCreateTextureBinding(pTexture);
-		ImGui::Image(pBinding->GetTable()->GetHandle(), {dimension.X,dimension.Y});
+		ImGui::Image(pBinding, {dimension.X,dimension.Y});
 
 	}
 	void TextureAuthoringTool::OnFinalize()

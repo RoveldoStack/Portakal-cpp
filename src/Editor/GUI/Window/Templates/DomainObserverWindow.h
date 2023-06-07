@@ -1,6 +1,6 @@
 #pragma once
 #include <Editor/GUI/Window/EditorWindow.h>
-#include <Runtime/Math/Vector2.h>
+#include <Runtime/Math/Vector2F.h>
 
 namespace Portakal
 {

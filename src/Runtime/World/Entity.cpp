@@ -1,5 +1,6 @@
 #include "Entity.h"
 #include <Runtime/World/Scene.h>
+#include <Runtime/Yaml/YamlDefaultSerializer.h>
 
 namespace Portakal
 {
@@ -113,6 +114,31 @@ namespace Portakal
 		* Notify scene
 		*/
 		mOwnerScene->_NotifyEntityDeleted(this);
+	}
+	
+
+	Component* Entity::_SetDefaultsAndCreateComponent(Type* pComponentType, const String& yamlDefaults)
+	{
+		/*
+		* Create component default object
+		*/
+		Component* pComponent = (Component*)pComponentType->CreateDefaultHeapObject();
+
+		/*
+		* Set component values
+		*/
+		YamlDefaultSerializer::ToObject(yamlDefaults,pComponent, pComponentType);
+
+		/*
+		* Register this component to the entity's body
+		*/
+		pComponent->_SetOwnerEntity(this);
+		pComponent->SetTagName(pComponent->GetType()->GetTypeName());
+		pComponent->OnInitialize();
+
+		mComponents.Add(pComponent);
+
+		return pComponent;
 	}
 	void Entity::_NotifyComponentDeleted(Component* pComponent)
 	{

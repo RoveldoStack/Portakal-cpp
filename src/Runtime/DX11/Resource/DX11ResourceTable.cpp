@@ -78,8 +78,4 @@ namespace Portakal
 		mResourceViews.Clear();
 
     }
-    void* DX11ResourceTable::GetHandle() const noexcept
-    {
-		return nullptr;
-    }
 }

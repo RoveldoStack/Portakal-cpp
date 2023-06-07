@@ -11,7 +11,4 @@ namespace Portakal
 	void TestComponent::OnFinalize()
 	{
 	}
-	void TestComponent::OnAspectRemoved(SceneAspect* pAspect)
-	{
-	}
 }

@@ -6,7 +6,7 @@
 #include <Runtime/Resource/Mesh/MeshResource.h>
 #include <Runtime/Resource/Material/MaterialResource.h>
 #include <Libs/ImGui/imgui.h>
-#include <Runtime/Math/Vector2.h>
+#include <Runtime/Math/Vector2F.h>
 #include <Editor/Renderer/ImGuiTextureBinding.h>
 #include <Runtime/Rendering/RenderingPathCache.h>
 #include <Runtime/Rendering/RenderGraph.h>
@@ -28,15 +28,15 @@ namespace Portakal
             struct VS_INPUT\
             {\
               float2 pos : POSITION;\
-              float4 col : COLOR0;\
               float2 uv  : TEXCOORD0;\
+              float4 col : COLOR0;\
             };\
             \
             struct PS_INPUT\
             {\
               float4 pos : SV_POSITION;\
-              float4 col : COLOR0;\
               float2 uv  : TEXCOORD0;\
+              float4 col : COLOR0;\
             };\
             \
             PS_INPUT main(VS_INPUT input)\
@@ -55,8 +55,8 @@ namespace Portakal
 		"struct PS_INPUT\
             {\
             float4 pos : SV_POSITION;\
-            float4 col : COLOR0;\
             float2 uv  : TEXCOORD0;\
+            float4 col : COLOR0;\
             };\
             sampler sampler0;\
             Texture2D texture0;\
@@ -67,7 +67,10 @@ namespace Portakal
             return out_col; \
             }";
 
-	ImGuiRenderPass::ImGuiRenderPass() : mConstantBuffer(nullptr),mDevice(nullptr),mVertexShader(nullptr),mFragmentShader(nullptr),mPipeline(nullptr)
+	ImGuiRenderPass::ImGuiRenderPass() :
+		mConstantBuffer(nullptr),mDevice(nullptr),mVertexShader(nullptr),mFragmentShader(nullptr),
+		mPipeline(nullptr),mBufferResourceTable(nullptr),mFontResourceTable(nullptr),mFontTexture(nullptr),
+		mMesh(nullptr),mSampler(nullptr),mSamplerResourceTable(nullptr)
 	{
 		CreateInput<RenderTargetInputOutput>("rtIn");
 	}
@@ -147,7 +150,7 @@ namespace Portakal
 		{
 			{"pos",InputElementSemantic::Position,InputElementDataFormat::Float2},
 			{"uv",InputElementSemantic::TextureCoordinate,InputElementDataFormat::Float2},
-			{"col",InputElementSemantic::Color,InputElementDataFormat::Byte4_Norm}
+			{"col",InputElementSemantic::Color,InputElementDataFormat::Byte4_Norm},
 		};
 
 		/*
@@ -207,21 +210,28 @@ namespace Portakal
 		* Create resource layout
 		*/
 		ResourceStateDesc resourceStateDesc = {};
-		PipelineResourceTableDesc table0Desc = {};
-		table0Desc.Stage = ShaderStage::Vertex;
-		table0Desc.Buffers.Add({ "vertexBuffer" });
 
-		PipelineResourceTableDesc table1Desc = {};
-		table1Desc.Stage = ShaderStage::Fragment;
-		table1Desc.Samplers.Add({ "sampler0" });
+		PipelineResourceStageDesc vertexStageDesc = {};
+		vertexStageDesc.Stage = ShaderStage::Vertex;
 
-		PipelineResourceTableDesc table2Desc = {};
-		table2Desc.Stage = ShaderStage::Fragment;
-		table2Desc.Textures.Add({ "texture0" });
+		PipelineResourceStageDesc fragmentStageDesc = {};
+		fragmentStageDesc.Stage = ShaderStage::Fragment;
 
-		resourceStateDesc.Tables.Add(table0Desc);
-		resourceStateDesc.Tables.Add(table1Desc);
-		resourceStateDesc.Tables.Add(table2Desc);
+		PipelineResourceTableDesc vertexBufferTable = {};
+		vertexBufferTable.Buffers.Add({ "vertexBuffer" });
+		
+		PipelineResourceTableDesc samplerTable = {};
+		samplerTable.Samplers.Add({ "sampler0" });
+
+		PipelineResourceTableDesc textureTable = {};
+		textureTable.Textures.Add({ "texture0" });
+
+		vertexStageDesc.Tables.Add(vertexBufferTable);
+		fragmentStageDesc.Tables.Add(samplerTable);
+		fragmentStageDesc.Tables.Add(textureTable);
+
+		resourceStateDesc.Stages.Add(vertexStageDesc);
+		resourceStateDesc.Stages.Add(fragmentStageDesc);
 
 		GraphicsPipelineCreateDesc pipelineDesc = {};
 		pipelineDesc.RasterizerState = rasterizerStateDesc;
@@ -283,7 +293,7 @@ namespace Portakal
 				/*
 				* Allocate new vertexes
 				*/
-				mMesh->AllocateVertexes(sizeof(ImDrawVert), pDrawData->TotalVtxCount + 50);
+				mMesh->AllocateVertexes(sizeof(ImDrawVert), pDrawData->TotalVtxCount + 500);
 			}
 
 			/*
@@ -296,14 +306,14 @@ namespace Portakal
 				/*
 				* Allocate new indexes
 				*/
-				mMesh->AllocateIndexes(MeshIndexType::Bit16, pDrawData->TotalIdxCount + 50);
+				mMesh->AllocateIndexes(MeshIndexType::Bit16, pDrawData->TotalIdxCount + 500);
 			}
 
 			/*
 			* Draw
 			*/
 			pCmdList->BindFramebuffer(pRenderTarget->GetFramebuffer());
-			pCmdList->ClearColor(0, ColorRgbaF::CornflowerBlue());
+			pCmdList->ClearColor(0, Color4::CornflowerBlue());
 
 			/*
 			* SUpdate vertex&index buffers
@@ -349,22 +359,10 @@ namespace Portakal
 			const float B = pDrawData->DisplayPos.y + pDrawData->DisplaySize.y;
 			float projectionData[] =
 			{
-				2.0f / (R - L),
-				0,
-				0,
-				0,
-				0,
-				2.0f / (T - B),
-				0,
-				0,
-				0,
-				0,
-				0.5f,
-				0,
-				(R + L) / (L - R),
-				(T + B) / (B - T),
-				0.5f,
-				1.0f
+				2.0f / (R - L),0,0,0,
+				0,2.0f / (T - B),0,0,
+				0,0,0,0,
+				(R + L) / (L - R),(T + B) / (B - T),0.5f,1.0f
 			};
 
 			GraphicsBufferUpdateDesc projectionBufferUpdateDesc = {};
@@ -380,8 +378,8 @@ namespace Portakal
 			pCmdList->BindPipeline(mPipeline);
 			pCmdList->SetVertexBuffer(mMesh->GetVertexBuffer());
 			pCmdList->SetIndexBuffer(mMesh->GetIndexBuffer());
-			pCmdList->CommitResourceTable(0, mBufferResourceTable);
-			pCmdList->CommitResourceTable(1, mSamplerResourceTable);
+			pCmdList->CommitResourceTable(0,0, mBufferResourceTable);
+			pCmdList->CommitResourceTable(1,0, mSamplerResourceTable);
 
 			/*
 			* Scale clip rects
@@ -435,26 +433,19 @@ namespace Portakal
 
 					pCmdList->SetScissor(scissorDesc);
 
-
-					/*
-					* Commit resource table
-					*/
-					//pCmdList->CommitResourceTable(pMaterial->GetResourceTable());
-
 					/*
 					* Set texture resource
 					*/
 					if (cmd.TextureId == nullptr)
 					{
-						pCmdList->CommitResourceTable(2, mFontResourceTable);
+						pCmdList->CommitResourceTable(1,1, mFontResourceTable);
 					}
 					else
 					{
 						ImGuiTextureBinding* pBinding = (ImGuiTextureBinding*)cmd.TextureId;
-						pCmdList->CommitResourceTable(2, pBinding->GetTable());
+						pCmdList->CommitResourceTable(1,1, pBinding->GetTable());
 
 					}
-
 
 					pCmdList->DrawIndexed(cmd.ElemCount, (drawIndexOffset + cmd.IdxOffset), (drawVertexOffset + cmd.VtxOffset));
 				}

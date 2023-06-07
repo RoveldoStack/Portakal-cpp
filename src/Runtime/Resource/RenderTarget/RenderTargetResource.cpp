@@ -107,14 +107,12 @@ namespace Portakal
 		for (unsigned int i = 0; i < mColorTargets.GetCursor(); i++)
 		{
 			mColorTargets[i]->Destroy();
-			delete mColorTargets[i];
 		}
 		mColorTargets.Clear();
 
 		if (mDepthStencilTarget != nullptr)
 		{
 			mDepthStencilTarget->Destroy();
-			delete mDepthStencilTarget;
 			mDepthStencilTarget = nullptr;
 		}
 	}
@@ -148,6 +146,8 @@ namespace Portakal
 		* Create framebuffer
 		*/
 		FramebufferCreateDesc framebufferDesc = {};
+		framebufferDesc.Width = width;
+		framebufferDesc.Height = height;
 		for (unsigned int i = 0; i < colorTextures.GetCursor(); i++)
 		{
 			FramebufferAttachmentDesc desc = {};
@@ -172,6 +172,7 @@ namespace Portakal
 		mColorTargets = colorTextures;
 		mDepthStencilTarget = pDepthStencilTexture;
 
+
 		/*
 		* Signal state changed
 		*/
@@ -179,6 +180,9 @@ namespace Portakal
 	}
 	void RenderTargetResource::SignalStateChangedEvent()
 	{
+		if (IsDestroyed())
+			return;
+
 		mStateChangedEvent.Invoke(this);
 	}
 	void RenderTargetResource::DestroyCore()

@@ -157,20 +157,20 @@ namespace Portakal
         */
         mContextBarrier->Lock();
 
-        /*
-        * Flush the commands
-        */
-        mImmediateContext->Begin(mQuery.Get());
-        mImmediateContext->Flush();
-        mImmediateContext->End(mQuery.Get());
+        ///*
+        //* Flush the commands
+        //*/
+        //mImmediateContext->Begin(mQuery.Get());
+        //mImmediateContext->Flush();
+        //mImmediateContext->End(mQuery.Get());
 
-        /*
-        * Wait for the events to finish
-        */
-        while (mImmediateContext->GetData(mQuery.Get(), nullptr, 0, 0) == S_FALSE)
-        {
+        ///*
+        //* Wait for the events to finish
+        //*/
+        //while (mImmediateContext->GetData(mQuery.Get(), nullptr, 0, 0) == S_FALSE)
+        //{
 
-        }
+        //}
 
         /*
         * Release the immediate context barrier
