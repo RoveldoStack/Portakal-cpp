@@ -325,8 +325,18 @@ namespace Portakal
 			/*
 			* Draw
 			*/
+			pCmdList->BindPipeline(mPipeline);
 			pCmdList->BindFramebuffer(pRenderTarget->GetFramebuffer());
+			pCmdList->SetVertexBuffer(mMesh->GetVertexBuffer());
+			pCmdList->SetIndexBuffer(mMesh->GetIndexBuffer());
 			pCmdList->ClearColor(0, Color4::CornflowerBlue());
+
+			/*
+			* Set default resource tables
+			*/
+			pCmdList->CommitResourceTable(0, 0, mBufferResourceTable);
+			pCmdList->CommitResourceTable(1, 0, mSamplerResourceTable);
+
 
 			/*
 			* SUpdate vertex&index buffers
@@ -384,15 +394,6 @@ namespace Portakal
 			projectionBufferUpdateDesc.Size = sizeof(projectionData);
 
 			pCmdList->UpdateBuffer(projectionBufferUpdateDesc, mConstantBuffer);
-
-			/*
-			* Set pipeline state
-			*/
-			pCmdList->BindPipeline(mPipeline);
-			pCmdList->SetVertexBuffer(mMesh->GetVertexBuffer());
-			pCmdList->SetIndexBuffer(mMesh->GetIndexBuffer());
-			pCmdList->CommitResourceTable(0,0, mBufferResourceTable);
-			pCmdList->CommitResourceTable(1,0, mSamplerResourceTable);
 
 			/*
 			* Scale clip rects
