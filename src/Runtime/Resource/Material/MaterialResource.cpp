@@ -676,4 +676,8 @@ namespace Portakal
 		*/
 		SignalMaterialStateChanged();
 	}
+	void MaterialResource::SetTagNameCore(const String& name)
+	{
+		
+	}
 }

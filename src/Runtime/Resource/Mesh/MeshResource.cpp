@@ -382,4 +382,15 @@ namespace Portakal
 		*/
 		mOwnerDevice = nullptr;
 	}
+	void MeshResource::SetTagNameCore(const String& name)
+	{
+		if (mVertexBuffer != nullptr)
+			mVertexBuffer->SetDeviceObjectName(name + " VertexBuffer");
+
+		if (mIndexBuffer != nullptr)
+			mIndexBuffer->SetDeviceObjectName(name + " IndexBuffer");
+
+		if (mCmdList != nullptr)
+			mCmdList->SetDeviceObjectName(name + " CommandList");
+	}
 }

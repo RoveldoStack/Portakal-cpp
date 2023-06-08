@@ -192,4 +192,9 @@ namespace Portakal
 		*/
 		Delete();
 	}
+	void RenderTargetResource::SetTagNameCore(const String& name)
+	{
+		if (mFramebuffer != nullptr)
+			mFramebuffer->SetDeviceObjectName(name + " Framebuffer");
+	}
 }

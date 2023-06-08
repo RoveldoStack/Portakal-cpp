@@ -113,6 +113,7 @@ namespace Portakal
 		void SignalStateChangedEvent();
 
 		virtual void DestroyCore() override;
+		virtual void SetTagNameCore(const String& name) override;
 	private:
 		const bool mSwapchain;
 		Event<void, RenderTargetResource*> mStateChangedEvent;

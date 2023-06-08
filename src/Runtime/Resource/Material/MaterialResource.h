@@ -222,6 +222,8 @@ namespace Portakal
 
 		// Inherited via ResourceSubObject
 		virtual void DestroyCore() override;
+
+		virtual void SetTagNameCore(const String& name) override;
 	private:
 		Event<void, MaterialResource*> mStateChangedEvent;
 		Registry<ShaderStage, MaterialStageParameterDescriptor> mStageParameterDescriptors;

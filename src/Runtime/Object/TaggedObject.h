@@ -35,7 +35,7 @@ namespace Portakal
 		/// Sets the object name
 		/// </summary>
 		/// <param name="name"></param>
-		FORCEINLINE void SetTagName(const String& name) { mName = name; }
+		FORCEINLINE void SetTagName(const String& name) { SetTagNameCore(name);  mName = name; }
 
 		/// <summary>
 		/// Overrides the unique id of this object, use it with caution
@@ -68,6 +68,7 @@ namespace Portakal
 		}
 
 		virtual void DestroyCore() = 0;
+		virtual void SetTagNameCore(const String& name) {}
 	private:
 		String mName;
 		Guid mID;

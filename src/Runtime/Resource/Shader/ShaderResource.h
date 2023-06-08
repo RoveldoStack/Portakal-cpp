@@ -27,6 +27,7 @@ namespace Portakal
 	private:
 		void Delete();
 		virtual void DestroyCore() override;
+		virtual void SetTagNameCore(const String& name) override;
 	private:
 		Event<void, ShaderResource*> mOnStateChangedEvent;
 		ShaderReflectionBlob* mReflectionBlob;

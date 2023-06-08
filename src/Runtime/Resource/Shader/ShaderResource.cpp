@@ -123,4 +123,9 @@ namespace Portakal
 		*/
 		Delete();
 	}
+	void ShaderResource::SetTagNameCore(const String& name)
+	{
+		if (mShader != nullptr)
+			mShader->SetDeviceObjectName(name + " Shader");
+	}
 }

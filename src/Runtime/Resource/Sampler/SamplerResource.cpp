@@ -55,4 +55,9 @@ namespace Portakal
 		mSampler = nullptr;
 		mOwnerDevice = nullptr;
 	}
+	void SamplerResource::SetTagNameCore(const String& name)
+	{
+		if (mSampler != nullptr)
+			mSampler->SetDeviceObjectName(name + " Sampler");
+	}
 }

@@ -18,6 +18,7 @@ namespace Portakal
 
 		// Inherited via ResourceSubObject
 		virtual void DestroyCore() override;
+		virtual void SetTagNameCore(const String& name) override;
 	private:
 		GraphicsDevice* mOwnerDevice;
 		Sampler* mSampler;

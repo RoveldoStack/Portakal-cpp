@@ -164,4 +164,9 @@ namespace Portakal
 		DeleteTexture();
 		DeleteCmdList();
 	}
+	void TextureResource::SetTagNameCore(const String& name)
+	{
+		if (mTexture != nullptr)
+			mTexture->SetDeviceObjectName(name + " Texture");
+	}
 }

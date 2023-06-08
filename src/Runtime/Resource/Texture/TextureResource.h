@@ -92,6 +92,7 @@ namespace Portakal
 		void CreateCmdList();
 
 		virtual void DestroyCore() override final;
+		virtual void SetTagNameCore(const String& name) override;
 	private:
 		GraphicsDevice* mDevice;
 		CommandList* mCmdList;
