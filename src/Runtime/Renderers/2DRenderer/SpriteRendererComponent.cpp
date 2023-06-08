@@ -101,9 +101,9 @@ namespace Portakal
 	* Vertex shader for imgui
 	*/
 	static const char* vertexShaderSource =
-		"cbuffer vertexBuffer : register(b0) \
+		"cbuffer TransformationData : register(b0) \
             {\
-              float4x4 ProjectionMatrix; \
+              float4x4 MvpMatrix; \
             };\
             struct VS_INPUT\
             {\
@@ -120,7 +120,7 @@ namespace Portakal
             PS_INPUT main(VS_INPUT input)\
             {\
               PS_INPUT output;\
-			  output.pos = mul( ProjectionMatrix, float4(input.pos.xy, 0.f, 1.f));\
+			  output.pos = mul( MvpMatrix, float4(input.pos.xy, 0.f, 1.f));\
               output.uv  = input.uv;\
               return output;\
             }";

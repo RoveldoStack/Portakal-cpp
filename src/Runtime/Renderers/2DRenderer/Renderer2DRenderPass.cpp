@@ -124,7 +124,7 @@ namespace Portakal
 					/*
 					* Update mvp matrix
 					*/
-					objectData.pMaterial->SetBufferParameterRaw("vertexBuffer", ShaderStage::Vertex, (Byte*) & mvpMatrix, 0, sizeof(Matrix4x4F),pCmdList);
+					objectData.pMaterial->SetBufferParameterRaw("TransformationData", ShaderStage::Vertex, (Byte*) & mvpMatrix, 0, sizeof(Matrix4x4F),pCmdList);
 
 					/*
 					* Issue draw command
