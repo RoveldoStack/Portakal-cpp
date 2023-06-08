@@ -95,15 +95,18 @@ namespace Portakal
 		constantBufferDesc.SubItemSize = 64;
 
 		GraphicsBuffer* pConstantBuffer = mDevice->CreateBuffer(constantBufferDesc);
+		pConstantBuffer->SetDeviceObjectName("ImGui Constant Buffer");
 		mConstantBuffer = pConstantBuffer;
 
 		/*
 		* Create shader objects
 		*/
 		mVertexShader = new ShaderResource();
+		mVertexShader->SetTagName("ImGui Vertex Shader Resource");
 		mVertexShader->Compile("main", vertexShaderSource, ShaderStage::Vertex);
 
 		mFragmentShader = new ShaderResource();
+		mFragmentShader->SetTagName("ImGui Fragment Shader Resource");
 		mFragmentShader->Compile("main", pixelShaderSource, ShaderStage::Fragment);
 		Array<Shader*> shaders = { mVertexShader->GetShader(),mFragmentShader->GetShader() };
 		
@@ -121,6 +124,7 @@ namespace Portakal
 		ASSERT(pFontData != nullptr && width != 0 && height != 0 && channelCount != 0, "ImguiRenderer", "Failed to fetch font texture");
 
 		TextureResource* pFontTexture = new TextureResource(TextureType::Texture2D, TextureUsage::Sampled | TextureUsage::CpuWrite, TextureFormat::R8_G8_B8_A8_UNorm, width, height, 1);
+		pFontTexture->SetTagName("ImGui Default Font Texture Resource");
 		pFontTexture->UpdateTexture(pFontData, 0, 0, 0);
 		io.Fonts->ClearTexData();
 
@@ -139,6 +143,7 @@ namespace Portakal
 		samplerDesc.MaxAnisotropy = 0;
 
 		mSampler = new SamplerResource();
+		mSampler->SetTagName("ImGui Default Sampler Resource");
 		mSampler->Create(samplerDesc);
 
 		/*
@@ -157,6 +162,7 @@ namespace Portakal
 		* Create mesh
 		*/
 		mMesh = new MeshResource();
+		mMesh->SetTagName("Imgui Default Mesh Resource");
 		mMesh->AllocateVertexes(sizeof(ImDrawVert), 1, inputLayoutDesc);
 		mMesh->AllocateIndexes(MeshIndexType::Bit16, 1);
 
@@ -244,6 +250,7 @@ namespace Portakal
 		pipelineDesc.ResourceState = resourceStateDesc;
 
 		mPipeline = mDevice->CreateGraphicsPipeline(pipelineDesc);
+		mPipeline->SetDeviceObjectName("ImGui Pipeline");
 
 		/*
 		* Create resource tables
@@ -258,8 +265,14 @@ namespace Portakal
 		fontResourceTableDesc.Textures.Add(pFontTexture->GetTexture());
 
 		mBufferResourceTable = mDevice->CreateResourceTable(vertexResourceTableDesc);
+		mBufferResourceTable->SetDeviceObjectName("ImGui Buffer Resource Table");
+
 		mSamplerResourceTable = mDevice->CreateResourceTable(samplerResourceTableDesc);
+		mSamplerResourceTable->SetDeviceObjectName("ImGui Sampler Resource Table");
+
 		mFontResourceTable = mDevice->CreateResourceTable(fontResourceTableDesc);
+		mFontResourceTable->SetDeviceObjectName("Imgui Default Font Resource Table");
+
 		mFontTexture = pFontTexture;
 	}
 	void ImGuiRenderPass::Finalize()
@@ -444,7 +457,6 @@ namespace Portakal
 					{
 						ImGuiTextureBinding* pBinding = (ImGuiTextureBinding*)cmd.TextureId;
 						pCmdList->CommitResourceTable(1,1, pBinding->GetTable());
-
 					}
 
 					pCmdList->DrawIndexed(cmd.ElemCount, (drawIndexOffset + cmd.IdxOffset), (drawVertexOffset + cmd.VtxOffset));

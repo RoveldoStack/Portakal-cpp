@@ -9,6 +9,7 @@ namespace Portakal
     EditorImageResource::EditorImageResource(const String& path, const String& name) : EditorResource(path,name,EditorResourceType::Image)
     {
         mResource = new TextureResource(path);
+        mResource->SetTagName(name);
         mBinding = ImGuiAPI::GetDefaultRenderer()->GetOrCreateTextureBinding(mResource);
     }
     EditorImageResource::~EditorImageResource()
