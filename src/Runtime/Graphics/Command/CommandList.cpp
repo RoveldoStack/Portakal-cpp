@@ -65,6 +65,14 @@ namespace Portakal
 	}
 	void CommandList::ClearColor(const unsigned int index, const Color4& color)
 	{
+		/*
+		* Validate if given color target exists
+		*/
+		if (mBoundFramebuffer == nullptr || mBoundFramebuffer->GetColorTargets().GetCursor() <= index)
+		{
+			LOG("CommandList", "Cannot clear color color target %d, it's out of range!", index);
+			return;
+		}
 		ClearColorCore(index, color);
 	}
 	void CommandList::ClearDepth(const float depth)

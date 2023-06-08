@@ -102,7 +102,6 @@ namespace Portakal
                 mContext->CSSetShader(pShader, nullptr, 0);
             }
         }
-
     }
     void DX11CommandList::BindFramebufferCore(Framebuffer* pFramebuffer)
     {
