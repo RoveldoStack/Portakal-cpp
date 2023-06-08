@@ -174,6 +174,41 @@ namespace Portakal
 		mIndexSubItemCount = subItemCount;
 		mIndexType = indexType;
 	}
+	void MeshResource::UpdateVertexes(const Byte* pData, const unsigned long long offset, const unsigned long long size, CommandList* pTargetCmdList)
+	{
+		/*
+		* Validate if destroyed
+		*/
+		if (IsDestroyed())
+		{
+			LOG("MeshResource", "Cannot update vertexes due to this resource is destroyed");
+			return;
+		}
+
+		/*
+		* Validate device and vertex buffer
+		*/
+		if (mOwnerDevice == nullptr)
+		{
+			LOG("MeshResource", "Cannot update vertexes due to this resource does not have a valid owner GraphicsDevice");
+			return;
+		}
+		if (mVertexBuffer == nullptr || mVertexBuffer->IsDestroyed())
+		{
+			LOG("MeshResource", "Cannot update vertexes due to this resource does not have a valid vertex buffer created with AllocateVertexes before");
+			return;
+		}
+
+		/*
+		* Update the buffer
+		*/
+		GraphicsBufferUpdateDesc desc = {};
+		desc.pData = pData;
+		desc.Offset = offset;
+		desc.Size = size;
+
+		pTargetCmdList->UpdateBuffer(desc, mVertexBuffer);
+	}
 	void MeshResource::UpdateVertexes(const Byte* pData, const unsigned long long offset, const unsigned long long size)
 	{
 		/*
@@ -211,6 +246,41 @@ namespace Portakal
 		mCmdList->UpdateBuffer(desc, mVertexBuffer);
 		mCmdList->Unlock();
 	}
+	void MeshResource::UpdateIndexes(const Byte* pData, const unsigned long long offset, const unsigned long long size, CommandList* pTargetCmdList)
+	{
+		/*
+		* Validate if destroyed
+		*/
+		if (IsDestroyed())
+		{
+			LOG("MeshResource", "Cannot update indexes due to this resource is destroyed");
+			return;
+		}
+
+		/*
+		* Validate device and vertex buffer
+		*/
+		if (mOwnerDevice == nullptr)
+		{
+			LOG("MeshResource", "Cannot update indexes due to this resource does not have a valid owner GraphicsDevice");
+			return;
+		}
+		if (mVertexBuffer == nullptr || mVertexBuffer->IsDestroyed())
+		{
+			LOG("MeshResource", "Cannot update indexes due to this resource does not have a valid vertex buffer created with AllocateIndexes before");
+			return;
+		}
+
+		/*
+		* Update the buffer
+		*/
+		GraphicsBufferUpdateDesc desc = {};
+		desc.pData = pData;
+		desc.Offset = offset;
+		desc.Size = size;
+
+		pTargetCmdList->UpdateBuffer(desc, mIndexBuffer);
+	}
 	void MeshResource::UpdateIndexes(const Byte* pData, const unsigned long long offset, const unsigned long long size)
 	{
 		/*
@@ -247,76 +317,6 @@ namespace Portakal
 		mCmdList->Lock();
 		mCmdList->UpdateBuffer(desc, mIndexBuffer);
 		mCmdList->Unlock();
-	}
-	void MeshResource::UpdateVertexes(const Byte* pData, const unsigned long long offset, const unsigned long long size, CommandList* pTargetCmdList)
-	{
-		/*
-		* Validate if destroyed
-		*/
-		if (IsDestroyed())
-		{
-			LOG("MeshResource", "Cannot update vertexes due to this resource is destroyed");
-			return;
-		}
-
-		/*
-		* Validate device and vertex buffer
-		*/
-		if (mOwnerDevice == nullptr)
-		{
-			LOG("MeshResource", "Cannot update vertexes due to this resource does not have a valid owner GraphicsDevice");
-			return;
-		}
-		if (mVertexBuffer == nullptr || mVertexBuffer->IsDestroyed())
-		{
-			LOG("MeshResource", "Cannot update vertexes due to this resource does not have a valid vertex buffer created with AllocateVertexes before");
-			return;
-		}
-
-		/*
-		* Update the buffer
-		*/
-		GraphicsBufferUpdateDesc desc = {};
-		desc.pData = pData;
-		desc.Offset = offset;
-		desc.Size = size;
-
-		pTargetCmdList->UpdateBuffer(desc, mVertexBuffer);
-	}
-	void MeshResource::UpdateIndexes(const Byte* pData, const unsigned long long offset, const unsigned long long size, CommandList* pTargetCmdList)
-	{
-		/*
-		* Validate if destroyed
-		*/
-		if (IsDestroyed())
-		{
-			LOG("MeshResource", "Cannot update indexes due to this resource is destroyed");
-			return;
-		}
-
-		/*
-		* Validate device and vertex buffer
-		*/
-		if (mOwnerDevice == nullptr)
-		{
-			LOG("MeshResource", "Cannot update indexes due to this resource does not have a valid owner GraphicsDevice");
-			return;
-		}
-		if (mVertexBuffer == nullptr || mVertexBuffer->IsDestroyed())
-		{
-			LOG("MeshResource", "Cannot update indexes due to this resource does not have a valid vertex buffer created with AllocateIndexes before");
-			return;
-		}
-
-		/*
-		* Update the buffer
-		*/
-		GraphicsBufferUpdateDesc desc = {};
-		desc.pData = pData;
-		desc.Offset = offset;
-		desc.Size = size;
-
-		pTargetCmdList->UpdateBuffer(desc, mIndexBuffer);
 	}
 	void MeshResource::RegisterStateChangedDelegate(const Delegate<void, MeshResource*>& del)
 	{

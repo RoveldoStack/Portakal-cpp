@@ -283,35 +283,35 @@ namespace Portakal
         {
             switch (stage)
             {
-            case Portakal::ShaderStage::None:
-                break;
-            case Portakal::ShaderStage::Vertex:
-            {
-                mContext->VSSetConstantBuffers(bufferOffset, bufferCount, ppBuffers);
-                break;
-            }
-            case Portakal::ShaderStage::Fragment:
-            {
-                mContext->PSSetConstantBuffers(bufferOffset, bufferCount, ppBuffers);
-                break;
-            }
-            case Portakal::ShaderStage::TesellationEval:
-            {
-                mContext->DSSetConstantBuffers(bufferOffset, bufferCount, ppBuffers);
-                break;
-            }
-            case Portakal::ShaderStage::TesellationControl:
-            {
-                mContext->HSSetConstantBuffers(bufferOffset, bufferCount, ppBuffers);
-                break;
-            }
-            case Portakal::ShaderStage::Compute:
-            {
-                mContext->CSSetConstantBuffers(bufferOffset, bufferCount, ppBuffers);
-                break;
-            }
-            default:
-                break;
+                case Portakal::ShaderStage::None:
+                    break;
+                case Portakal::ShaderStage::Vertex:
+                {
+                    mContext->VSSetConstantBuffers(bufferOffset, bufferCount, ppBuffers);
+                    break;
+                }
+                case Portakal::ShaderStage::Fragment:
+                {
+                    mContext->PSSetConstantBuffers(bufferOffset, bufferCount, ppBuffers);
+                    break;
+                }
+                case Portakal::ShaderStage::TesellationEval:
+                {
+                    mContext->DSSetConstantBuffers(bufferOffset, bufferCount, ppBuffers);
+                    break;
+                }
+                case Portakal::ShaderStage::TesellationControl:
+                {
+                    mContext->HSSetConstantBuffers(bufferOffset, bufferCount, ppBuffers);
+                    break;
+                }
+                case Portakal::ShaderStage::Compute:
+                {
+                    mContext->CSSetConstantBuffers(bufferOffset, bufferCount, ppBuffers);
+                    break;
+                }
+                default:
+                    break;
             }
         }
 
@@ -322,35 +322,35 @@ namespace Portakal
         {
             switch (stage)
             {
-            case Portakal::ShaderStage::None:
-                break;
-            case Portakal::ShaderStage::Vertex:
-            {
-                mContext->VSSetSamplers(samplerOffset, samplerCount, ppSamplers);
-                break;
-            }
-            case Portakal::ShaderStage::Fragment:
-            {
-                mContext->PSSetSamplers(samplerOffset, samplerCount, ppSamplers);
-                break;
-            }
-            case Portakal::ShaderStage::TesellationEval:
-            {
-                mContext->DSSetSamplers(samplerOffset, samplerCount, ppSamplers);
-                break;
-            }
-            case Portakal::ShaderStage::TesellationControl:
-            {
-                mContext->HSSetSamplers(samplerOffset, samplerCount, ppSamplers);
-                break;
-            }
-            case Portakal::ShaderStage::Compute:
-            {
-                mContext->CSSetSamplers(samplerOffset, samplerCount, ppSamplers);
-                break;
-            }
-            default:
-                break;
+                case Portakal::ShaderStage::None:
+                    break;
+                case Portakal::ShaderStage::Vertex:
+                {
+                    mContext->VSSetSamplers(samplerOffset, samplerCount, ppSamplers);
+                    break;
+                }
+                case Portakal::ShaderStage::Fragment:
+                {
+                    mContext->PSSetSamplers(samplerOffset, samplerCount, ppSamplers);
+                    break;
+                }
+                case Portakal::ShaderStage::TesellationEval:
+                {
+                    mContext->DSSetSamplers(samplerOffset, samplerCount, ppSamplers);
+                    break;
+                }
+                case Portakal::ShaderStage::TesellationControl:
+                {
+                    mContext->HSSetSamplers(samplerOffset, samplerCount, ppSamplers);
+                    break;
+                }
+                case Portakal::ShaderStage::Compute:
+                {
+                    mContext->CSSetSamplers(samplerOffset, samplerCount, ppSamplers);
+                    break;
+                }
+                default:
+                    break;
             }
         }
 

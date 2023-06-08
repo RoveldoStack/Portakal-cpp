@@ -63,7 +63,7 @@ namespace Portakal
             \
             float4 main(PS_INPUT input) : SV_Target\
             {\
-            float4 out_col = input.col * texture0.Sample(sampler0, input.uv); \
+            float4 out_col =  input.col*texture0.Sample(sampler0,input.uv); \
             return out_col; \
             }";
 
@@ -298,6 +298,12 @@ namespace Portakal
 			pCmdList->BindPipeline(mPipeline);
 
 			/*
+			* Set default resource tables
+			*/
+			pCmdList->CommitResourceTable(0, 0, mBufferResourceTable);
+			pCmdList->CommitResourceTable(1, 0, mSamplerResourceTable);
+
+			/*
 			* Bind framebuffer and clear color
 			*/
 			pCmdList->BindFramebuffer(pRenderTarget->GetFramebuffer());
@@ -317,12 +323,6 @@ namespace Portakal
 			pCmdList->SetViewport(viewportDesc);
 
 			/*
-			* Set default resource tables
-			*/
-			pCmdList->CommitResourceTable(0, 0, mBufferResourceTable);
-			pCmdList->CommitResourceTable(1, 0, mSamplerResourceTable);
-
-			/*
 			* Check if vertex buffer needs an resize
 			*/
 			if (pDrawData->TotalVtxCount > mMesh->GetVertexBufferItemCount())
@@ -330,7 +330,7 @@ namespace Portakal
 				LOG("ImGuiRenderer", "Vertex buffer will be resized");
 
 				/*
-				* Allocate new vertexes
+				* Allocate new vertexes 
 				*/
 				mMesh->AllocateVertexes(sizeof(ImDrawVert), pDrawData->TotalVtxCount + 5000);
 			}
@@ -465,7 +465,7 @@ namespace Portakal
 					else
 					{
 						ImGuiTextureBinding* pBinding = (ImGuiTextureBinding*)cmd.GetTexID();
-						//pCmdList->CommitResourceTable(1,1, pBinding->GetTable());
+						pCmdList->CommitResourceTable(1,1, pBinding->GetTable());
 					}
 
 					pCmdList->DrawIndexed(cmd.ElemCount, (drawIndexOffset + cmd.IdxOffset), (drawVertexOffset + cmd.VtxOffset));
