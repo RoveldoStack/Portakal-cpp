@@ -28,15 +28,15 @@ namespace Portakal
             struct VS_INPUT\
             {\
               float2 pos : POSITION;\
-              float2 uv  : TEXCOORD0;\
               float4 col : COLOR0;\
+              float2 uv  : TEXCOORD0;\
             };\
             \
             struct PS_INPUT\
             {\
               float4 pos : SV_POSITION;\
-              float2 uv  : TEXCOORD0;\
               float4 col : COLOR0;\
+              float2 uv  : TEXCOORD0;\
             };\
             \
             PS_INPUT main(VS_INPUT input)\
@@ -55,8 +55,8 @@ namespace Portakal
 		"struct PS_INPUT\
             {\
             float4 pos : SV_POSITION;\
-            float2 uv  : TEXCOORD0;\
             float4 col : COLOR0;\
+            float2 uv  : TEXCOORD0;\
             };\
             sampler sampler0;\
             Texture2D texture0;\
@@ -165,11 +165,6 @@ namespace Portakal
 		mMesh->SetTagName("Imgui Default Mesh Resource");
 		mMesh->AllocateVertexes(sizeof(ImDrawVert), 1, inputLayoutDesc);
 		mMesh->AllocateIndexes(MeshIndexType::Bit16, 1);
-
-
-		/*
-		* Create pipeline
-		*/
 
 		/*
 		* Create blending state
@@ -281,21 +276,52 @@ namespace Portakal
 	}
 	void ImGuiRenderPass::Execute(CommandList* pCmdList) const
 	{
-		RenderingPathCache* pCache = GetOwnerGraph()->GetRenderingPathCache();
-
 		/*
-		* Get material and mesh
+		* Get render target to render into
 		*/
 		RenderTargetResource* pRenderTarget = (RenderTargetResource*)GetInput("rtIn")->GetIOData();
 
+		/*
+		* Get draw data and io
+		*/
+		ImDrawData* pDrawData = ImGui::GetDrawData();
 		ImGuiIO& io = ImGui::GetIO();
 
 		/*
-		* Get draw data and validate if there are some data to render into
+		* Validate if there are some data to render into
 		*/
-		ImDrawData* pDrawData = ImGui::GetDrawData();
 		if (pDrawData->DisplaySize.x > 0 && pDrawData->DisplaySize.y > 0 && pDrawData->CmdListsCount > 0)
 		{
+			/*
+			* Bind pipeline
+			*/
+			pCmdList->BindPipeline(mPipeline);
+
+			/*
+			* Bind framebuffer and clear color
+			*/
+			pCmdList->BindFramebuffer(pRenderTarget->GetFramebuffer());
+			pCmdList->ClearColor(0, Color4::CornflowerBlue());
+
+			/*
+			* Set viewport
+			*/
+			ViewportDesc viewportDesc = {};
+			viewportDesc.Width = pDrawData->DisplaySize.x;
+			viewportDesc.Height = pDrawData->DisplaySize.y;
+			viewportDesc.MinDepth = 0;
+			viewportDesc.MaxDepth = 1.0f;
+			viewportDesc.X = 0;
+			viewportDesc.Y = 0;
+
+			pCmdList->SetViewport(viewportDesc);
+
+			/*
+			* Set default resource tables
+			*/
+			pCmdList->CommitResourceTable(0, 0, mBufferResourceTable);
+			pCmdList->CommitResourceTable(1, 0, mSamplerResourceTable);
+
 			/*
 			* Check if vertex buffer needs an resize
 			*/
@@ -306,7 +332,7 @@ namespace Portakal
 				/*
 				* Allocate new vertexes
 				*/
-				mMesh->AllocateVertexes(sizeof(ImDrawVert), pDrawData->TotalVtxCount + 500);
+				mMesh->AllocateVertexes(sizeof(ImDrawVert), pDrawData->TotalVtxCount + 5000);
 			}
 
 			/*
@@ -319,27 +345,11 @@ namespace Portakal
 				/*
 				* Allocate new indexes
 				*/
-				mMesh->AllocateIndexes(MeshIndexType::Bit16, pDrawData->TotalIdxCount + 500);
+				mMesh->AllocateIndexes(MeshIndexType::Bit16, pDrawData->TotalIdxCount + 10000);
 			}
 
 			/*
-			* Draw
-			*/
-			pCmdList->BindPipeline(mPipeline);
-			pCmdList->BindFramebuffer(pRenderTarget->GetFramebuffer());
-			pCmdList->SetVertexBuffer(mMesh->GetVertexBuffer());
-			pCmdList->SetIndexBuffer(mMesh->GetIndexBuffer());
-			pCmdList->ClearColor(0, Color4::CornflowerBlue());
-
-			/*
-			* Set default resource tables
-			*/
-			pCmdList->CommitResourceTable(0, 0, mBufferResourceTable);
-			pCmdList->CommitResourceTable(1, 0, mSamplerResourceTable);
-
-
-			/*
-			* SUpdate vertex&index buffers
+			* Update vertex&index buffers
 			*/
 			unsigned int vertexOffset = 0;
 			unsigned int indexOffset = 0;
@@ -374,6 +384,17 @@ namespace Portakal
 			}
 
 			/*
+			* Bind pipeline
+			*/
+			pCmdList->BindPipeline(mPipeline);
+
+			/*
+			* Set vertex&index buffers
+			*/
+			pCmdList->SetVertexBuffer(mMesh->GetVertexBuffer());
+			pCmdList->SetIndexBuffer(mMesh->GetIndexBuffer());
+
+			/*
 			* Setup and update orho projection constant buffer
 			*/
 			const float L = pDrawData->DisplayPos.x;
@@ -384,7 +405,7 @@ namespace Portakal
 			{
 				2.0f / (R - L),0,0,0,
 				0,2.0f / (T - B),0,0,
-				0,0,0,0,
+				0,0,0.5f,0,
 				(R + L) / (L - R),(T + B) / (B - T),0.5f,1.0f
 			};
 
@@ -399,19 +420,6 @@ namespace Portakal
 			* Scale clip rects
 			*/
 			pDrawData->ScaleClipRects(io.DisplayFramebufferScale);
-
-			/*
-			* Set viewport
-			*/
-			ViewportDesc viewportDesc = {};
-			viewportDesc.Width = pDrawData->DisplaySize.x;
-			viewportDesc.Height = pDrawData->DisplaySize.y;
-			viewportDesc.MinDepth = 0;
-			viewportDesc.MaxDepth = 1.0f;
-			viewportDesc.X = 0;
-			viewportDesc.Y = 0;
-
-			pCmdList->SetViewport(viewportDesc);
 
 			/*
 			* Start draw
@@ -450,14 +458,14 @@ namespace Portakal
 					/*
 					* Set texture resource
 					*/
-					if (cmd.TextureId == nullptr)
+					if (cmd.GetTexID() == nullptr)
 					{
 						pCmdList->CommitResourceTable(1,1, mFontResourceTable);
 					}
 					else
 					{
-						ImGuiTextureBinding* pBinding = (ImGuiTextureBinding*)cmd.TextureId;
-						pCmdList->CommitResourceTable(1,1, pBinding->GetTable());
+						ImGuiTextureBinding* pBinding = (ImGuiTextureBinding*)cmd.GetTexID();
+						//pCmdList->CommitResourceTable(1,1, pBinding->GetTable());
 					}
 
 					pCmdList->DrawIndexed(cmd.ElemCount, (drawIndexOffset + cmd.IdxOffset), (drawVertexOffset + cmd.VtxOffset));

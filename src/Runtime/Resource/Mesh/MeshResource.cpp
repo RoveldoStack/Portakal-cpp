@@ -93,6 +93,7 @@ namespace Portakal
 		bufferDesc.SubItemSize = subItemSize;
 
 		mVertexBuffer = mOwnerDevice->CreateBuffer(bufferDesc);
+		mVertexBuffer->SetDeviceObjectName(GetTagName() + " VertexBuffer");
 
 		mVertexSubItemCount = subItemCount;
 		mVertexSubItemSize = subItemSize;
@@ -135,6 +136,7 @@ namespace Portakal
 		bufferDesc.SubItemSize = subItemSize;
 
 		mVertexBuffer = mOwnerDevice->CreateBuffer(bufferDesc);
+		mVertexBuffer->SetDeviceObjectName(GetTagName() + " VertexBuffer");
 
 		mVertexSubItemCount = subItemCount;
 		mVertexSubItemSize = subItemSize;
@@ -167,6 +169,7 @@ namespace Portakal
 		bufferDesc.SubItemSize = MeshUtils::GetMeshIndexTypeSize(indexType);
 
 		mIndexBuffer = mOwnerDevice->CreateBuffer(bufferDesc);
+		mIndexBuffer->SetDeviceObjectName(GetTagName() + " IndexBuffer");
 
 		mIndexSubItemCount = subItemCount;
 		mIndexType = indexType;
