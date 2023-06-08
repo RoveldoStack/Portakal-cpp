@@ -14,10 +14,10 @@ namespace Portakal
 		FORCEINLINE const Array<ID3D11Buffer*>& GetDXBuffers() const noexcept { return mBuffers; }
 		FORCEINLINE const Array<ID3D11SamplerState*>& GetDXSamplers() const noexcept { return mSamplers; }
 
+	private:
 		// Inherited via ResourceTable
 		virtual void OnDestroy() override;
-	private:
-	
+		virtual void SetDeviceObjectNameCore(const String& name) override;
 	private:
 		Array<ID3D11ShaderResourceView*> mResourceViews;
 		Array<ID3D11Buffer*> mBuffers;

@@ -49,6 +49,7 @@ target_link_libraries(Runtime Shlwapi.lib)
 target_link_libraries(Runtime Comctl32.lib)
 target_link_libraries(Runtime dinput8.lib)
 target_link_libraries(Runtime XInput.lib)
+target_link_libraries(Runtime dxguid.lib)
 endif()
 
 target_link_libraries(Runtime Stbi)

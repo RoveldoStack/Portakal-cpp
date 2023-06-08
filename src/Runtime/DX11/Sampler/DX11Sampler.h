@@ -15,6 +15,7 @@ namespace Portakal
 	private:
 		// Inherited via Sampler
 		virtual void OnDestroy() override;
+		virtual void SetDeviceObjectNameCore(const String& name) override;
 	private:
 		DXPTR<ID3D11SamplerState> mSampler;
 	};

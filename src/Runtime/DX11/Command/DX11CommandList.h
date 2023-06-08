@@ -31,6 +31,7 @@ namespace Portakal
 		virtual void UpdateBufferCore(const GraphicsBufferUpdateDesc& desc, GraphicsBuffer* pBuffer) override;
 		virtual void UpdateTextureCore(const TextureUpdateDesc& desc, Texture* pTexture) override;
 		virtual void ClearCachedStateCore() override;
+		virtual void SetDeviceObjectNameCore(const String& name) override;
 	private:
 		ComPtr<ID3D11CommandList> mCmdList;
 		ID3D11Device* mDevice;

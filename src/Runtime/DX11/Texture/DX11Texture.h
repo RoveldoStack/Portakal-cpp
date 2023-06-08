@@ -26,6 +26,7 @@ namespace Portakal
 		FORCEINLINE ID3D11Resource* GetDXTexture() const noexcept { return mTexture.Get(); }
 	private:
 		virtual void OnDestroy() override;
+		virtual void SetDeviceObjectNameCore(const String& name) override;
 	private:
 		ComPtr<ID3D11Resource> mTexture;
 	};

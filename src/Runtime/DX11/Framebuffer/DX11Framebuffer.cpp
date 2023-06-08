@@ -117,6 +117,30 @@ namespace Portakal
 
         Framebuffer::OnDestroy();
     }
+    void DX11Framebuffer::SetDeviceObjectNameCore(const String& name)
+    {
+        /*
+        * Set render target view names
+        */
+        for (unsigned int i = 0; i < mRtvs.GetCursor(); i++)
+        {
+            ID3D11RenderTargetView* pRtv = mRtvs[i].Get();
+            if (pRtv != nullptr)
+            {
+                const String rtvName = name + " RenderTargetView[" + String::GetFromInteger(i) + "]";
+                pRtv->SetPrivateData(WKPDID_D3DDebugObjectName, rtvName.GetCursor(),rtvName.GetSource());
+            }
+        }
+
+        /*
+        * Set depth stencil view name
+        */
+        if (mDsv != nullptr)
+        {
+            const String dsvName = name + " DepthStencilView";
+            mDsv->SetPrivateData(WKPDID_D3DDebugObjectName, dsvName.GetCursor(), dsvName.GetSource());
+        }
+    }
     void DX11Framebuffer::DeleteDXResources()
     {
         mRtvs.Clear();

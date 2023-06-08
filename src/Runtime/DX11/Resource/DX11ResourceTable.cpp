@@ -78,4 +78,17 @@ namespace Portakal
 		mResourceViews.Clear();
 
     }
+	void DX11ResourceTable::SetDeviceObjectNameCore(const String& name)
+	{
+		/*
+		* Set buffer names
+		*/
+		for (unsigned int i = 0; i < mResourceViews.GetCursor(); i++)
+		{
+			const String text = name + " Srv[" + String::GetFromInteger(i) + "]";
+			ID3D11ShaderResourceView* pSrv = mResourceViews[i];
+			if (pSrv != nullptr)
+				pSrv->SetPrivateData(WKPDID_D3DDebugObjectName, name.GetCursor(), name.GetSource());
+		}
+	}
 }

@@ -226,4 +226,9 @@ namespace Portakal
 
 		pDevice->UnlockImmediateContext();
 	}
+	void DX11Swapchain::SetDeviceObjectNameCore(const String& name)
+	{
+		if (mSwapchain != nullptr)
+			mSwapchain->SetPrivateData(WKPDID_D3DDebugObjectName,name.GetCursor(),name.GetSource());
+	}
 }

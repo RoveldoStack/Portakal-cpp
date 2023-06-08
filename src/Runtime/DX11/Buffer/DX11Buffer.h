@@ -12,7 +12,10 @@ namespace Portakal
 		virtual ~DX11Buffer() override;
 
 		FORCEINLINE ID3D11Buffer* GetDXBuffer() const noexcept { return mBuffer.Get(); }
+
+	private:
 		virtual void OnDestroy() override;
+		virtual void SetDeviceObjectNameCore(const String& name) override;
 	private:
 		DXPTR<ID3D11Buffer> mBuffer;
 	};

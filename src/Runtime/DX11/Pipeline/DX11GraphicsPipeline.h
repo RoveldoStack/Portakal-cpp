@@ -23,7 +23,7 @@ namespace Portakal
 		FORCEINLINE ID3D11ComputeShader* GetDXComputeShader() const noexcept { return mComputeShader.Get(); }
 	private:
 		virtual void OnDestroy() override;
-
+		virtual void SetDeviceObjectNameCore(const String& name) override;
 	private:
 		DXPTR<ID3D11InputLayout> mInputLayout;
 		DXPTR<ID3D11RasterizerState> mRasterizerState;

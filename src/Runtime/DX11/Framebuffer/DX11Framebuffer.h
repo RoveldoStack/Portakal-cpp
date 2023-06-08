@@ -21,7 +21,9 @@ namespace Portakal
 
 		FORCEINLINE Array<ID3D11RenderTargetView*> GetDXRtvs() const noexcept;
 		FORCEINLINE ID3D11DepthStencilView* GetDXDsv() const noexcept { return mDsv.Get(); }
+	private:
 		virtual void OnDestroy() override;
+		virtual void SetDeviceObjectNameCore(const String& name) override;
 	private:
 		Array<DXPTR<ID3D11RenderTargetView>> mRtvs;
 		DXPTR<ID3D11DepthStencilView> mDsv;

@@ -71,4 +71,17 @@ namespace Portakal
 	{
 
 	}
+	void DX11Shader::SetDeviceObjectNameCore(const String& name)
+	{
+		if (mVertexShader != nullptr)
+			mVertexShader->SetPrivateData(WKPDID_D3DDebugObjectName, name.GetCursor(), name.GetSource());
+		if (mPixelShader != nullptr)
+			mPixelShader->SetPrivateData(WKPDID_D3DDebugObjectName, name.GetCursor(), name.GetSource());
+		if (mDomainShader != nullptr)
+			mDomainShader->SetPrivateData(WKPDID_D3DDebugObjectName, name.GetCursor(), name.GetSource());
+		if (mHullShader != nullptr)
+			mHullShader->SetPrivateData(WKPDID_D3DDebugObjectName, name.GetCursor(), name.GetSource());
+		if (mComputeShader != nullptr)
+			mComputeShader->SetPrivateData(WKPDID_D3DDebugObjectName, name.GetCursor(), name.GetSource());
+	}
 }

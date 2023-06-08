@@ -17,7 +17,7 @@ namespace Portakal
 		/// Sets the device debug name
 		/// </summary>
 		/// <param name="name"></param>
-		FORCEINLINE void SetDeviceObjectName(const String& name) { mName = name; }
+		FORCEINLINE void SetDeviceObjectName(const String& name) { SetDeviceObjectNameCore(name); mName = name; }
 
 		/// <summary>
 		/// Returns the owner device
@@ -54,6 +54,7 @@ namespace Portakal
 		}
 
 		virtual void OnDestroy() = 0;
+		virtual void SetDeviceObjectNameCore(const String& name) {}
 	private:
 
 		/// <summary>

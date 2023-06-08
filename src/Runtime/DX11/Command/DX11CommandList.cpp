@@ -422,5 +422,13 @@ namespace Portakal
     {
         mMapped = false;
     }
+
+    void DX11CommandList::SetDeviceObjectNameCore(const String& name)
+    {
+        if (mCmdList != nullptr)
+        {
+            mCmdList->SetPrivateData(WKPDID_D3DDebugObjectName, name.GetCursor(), name.GetSource());
+        }
+    }
   
 }

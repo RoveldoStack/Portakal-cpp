@@ -108,4 +108,9 @@ namespace Portakal
 	{
 		mTexture.Reset();
 	}
+	void DX11Texture::SetDeviceObjectNameCore(const String& name)
+	{
+		if (mTexture != nullptr)
+			mTexture->SetPrivateData(WKPDID_D3DDebugObjectName, name.GetCursor(), name.GetSource());
+	}
 }

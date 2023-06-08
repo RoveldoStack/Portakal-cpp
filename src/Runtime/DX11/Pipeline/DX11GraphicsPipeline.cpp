@@ -180,4 +180,24 @@ namespace Portakal
 	{
 
 	}
+	void DX11GraphicsPipeline::SetDeviceObjectNameCore(const String& name)
+	{
+		/*
+		* Set rasterizer
+		*/
+		const String rasterizerName = name + " RasterizerState";
+		mRasterizerState->SetPrivateData(WKPDID_D3DDebugObjectName, rasterizerName.GetCursor(), rasterizerName.GetSource());
+
+		/*
+		* Set depth stencil
+		*/
+		const String depthStencilName = name + " DepthStencilState";
+		mDepthStencilState->SetPrivateData(WKPDID_D3DDebugObjectName, depthStencilName.GetCursor(), depthStencilName.GetSource());
+
+		/*
+		* Set blending
+		*/
+		const String blendingName = name + " BlendingState";
+		mBlendingState->SetPrivateData(WKPDID_D3DDebugObjectName, blendingName.GetCursor(), blendingName.GetSource());
+	}
 }

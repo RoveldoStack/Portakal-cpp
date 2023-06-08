@@ -17,8 +17,10 @@ namespace Portakal
 		FORCEINLINE DXPTR<ID3D11HullShader> GetDXHullShader() const noexcept { return mHullShader; }
 		FORCEINLINE DXPTR<ID3D11ComputeShader> GetDXComputeShader() const noexcept { return mComputeShader; }
 
+	private:
 		// Inherited via Shader
 		virtual void OnDestroy() override;
+		virtual void SetDeviceObjectNameCore(const String& name) override;
 	private:
 		DXPTR<ID3D11VertexShader> mVertexShader;
 		DXPTR<ID3D11PixelShader> mPixelShader;

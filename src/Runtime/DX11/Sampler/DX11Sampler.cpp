@@ -34,4 +34,9 @@ namespace Portakal
 	{
 		mSampler.Reset();
 	}
+	void DX11Sampler::SetDeviceObjectNameCore(const String& name)
+	{
+		if (mSampler != nullptr)
+			mSampler->SetPrivateData(WKPDID_D3DDebugObjectName, name.GetCursor(), name.GetSource());
+	}
 }
