@@ -217,6 +217,27 @@ namespace Portakal
     {
         const DX11ResourceTable* pDXTable = (const DX11ResourceTable*)pTable;
 
+        /*
+        * Get stage and table description
+        */
+        const ResourceStateDesc resourceStateDesc = GetBoundPipeline()->GetResourceState();
+        const ShaderStage stage = resourceStateDesc.Stages[stageIndex].Stage;
+
+        const PipelineResourceTableDesc& tableDesc = resourceStateDesc.Stages[stageIndex].Tables[slotIndex];
+
+        /*
+        * Get resource state
+        */
+        const unsigned int resourceViewCount = tableDesc.Textures.GetCursor();
+        const unsigned int bufferCount = tableDesc.Buffers.GetCursor();
+        const unsigned int samplerCount = tableDesc.Samplers.GetCursor();
+        const unsigned int resourceViewOffset = tableDesc.TextureOffset;
+        const unsigned int bufferOffset = tableDesc.BufferOffset;
+        const unsigned int samplerOffset = tableDesc.SamplerOffset;
+
+        /*
+        * Get given table resource state
+        */
         const Array<ID3D11ShaderResourceView*>& resourceViews = pDXTable->GetDXResourceViews();
         const Array<ID3D11Buffer*>& buffers = pDXTable->GetDXBuffers();
         const Array<ID3D11SamplerState*>& samplers = pDXTable->GetDXSamplers();
@@ -224,18 +245,6 @@ namespace Portakal
         ID3D11ShaderResourceView** ppResourceViews = resourceViews.GetData();
         ID3D11Buffer** ppBuffers = buffers.GetData();
         ID3D11SamplerState** ppSamplers = samplers.GetData();
-
-        const ResourceStateDesc resourceStateDesc = GetBoundPipeline()->GetResourceState();
-        const ShaderStage stage = resourceStateDesc.Stages[stageIndex].Stage;
-
-        const PipelineResourceTableDesc& tableDesc = resourceStateDesc.Stages[stageIndex].Tables[slotIndex];
-
-        const unsigned int resourceViewCount = resourceViews.GetCursor();
-        const unsigned int bufferCount = buffers.GetCursor();
-        const unsigned int samplerCount = samplers.GetCursor();
-        const unsigned int resourceViewOffset = tableDesc.TextureOffset;
-        const unsigned int bufferOffset = tableDesc.BufferOffset;
-        const unsigned int samplerOffset = tableDesc.SamplerOffset;
 
         /*
         * Set srvs

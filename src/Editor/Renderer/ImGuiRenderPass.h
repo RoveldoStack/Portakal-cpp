@@ -30,6 +30,5 @@ namespace Portakal
 		ResourceTable* mBufferResourceTable;
 		ResourceTable* mSamplerResourceTable;
 		ResourceTable* mFontResourceTable;
-
 	};
 }

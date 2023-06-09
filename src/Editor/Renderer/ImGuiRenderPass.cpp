@@ -28,15 +28,15 @@ namespace Portakal
             struct VS_INPUT\
             {\
               float2 pos : POSITION;\
-              float4 col : COLOR0;\
               float2 uv  : TEXCOORD0;\
+              float4 col : COLOR0;\
             };\
             \
             struct PS_INPUT\
             {\
               float4 pos : SV_POSITION;\
-              float4 col : COLOR0;\
               float2 uv  : TEXCOORD0;\
+              float4 col : COLOR0;\
             };\
             \
             PS_INPUT main(VS_INPUT input)\
@@ -55,8 +55,8 @@ namespace Portakal
 		"struct PS_INPUT\
             {\
             float4 pos : SV_POSITION;\
-            float4 col : COLOR0;\
             float2 uv  : TEXCOORD0;\
+            float4 col : COLOR0;\
             };\
             sampler sampler0;\
             Texture2D texture0;\
@@ -74,8 +74,10 @@ namespace Portakal
 	{
 		CreateInput<RenderTargetInputOutput>("rtIn");
 	}
+
 	ImGuiRenderPass::~ImGuiRenderPass()
 	{
+
 	}
 	
 	void ImGuiRenderPass::Initialize()
@@ -120,7 +122,6 @@ namespace Portakal
 		int height;
 		int channelCount;
 		io.Fonts->GetTexDataAsRGBA32(&pFontData, &width, &height, &channelCount);
-
 		ASSERT(pFontData != nullptr && width != 0 && height != 0 && channelCount != 0, "ImguiRenderer", "Failed to fetch font texture");
 
 		TextureResource* pFontTexture = new TextureResource(TextureType::Texture2D, TextureUsage::Sampled | TextureUsage::CpuWrite, TextureFormat::R8_G8_B8_A8_UNorm, width, height, 1);
@@ -293,36 +294,6 @@ namespace Portakal
 		if (pDrawData->DisplaySize.x > 0 && pDrawData->DisplaySize.y > 0 && pDrawData->CmdListsCount > 0)
 		{
 			/*
-			* Bind pipeline
-			*/
-			pCmdList->BindPipeline(mPipeline);
-
-			/*
-			* Set default resource tables
-			*/
-			pCmdList->CommitResourceTable(0, 0, mBufferResourceTable);
-			pCmdList->CommitResourceTable(1, 0, mSamplerResourceTable);
-
-			/*
-			* Bind framebuffer and clear color
-			*/
-			pCmdList->BindFramebuffer(pRenderTarget->GetFramebuffer());
-			pCmdList->ClearColor(0, Color4::CornflowerBlue());
-
-			/*
-			* Set viewport
-			*/
-			ViewportDesc viewportDesc = {};
-			viewportDesc.Width = pDrawData->DisplaySize.x;
-			viewportDesc.Height = pDrawData->DisplaySize.y;
-			viewportDesc.MinDepth = 0;
-			viewportDesc.MaxDepth = 1.0f;
-			viewportDesc.X = 0;
-			viewportDesc.Y = 0;
-
-			pCmdList->SetViewport(viewportDesc);
-
-			/*
 			* Check if vertex buffer needs an resize
 			*/
 			if (pDrawData->TotalVtxCount > mMesh->GetVertexBufferItemCount())
@@ -332,7 +303,7 @@ namespace Portakal
 				/*
 				* Allocate new vertexes 
 				*/
-				mMesh->AllocateVertexes(sizeof(ImDrawVert), pDrawData->TotalVtxCount + 5000);
+				mMesh->AllocateVertexes(sizeof(ImDrawVert), pDrawData->TotalVtxCount + 50);
 			}
 
 			/*
@@ -345,7 +316,7 @@ namespace Portakal
 				/*
 				* Allocate new indexes
 				*/
-				mMesh->AllocateIndexes(MeshIndexType::Bit16, pDrawData->TotalIdxCount + 10000);
+				mMesh->AllocateIndexes(MeshIndexType::Bit16, pDrawData->TotalIdxCount + 50);
 			}
 
 			/*
@@ -384,6 +355,46 @@ namespace Portakal
 			}
 
 			/*
+			* Setup and update orho projection constant buffer
+			*/
+			const float L = pDrawData->DisplayPos.x;
+			const float R = pDrawData->DisplayPos.x + pDrawData->DisplaySize.x;
+			const float T = pDrawData->DisplayPos.y;
+			const float B = pDrawData->DisplayPos.y + pDrawData->DisplaySize.y;
+			float projectionData[] =
+			{
+				2.0f / (R - L),
+				0,
+				0,
+				0,
+				0,
+				2.0f / (T - B),
+				0,
+				0,
+				0,
+				0,
+				0.5f,
+				0,
+				(R + L) / (L - R),
+				(T + B) / (B - T),
+				0.5f,
+				1.0f
+			};
+
+			GraphicsBufferUpdateDesc projectionBufferUpdateDesc = {};
+			projectionBufferUpdateDesc.pData = (Byte*)projectionData;
+			projectionBufferUpdateDesc.Offset = 0;
+			projectionBufferUpdateDesc.Size = sizeof(projectionData);
+
+			pCmdList->UpdateBuffer(projectionBufferUpdateDesc, mConstantBuffer);
+
+			/*
+			* Bind framebuffer and clear color
+			*/
+			pCmdList->BindFramebuffer(pRenderTarget->GetFramebuffer());
+			pCmdList->ClearColor(0, Color4::CornflowerBlue());
+
+			/*
 			* Bind pipeline
 			*/
 			pCmdList->BindPipeline(mPipeline);
@@ -395,31 +406,29 @@ namespace Portakal
 			pCmdList->SetIndexBuffer(mMesh->GetIndexBuffer());
 
 			/*
-			* Setup and update orho projection constant buffer
+			* Set default resource tables
 			*/
-			const float L = pDrawData->DisplayPos.x;
-			const float R = pDrawData->DisplayPos.x + pDrawData->DisplaySize.x;
-			const float T = pDrawData->DisplayPos.y;
-			const float B = pDrawData->DisplayPos.y + pDrawData->DisplaySize.y;
-			float projectionData[] =
-			{
-				2.0f / (R - L),0,0,0,
-				0,2.0f / (T - B),0,0,
-				0,0,0.5f,0,
-				(R + L) / (L - R),(T + B) / (B - T),0.5f,1.0f
-			};
+			pCmdList->CommitResourceTable(0, 0, mBufferResourceTable);
+			pCmdList->CommitResourceTable(1, 0, mSamplerResourceTable);
 
-			GraphicsBufferUpdateDesc projectionBufferUpdateDesc = {};
-			projectionBufferUpdateDesc.pData = (Byte*)projectionData;
-			projectionBufferUpdateDesc.Offset = 0;
-			projectionBufferUpdateDesc.Size = sizeof(projectionData);
-
-			pCmdList->UpdateBuffer(projectionBufferUpdateDesc, mConstantBuffer);
 
 			/*
 			* Scale clip rects
 			*/
 			pDrawData->ScaleClipRects(io.DisplayFramebufferScale);
+
+			/*
+			* Set viewport
+			*/
+			ViewportDesc viewportDesc = {};
+			viewportDesc.Width = pDrawData->DisplaySize.x;
+			viewportDesc.Height = pDrawData->DisplaySize.y;
+			viewportDesc.MinDepth = 0;
+			viewportDesc.MaxDepth = 1.0f;
+			viewportDesc.X = 0;
+			viewportDesc.Y = 0;
+
+			pCmdList->SetViewport(viewportDesc);
 
 			/*
 			* Start draw
@@ -458,13 +467,13 @@ namespace Portakal
 					/*
 					* Set texture resource
 					*/
-					if (cmd.GetTexID() == nullptr)
+					if (cmd.TextureId == nullptr)
 					{
 						pCmdList->CommitResourceTable(1,1, mFontResourceTable);
 					}
 					else
 					{
-						ImGuiTextureBinding* pBinding = (ImGuiTextureBinding*)cmd.GetTexID();
+						ImGuiTextureBinding* pBinding = (ImGuiTextureBinding*)cmd.TextureId;
 						pCmdList->CommitResourceTable(1,1, pBinding->GetTable());
 					}
 

@@ -166,7 +166,6 @@ namespace Portakal
 		*/
 		mRenderGraph->Compile();
 
-		
 		mCmdList = pDevice->CreateCommandList({});
 		mDevice = pDevice;
 	}
@@ -225,7 +224,6 @@ namespace Portakal
 		entry.Value = nullptr;
 
 		mTextureBindings.Remove(pTexture);
-
 	}
 	void ImGuiRenderer::StartRendering(const float deltaTime)
 	{
