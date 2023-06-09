@@ -27,10 +27,10 @@ namespace Portakal
 		~MaterialResource();
 
 		/// <summary>
-		/// Returns the existing resource table
+		/// Returns the existing stage resource tables
 		/// </summary>
 		/// <returns></returns>
-		FORCEINLINE Array<ResourceTable*> GetResourceTables() const noexcept { return mResourceTables; }
+		FORCEINLINE const Registry<ShaderStage, Array<ResourceTable*>>& GetStageTables() const noexcept { return mStageTables; }
 
 		/// <summary>
 		/// Returns a texture parameter with the given name
@@ -100,14 +100,6 @@ namespace Portakal
 		/// <param name="stage"></param>
 		/// <param name="pSampler"></param>
 		void SetSamplerParameter(const String& name, const ShaderStage stage, SamplerResource* pSampler);
-
-		/// <summary>
-		/// Sets a buffer for the cached cpu side of the material
-		/// </summary>
-		/// <param name="name"></param>
-		/// <param name="stage"></param>
-		/// <param name="pBuffer"></param>
-		void SetBufferParameter(const String& name, const ShaderStage& stage, GraphicsBuffer* pBuffer);
 
 		/// <summary>
 		/// Sets a new rasterizer state for the material
@@ -200,9 +192,14 @@ namespace Portakal
 		DepthStencilStateDesc mDepthStencilState;
 		BlendingStateDesc mBlendingState;
 		ResourceStateDesc mResourceState;
-		Array<ResourceTable*> mResourceTables;
+		Registry<ShaderStage, Array<ResourceTable*>> mStageTables;
 
 		CommandList* mCmdList;
+
+		//Default resources
+		SamplerResource* mDefaultSampler;
+		TextureResource* mDefaultTexture;
+		GraphicsBuffer* mDefaultBuffer;
 	};
 
 #include "MaterialResource.reflect.h"

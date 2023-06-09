@@ -103,7 +103,7 @@ namespace Portakal
 
 		mBoundIndexBuffer = pBuffer;
 	}
-	void CommandList::CommitResourceTable(const unsigned int slotIndex,const ResourceTable* pTable)
+	void CommandList::CommitResourceTable(const ResourceSubmitStage stage,const unsigned int slotIndex,const ResourceTable* pTable)
 	{
 		CheckBoundPipeline();
 
@@ -112,7 +112,7 @@ namespace Portakal
 		*/
 		const ResourceStateDesc& resourceState = GetBoundPipeline()->GetResourceState();
 
-		CommitResourceTableCore(slotIndex,pTable);
+		CommitResourceTableCore(stage,slotIndex,pTable);
 	}
 	void CommandList::UpdateBuffer(const GraphicsBufferUpdateDesc& desc, GraphicsBuffer* pBuffer)
 	{

@@ -1,6 +1,6 @@
 #pragma once
 #include <Runtime/Containers/Array.h>
-#include <Runtime/Graphics/Pipeline/Resource/PipelineResourceTableDesc.h>
+#include <Runtime/Graphics/Pipeline/Resource/PipelineResourceStageDesc.h>
 
 namespace Portakal
 {
@@ -9,6 +9,6 @@ namespace Portakal
 	/// </summary>
 	struct PORTAKAL_API ResourceStateDesc
 	{
-		Array<PipelineResourceTableDesc> Tables;
+		Array<PipelineResourceStageDesc> Stages;
 	};
 }

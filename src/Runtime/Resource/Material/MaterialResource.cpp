@@ -18,6 +18,21 @@ namespace Portakal
 		* Create command list
 		*/
 		mCmdList = mOwnerDevice->CreateCommandList({});
+
+		/*
+		* Create default resources
+		*/
+		mDefaultSampler = new SamplerResource();
+		SamplerCreateDesc samplerDesc = {};
+		mDefaultSampler->Create(samplerDesc);
+
+		mDefaultTexture = new TextureResource(TextureType::Texture2D,TextureUsage::Sampled,TextureFormat::R8_G8_B8_A8_UNorm,1,1,1);
+
+		GraphicsBufferCreateDesc bufferDesc = {};
+		bufferDesc.Type = GraphicsBufferType::ConstantBuffer;
+		bufferDesc.SubItemCount = 1;
+		bufferDesc.SubItemSize = 16;
+		mDefaultBuffer = mOwnerDevice->CreateBuffer(bufferDesc);
 	}
 	MaterialResource::~MaterialResource()
 	{
@@ -85,7 +100,7 @@ namespace Portakal
 		/*
 		* Validate if values are equal
 		*/
-		if (pTexture == pParameterDescriptor->pData)
+		if (pTexture == pParameterDescriptor->pTexture)
 			return;
 
 		/*
@@ -93,11 +108,11 @@ namespace Portakal
 		*/
 		if (pTexture == nullptr) // assing default
 		{
-
+			pParameterDescriptor->pTexture = mDefaultTexture;
 		}
 		else
 		{
-			pParameterDescriptor->pData = pTexture;
+			pParameterDescriptor->pTexture = pTexture;
 		}
 
 		/*
@@ -129,7 +144,7 @@ namespace Portakal
 		/*
 		* Validate if values are equal
 		*/
-		if (pSampler == pParameterDescriptor->pData)
+		if (pSampler == pParameterDescriptor->pSampler)
 			return;
 
 		/*
@@ -137,11 +152,11 @@ namespace Portakal
 		*/
 		if (pSampler == nullptr) // assing default
 		{
-
+			pParameterDescriptor->pSampler = mDefaultSampler;
 		}
 		else
 		{
-			pParameterDescriptor->pData = pSampler;
+			pParameterDescriptor->pSampler = pSampler;
 		}
 
 		/*
@@ -154,50 +169,7 @@ namespace Portakal
 		*/
 		SignalMaterialStateChanged();
 	}
-	void MaterialResource::SetBufferParameter(const String& name, const ShaderStage& stage, GraphicsBuffer* pBuffer)
-	{
-		/*
-		* Try find shader stage
-		*/
-		MaterialStageParameterDescriptor* pStageDescriptor = mStageParameterDescriptors.GetEntryValue(stage);
-		if (pStageDescriptor == nullptr)
-			return;
-
-		/*
-		* Try find parameter with name
-		*/
-		MaterialParameterDescriptor* pParameterDescriptor = pStageDescriptor->Parameters.GetEntryValue(name);
-		if (pParameterDescriptor == nullptr)
-			return;
-
-		/*
-		* Validate if values are equal
-		*/
-		if (pBuffer == pParameterDescriptor->pData)
-			return;
-
-		/*
-		* Set vlaue
-		*/
-		if (pBuffer == nullptr) // assing default
-		{
-
-		}
-		else
-		{
-			pParameterDescriptor->pData = pBuffer;
-		}
-
-		/*
-		* Invalidate resource state
-		*/
-		InvalidateResourceTables();
-
-		/*
-		* Signal material resource changed
-		*/
-		SignalMaterialStateChanged();
-	}
+	
 	void MaterialResource::SetRasterizerState(const RasterizerStateDesc& stateDesc)
 	{
 		mRasterizerState = stateDesc;
@@ -238,6 +210,11 @@ namespace Portakal
 		* Clear the current stage parameter descriptors
 		*/
 		mStageParameterDescriptors.Clear();
+
+		/*
+		* Clear resource state
+		*/
+		mResourceState.Stages.Clear();
 
 		/*
 		* Validate if all shaders are valid
@@ -289,25 +266,26 @@ namespace Portakal
 		/*
 		* Create new shader state, pipeline resource state and material cpu cache state
 		*/
-		Array<PipelineResourceTableDesc> newResourceTables;
 		for (unsigned int shaderIndex = 0; shaderIndex < mShaders.GetCursor(); shaderIndex++)
 		{
+			/*
+			* Get shader and reflection blobs
+			*/
 			const ShaderResource* pShader = mShaders[shaderIndex];
 			const ShaderReflectionBlob* pReflectionBlob = pShader->GetReflectionBlob();
 			const Shader* pUnderlyingShader = pShader->GetShader();
 
-			PipelineResourceTableDesc resourceTableDesc = {};
-			resourceTableDesc.Stage = pUnderlyingShader->GetStage();
-			resourceTableDesc.BufferOffset = 0;
-			resourceTableDesc.TextureOffset = 0;
-			resourceTableDesc.SamplerOffset = 0;
+			/*
+			* Pre-create resource stage desc
+			*/
+			PipelineResourceStageDesc stageDesc = {};
+			stageDesc.Stage = pShader->GetStage();
 
 			/*
 			* Collect reflection entries
 			*/
 			const Array<ShaderReflectionResource> resourceEntries = pReflectionBlob->GetResources();
 
-			
 			/*
 			* Create stage parameter descriptor
 			*/
@@ -318,51 +296,83 @@ namespace Portakal
 			*/
 			for (unsigned int entryIndex = 0; entryIndex < resourceEntries.GetCursor(); entryIndex++)
 			{
+				PipelineResourceTableDesc resourceTableDesc = {};
+				resourceTableDesc.BufferOffset = 0;
+				resourceTableDesc.TextureOffset = 0;
+				resourceTableDesc.SamplerOffset = 0;
+
 				const ShaderReflectionResource& resourceEntry = resourceEntries[entryIndex];
 
 				MaterialParameterDescriptor parameterDescriptor = {};
-				parameterDescriptor.pData = nullptr;
-				parameterDescriptor.SizeInBytes = resourceEntry.BufferSize;
+				parameterDescriptor.BufferSizeInBytes = resourceEntry.BufferSize; // set buffer size
+
 				switch (resourceEntry.Type)
 				{
-				case Portakal::ShaderResourceType::Texture:
-				{
-					resourceTableDesc.Textures.Add({ resourceEntry.Name });
-					parameterDescriptor.Type = MaterialParameterType::Texture;
+					case Portakal::ShaderResourceType::Texture:
+					{
+						/*
+						* Set default texture
+						*/
+						parameterDescriptor.pTexture = mDefaultTexture;
 
-					break;
-				}
-				case Portakal::ShaderResourceType::ConstantBuffer:
-				{
-					resourceTableDesc.Buffers.Add({ resourceEntry.Name });
-					parameterDescriptor.Type = MaterialParameterType::Buffer;
+						resourceTableDesc.Textures.Add({ resourceEntry.Name });
 
-					break;
-				}
-				case Portakal::ShaderResourceType::Sampler:
-				{
-					resourceTableDesc.Samplers.Add({ resourceEntry.Name});
-					parameterDescriptor.Type = MaterialParameterType::Sampler;
+						parameterDescriptor.Type = MaterialParameterType::Texture;
 
-					break;
-				}
-				default:
-					break;
+						break;
+					}
+					case Portakal::ShaderResourceType::ConstantBuffer:
+					{
+						/*
+						* Set default buffer
+						*/
+						parameterDescriptor.pBuffer = mDefaultBuffer;
+
+						resourceTableDesc.Buffers.Add({ resourceEntry.Name });
+
+						parameterDescriptor.Type = MaterialParameterType::Buffer;
+
+						break;
+					}
+					case Portakal::ShaderResourceType::Sampler:
+					{
+						/*
+						* Set default sampler
+						*/
+						parameterDescriptor.pSampler = mDefaultSampler;
+
+						resourceTableDesc.Samplers.Add({ resourceEntry.Name});
+
+						parameterDescriptor.Type = MaterialParameterType::Sampler;
+
+						break;
+					}
+					default:
+						break;
 				}
 
 				/*
 				* Add another parameter to the stage descriptor
 				*/
 				stageParameterDescriptor.Parameters.Register(resourceEntry.Name,parameterDescriptor);
+
+				/*
+				* Add resource table
+				*/
+				stageDesc.Tables.Add(resourceTableDesc);
 			}
 
+			/*
+			* Add stage desc to the resource state
+			*/
+			mResourceState.Stages.Add(stageDesc);
 
 			/*
 			* Register paramater stage descriptor
 			*/
 			mStageParameterDescriptors.Register(pUnderlyingShader->GetStage(), stageParameterDescriptor);
 
-			mResourceState.Tables.Add(resourceTableDesc);
+			mResourceState.Stages.Add(stageDesc);
 		}
 
 		/*
@@ -373,21 +383,21 @@ namespace Portakal
 			/*
 			* Get stage parameter
 			*/
-			const RegistryEntry<ShaderStage, MaterialStageParameterDescriptor>& stageParameter =  cachedStageParameters[stageIndex];
+			const RegistryEntry<ShaderStage, MaterialStageParameterDescriptor>& cachedStageParameter =  cachedStageParameters[stageIndex];
 
 			/*
 			* Try find
 			*/
-			MaterialStageParameterDescriptor* pFoundStageDescriptor = mStageParameterDescriptors.GetEntryValue(stageParameter.Key);
+			MaterialStageParameterDescriptor* pFoundStageDescriptor = mStageParameterDescriptors.GetEntryValue(cachedStageParameter.Key);
 			if (pFoundStageDescriptor == nullptr)
 				continue;
 
 			/*
 			* Iterate parameters and find if there is a match
 			*/
-			for (unsigned int parameterIndex = 0; parameterIndex < stageParameter.Value.Parameters.GetCursor(); parameterIndex++)
+			for (unsigned int parameterIndex = 0; parameterIndex < cachedStageParameter.Value.Parameters.GetCursor(); parameterIndex++)
 			{
-				const RegistryEntry<String, MaterialParameterDescriptor>& parameterDescriptor = stageParameter.Value.Parameters[parameterIndex];
+				const RegistryEntry<String, MaterialParameterDescriptor>& parameterDescriptor = cachedStageParameter.Value.Parameters[parameterIndex];
 
 				/*
 				* Try find this parameter with name and type
@@ -397,8 +407,27 @@ namespace Portakal
 					RegistryEntry<String,MaterialParameterDescriptor>& descriptor = pFoundStageDescriptor->Parameters[i];
 					if (descriptor.Key == parameterDescriptor.Key && descriptor.Value.Type == parameterDescriptor.Value.Type)
 					{
-						//Set the data ptr
-						descriptor.Value.pData = parameterDescriptor.Value.pData;
+						switch (descriptor.Value.Type)
+						{
+							case Portakal::MaterialParameterType::Buffer:
+							{
+								descriptor.Value.pBuffer = parameterDescriptor.Value.pBuffer;
+								break;
+							}
+							case Portakal::MaterialParameterType::Texture:
+							{
+								descriptor.Value.pTexture = parameterDescriptor.Value.pTexture;
+								break;
+							}
+							case Portakal::MaterialParameterType::Sampler:
+							{
+								descriptor.Value.pSampler = parameterDescriptor.Value.pSampler;
+								break;
+							}
+							default:
+								break;
+						}
+						
 						break;
 					}
 				}
@@ -415,11 +444,6 @@ namespace Portakal
 		DestroyResourceTables();
 
 		/*
-		* Material resource will create resource tables per parameter!!!
-		* TODO: Maybe should add a way to customize material table layouts????
-		*/
-
-		/*
 		* Collect table resources
 		*/
 		for (unsigned int stageIndex = 0; stageIndex < mStageParameterDescriptors.GetCursor(); stageIndex++)
@@ -428,31 +452,44 @@ namespace Portakal
 
 			for (unsigned int parameterIndex = 0; parameterIndex < stageDescriptor.Value.Parameters.GetCursor(); parameterIndex++)
 			{
-				const RegistryEntry<String, MaterialParameterDescriptor>& parameterDescriptor = stageDescriptor.Value.Parameters[parameterIndex];
+				/*
+				* Try found existing stage table
+				*/
+				Array<ResourceTable*>* pFoundTables = mStageTables.GetEntryValue(stageDescriptor.Key);
+				if (pFoundTables == nullptr)
+				{
+					mStageTables.Register(stageDescriptor.Key, {});
+					pFoundTables = mStageTables.GetEntryValue(stageDescriptor.Key);
+				}
+
+				RegistryEntry<String, MaterialParameterDescriptor>& parameterDescriptor = stageDescriptor.Value.Parameters[parameterIndex];
 
 				ResourceTableCreateDesc tableCreateDesc = {};
-
-				/*
-				* Immediate exit for now
-				*/
-				if (parameterDescriptor.Value.pData == nullptr)
-					return;
 
 				switch (parameterDescriptor.Value.Type)
 				{
 					case Portakal::MaterialParameterType::Buffer:
 					{
-						tableCreateDesc.Buffers.Add((GraphicsDeviceObject*)parameterDescriptor.Value.pData);
+						if (parameterDescriptor.Value.pBuffer == nullptr)
+							parameterDescriptor.Value.pBuffer = mDefaultBuffer;
+
+						tableCreateDesc.Buffers.Add((GraphicsDeviceObject*)parameterDescriptor.Value.pBuffer);
 						break;
 					}
 					case Portakal::MaterialParameterType::Texture:
 					{
-						tableCreateDesc.Textures.Add((GraphicsDeviceObject*)((TextureResource*)parameterDescriptor.Value.pData)->GetTexture());
+						if (parameterDescriptor.Value.pTexture == nullptr)
+							parameterDescriptor.Value.pTexture = mDefaultTexture;
+
+						tableCreateDesc.Textures.Add((GraphicsDeviceObject*)((TextureResource*)parameterDescriptor.Value.pTexture)->GetTexture());
 						break;
 					}
 					case Portakal::MaterialParameterType::Sampler:
 					{
-						tableCreateDesc.Samplers.Add(((SamplerResource*)parameterDescriptor.Value.pData)->GetSampler());
+						if (parameterDescriptor.Value.pSampler == nullptr)
+							parameterDescriptor.Value.pSampler = mDefaultSampler;
+
+						tableCreateDesc.Samplers.Add(((SamplerResource*)parameterDescriptor.Value.pSampler)->GetSampler());
 						break;
 					}
 					default:
@@ -463,10 +500,8 @@ namespace Portakal
 				* Create table
 				*/
 				ResourceTable* pTable = mOwnerDevice->CreateResourceTable(tableCreateDesc);
-				mResourceTables.Add(pTable);
+				pFoundTables->Add(pTable);
 			}
-
-			
 		}
 	}
 	void MaterialResource::OnShaderStateChanged(ShaderResource* pShader)
@@ -532,9 +567,15 @@ namespace Portakal
 		/*
 		* Destroy current resource tables
 		*/
-		for (unsigned int i = 0; i < mResourceTables.GetCursor(); i++)
-			mResourceTables[i]->Destroy();
-		mResourceTables.Clear();
+		for (unsigned int stageIndex = 0; stageIndex < mStageTables.GetCursor(); stageIndex++)
+		{
+			const RegistryEntry<ShaderStage, Array<ResourceTable*>>& stageEntry = mStageTables[stageIndex];
+
+			for (unsigned int tableIndex = 0; tableIndex < stageEntry.Value.GetCursor(); tableIndex++)
+				stageEntry.Value[tableIndex]->Destroy();
+
+		}
+		mStageTables.Clear();
 	}
 	void MaterialResource::DestroyCore()
 	{

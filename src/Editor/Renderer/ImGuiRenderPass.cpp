@@ -207,21 +207,28 @@ namespace Portakal
 		* Create resource layout
 		*/
 		ResourceStateDesc resourceStateDesc = {};
-		PipelineResourceTableDesc table0Desc = {};
-		table0Desc.Stage = ShaderStage::Vertex;
-		table0Desc.Buffers.Add({ "vertexBuffer" });
+		
+		PipelineResourceStageDesc vertexStageResourceDesc = {};
+		vertexStageResourceDesc.Stage = ShaderStage::Vertex;
 
-		PipelineResourceTableDesc table1Desc = {};
-		table1Desc.Stage = ShaderStage::Fragment;
-		table1Desc.Samplers.Add({ "sampler0" });
+		PipelineResourceStageDesc fragmentStageResourceDesc = {};
+		fragmentStageResourceDesc.Stage = ShaderStage::Fragment;
 
-		PipelineResourceTableDesc table2Desc = {};
-		table2Desc.Stage = ShaderStage::Fragment;
-		table2Desc.Textures.Add({ "texture0" });
+		PipelineResourceTableDesc vertexBufferTable = {};
+		vertexBufferTable.Buffers.Add({ "vertexBuffer" });
 
-		resourceStateDesc.Tables.Add(table0Desc);
-		resourceStateDesc.Tables.Add(table1Desc);
-		resourceStateDesc.Tables.Add(table2Desc);
+		PipelineResourceTableDesc samplerTable = {};
+		samplerTable.Samplers.Add({ "sampler0" });
+
+		PipelineResourceTableDesc textureTable = {};
+		textureTable.Textures.Add({ "texture0" });
+
+		vertexStageResourceDesc.Tables.Add(vertexBufferTable);
+		fragmentStageResourceDesc.Tables.Add(samplerTable);
+		fragmentStageResourceDesc.Tables.Add(textureTable);
+
+		resourceStateDesc.Stages.Add(vertexStageResourceDesc);
+		resourceStateDesc.Stages.Add(fragmentStageResourceDesc);
 
 		GraphicsPipelineCreateDesc pipelineDesc = {};
 		pipelineDesc.RasterizerState = rasterizerStateDesc;
@@ -380,8 +387,8 @@ namespace Portakal
 			pCmdList->BindPipeline(mPipeline);
 			pCmdList->SetVertexBuffer(mMesh->GetVertexBuffer());
 			pCmdList->SetIndexBuffer(mMesh->GetIndexBuffer());
-			pCmdList->CommitResourceTable(0, mBufferResourceTable);
-			pCmdList->CommitResourceTable(1, mSamplerResourceTable);
+			pCmdList->CommitResourceTable(ResourceSubmitStage::Vertex,0, mBufferResourceTable);
+			pCmdList->CommitResourceTable(ResourceSubmitStage::Fragment,0, mSamplerResourceTable);
 
 			/*
 			* Scale clip rects
@@ -446,12 +453,12 @@ namespace Portakal
 					*/
 					if (cmd.TextureId == nullptr)
 					{
-						pCmdList->CommitResourceTable(2, mFontResourceTable);
+						pCmdList->CommitResourceTable(ResourceSubmitStage::Fragment,1, mFontResourceTable);
 					}
 					else
 					{
 						ImGuiTextureBinding* pBinding = (ImGuiTextureBinding*)cmd.TextureId;
-						pCmdList->CommitResourceTable(2, pBinding->GetTable());
+						pCmdList->CommitResourceTable(ResourceSubmitStage::Fragment,1, pBinding->GetTable());
 
 					}
 

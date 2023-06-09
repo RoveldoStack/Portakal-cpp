@@ -247,31 +247,43 @@ namespace Portakal
          
         mContext->IASetIndexBuffer(pDXBuffer->GetDXBuffer(), pBuffer->GetSubItemSize() == sizeof(unsigned int) ? DXGI_FORMAT_R32_UINT : DXGI_FORMAT_R16_UINT, 0);
     }
-    void DX11CommandList::CommitResourceTableCore(const unsigned int slotIndex,const ResourceTable* pTable)
+    void DX11CommandList::CommitResourceTableCore(const ResourceSubmitStage stage,const unsigned int slotIndex,const ResourceTable* pTable)
     {
         const DX11ResourceTable* pDXTable = (const DX11ResourceTable*)pTable;
-        const Array<ID3D11ShaderResourceView*>& resourceViews = pDXTable->GetDXResourceViews();
-        const Array<ID3D11Buffer*>& buffers = pDXTable->GetDXBuffers();
-        const Array<ID3D11SamplerState*>& samplers = pDXTable->GetDXSamplers();
-        ID3D11ShaderResourceView** ppResourceViews = resourceViews.GetData();
-        ID3D11Buffer** ppBuffers = buffers.GetData();
-        ID3D11SamplerState** ppSamplers = samplers.GetData();
+
+
+        /*
+        * Get pipeline resource state
+        */
         const ResourceStateDesc resourceStateDesc = GetBoundPipeline()->GetResourceState();
-        const PipelineResourceTableDesc& tableDesc = resourceStateDesc.Tables[slotIndex];
-        const ShaderStage stage = tableDesc.Stage;
-        const unsigned int resourceViewCount = resourceViews.GetCursor();
-        const unsigned int bufferCount = buffers.GetCursor();
-        const unsigned int samplerCount = samplers.GetCursor();
+        const PipelineResourceStageDesc& stageDesc = resourceStateDesc.Stages[(unsigned int)stage];
+        const PipelineResourceTableDesc& tableDesc = stageDesc.Tables[slotIndex];
+        const ShaderStage shaderStage = stageDesc.Stage;
+
+        /*
+        * Get resource stage and table analytics
+        */
+        const unsigned int resourceViewCount = tableDesc.Textures.GetCursor();
+        const unsigned int bufferCount = tableDesc.Buffers.GetCursor();
+        const unsigned int samplerCount = tableDesc.Samplers.GetCursor();
         const unsigned int resourceViewOffset = tableDesc.TextureOffset;
         const unsigned int bufferOffset = tableDesc.BufferOffset;
         const unsigned int samplerOffset = tableDesc.SamplerOffset;
+
+        const Array<ID3D11ShaderResourceView*>& resourceViews = pDXTable->GetDXResourceViews();
+        const Array<ID3D11Buffer*>& buffers = pDXTable->GetDXBuffers();
+        const Array<ID3D11SamplerState*>& samplers = pDXTable->GetDXSamplers();
+
+        ID3D11ShaderResourceView** ppResourceViews = resourceViews.GetData();
+        ID3D11Buffer** ppBuffers = buffers.GetData();
+        ID3D11SamplerState** ppSamplers = samplers.GetData();
 
         /*
         * Set srvs
         */
         if (resourceViewCount > 0)
         {
-            switch (stage)
+            switch (shaderStage)
             {
             case Portakal::ShaderStage::None:
                 break;
@@ -310,7 +322,7 @@ namespace Portakal
         */
         if (bufferCount > 0)
         {
-            switch (stage)
+            switch (shaderStage)
             {
             case Portakal::ShaderStage::None:
                 break;
@@ -349,7 +361,7 @@ namespace Portakal
         */
         if (samplerCount > 0)
         {
-            switch (stage)
+            switch (shaderStage)
             {
             case Portakal::ShaderStage::None:
                 break;
