@@ -1,6 +1,5 @@
 #include "EntityObjectVisualizer.h"
 #include <Runtime/World/Component.h>
-#include <Runtime/World/Components/Transform2DComponent.h>
 #include <Libs/ImGui/imgui.h>
 #include <Editor/GUI/Window/Templates/WorldObserverWindow.h>
 #include <Editor/GUI/Component/EditorComponentVisualizer.h>

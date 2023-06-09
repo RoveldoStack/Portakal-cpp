@@ -11,7 +11,5 @@ namespace Portakal
     void InvalidComponent::OnFinalize()
     {
     }
-    void InvalidComponent::OnAspectRemoved(SceneAspect* pAspect)
-    {
-    }
+  
 }

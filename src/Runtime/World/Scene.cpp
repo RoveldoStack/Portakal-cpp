@@ -199,7 +199,7 @@ namespace Portakal
 		{
 			SceneAspect* pAspect = mAspects[i];
 
-			pAspect->_Finalize();
+			pAspect->Finalize();
 			pAspect->_SetOnwerScene(nullptr);
 
 			delete pAspect;

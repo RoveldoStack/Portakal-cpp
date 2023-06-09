@@ -1,7 +1,6 @@
 #include "DisplayAspect.h"
 #include <Runtime/Resource/RenderTarget/RenderTargetResource.h>
-#include <Runtime/Renderers/2DRenderer/SpriteCameraComponent.h>
-#include <Runtime/Renderers/2DRenderer/SpriteRendererComponent.h>
+
 
 namespace Portakal
 {
@@ -75,41 +74,17 @@ namespace Portakal
             return;
         mDisplays[index] = nullptr;
     }
-    void DisplayAspect::InitializeCore()
+    void DisplayAspect::Initialize()
     {
         mDisplays.Reserve(8,nullptr);
     }
-    void DisplayAspect::ExecuteCore()
+    void DisplayAspect::Execute()
     {
 
     }
-    void DisplayAspect::FinalizeCore()
+    void DisplayAspect::Finalize()
     {
 
     }
-    bool DisplayAspect::RegisterComponentCore(Component* pComponent)
-    {
-        if (pComponent->GetType() == typeof(SpriteRendererComponent))
-        {
-            return true;
-        }
-        else if (pComponent->GetType() == typeof(SpriteCameraComponent))
-        {
-            return true;
-        }
-
-        return false;
-    }
-    void DisplayAspect::RemoveComponentCore(Component* pComponent)
-    {
-        if (pComponent->GetType() == typeof(SpriteRendererComponent))
-        {
-
-        }
-        else if (pComponent->GetType() == typeof(SpriteCameraComponent))
-        {
-
-        }
-
-    }
+   
 }

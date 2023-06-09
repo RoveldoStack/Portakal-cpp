@@ -2,23 +2,16 @@
 
 namespace Portakal
 {
-	void InvalidAspect::InitializeCore()
+	void InvalidAspect::Initialize()
 	{
 
 	}
-	void InvalidAspect::ExecuteCore()
+	void InvalidAspect::Execute()
 	{
 
 	}
-	void InvalidAspect::FinalizeCore()
+	void InvalidAspect::Finalize()
 	{
 
-	}
-	bool InvalidAspect::RegisterComponentCore(Component* pComponent)
-	{
-		return false;
-	}
-	void InvalidAspect::RemoveComponentCore(Component* pComponent)
-	{
 	}
 }

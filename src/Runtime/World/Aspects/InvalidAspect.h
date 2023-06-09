@@ -14,14 +14,11 @@ namespace Portakal
 		FORCEINLINE String GetIntendedAspect() const noexcept { return mIntendedAspectTypeName; }
 		FORCEINLINE void SetIntendedAspect(const String& intendedAspect) { mIntendedAspectTypeName = intendedAspect; }
 
-		// Inherited via SceneAspect
-		virtual void InitializeCore() override;
-		virtual void ExecuteCore() override;
-		virtual void FinalizeCore() override;
 	private:
 		// Inherited via SceneAspect
-		virtual bool RegisterComponentCore(Component* pComponent) override;
-		virtual void RemoveComponentCore(Component* pComponent) override;
+		virtual void Initialize() override;
+		virtual void Execute() override;
+		virtual void Finalize() override;
 	private:
 		String mIntendedAspectTypeName;
 

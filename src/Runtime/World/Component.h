@@ -37,12 +37,6 @@ namespace Portakal
 		virtual void OnFinalize() = 0;
 
 		/// <summary>
-		/// Called upon an aspect which this component registered itself into has been removed
-		/// </summary>
-		/// <param name="pAspect"></param>
-		virtual void OnAspectRemoved(SceneAspect* pAspect) = 0;
-
-		/// <summary>
 		/// Internal setter for the owner entity
 		/// </summary>
 		/// <param name="pEntity"></param>
