@@ -9,6 +9,7 @@
 #include <Runtime/Assert/Assert.h>
 #include <Runtime/Platform/PlatformError.h>
 #include <Runtime/DX11/DX11DeviceObjects.h>
+#include <Runtime/Graphics/Shader/ShaderStage.h>
 #include <d3d11shader.h>
 
 namespace Portakal
@@ -213,7 +214,7 @@ namespace Portakal
          
         mContext->IASetIndexBuffer(pDXBuffer->GetDXBuffer(), pBuffer->GetSubItemSize() == sizeof(unsigned int) ? DXGI_FORMAT_R32_UINT : DXGI_FORMAT_R16_UINT, 0);
     }
-    void DX11CommandList::CommitResourceTableCore(const unsigned int stageIndex,const unsigned int slotIndex,const ResourceTable* pTable)
+    void DX11CommandList::CommitResourceTableCore(const ResourceSubmitShaderStage stage,const unsigned int slotIndex,const ResourceTable* pTable)
     {
         const DX11ResourceTable* pDXTable = (const DX11ResourceTable*)pTable;
 
@@ -221,9 +222,9 @@ namespace Portakal
         * Get stage and table description
         */
         const ResourceStateDesc resourceStateDesc = GetBoundPipeline()->GetResourceState();
-        const ShaderStage stage = resourceStateDesc.Stages[stageIndex].Stage;
-
-        const PipelineResourceTableDesc& tableDesc = resourceStateDesc.Stages[stageIndex].Tables[slotIndex];
+        const PipelineResourceStageDesc& stageDesc = resourceStateDesc.Stages[(unsigned int)stage];
+        const PipelineResourceTableDesc& tableDesc = stageDesc.Tables[slotIndex];
+        const ShaderStage shaderStage = stageDesc.Stage;
 
         /*
         * Get resource state
@@ -251,7 +252,7 @@ namespace Portakal
         */
         if (resourceViewCount > 0)
         {
-            switch (stage)
+            switch (shaderStage)
             {
                 case Portakal::ShaderStage::None:
                     break;
@@ -290,7 +291,7 @@ namespace Portakal
         */
         if (bufferCount > 0)
         {
-            switch (stage)
+            switch (shaderStage)
             {
                 case Portakal::ShaderStage::None:
                     break;
@@ -329,7 +330,7 @@ namespace Portakal
         */
         if (samplerCount > 0)
         {
-            switch (stage)
+            switch (shaderStage)
             {
                 case Portakal::ShaderStage::None:
                     break;

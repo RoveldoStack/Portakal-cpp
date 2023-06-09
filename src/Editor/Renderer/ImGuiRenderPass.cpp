@@ -408,8 +408,8 @@ namespace Portakal
 			/*
 			* Set default resource tables
 			*/
-			pCmdList->CommitResourceTable(0, 0, mBufferResourceTable);
-			pCmdList->CommitResourceTable(1, 0, mSamplerResourceTable);
+			pCmdList->CommitResourceTable(ResourceSubmitShaderStage::Vertex, 0, mBufferResourceTable);
+			pCmdList->CommitResourceTable(ResourceSubmitShaderStage::Fragment, 0, mSamplerResourceTable);
 
 
 			/*
@@ -469,12 +469,12 @@ namespace Portakal
 					*/
 					if (cmd.TextureId == nullptr)
 					{
-						pCmdList->CommitResourceTable(1,1, mFontResourceTable);
+						pCmdList->CommitResourceTable(ResourceSubmitShaderStage::Fragment,1, mFontResourceTable);
 					}
 					else
 					{
 						ImGuiTextureBinding* pBinding = (ImGuiTextureBinding*)cmd.TextureId;
-						pCmdList->CommitResourceTable(1,1, pBinding->GetTable());
+						pCmdList->CommitResourceTable(ResourceSubmitShaderStage::Fragment,1, pBinding->GetTable());
 					}
 
 					pCmdList->DrawIndexed(cmd.ElemCount, (drawIndexOffset + cmd.IdxOffset), (drawVertexOffset + cmd.VtxOffset));

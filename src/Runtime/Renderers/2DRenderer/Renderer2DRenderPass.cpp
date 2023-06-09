@@ -101,7 +101,7 @@ namespace Portakal
 
 					for (unsigned int tableIndex = 0; tableIndex < stageEntry.Value.GetCursor(); tableIndex++)
 					{
-						pCmdList->CommitResourceTable(stageIndex, tableIndex, stageEntry.Value[tableIndex]);
+						pCmdList->CommitResourceTable((ResourceSubmitShaderStage)stageIndex, tableIndex, stageEntry.Value[tableIndex]);
 					}
 				}
 
