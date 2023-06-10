@@ -41,19 +41,13 @@ namespace Portakal
 			/*
 			* Get camera data
 			*/
-			const Renderer2DCameraData& cameraData = pDrawData->Cameras[cameraIndex];
+			Renderer2DCameraData& cameraData = pDrawData->Cameras[cameraIndex].Value;
 
 			/*
 			* Check if it has a valid render target
 			*/
 			if (cameraData.pRenderTarget == nullptr ||  cameraData.pRenderTarget->IsDestroyed() || cameraData.pRenderTarget->GetFramebuffer() == nullptr)
 				continue;
-
-			/*
-			* Get camera view-project matrix
-			*/
-			const Matrix4x4F& viewMatrix = cameraData.ViewMatrix;
-			const Matrix4x4F& projectionMatrix = cameraData.ProjectionMatrix;
 
 			/*
 			* Bind and clear render target
@@ -101,6 +95,9 @@ namespace Portakal
 
 					for (unsigned int tableIndex = 0; tableIndex < stageEntry.Value.GetCursor(); tableIndex++)
 					{
+						if (stageIndex == 0 && tableIndex == 0) // pass the vertex stage table 0 it's reserved!
+							continue;
+
 						pCmdList->CommitResourceTable((ResourceSubmitShaderStage)stageIndex, tableIndex, stageEntry.Value[tableIndex]);
 					}
 				}
@@ -113,19 +110,31 @@ namespace Portakal
 					/*
 					* Get instance data
 					*/
-					const Renderer2DInstanceData& instanceData = objectData.Instances[instanceIndex];
+					Renderer2DInstanceData& instanceData = objectData.Instances[instanceIndex];
 
 					/*
-					* Compute mvp matrix
+					* Compute mvp matrix if needs updating
 					*/
-					const Matrix4x4F& modelMatrix = instanceData.ModelMatrix;// instanceData.ModelMatrix;
-					const Matrix4x4F mvpMatrix = (modelMatrix*viewMatrix* projectionMatrix); //modelMatrix*viewProjectionMatrix;
+					if (instanceData.bNeedGraphicsUpdate || cameraData.bNeedGraphicsUpdate)
+					{
+						const Matrix4x4F mvpMatrix = (instanceData.ModelMatrix * cameraData.ViewProjectionMatrix); //modelMatrix*viewProjectionMatrix;
+
+						GraphicsBufferUpdateDesc updateDesc = {};
+						updateDesc.pData = (Byte*)&mvpMatrix;
+						updateDesc.Offset = 0;
+						updateDesc.Size = sizeof(mvpMatrix);
+
+						pCmdList->UpdateBuffer(updateDesc, instanceData.pTransformationBuffer);
+
+						instanceData.bNeedGraphicsUpdate = false;
+						cameraData.bNeedGraphicsUpdate = false;
+					}
 
 					/*
-					* Update mvp matrix
+					* Submit reserverd buffer table
 					*/
-					objectData.pMaterial->SetBufferParameterRaw("TransformationData", ShaderStage::Vertex, (Byte*) & mvpMatrix, 0, sizeof(Matrix4x4F),pCmdList);
-
+					pCmdList->CommitResourceTable(ResourceSubmitShaderStage::Vertex, 0, instanceData.pTransformationBufferTable);
+				
 					/*
 					* Issue draw command
 					*/

@@ -33,6 +33,7 @@ namespace Portakal
 		// Inherited via Component
 		virtual void OnInitialize() override;
 		virtual void OnFinalize() override;
+		void OnSignalRenderTargetStateChanged(RenderTargetResource* pRenderTarget);
 	private:
 		RenderTargetResource* mRenderTarget;
 		Color4 mClearColor;

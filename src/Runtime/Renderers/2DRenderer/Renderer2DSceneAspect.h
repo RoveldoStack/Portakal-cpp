@@ -17,7 +17,7 @@ namespace Portakal
 	{
 		GENERATE_CLASS(Renderer2DSceneAspect);
 	public:
-		Renderer2DSceneAspect() : mCmdList(nullptr),mRenderGraph(nullptr) {}
+		Renderer2DSceneAspect() : mCmdList(nullptr),mRenderGraph(nullptr),mDevice(nullptr) {}
 		~Renderer2DSceneAspect() = default;
 
 		void RegisterCamera(SpriteCameraComponent* pCamera);
@@ -27,7 +27,7 @@ namespace Portakal
 		void RemoveRenderer(SpriteRendererComponent* pRenderer);
 
 		void SignalCameraPropertiesChanged(SpriteCameraComponent* pCamera);
-		void SignalCameraRenderTargetChanged(SpriteCameraComponent* pCamera,RenderTargetResource* pOldRenderTarget,RenderTargetResource* pNewRenderTarget);
+		void SignalCameraRenderTargetChanged(SpriteCameraComponent* pCamera,RenderTargetResource* pNewRenderTarget);
 		void SignalRendererMaterialChanged(SpriteRendererComponent* pRenderer,MaterialResource* pOldMaterial, MaterialResource* pNewMaterial);
 		void SignalRendererTransformChanged(SpriteRendererComponent* pRenderer);
 		void SignalCameraTransformChanged(SpriteCameraComponent* pCamera);
@@ -39,8 +39,14 @@ namespace Portakal
 	private:
 		void CreateInstance(Renderer2DObjectData& objectData, SpriteRendererComponent* pRenderer);
 		void UpdateInstanceTransform(Renderer2DInstanceData& data, SpriteRendererComponent* pRenderer);
+		void DeleteInstance(Renderer2DInstanceData& data);
+
 		void UpdateCameraTransform(Renderer2DCameraData& data, SpriteCameraComponent* pCamera);
 		void UpdateCameraProperties(Renderer2DCameraData& data, SpriteCameraComponent* pCamera);
+
+		void CreateCameraData(SpriteCameraComponent* pCamera);
+		void DeleteCameraData(Renderer2DCameraData& cameraData,const unsigned int index);
+
 		void RegisterRenderGraphMaterial(MaterialResource* pMaterial);
 		void RemoveRenderGraphMaterial(MaterialResource* pMaterial);
 		void RegisterRenderGraphRenderTarget(RenderTargetResource* pRenderTarget);
@@ -52,6 +58,7 @@ namespace Portakal
 		Renderer2DFrameDrawData mDrawData;
 		RenderGraph* mRenderGraph;
 		CommandList* mCmdList;
+		GraphicsDevice* mDevice;
 	};
 
 #include "Renderer2DSceneAspect.reflect.h"

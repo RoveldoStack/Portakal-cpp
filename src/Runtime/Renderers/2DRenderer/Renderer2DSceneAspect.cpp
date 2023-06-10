@@ -34,6 +34,7 @@ namespace Portakal
 		pRenderGraph->Compile();
 
 		mRenderGraph = pRenderGraph;
+		mDevice = pDevice;
 	}
 	void Renderer2DSceneAspect::Execute()
 	{
@@ -83,24 +84,9 @@ namespace Portakal
 			return;
 
 		/*
-		* Create new camera entry
+		* Create new camera data
 		*/
-		Renderer2DCameraData cameraData = {};
-		cameraData.pCamera = pCamera;
-		cameraData.bDirty = true;
-		UpdateCameraProperties(cameraData, pCamera);
-		UpdateCameraTransform(cameraData, pCamera);
-
-		/*
-		* Register render target to render graph
-		*/
-		if(pCamera->GetRenderTarget() != nullptr)
-			RegisterRenderGraphRenderTarget(pCamera->GetRenderTarget());
-
-		/*
-		* Register newly created camera entry
-		*/
-		mDrawData.Cameras.Add(cameraData);
+		CreateCameraData(pCamera);
 
 		/*
 		* Register
@@ -119,18 +105,12 @@ namespace Portakal
 		/*
 		* Get camera data
 		*/
-		Renderer2DCameraData& data = mDrawData.Cameras[index];
+		Renderer2DCameraData& data = mDrawData.Cameras[index].Value;
 
 		/*
-		* Remove render target from the render graph
+		* Delete camera data
 		*/
-		if(data.pRenderTarget != nullptr)
-			RemoveRenderGraphRenderTarget(data.pRenderTarget);
-
-		/*
-		* Just remove the camera entry
-		*/
-		mDrawData.Cameras.RemoveIndex(index);
+		DeleteCameraData(data,index);
 
 		/*
 		* Remove from the list
@@ -290,15 +270,17 @@ namespace Portakal
 		/*
 		* Find camera
 		*/
-		for (unsigned int i = 0; i < mDrawData.Cameras.GetCursor(); i++)
-		{
-			Renderer2DCameraData& data = mDrawData.Cameras[i];
-			UpdateCameraProperties(data, pCamera);
+		Renderer2DCameraData* pData = mDrawData.Cameras.GetEntryValue(pCamera);
+		if (pData == nullptr)
 			return;
-		}
+
+		/*
+		* Update camera properties
+		*/
+		UpdateCameraProperties(*pData, pCamera);
 	}
 
-	void Renderer2DSceneAspect::SignalCameraRenderTargetChanged(SpriteCameraComponent* pCamera, RenderTargetResource* pOldRenderTarget, RenderTargetResource* pNewRenderTarget)
+	void Renderer2DSceneAspect::SignalCameraRenderTargetChanged(SpriteCameraComponent* pCamera, RenderTargetResource* pNewRenderTarget)
 	{
 		/*
 		* Validate
@@ -315,16 +297,21 @@ namespace Portakal
 		/*
 		* Find camera and change
 		*/
-		for (unsigned int i = 0; i < mDrawData.Cameras.GetCursor(); i++)
-		{
-			Renderer2DCameraData& data = mDrawData.Cameras[i];
-			UpdateCameraProperties(data, pCamera);
-		}
+		Renderer2DCameraData* pData = mDrawData.Cameras.GetEntryValue(pCamera);
+		pData->pRenderTarget = pNewRenderTarget;
+
+		if (pData == nullptr)
+			return;
+
+		/*
+		* Update properties
+		*/
+		UpdateCameraProperties(*pData, pCamera);
 
 		/*
 		* Signal render graph
 		*/
-		mRenderGraph->RemoveRenderTarget(pOldRenderTarget);
+		mRenderGraph->RemoveRenderTarget(pData->pRenderTarget);
 		mRenderGraph->RegisterRenderTarget(pNewRenderTarget);
 	}
 	void Renderer2DSceneAspect::SignalRendererMaterialChanged(SpriteRendererComponent* pRenderer, MaterialResource* pOldMaterial, MaterialResource* pNewMaterial)
@@ -446,18 +433,22 @@ namespace Portakal
 		/*
 		* Find this camera
 		*/
-		for (unsigned int cameraIndex = 0; cameraIndex < mDrawData.Cameras.GetCursor(); cameraIndex++)
-		{
-			Renderer2DCameraData& cameraData = mDrawData.Cameras[cameraIndex];
-			if (cameraData.pCamera == pCamera)
-			{
-				UpdateCameraTransform(cameraData, pCamera);
-				return;
-			}
-		}
+		Renderer2DCameraData* pData = mDrawData.Cameras.GetEntryValue(pCamera);
+		if (pData == nullptr)
+			return;
+
+		/*
+		* Update camera transform
+		*/
+		UpdateCameraTransform(*pData, pCamera);
 	}
 	void Renderer2DSceneAspect::CreateInstance(Renderer2DObjectData& objectData, SpriteRendererComponent* pRenderer)
 	{
+		struct BufferData
+		{
+			Matrix4x4F MvpMatrix;
+		};
+
 		/*
 		* Create instance
 		*/
@@ -466,6 +457,22 @@ namespace Portakal
 		instanceData.Transform = {};
 		instanceData.bDirty = true;
 
+		/*
+		* Create buffer and table
+		*/
+		GraphicsBufferCreateDesc bufferDesc = {};
+		bufferDesc.Type = GraphicsBufferType::ConstantBuffer;
+		bufferDesc.SubItemCount = 1;
+		bufferDesc.SubItemSize = sizeof(BufferData);
+		instanceData.pTransformationBuffer = mDevice->CreateBuffer(bufferDesc);
+
+		ResourceTableCreateDesc tableDesc = {};
+		tableDesc.Buffers.Add(instanceData.pTransformationBuffer);
+		instanceData.pTransformationBufferTable = mDevice->CreateResourceTable(tableDesc);
+
+		/*
+		* Update transformation
+		*/
 		UpdateInstanceTransform(instanceData, pRenderer);
 
 		/*
@@ -481,6 +488,11 @@ namespace Portakal
 		data.Transform.Scale = pRenderer->GetScale();
 		data.bDirty = true;
 	}
+	void Renderer2DSceneAspect::DeleteInstance(Renderer2DInstanceData& data)
+	{
+		data.pTransformationBuffer->Destroy();
+		data.pTransformationBufferTable->Destroy();
+	}
 	void Renderer2DSceneAspect::UpdateCameraTransform(Renderer2DCameraData& data, SpriteCameraComponent* pCamera)
 	{
 		data.Transform.Position = pCamera->GetPosition();
@@ -492,8 +504,50 @@ namespace Portakal
 	{
 		data.OrthoSize = pCamera->GetOrthoSize();
 		data.ClearColor = pCamera->GetClearColor();
-		data.pRenderTarget = pCamera->GetRenderTarget();
 		data.bDirty = true;
+	}
+	void Renderer2DSceneAspect::CreateCameraData(SpriteCameraComponent* pCamera)
+	{
+		/*
+		* Create new camera entry
+		*/
+		Renderer2DCameraData cameraData = {};
+		cameraData.pCamera = pCamera;
+		cameraData.pRenderTarget = pCamera->GetRenderTarget();
+
+		/*
+		* Update camera property
+		*/
+		UpdateCameraProperties(cameraData, pCamera);
+
+		/*
+		* Update camera transform
+		*/
+		UpdateCameraTransform(cameraData, pCamera);
+
+		/*
+		* Register render target to render graph
+		*/
+		if (pCamera->GetRenderTarget() != nullptr)
+			RegisterRenderGraphRenderTarget(pCamera->GetRenderTarget());
+
+		/*
+		* Register newly created camera entry
+		*/
+		mDrawData.Cameras.Register(pCamera,cameraData);
+	}
+	void Renderer2DSceneAspect::DeleteCameraData(Renderer2DCameraData& cameraData,const unsigned int index)
+	{
+		/*
+		* Remove render target from the render graph
+		*/
+		if (cameraData.pRenderTarget != nullptr)
+			RemoveRenderGraphRenderTarget(cameraData.pRenderTarget);
+
+		/*
+		* Just remove the camera entry
+		*/
+		mDrawData.Cameras.Remove(cameraData.pCamera);
 	}
 	void Renderer2DSceneAspect::RegisterRenderGraphMaterial(MaterialResource* pMaterial)
 	{
@@ -516,13 +570,14 @@ namespace Portakal
 		/*
 		* Iterate and update dirty cameras
 		*/
+		bool bAnyCameraDirty = false;
 		for (unsigned int cameraIndex = 0; cameraIndex < mDrawData.Cameras.GetCursor(); cameraIndex++)
 		{
 			/*
 			* Get camera data and validate if this camera is dirty
 			*/
-			Renderer2DCameraData& data = mDrawData.Cameras[cameraIndex];
-			if (!data.bDirty)
+			Renderer2DCameraData& data = mDrawData.Cameras[cameraIndex].Value;
+			if (!data.bDirty || data.pRenderTarget == nullptr)
 				continue;
 
 			/*
@@ -535,6 +590,15 @@ namespace Portakal
 			* Rebuild view matrix
 			*/
 			data.ViewMatrix = Matrix4x4F::Translation(data.Transform.Position*-1.0f) * Matrix4x4F::RotationZ(data.Transform.RotationZ * DEG_TO_RAD);
+
+			/*
+			* Rebuild view projection matrix
+			*/
+			data.ViewProjectionMatrix = data.ViewMatrix * data.ProjectionMatrix;
+			data.bDirty = false;
+			data.bNeedGraphicsUpdate = true;
+
+			bAnyCameraDirty = true;
 		}
 
 		/*
@@ -556,13 +620,16 @@ namespace Portakal
 				* Get instance data
 				*/
 				Renderer2DInstanceData& instanceData = objectData.Instances[instanceIndex];
-				if (!instanceData.bDirty)
+				if (!instanceData.bDirty && !bAnyCameraDirty)
 					continue;
 
 				/*
 				* Rebuild model matrix
 				*/
 				instanceData.ModelMatrix = Matrix4x4F::Scale(instanceData.Transform.Scale)* Matrix4x4F::RotationZ(instanceData.Transform.RotationZ) *Matrix4x4F::Translation(instanceData.Transform.Position);
+
+				instanceData.bDirty = false;
+				instanceData.bNeedGraphicsUpdate = true;
 			}
 		}
 	}

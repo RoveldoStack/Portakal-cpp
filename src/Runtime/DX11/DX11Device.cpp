@@ -160,7 +160,9 @@ namespace Portakal
         /*
         * Flush the commands
         */
+        mImmediateContext->Begin(mQuery.Get());
         mImmediateContext->Flush();
+        mImmediateContext->End(mQuery.Get());
 
         /*
         * Wait for the events to finish
