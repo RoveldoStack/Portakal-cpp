@@ -23,16 +23,17 @@ namespace Portakal
 
 	struct Renderer2DInstanceData
 	{
-		Renderer2DInstanceData() : pRenderer(nullptr), bDirty(false), bNeedGraphicsUpdate(false),pTransformationBuffer(nullptr),pTransformationBufferTable(nullptr)
+		Renderer2DInstanceData() : pRenderer(nullptr), bDirty(false), bNeedGraphicsUpdate(false)
 		{
 
 		}
 
 		SpriteRendererComponent* pRenderer;
-		GraphicsBuffer* pTransformationBuffer;
-		ResourceTable* pTransformationBufferTable;
+
 		Renderer2DTransformData Transform; 
+
 		Matrix4x4F ModelMatrix;
+
 		bool bDirty;
 		bool bNeedGraphicsUpdate;
 	};
@@ -43,14 +44,19 @@ namespace Portakal
 		{
 
 		}
+
 		SpriteCameraComponent* pCamera;
 		RenderTargetResource* pRenderTarget;
+
 		Renderer2DTransformData Transform;
+
 		Matrix4x4F ViewMatrix;
 		Matrix4x4F ProjectionMatrix;
 		Matrix4x4F ViewProjectionMatrix;
+
 		Color4 ClearColor;
 		float OrthoSize;
+
 		bool bDirty;
 		bool bNeedGraphicsUpdate;
 	};

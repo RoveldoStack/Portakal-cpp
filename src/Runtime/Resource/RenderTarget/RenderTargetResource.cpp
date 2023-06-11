@@ -88,12 +88,10 @@ namespace Portakal
 	void RenderTargetResource::RegisterStateChangedDelegate(const Delegate<void, RenderTargetResource*>& del)
 	{
 		mStateChangedEvent += del;
-		LOG("RenderTargetResource", "New render target event [%s][%d]",*GetTagName(),mStateChangedEvent.GetInvocationList().GetCursor());
 	}
 	void RenderTargetResource::RemoveStateChangedDelegate(const Delegate<void, RenderTargetResource*>& del)
 	{
 		mStateChangedEvent -= del;
-		LOG("RenderTargetResource", "Remove render target event [%s][%d]",*GetTagName(),mStateChangedEvent.GetInvocationList().GetCursor());
 	}
 	void RenderTargetResource::Delete()
 	{

@@ -458,19 +458,6 @@ namespace Portakal
 		instanceData.bDirty = true;
 
 		/*
-		* Create buffer and table
-		*/
-		GraphicsBufferCreateDesc bufferDesc = {};
-		bufferDesc.Type = GraphicsBufferType::ConstantBuffer;
-		bufferDesc.SubItemCount = 1;
-		bufferDesc.SubItemSize = sizeof(BufferData);
-		instanceData.pTransformationBuffer = mDevice->CreateBuffer(bufferDesc);
-
-		ResourceTableCreateDesc tableDesc = {};
-		tableDesc.Buffers.Add(instanceData.pTransformationBuffer);
-		instanceData.pTransformationBufferTable = mDevice->CreateResourceTable(tableDesc);
-
-		/*
 		* Update transformation
 		*/
 		UpdateInstanceTransform(instanceData, pRenderer);
@@ -490,8 +477,7 @@ namespace Portakal
 	}
 	void Renderer2DSceneAspect::DeleteInstance(Renderer2DInstanceData& data)
 	{
-		data.pTransformationBuffer->Destroy();
-		data.pTransformationBufferTable->Destroy();
+
 	}
 	void Renderer2DSceneAspect::UpdateCameraTransform(Renderer2DCameraData& data, SpriteCameraComponent* pCamera)
 	{

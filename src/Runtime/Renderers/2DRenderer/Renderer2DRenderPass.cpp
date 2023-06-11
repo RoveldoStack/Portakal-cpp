@@ -95,9 +95,6 @@ namespace Portakal
 
 					for (unsigned int tableIndex = 0; tableIndex < stageEntry.Value.GetCursor(); tableIndex++)
 					{
-						if (stageIndex == 0 && tableIndex == 0) // pass the vertex stage table 0 it's reserved!
-							continue;
-
 						pCmdList->CommitResourceTable((ResourceSubmitShaderStage)stageIndex, tableIndex, stageEntry.Value[tableIndex]);
 					}
 				}
@@ -119,22 +116,12 @@ namespace Portakal
 					{
 						const Matrix4x4F mvpMatrix = (instanceData.ModelMatrix * cameraData.ViewProjectionMatrix); //modelMatrix*viewProjectionMatrix;
 
-						GraphicsBufferUpdateDesc updateDesc = {};
-						updateDesc.pData = (Byte*)&mvpMatrix;
-						updateDesc.Offset = 0;
-						updateDesc.Size = sizeof(mvpMatrix);
-
-						pCmdList->UpdateBuffer(updateDesc, instanceData.pTransformationBuffer);
+						objectData.pMaterial->SetBufferParameterRaw("TransformationData", ShaderStage::Vertex, (Byte*)&mvpMatrix, 0, sizeof(Matrix4x4F), pCmdList);
 
 						instanceData.bNeedGraphicsUpdate = false;
 						cameraData.bNeedGraphicsUpdate = false;
 					}
 
-					/*
-					* Submit reserverd buffer table
-					*/
-					pCmdList->CommitResourceTable(ResourceSubmitShaderStage::Vertex, 0, instanceData.pTransformationBufferTable);
-				
 					/*
 					* Issue draw command
 					*/

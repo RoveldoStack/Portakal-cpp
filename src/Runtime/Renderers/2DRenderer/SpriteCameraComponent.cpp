@@ -34,7 +34,6 @@ namespace Portakal
 		/*
 		* Register state changes
 		*/
-		LOG("START", "START");
 		if (mRenderTarget != nullptr)
 			mRenderTarget->RemoveStateChangedDelegate(GENERATE_MEMBER_DELEGATE1(this, SpriteCameraComponent::OnSignalRenderTargetStateChanged, void, RenderTargetResource*));
 
@@ -45,7 +44,6 @@ namespace Portakal
 		* Inform that anew render target has been replaced
 		*/
 		pRendererAspect->SignalCameraRenderTargetChanged(this,pRenderTarget);
-		LOG("END", "END");
 		mRenderTarget = pRenderTarget;
 	}
 
@@ -179,7 +177,6 @@ namespace Portakal
 		* Register yourself to the renderer aspect
 		*/
 		RenderTargetResource* pRt = new RenderTargetResource(512,512,{TextureFormat::R8_G8_B8_A8_UNorm,TextureFormat::R8_G8_B8_A8_UNorm},TextureFormat::None,{"Color","UvColor"});
-		pRt->SetTagName("SprCamera");
 
 		SetRenderTarget(pRt);
 	}
@@ -214,7 +211,6 @@ namespace Portakal
 
 	void SpriteCameraComponent::OnSignalRenderTargetStateChanged(RenderTargetResource* pRenderTarget)
 	{
-		LOG("SpriteCameraComponent", "Render target state changed!!!");
 		Renderer2DSceneAspect* pRendererAspect = GetOwnerEntity()->GetOwnerScene()->GetAspect<Renderer2DSceneAspect>();
 
 		if (pRendererAspect == nullptr)
