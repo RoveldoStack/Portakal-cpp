@@ -58,7 +58,7 @@ namespace Portakal
 		/*
 		* Create reflection blob
 		*/
-		mReflectionBlob = ShaderReflectionBlob::Create(bytes);
+		mReflectionBlob = ShaderReflectionBlob::Create(bytes,mDevice->GetBackend());
 
 		/*
 		* Create shader

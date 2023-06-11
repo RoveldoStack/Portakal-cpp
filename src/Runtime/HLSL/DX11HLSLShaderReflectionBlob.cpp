@@ -1,4 +1,4 @@
-#include "HLSLShaderReflectionBlob.h"
+#include "DX11HLSLShaderReflectionBlob.h"
 #include <Runtime/Graphics/Shader/ShaderReflectionBufferParameterUtils.h>
 #include <Runtime/Log/Log.h>
 #include <d3d11shader.h>
@@ -22,7 +22,7 @@ namespace Portakal
 		* Get buffer desc
 		*/
 		D3D11_SHADER_BUFFER_DESC bufferDesc = {};
-		ASSERT(SUCCEEDED(pConstantBufferReflection->GetDesc(&bufferDesc)), "HLSLShaderReflectionBlob", "Failed to get constant buffer reflection desc: %s", *cBufferName);
+		ASSERT(SUCCEEDED(pConstantBufferReflection->GetDesc(&bufferDesc)), "DX11HLSLShaderReflectionBlob", "Failed to get constant buffer reflection desc: %s", *cBufferName);
 
 		/*
 		* Get buffer size
@@ -44,7 +44,7 @@ namespace Portakal
 			* Get variable desc
 			*/
 			D3D11_SHADER_VARIABLE_DESC variableDesc = {};
-			ASSERT(SUCCEEDED(pVariableReflection->GetDesc(&variableDesc)), "HLSLShaderReflectionBlob", "Failed to get the variable desc from the constant buffer");
+			ASSERT(SUCCEEDED(pVariableReflection->GetDesc(&variableDesc)), "DX11HLSLShaderReflectionBlob", "Failed to get the variable desc from the constant buffer");
 
 			/*
 			* Create new parameter
@@ -54,14 +54,14 @@ namespace Portakal
 		}
 
 	}
-	HLSLShaderReflectionBlob::HLSLShaderReflectionBlob(const ByteBlock& byteBlock)
+	DX11HLSLShaderReflectionBlob::DX11HLSLShaderReflectionBlob(const ByteBlock& byteBlock)
 	{
 		/*
 		* Get reflection data and validate
 		*/
 		ID3D11ShaderReflection* pReflectionData = nullptr;
 		D3DReflect(byteBlock.GetBlockDataPtr(), byteBlock.GetBlockSizeInBytes(), IID_PPV_ARGS(&pReflectionData));
-		ASSERT(pReflectionData != nullptr, "HLSLShaderReflectionBlob", "Failed to get reflection data");
+		ASSERT(pReflectionData != nullptr, "DX11HLSLShaderReflectionBlob", "Failed to get reflection data");
 
 		/*
 		* Colllect
