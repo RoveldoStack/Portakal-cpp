@@ -39,7 +39,10 @@ namespace Portakal
 	private:
 		void CreateInstance(Renderer2DObjectData& objectData, SpriteRendererComponent* pRenderer);
 		void UpdateInstanceTransform(Renderer2DInstanceData& data, SpriteRendererComponent* pRenderer);
-		void DeleteInstance(Renderer2DInstanceData& data);
+		void DeleteInstance(Renderer2DObjectData& objectData,Renderer2DInstanceData& instanceData);
+
+		void CreateObjectData(SpriteRendererComponent* pRenderer);
+		void DeleteObjectData(Renderer2DObjectData& objectData);
 
 		void UpdateCameraTransform(Renderer2DCameraData& data, SpriteCameraComponent* pCamera);
 		void UpdateCameraProperties(Renderer2DCameraData& data, SpriteCameraComponent* pCamera);

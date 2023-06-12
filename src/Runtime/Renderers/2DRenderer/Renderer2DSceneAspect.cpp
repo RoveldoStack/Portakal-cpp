@@ -135,56 +135,16 @@ namespace Portakal
 		* Search if the given renderer material already exists
 		*/
 		MaterialResource* pRendererMaterial = pRenderer->GetMaterial();
-		bool bCreatedAsInstance = false;
-		for (unsigned int i = 0; i < mDrawData.Objects.GetCursor(); i++)
+		Renderer2DObjectData* pFoundObjectData = mDrawData.Objects.GetEntryValue(pRendererMaterial);
+		if (pFoundObjectData != nullptr) // found material just add instance
 		{
-			Renderer2DObjectData& objectData = mDrawData.Objects[i];
-
-			/*
-			* Found an exact material, create anew instance for the material
-			*/
-			if (objectData.pMaterial == pRendererMaterial)
-			{
-				/*
-				* Create instance
-				*/
-				CreateInstance(objectData, pRenderer);
-
-				/*
-				* Mark as this process was a instance creation process
-				*/
-				bCreatedAsInstance = true;
-				break;
-			}
+			CreateInstance(*pFoundObjectData, pRenderer);
 		}
-
-		/*
-		* Check if this was a instance creation process or a new object creation process
-		*/
-		if (!bCreatedAsInstance) // this means we have a object creation process.
+		else
 		{
-			/*
-			* Create object data
-			*/
-			Renderer2DObjectData objectData = {};
-			objectData.pMaterial = pRendererMaterial;
-
-			/*
-			* Create first instance
-			*/
-			CreateInstance(objectData, pRenderer);
-
-			/*
-			* Register new object data
-			*/
-			mDrawData.Objects.Add(objectData);
-
-			/*
-			* Register new material to the render graph
-			*/
-			if (pRendererMaterial != nullptr)
-				mRenderGraph->RegisterMaterial(objectData.pMaterial);
+			CreateObjectData(pRenderer);
 		}
+		
 
 		/*
 		* Add to the list
@@ -209,44 +169,28 @@ namespace Portakal
 		/*
 		* Search for instance
 		*/
-		for (unsigned int objectIndex = 0; objectIndex < mDrawData.Objects.GetCursor(); objectIndex++)
+		Renderer2DObjectData* pObjectData = mDrawData.Objects.GetEntryValue(pRenderer->GetMaterial());
+		if (pObjectData == nullptr)
 		{
-			Renderer2DObjectData& objectData = mDrawData.Objects[objectIndex];
-
-			for (unsigned int instanceIndex = 0; instanceIndex < objectData.Instances.GetCursor(); instanceIndex++)
-			{
-				Renderer2DInstanceData& instanceData = objectData.Instances[instanceIndex];
-
-				/*
-				* Check and remove if the renderers match
-				*/
-				if (instanceData.pRenderer == pRenderer) // remove this instance
-				{
-					/*
-					* Remove it from the instance list
-					*/
-					objectData.Instances.RemoveIndex(instanceIndex);
-
-					/*
-					* Check if the objectdata has no instances now, if it does not than delete it
-					*/
-					if (objectData.Instances.GetCursor() == 0)
-					{
-						/*
-						* Remove the material from the render graph
-						*/
-						RemoveRenderGraphMaterial(objectData.pMaterial);
-
-						/*
-						* Remove it from the frame data
-						*/
-						mDrawData.Objects.RemoveIndex(objectIndex);
-						break;
-					}
-				}
-			}
+			LOG("Renderer2DAspect", "Given renderer component couldnt not be removed due to it's not registered");
+			return;
 		}
 
+		/*
+		* Find instance
+		*/
+		Renderer2DInstanceData* pInstanceData = pObjectData->Instances.GetEntryValue(pRenderer);
+		if (pInstanceData == nullptr)
+		{
+			LOG("Renderer2DAspect", "Given instance couldnt not be found.");
+			return;
+		}
+
+		/*
+		* Delete instance
+		*/
+		DeleteInstance(*pObjectData,*pInstanceData);
+		
 		/*
 		* Remove the renderer from the list
 		*/
@@ -330,58 +274,36 @@ namespace Portakal
 			return;
 
 		/*
-		* Find old renderer material data and remove it
+		* Find the existing renderer object data
 		*/
-		for (unsigned int objectIndex = 0; objectIndex < mDrawData.Objects.GetCursor(); objectIndex++)
+		Renderer2DObjectData* pOldObjectData = mDrawData.Objects.GetEntryValue(pOldMaterial);
+		if (pOldObjectData == nullptr)
+			return;
+
+		/*
+		* Find instance data
+		*/
+		Renderer2DInstanceData* pInstanceData = pOldObjectData->Instances.GetEntryValue(pRenderer);
+		if (pInstanceData == nullptr)
+			return;
+
+		/*
+		* Remove instance from the object data
+		*/
+		DeleteInstance(*pOldObjectData, *pInstanceData);
+
+		/*
+		* Try find new object data for the new material
+		*/
+		Renderer2DObjectData* pNewObjectData = mDrawData.Objects.GetEntryValue(pNewMaterial);
+		if (pNewObjectData == nullptr) // create new object data
 		{
-			Renderer2DObjectData& objectData = mDrawData.Objects[objectIndex];
-
-			/*
-			* Check if the old material matches
-			*/
-			if (objectData.pMaterial == pOldMaterial)
-			{
-				for (unsigned int instanceIndex = 0; instanceIndex < objectData.Instances.GetCursor(); instanceIndex++)
-				{
-					Renderer2DInstanceData& instanceData = objectData.Instances[instanceIndex];
-
-					if (instanceData.pRenderer == pRenderer)
-					{
-						/*
-						* Remove the instance data from this object data
-						*/
-						objectData.Instances.RemoveIndex(instanceIndex);
-
-						/*
-						* Check if object data has no instances now!
-						*/
-						if (objectData.Instances.GetCursor() == 0)
-						{
-							/*
-							* Remove material from the render graph
-							*/
-							mRenderGraph->RemoveMaterial(objectData.pMaterial);
-
-							/*
-							* Remove this object data from the draw list
-							*/
-							mDrawData.Objects.RemoveIndex(objectIndex);
-						}
-						break;
-					}
-				}
-			}
+			CreateObjectData(pRenderer);
 		}
-
-		/*
-		* Remove the renderer
-		*/
-		mRenderers.RemoveIndex(index);
-
-		/*
-		* Register the renderer
-		*/
-		RegisterRenderer(pRenderer);
+		else // create new instance data for the existing object data
+		{
+			CreateInstance(*pNewObjectData, pRenderer);
+		}
 	}
 	void Renderer2DSceneAspect::SignalRendererTransformChanged(SpriteRendererComponent* pRenderer)
 	{
@@ -398,23 +320,24 @@ namespace Portakal
 			return;
 
 		/*
-		* Find this renderer
+		* Find object data
 		*/
-		for (unsigned int objectIndex = 0; objectIndex < mDrawData.Objects.GetCursor(); objectIndex++)
-		{
-			Renderer2DObjectData& objectData = mDrawData.Objects[objectIndex];
+		Renderer2DObjectData* pObjectData = mDrawData.Objects.GetEntryValue(pRenderer->GetMaterial());
+		if (pObjectData == nullptr)
+			return;
 
-			for (unsigned int instanceIndex = 0; instanceIndex < objectData.Instances.GetCursor(); instanceIndex++)
-			{
-				Renderer2DInstanceData& instanceData = objectData.Instances[instanceIndex];
+		/*
+		* Find instance data
+		*/
+		Renderer2DInstanceData* pInstanceData = pObjectData->Instances.GetEntryValue(pRenderer);
+		if (pInstanceData == nullptr)
+			return;
 
-				if (instanceData.pRenderer == pRenderer)
-				{
-					UpdateInstanceTransform(instanceData, pRenderer);
-					return;
-				}
-			}
-		}
+		/*
+		* Update transform
+		*/
+		UpdateInstanceTransform(*pInstanceData, pRenderer);
+
 	}
 	void Renderer2DSceneAspect::SignalCameraTransformChanged(SpriteCameraComponent* pCamera)
 	{
@@ -465,7 +388,7 @@ namespace Portakal
 		/*
 		* Register the instance to the object data
 		*/
-		objectData.Instances.Add(instanceData);
+		objectData.Instances.Register(pRenderer,instanceData);
 
 	}
 	void Renderer2DSceneAspect::UpdateInstanceTransform(Renderer2DInstanceData& data, SpriteRendererComponent* pRenderer)
@@ -475,9 +398,63 @@ namespace Portakal
 		data.Transform.Scale = pRenderer->GetScale();
 		data.bDirty = true;
 	}
-	void Renderer2DSceneAspect::DeleteInstance(Renderer2DInstanceData& data)
+	void Renderer2DSceneAspect::DeleteInstance(Renderer2DObjectData& objectData,Renderer2DInstanceData& instanceData)
 	{
+		/*
+		* First remove
+		*/
+		objectData.Instances.Remove(instanceData.pRenderer);
 
+		/*
+		* Check if object data is empty
+		*/
+		if (objectData.Instances.GetCursor() == 0)
+		{
+			DeleteObjectData(objectData);
+		}
+	}
+	void Renderer2DSceneAspect::CreateObjectData(SpriteRendererComponent* pRenderer)
+	{
+		/*
+		* Create new object data entry
+		*/
+		Renderer2DObjectData objectData = {};
+		objectData.pMaterial = pRenderer->GetMaterial();
+		
+		/*
+		* Create new instance
+		*/
+		CreateInstance(objectData, pRenderer);
+
+		/*
+		* Register material if exists
+		*/
+		if (objectData.pMaterial != nullptr)
+			RegisterRenderGraphMaterial(objectData.pMaterial);
+
+		/*
+		* Register object data
+		*/
+		mDrawData.Objects.Register(objectData.pMaterial, objectData);
+	}
+	void Renderer2DSceneAspect::DeleteObjectData(Renderer2DObjectData& objectData)
+	{
+		/*
+		* Check if object data is empty
+		*/
+		if (objectData.Instances.GetCursor() == 0)
+		{
+			/*
+			* Remove material from render graph if it's not nullptr
+			*/
+			if (objectData.pMaterial != nullptr)
+				RemoveRenderGraphMaterial(objectData.pMaterial);
+
+			/*
+			* Remove object data
+			*/
+			mDrawData.Objects.Remove(objectData.pMaterial);
+		}
 	}
 	void Renderer2DSceneAspect::UpdateCameraTransform(Renderer2DCameraData& data, SpriteCameraComponent* pCamera)
 	{
@@ -595,27 +572,27 @@ namespace Portakal
 			/*
 			* Get object data
 			*/
-			Renderer2DObjectData& objectData = mDrawData.Objects[objectIndex];
+			RegistryEntry<MaterialResource*,Renderer2DObjectData>& objectEntry = mDrawData.Objects[objectIndex];
 
 			/*
 			* Iterate instances
 			*/
-			for (unsigned int instanceIndex = 0; instanceIndex < objectData.Instances.GetCursor(); instanceIndex++)
+			for (unsigned int instanceIndex = 0; instanceIndex < objectEntry.Value.Instances.GetCursor(); instanceIndex++)
 			{
 				/*
 				* Get instance data
 				*/
-				Renderer2DInstanceData& instanceData = objectData.Instances[instanceIndex];
-				if (!instanceData.bDirty && !bAnyCameraDirty)
+				RegistryEntry<SpriteRendererComponent*, Renderer2DInstanceData>& instancEntry = objectEntry.Value.Instances[instanceIndex];
+				if (!instancEntry.Value.bDirty && !bAnyCameraDirty)
 					continue;
 
 				/*
 				* Rebuild model matrix
 				*/
-				instanceData.ModelMatrix = Matrix4x4F::Scale(instanceData.Transform.Scale)* Matrix4x4F::RotationZ(instanceData.Transform.RotationZ) *Matrix4x4F::Translation(instanceData.Transform.Position);
+				instancEntry.Value.ModelMatrix = Matrix4x4F::Scale(instancEntry.Value.Transform.Scale)* Matrix4x4F::RotationZ(instancEntry.Value.Transform.RotationZ) *Matrix4x4F::Translation(instancEntry.Value.Transform.Position);
 
-				instanceData.bDirty = false;
-				instanceData.bNeedGraphicsUpdate = true;
+				instancEntry.Value.bDirty = false;
+				instancEntry.Value.bNeedGraphicsUpdate = true;
 			}
 		}
 	}

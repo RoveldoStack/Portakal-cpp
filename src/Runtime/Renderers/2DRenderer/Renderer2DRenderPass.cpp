@@ -77,18 +77,18 @@ namespace Portakal
 				/*
 				* Get object data
 				*/
-				const Renderer2DObjectData& objectData = pDrawData->Objects[objectIndex];
+				const RegistryEntry<MaterialResource*, Renderer2DObjectData>& objectEntry = pDrawData->Objects[objectIndex];
 
 				/*
 				* Bind pipeline
 				*/
-				Pipeline* pPipeline = GetOwnerGraph()->GetRenderingPathCache()->GetSinglePipeline(mMesh, objectData.pMaterial, cameraData.pRenderTarget);
+				Pipeline* pPipeline = GetOwnerGraph()->GetRenderingPathCache()->GetSinglePipeline(mMesh, objectEntry.Key, cameraData.pRenderTarget);
 				pCmdList->BindPipeline(pPipeline);
 				
 				/*
 				* Set constant buffer table
 				*/
-				const Registry<ShaderStage,Array<ResourceTable*>>& stageTables = objectData.pMaterial->GetResourceTables();
+				const Registry<ShaderStage,Array<ResourceTable*>>& stageTables = objectEntry.Key->GetResourceTables();
 				for (unsigned int stageIndex = 0; stageIndex < stageTables.GetCursor(); stageIndex++)
 				{
 					RegistryEntry<ShaderStage, Array<ResourceTable*>>& stageEntry = stageTables[stageIndex];
@@ -102,23 +102,23 @@ namespace Portakal
 				/*
 				* Iterate each instance(FOR NOW)
 				*/
-				for (unsigned int instanceIndex = 0; instanceIndex < objectData.Instances.GetCursor(); instanceIndex++)
+				for (unsigned int instanceIndex = 0; instanceIndex < objectEntry.Value.Instances.GetCursor(); instanceIndex++)
 				{
 					/*
 					* Get instance data
 					*/
-					Renderer2DInstanceData& instanceData = objectData.Instances[instanceIndex];
+					RegistryEntry<SpriteRendererComponent*, Renderer2DInstanceData>& instanceEntry = objectEntry.Value.Instances[instanceIndex];
 
 					/*
 					* Compute mvp matrix if needs updating
 					*/
-					if (instanceData.bNeedGraphicsUpdate || cameraData.bNeedGraphicsUpdate)
+					if (instanceEntry.Value.bNeedGraphicsUpdate || cameraData.bNeedGraphicsUpdate)
 					{
-						const Matrix4x4F mvpMatrix = (instanceData.ModelMatrix * cameraData.ViewProjectionMatrix); //modelMatrix*viewProjectionMatrix;
+						const Matrix4x4F mvpMatrix = (instanceEntry.Value.ModelMatrix * cameraData.ViewProjectionMatrix); //modelMatrix*viewProjectionMatrix;
 
-						objectData.pMaterial->SetBufferParameterRaw("TransformationData", ShaderStage::Vertex, (Byte*)&mvpMatrix, 0, sizeof(Matrix4x4F), pCmdList);
+						objectEntry.Key->SetBufferParameterRaw("TransformationData", ShaderStage::Vertex, (Byte*)&mvpMatrix, 0, sizeof(Matrix4x4F), pCmdList);
 
-						instanceData.bNeedGraphicsUpdate = false;
+						instanceEntry.Value.bNeedGraphicsUpdate = false;
 						cameraData.bNeedGraphicsUpdate = false;
 					}
 

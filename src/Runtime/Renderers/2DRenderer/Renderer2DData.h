@@ -68,12 +68,12 @@ namespace Portakal
 
 		}
 		MaterialResource* pMaterial;
-		Array<Renderer2DInstanceData> Instances;
+		Registry<SpriteRendererComponent*,Renderer2DInstanceData> Instances;
 	};
 
 	struct Renderer2DFrameDrawData
 	{
 		Registry<SpriteCameraComponent*,Renderer2DCameraData> Cameras;
-		Array<Renderer2DObjectData> Objects;
+		Registry<MaterialResource*,Renderer2DObjectData> Objects;
 	};
 }
