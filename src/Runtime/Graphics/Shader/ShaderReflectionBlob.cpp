@@ -1,5 +1,5 @@
 #include "ShaderReflectionBlob.h"
-#include <Runtime/HLSL/DX11HLSLShaderReflectionBlob.h>
+#include <Runtime/DX11/Shader/DX11ShaderReflectionBlob.h>
 #include <Runtime/Assert/Assert.h>
 
 namespace Portakal
@@ -11,7 +11,7 @@ namespace Portakal
 		{
 			case Portakal::GraphicsBackend::Directx11:
 			{
-				pBlob = new DX11HLSLShaderReflectionBlob(byteBlock);
+				pBlob = new DX11ShaderReflectionBlob(byteBlock);
 				break;
 			}
 			case Portakal::GraphicsBackend::Directx12:
