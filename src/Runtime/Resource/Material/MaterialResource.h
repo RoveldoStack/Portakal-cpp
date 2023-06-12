@@ -35,6 +35,12 @@ namespace Portakal
 		FORCEINLINE const Registry<ShaderStage,Array<ResourceTable*>> GetResourceTables() const noexcept { return mResourceTables; }
 
 		/// <summary>
+		/// Returns stage descriptors
+		/// </summary>
+		/// <returns></returns>
+		FORCEINLINE const Registry<ShaderStage, MaterialStageParameterDescriptor>& GetStageDescriptors() const noexcept { return mStageParameterDescriptors; }
+
+		/// <summary>
 		/// Returns a texture parameter with the given name
 		/// </summary>
 		/// <param name="name"></param>

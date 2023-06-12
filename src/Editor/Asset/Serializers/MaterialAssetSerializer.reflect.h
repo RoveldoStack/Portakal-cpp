@@ -1,0 +1,8 @@
+#include "MaterialAssetSerializer.h" 
+START_GENERATE_TYPE(MaterialAssetSerializer);
+START_CLASS_TYPE_PROPERTIES(MaterialAssetSerializer)
+REGISTER_BASE_TYPE(IAssetSerializer);
+REGISTER_TYPE_ATTRIBUTE(CustomAssetSerializerAttribute, "material")
+END_TYPE_PROPERTIES;
+HAS_DEFAULT_CONSTRUCTOR(MaterialAssetSerializer);
+END_GENERATE_TYPE(MaterialAssetSerializer);

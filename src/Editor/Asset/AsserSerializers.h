@@ -3,3 +3,4 @@
 #include <Editor/Asset/Serializers/TextAssetSerializer.h>
 #include <Editor/Asset/Serializers/TextureAssetSerializer.h>
 #include <Editor/Asset/Serializers/ShaderAssetSerializer.h>
+#include <Editor/Asset/Serializers/MaterialAssetSerializer.h>

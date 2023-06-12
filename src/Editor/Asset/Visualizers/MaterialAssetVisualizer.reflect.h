@@ -1,0 +1,8 @@
+#include "MaterialAssetVisualizer.h" 
+START_GENERATE_TYPE(MaterialAssetVisualizer);
+START_CLASS_TYPE_PROPERTIES(MaterialAssetVisualizer)
+REGISTER_BASE_TYPE(IAssetVisualizer);
+REGISTER_TYPE_ATTRIBUTE(CustomAssetVisualizerAttribute, "material")
+END_TYPE_PROPERTIES;
+HAS_DEFAULT_CONSTRUCTOR(MaterialAssetVisualizer);
+END_GENERATE_TYPE(MaterialAssetVisualizer);

@@ -1,0 +1,8 @@
+#include "MaterialObjectVisualizer.h" 
+START_GENERATE_TYPE(MaterialObjectVisualizer);
+START_CLASS_TYPE_PROPERTIES(MaterialObjectVisualizer)
+REGISTER_BASE_TYPE(EditorObjectVisualizer);
+REGISTER_TYPE_ATTRIBUTE(CustomEditorObjectAttribute, typeof(MaterialResource))
+END_TYPE_PROPERTIES;
+HAS_DEFAULT_CONSTRUCTOR(MaterialObjectVisualizer);
+END_GENERATE_TYPE(MaterialObjectVisualizer);

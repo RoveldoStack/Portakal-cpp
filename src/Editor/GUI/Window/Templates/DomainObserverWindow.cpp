@@ -322,7 +322,9 @@ namespace Portakal
 			}
 			else if (ImGui::Selectable("Material"))
 			{
-
+				ImGui::CloseCurrentPopup();
+				ImGui::EndPopup();
+				ImGui::OpenPopup("MaterialCreatePopup");
 			}
 			else if (ImGui::Selectable("Shader"))
 			{
@@ -402,6 +404,27 @@ namespace Portakal
 			}
 
 			ImGui::EndPopup();
+		}
+		if (ImGui::BeginPopup("MaterialCreatePopup"))
+		{
+			ImGui::Text("Create Material");
+			ImGui::TableGetSortSpecs();
+			ImGui::Spacing();
+
+			ImGui::Text("Name: ");
+			ImGui::SameLine();
+			ImGui::InputText("##materailNameInput", mNameCache, PLATFORM_FOLDER_NAME_SIZE);
+
+			if (ImGui::Button("Create"))
+			{
+				String name = mNameCache;
+				name += ".pmaterial";
+
+				CreateResourceFile(name, "material");
+				ImGui::CloseCurrentPopup();
+
+				Memory::Set(mNameCache, 0, PLATFORM_FILE_NAME_SIZE);
+			}
 		}
 	}
 	void DomainObserverWindow::OnFileDrop(const String& path)
