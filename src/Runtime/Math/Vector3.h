@@ -28,8 +28,8 @@ namespace Portakal
 			};
 		}
 
-		Vector3(const TValue x, const TValue y,const TValue z) : X(x), Y(y),Z(z) {}
-		Vector3(const TValue value = 0) : X(value), Y(value),Z(value) {}
+		constexpr Vector3(const TValue x, const TValue y,const TValue z) : X(x), Y(y),Z(z) {}
+		constexpr Vector3(const TValue value = 0) : X(value), Y(value),Z(value) {}
 		~Vector3() = default;
 
 		/// <summary>

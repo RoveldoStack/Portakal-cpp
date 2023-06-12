@@ -18,8 +18,8 @@ namespace Portakal
 		static Color4F Green() { return Color4F(0, 255, 0, 255); }
 		static Color4F DarkGreen() { return Color4F(0, 128, 0, 255); }
 
-		Color4F(const float r, const float g, const float b, const float a) : R(r), G(g), B(b), A(a) {}
-		Color4F(const float value) : R(value), G(value), B(value), A(value) {}
+		constexpr Color4F(const float r, const float g, const float b, const float a) : R(r), G(g), B(b), A(a) {}
+		constexpr Color4F(const float value) : R(value), G(value), B(value), A(value) {}
 		Color4F() : R(0), G(0), B(0), A(0) {}
 
 

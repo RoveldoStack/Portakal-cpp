@@ -19,8 +19,8 @@ namespace Portakal
 			return a.X * b.X + a.Y * b.Y;
 		}
 
-		Vector2F(const float x, const float y) : X(x), Y(y) {}
-		Vector2F(const float value = 0) : X(value), Y(value) {}
+		constexpr Vector2F(const float x, const float y) : X(x), Y(y) {}
+		constexpr Vector2F(const float value = 0) : X(value), Y(value) {}
 		~Vector2F() = default;
 
 		/// <summary>

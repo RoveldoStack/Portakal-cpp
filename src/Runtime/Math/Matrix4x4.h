@@ -171,7 +171,7 @@ namespace Portakal
 
 			return result;
 		}
-		Matrix4x4(
+		constexpr Matrix4x4(
 			const TType m00 = 0,
 			const TType m01 = 0,
 			const TType m02 = 0,
@@ -206,7 +206,7 @@ namespace Portakal
 			Values[14] = m32;
 			Values[15] = m33;
 		}
-		Matrix4x4(const TType* pData)
+		constexpr Matrix4x4(const TType* pData)
 		{
 			Memory::Copy(pData, Values, sizeof(TType) * 16);
 		}

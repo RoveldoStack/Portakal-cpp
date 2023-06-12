@@ -17,8 +17,8 @@ namespace Portakal
 			return a.X * b.X + a.Y * b.Y;
 		}
 
-		Vector2UI(const unsigned int x, const unsigned int y) : X(x), Y(y) {}
-		Vector2UI(const unsigned int value = 0) : X(value), Y(value) {}
+		constexpr Vector2UI(const unsigned int x, const unsigned int y) : X(x), Y(y) {}
+		constexpr Vector2UI(const unsigned int value = 0) : X(value), Y(value) {}
 		~Vector2UI() = default;
 
 		/// <summary>
